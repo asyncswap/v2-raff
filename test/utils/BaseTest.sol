@@ -123,16 +123,25 @@ contract BaseTest is Deployers {
 
     /* ─────────────────────────────────── deployment ─────────────────────────────────── */
 
+    /// @dev `REFERENCE_PERIPHERY=true` deploys the Solidity Router / FeeVault / NativeClaims from `test/reference`
+    ///      instead of the Huff ones, to run the same tests against both.
+    function _reference() internal view returns (bool) {
+        return vm.envOr("REFERENCE_PERIPHERY", false);
+    }
+
     function _deployVault() internal returns (address) {
-        return address(new FeeVault(manager, protocolOwner));
+        if (_reference()) return address(new FeeVault(manager, protocolOwner));
+        return Huff.deploy("src/FeeVault.huff", abi.encode(manager, protocolOwner));
     }
 
     function _deployRouter() internal returns (address) {
-        return address(new Router(manager, hook, permit2));
+        if (_reference()) return address(new Router(manager, hook, permit2));
+        return Huff.deploy("src/Router.huff", abi.encode(manager, hook, permit2));
     }
 
     function _deployNativeClaims() internal returns (address) {
-        return address(new NativeClaims(manager));
+        if (_reference()) return address(new NativeClaims(manager));
+        return Huff.deploy("src/NativeClaims.huff", abi.encode(manager));
     }
 
     /* ─────────────────────────────────── helpers ─────────────────────────────────── */

@@ -101,7 +101,12 @@ interface IAsyncSwap is IHooks {
         uint64 sequence
     );
     event OrderFilled(
-        PoolId indexed poolId, bytes32 indexed id, address indexed filler, uint256 amountIn, uint256 amountOut, uint256 fee
+        PoolId indexed poolId,
+        bytes32 indexed id,
+        address indexed filler,
+        uint256 amountIn,
+        uint256 amountOut,
+        uint256 fee
     );
     event OrderCancelled(PoolId indexed poolId, bytes32 indexed id, uint256 refund);
     event OrdersMatched(

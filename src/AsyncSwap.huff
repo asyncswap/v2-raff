@@ -18,6 +18,7 @@
 #include "./lib/Book.huff"
 #include "./lib/PoolManager.huff"
 #include "./lib/Signatures.huff"
+#include "./lib/Owned2Step.huff"
 
 /* ─────────────────────────────────────── errors ─────────────────────────────────────── */
 
@@ -41,8 +42,6 @@
 #define error NumeraireRequired()
 #define error DynamicFeeRequired()
 #define error InvalidNumeraire()
-#define error Unauthorized()
-#define error ZeroAddress()
 #define error HookAddressNotValid(address)
 #define error WrappedError(address, bytes4, bytes, bytes)
 #define error ERC20TransferFailed()
@@ -63,8 +62,6 @@
 #define event Swept(address indexed, address indexed, uint256)
 #define event PriorityFeeDonated(bytes32 indexed, uint256)
 #define event PriorityFeeForfeited(bytes32 indexed, uint256)
-#define event OwnershipTransferStarted(address indexed, address indexed)
-#define event OwnershipTransferred(address indexed, address indexed)
 
 /* ─────────────────────────────────────── storage ─────────────────────────────────────── */
 
@@ -146,12 +143,7 @@
     __ERROR(InvalidNumeraire) REVERT_0()
     has_code:
 
-    // Owned2Step
-    0x60 mload has_owner jumpi
-    __ERROR(ZeroAddress) REVERT_0()
-    has_owner:
-    0x60 mload [OWNER_SLOT] sstore
-    0x60 mload 0x00 __EVENT_HASH(OwnershipTransferred) 0x00 0x00 log3
+    0x60 mload OWNED_INIT()
 
     // Hooks.validateHookPermissions(this, getHookPermissions())
     address [ALL_HOOK_MASK] and [HOOK_FLAGS] eq valid jumpi
@@ -175,12 +167,6 @@
 #define macro WHEN_UNLOCKED() = takes (0) returns (0) {
     PM_IS_UNLOCKED() ok jumpi
     __ERROR(NotUnlocked) REVERT_0()
-    ok:
-}
-
-#define macro ONLY_OWNER() = takes (0) returns (0) {
-    [OWNER_SLOT] sload caller eq ok jumpi
-    __ERROR(Unauthorized) REVERT_0()
     ok:
 }
 
@@ -866,31 +852,6 @@
     transferred:
     pop
     done:
-}
-
-/* ──────────────────────────────────────── owner ──────────────────────────────────────── */
-
-/// @notice `transferOwnership(newOwner)`: nominate; control moves only on `acceptOwnership`.
-#define macro TRANSFER_OWNERSHIP() = takes (0) returns (0) {
-    ONLY_OWNER()
-    LOAD_ADDRESS(0x04)                          // [newOwner]
-    dup1 nonzero jumpi
-    __ERROR(ZeroAddress) REVERT_0()
-    nonzero:
-    dup1 [PENDING_OWNER_SLOT] sstore
-    [OWNER_SLOT] sload __EVENT_HASH(OwnershipTransferStarted) 0x00 0x00 log3
-    RETURN_EMPTY()
-}
-
-#define macro ACCEPT_OWNERSHIP() = takes (0) returns (0) {
-    [PENDING_OWNER_SLOT] sload caller eq nominated jumpi
-    __ERROR(Unauthorized) REVERT_0()
-    nominated:
-    caller [OWNER_SLOT] sload                   // [previous, caller]
-    caller [OWNER_SLOT] sstore
-    0x00 [PENDING_OWNER_SLOT] sstore
-    __EVENT_HASH(OwnershipTransferred) 0x00 0x00 log3
-    RETURN_EMPTY()
 }
 
 /* ──────────────────────────────────────── views ──────────────────────────────────────── */

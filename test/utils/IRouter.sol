@@ -40,7 +40,6 @@ interface IRouter {
     function permit2() external view returns (ISignatureTransfer);
     function MAX_MATCHES() external view returns (uint256);
     function cancelNonceUsed(address signer, uint256 nonce) external view returns (bool);
-    function DOMAIN_SEPARATOR() external view returns (bytes32);
 
     function swap(AsyncOrder calldata order) external payable returns (bytes32 id);
     function swapWithSig(AsyncOrder calldata order, PermitData calldata permit, ExecutorGrant calldata grant)

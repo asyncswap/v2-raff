@@ -25,6 +25,9 @@ contract Handler is Test {
 
     AsyncOrder[] public placed;
     uint256 public calls;
+    /// @dev Successful fills, cancels, reprices, book matches and liquidity fills: the handler swallows reverts,
+    ///      so `afterInvariant` checks the run actually exercised the protocol.
+    uint256 public succeeded;
 
     constructor(IAsyncSwap _hook, IRouter _router, PoolKey memory _key, bool _priorityMode, address[] memory _makers) {
         hook = _hook;
@@ -62,7 +65,9 @@ contract Handler is Test {
         AsyncOrder memory o = placed[idx % placed.length];
         address f = makers[who % makers.length];
         vm.prank(f);
-        try router.fillOrder(o, type(uint256).max) {} catch {}
+        try router.fillOrder(o, type(uint256).max) {
+            succeeded++;
+        } catch {}
     }
 
     function cancel(uint256 idx) external {
@@ -70,7 +75,9 @@ contract Handler is Test {
         if (placed.length == 0) return;
         AsyncOrder memory o = placed[idx % placed.length];
         vm.prank(o.owner);
-        try router.cancelOrder(o) {} catch {}
+        try router.cancelOrder(o) {
+            succeeded++;
+        } catch {}
     }
 
     function reprice(uint256 idx, uint256 newMin) external {
@@ -79,19 +86,25 @@ contract Handler is Test {
         AsyncOrder memory o = placed[idx % placed.length];
         newMin = bound(newMin, 1e6, 1e21);
         vm.prank(o.owner);
-        try hook.updatePrice(key, o.orderId(), newMin) {} catch {}
+        try hook.updatePrice(key, o.orderId(), newMin) {
+            succeeded++;
+        } catch {}
     }
 
     function matchBook(uint256 n) external {
         calls++;
-        try router.matchBook(key, bound(n, 1, 8)) {} catch {}
+        try router.matchBook(key, bound(n, 1, 8)) returns (uint256 m) {
+            if (m != 0) succeeded++;
+        } catch {}
     }
 
     function liquidityFill(uint256 idx) external {
         calls++;
         if (placed.length == 0) return;
         AsyncOrder memory o = placed[idx % placed.length];
-        try router.fillFromPoolLiquidity(o) {} catch {}
+        try router.fillFromPoolLiquidity(o) {
+            succeeded++;
+        } catch {}
     }
 }
 
@@ -143,6 +156,13 @@ contract InvariantTest is BaseTest {
     }
 
     /// `Escrow.claims`: for each currency the hook's claims equal the open orders' remaining input plus bids.
+    /// @dev Liveness: every run placed orders and some later action on them went through.
+    function afterInvariant() public view {
+        assertGt(handler.calls(), 0, "handler never called");
+        assertGt(handler.placedCount(), 0, "no order was placed");
+        assertGt(handler.succeeded(), 0, "no fill, cancel, reprice, match or liquidity fill succeeded");
+    }
+
     function invariant_escrowEqualsOutstandingObligations() public view {
         PoolKey memory k = _handlerKey();
         bytes32[] memory ids = _ids();
@@ -204,10 +224,6 @@ contract InvariantTest is BaseTest {
     }
 
     /// The handler must actually be exercising the book, or the invariants above are vacuous.
-    function afterInvariant() public view {
-        assertGt(handler.calls(), 0, "handler never called");
-    }
-
     /// The hook never holds tokens of its own: every leg is settled through the PoolManager.
     function invariant_hookHoldsNoTokens() public view {
         assertEq(_bal(currency0, address(hook)), 0);

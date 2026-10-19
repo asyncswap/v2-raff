@@ -64,13 +64,6 @@
 
 /* ─────────────────────────────────── slots ─────────────────────────────────── */
 
-/// @dev `keccak(key, seed)`.
-#define macro HASH_2() = takes (2) returns (1) {
-    // [key, seed]
-    0x00 mstore 0x20 mstore
-    0x40 0x00 sha3
-}
-
 /// @dev The order record of `id` in pool `P`.
 #define macro ORDER_SLOT() = takes (2) returns (1) {
     // [P, id]

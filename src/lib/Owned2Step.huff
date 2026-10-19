@@ -1,0 +1,49 @@
+/// @title Owned2Step
+/// @notice Two-step ownership: `owner` changes only through `acceptOwnership`, and only to the nominated
+///         `pendingOwner`; nominating never transfers control; the zero address can never be nominated.
+/// @dev Spec: `AsyncSwapSpec/Admin.lean`. The including contract defines OWNER_SLOT and PENDING_OWNER_SLOT.
+
+#define error Unauthorized()
+#define error ZeroAddress()
+
+#define event OwnershipTransferStarted(address indexed, address indexed)
+#define event OwnershipTransferred(address indexed, address indexed)
+
+/// @dev Constructor half: `owner = initialOwner`, rejecting the zero address.
+#define macro OWNED_INIT() = takes (1) returns (0) {
+    // [initialOwner]
+    dup1 has_owner jumpi
+    __ERROR(ZeroAddress) REVERT_0()
+    has_owner:
+    dup1 [OWNER_SLOT] sstore
+    0x00 __EVENT_HASH(OwnershipTransferred) 0x00 0x00 log3
+}
+
+#define macro ONLY_OWNER() = takes (0) returns (0) {
+    [OWNER_SLOT] sload caller eq ok jumpi
+    __ERROR(Unauthorized) REVERT_0()
+    ok:
+}
+
+/// @notice `transferOwnership(newOwner)`: nominate; control moves only on `acceptOwnership`.
+#define macro TRANSFER_OWNERSHIP() = takes (0) returns (0) {
+    ONLY_OWNER()
+    LOAD_ADDRESS(0x04)                          // [newOwner]
+    dup1 nonzero jumpi
+    __ERROR(ZeroAddress) REVERT_0()
+    nonzero:
+    dup1 [PENDING_OWNER_SLOT] sstore
+    [OWNER_SLOT] sload __EVENT_HASH(OwnershipTransferStarted) 0x00 0x00 log3
+    RETURN_EMPTY()
+}
+
+#define macro ACCEPT_OWNERSHIP() = takes (0) returns (0) {
+    [PENDING_OWNER_SLOT] sload caller eq nominated jumpi
+    __ERROR(Unauthorized) REVERT_0()
+    nominated:
+    caller [OWNER_SLOT] sload                   // [previous, caller]
+    caller [OWNER_SLOT] sstore
+    0x00 [PENDING_OWNER_SLOT] sstore
+    __EVENT_HASH(OwnershipTransferred) 0x00 0x00 log3
+    RETURN_EMPTY()
+}
