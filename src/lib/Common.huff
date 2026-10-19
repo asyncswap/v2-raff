@@ -1,0 +1,129 @@
+/// @title Common
+/// @notice Memory map, revert / return helpers and the checked arithmetic every contract here shares.
+
+/* ─────────────────────────────────── memory map ─────────────────────────────────── */
+
+// Huff has no allocator: every routine owns a fixed region, and no routine calls one that owns the same
+// region. 0x00–0x3f is scratch (mapping hashes, single-word returns) and never holds a live value across a
+// call to another routine.
+#define constant MEM_SCRATCH = 0x00
+//   0x080–0x2ff  entry points            0x880–0x8ff  matchAmounts
+//   0x300–0x3ff  matching                0x900–0x9ff  event data
+//   0x400–0x5ff  order book              0xa00–0xcff  external calldata / returndata
+//   0x600–0x7ff  radix tree              0xd00–0x10ff EIP-712 encoding, signature checks
+//   0x800–0x87f  mulDiv
+
+#define constant ADDRESS_MASK = 0xffffffffffffffffffffffffffffffffffffffff
+#define constant UINT128_MASK = 0xffffffffffffffffffffffffffffffff
+#define constant UINT64_MASK  = 0xffffffffffffffff
+#define constant UINT32_MASK  = 0xffffffff
+
+/* ──────────────────────────────────── reverts ──────────────────────────────────── */
+
+#define error Panic(uint256)
+
+#define constant PANIC_UNDER_OVERFLOW = 0x11
+#define constant PANIC_DIVISION_BY_ZERO = 0x12
+
+/// @dev `revert Err()`; the caller pushes `__ERROR(Err)` (builtins cannot be macro arguments).
+#define macro REVERT_0() = takes (1) returns (0) {
+    // [selector]
+    0x00 mstore
+    0x04 0x00 revert
+}
+
+/// @dev `revert Err(a)`.
+#define macro REVERT_1() = takes (2) returns (0) {
+    // [selector, a]
+    0x00 mstore
+    0x04 mstore
+    0x24 0x00 revert
+}
+
+/// @dev `revert Err(a, b)`.
+#define macro REVERT_2() = takes (3) returns (0) {
+    // [selector, a, b]
+    0x00 mstore
+    0x04 mstore
+    0x24 mstore
+    0x44 0x00 revert
+}
+
+/// @dev `Panic(code)`, as Solidity's checked arithmetic and OpenZeppelin's `Math` raise it.
+#define macro PANIC(code) = takes (0) returns (0) {
+    <code> __ERROR(Panic) 0x00 mstore
+    0x04 mstore
+    0x24 0x00 revert
+}
+
+/// @dev Re-raise the last call's revert data.
+#define macro BUBBLE() = takes (0) returns (0) {
+    returndatasize 0x00 0x00 returndatacopy
+    returndatasize 0x00 revert
+}
+
+/// @dev Reject any call value (non-payable entry points).
+#define macro NON_PAYABLE() = takes (0) returns (0) {
+    callvalue iszero ok jumpi
+    0x00 0x00 revert
+    ok:
+}
+
+/* ──────────────────────────────────── returns ──────────────────────────────────── */
+
+#define macro RETURN_1() = takes (1) returns (0) {
+    // [a]
+    0x00 mstore
+    0x20 0x00 return
+}
+
+#define macro RETURN_2() = takes (2) returns (0) {
+    // [a, b]
+    0x00 mstore
+    0x20 mstore
+    0x40 0x00 return
+}
+
+/// @dev `return(0, 0)`.
+#define macro RETURN_EMPTY() = takes (0) returns (0) {
+    0x00 0x00 return
+}
+
+/* ─────────────────────────────── checked arithmetic ─────────────────────────────── */
+
+/// @dev `a + b`, Panic(0x11) on overflow.
+#define macro CHECKED_ADD() = takes (2) returns (1) {
+    // [a, b]
+    dup2 add                 // [a + b, b]
+    dup1 swap2               // [b, sum, sum]
+    gt iszero ok jumpi       // [sum]   (b > sum ⇔ overflow)
+    PANIC(0x11)
+    ok:
+}
+
+/// @dev `a - b`, Panic(0x11) on underflow.
+#define macro CHECKED_SUB() = takes (2) returns (1) {
+    // [a, b]
+    dup2 dup2 lt iszero ok jumpi   // [a, b]   (a < b ⇔ underflow)
+    PANIC(0x11)
+    ok:
+    sub                            // [a - b]
+}
+
+/* ───────────────────────────────────── calldata ───────────────────────────────────── */
+
+/// @dev `abi.decode` of an address word at `offset`: reverts if the upper 96 bits are dirty.
+#define macro LOAD_ADDRESS(offset) = takes (0) returns (1) {
+    <offset> calldataload            // [word]
+    dup1 0xa0 shr iszero ok jumpi
+    0x00 0x00 revert
+    ok:
+}
+
+/// @dev `abi.decode` of a bool word at `offset`: reverts unless it is 0 or 1.
+#define macro LOAD_BOOL(offset) = takes (0) returns (1) {
+    <offset> calldataload            // [word]
+    dup1 0x01 lt iszero ok jumpi     // word <= 1
+    0x00 0x00 revert
+    ok:
+}

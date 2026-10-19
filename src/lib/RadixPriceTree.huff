@@ -1,0 +1,284 @@
+/// @title RadixPriceTree
+/// @notice A Patricia (compressed binary) trie over `uint128` keys: the book's price index and, in
+///         `PriorityFee` mode, each level's priority index.
+/// @dev Spec: `AsyncSwapSpec/RadixTree.lean`, `RadixStorage.lean`, `RadixInsert.lean`, `RadixRemove.lean`,
+///      `Bounds.lean` (`IdAlloc`). Same algorithm and id recycling as the Solidity `RadixPriceTree`.
+///
+///      A tree lives at a slot `t`:
+///        t                         header: root (bits 0–31) | nextNodeId (32–63) | free-list length (64–95)
+///        keccak(t) + i             free list, i < 2^32 (a stack of released ids)
+///        keccak(t) + 2^32 + id     node: parent (0–31) | left (32–63) | right (64–95) | price (96–223)
+///                                        | bit (224–231) | leaf (232)
+///        keccak(t) + 2^128 + price leaf id of `price` (0 = absent)
+
+#define error NodeIdOverflow()
+#define error PriceLevelMissing(uint128)
+
+#define constant TREE_NODE_OFFSET = 0x100000000
+#define constant TREE_LEAF_OFFSET = 0x100000000000000000000000000000000
+
+#define constant T_SLOT   = 0x600
+#define constant T_BASE   = 0x620
+#define constant T_PRICE  = 0x640
+#define constant T_LEAF   = 0x660
+#define constant T_CUR    = 0x680
+#define constant T_NODE   = 0x6a0
+#define constant T_SPLIT  = 0x6c0
+#define constant T_PARENT = 0x6e0
+#define constant T_BRANCH = 0x700
+
+/// @dev `keccak(t)` into `T_SLOT` / `T_BASE`.
+#define macro TREE_LOAD() = takes (1) returns (0) {
+    // [t]
+    dup1 [T_SLOT] mstore
+    0x00 mstore 0x20 0x00 sha3 [T_BASE] mstore
+}
+
+#define macro NODE_SLOT() = takes (1) returns (1) {
+    // [id]
+    [T_BASE] mload [TREE_NODE_OFFSET] add add
+}
+
+#define macro LEAF_SLOT() = takes (1) returns (1) {
+    // [price]
+    [T_BASE] mload [TREE_LEAF_OFFSET] add add
+}
+
+/// @dev `(value >> bit) & 1`.
+#define macro TEST_BIT() = takes (2) returns (1) {
+    // [bit, value]
+    shr 0x01 and
+}
+
+#define macro IS_LEAF() = takes (1) returns (1) {
+    // [node]
+    0xe8 shr 0x01 and
+}
+
+#define macro LEFT() = takes (1) returns (1) {
+    0x20 shr [UINT32_MASK] and
+}
+
+#define macro RIGHT() = takes (1) returns (1) {
+    0x40 shr [UINT32_MASK] and
+}
+
+#define macro NODE_PRICE() = takes (1) returns (1) {
+    0x60 shr [UINT128_MASK] and
+}
+
+#define macro NODE_BIT() = takes (1) returns (1) {
+    0xe0 shr 0xff and
+}
+
+/// @dev `root = id` in the loaded tree's header.
+#define macro SET_ROOT() = takes (1) returns (0) {
+    // [id]
+    [T_SLOT] mload sload [UINT32_MASK] not and or
+    [T_SLOT] mload sstore
+}
+
+/// @notice `best(highest)`: the highest (rightmost) or lowest (leftmost) key of the tree at `t`.
+/// @return found `0` iff the tree is empty, in which case `price` is `0`.
+#define fn TREE_BEST() = takes (2) returns (2) {
+    // [t, highest]
+    dup1 sload [UINT32_MASK] and                // [root, t, highest]
+    dup1 iszero empty jumpi
+    swap1 0x00 mstore 0x20 0x00 sha3            // [base, root, highest]
+    [TREE_NODE_OFFSET] add                      // [nodes, root, highest]
+    swap1                                       // [id, nodes, highest]
+    descend:
+        dup2 add sload                          // [node, nodes, highest]
+        dup1 IS_LEAF() found jumpi
+        dup3 go_right jumpi
+        LEFT() descend jump
+        go_right:
+        RIGHT() descend jump
+    found:                                      // [node, nodes, highest]
+        NODE_PRICE()                            // [price, nodes, highest]
+        swap2 pop pop 0x01                      // [1, price]
+        done jump
+    empty:                                      // [0, t, highest]
+        pop pop pop 0x00 0x00                   // [0, 0]
+    done:
+}
+
+/// @notice `contains(price)`.
+#define macro TREE_CONTAINS() = takes (2) returns (1) {
+    // [t, price]
+    0x00 mstore 0x20 0x00 sha3                  // [base, price]
+    [TREE_LEAF_OFFSET] add add sload            // [leafId]
+    iszero iszero
+}
+
+/// @dev `_newNode`: pop a released id, else `++nextNodeId` (reverting at `2^32 − 1`).
+#define fn TREE_NEW_NODE() = takes (0) returns (1) {
+    [T_SLOT] mload sload                        // [hdr]
+    dup1 0x40 shr [UINT32_MASK] and             // [free, hdr]
+    dup1 iszero fresh jumpi
+    0x01 swap1 sub [T_BASE] mload add           // [itemSlot, hdr]
+    dup1 sload                                  // [id, itemSlot, hdr]
+    0x00 dup3 sstore                            // freeIds.pop()
+    swap2 0x01 0x40 shl swap1 sub               // [hdr − 2^64, itemSlot, id]
+    [T_SLOT] mload sstore pop                   // [id]
+    done jump
+    fresh:                                      // [0, hdr]
+        pop dup1 0x20 shr [UINT32_MASK] and     // [next, hdr]
+        dup1 [UINT32_MASK] eq overflow jumpi
+        0x01 add                                // [next + 1, hdr]
+        swap1 0x01 0x20 shl add                 // [hdr + 2^32, next + 1]
+        [T_SLOT] mload sstore                   // [next + 1]
+        done jump
+    overflow:
+        __ERROR(NodeIdOverflow) REVERT_0()
+    done:
+}
+
+/// @dev `_freeNode`: reset the node and push its id onto the free list.
+#define fn TREE_FREE_NODE() = takes (1) returns (0) {
+    // [id]
+    0x00 dup2 NODE_SLOT() sstore                // [id]
+    [T_SLOT] mload sload                        // [hdr, id]
+    dup1 0x40 shr [UINT32_MASK] and             // [free, hdr, id]
+    [T_BASE] mload add                          // [itemSlot, hdr, id]
+    swap1 swap2 swap1 sstore                    // [hdr]   freeIds.push(id)
+    0x01 0x40 shl add [T_SLOT] mload sstore     // []
+}
+
+/// @notice Inserts `price` into the tree at `t`. Returns `0`, touching nothing, when it is already stored.
+#define fn TREE_INSERT() = takes (2) returns (1) {
+    // [t, price]
+    TREE_LOAD()                                 // [price]
+    dup1 [T_PRICE] mstore
+    LEAF_SLOT()                                 // [leafSlot]
+    dup1 sload iszero fresh jumpi
+    pop 0x00 done jump
+
+    fresh:
+    TREE_NEW_NODE()                             // [leafId, leafSlot]
+    dup1 [T_LEAF] mstore
+    swap1 sstore                                // leaves[price] = leafId
+    [T_PRICE] mload 0x60 shl 0x01 0xe8 shl or   // [leafNode]
+    [T_LEAF] mload NODE_SLOT() sstore           // []
+
+    [T_SLOT] mload sload [UINT32_MASK] and      // [root]
+    dup1 iszero first jumpi
+
+    // First walk: descend by the new price's bits to the leaf it shares a prefix with.
+    dup1                                        // [cur, root]
+    walk_1:
+        dup1 NODE_SLOT() sload                  // [node, cur, root]
+        dup1 IS_LEAF() walk_1_done jumpi
+        dup1 NODE_BIT() [T_PRICE] mload swap1 TEST_BIT()   // [b, node, cur, root]
+        walk_1_right jumpi
+        LEFT() swap1 pop walk_1 jump
+        walk_1_right:
+        RIGHT() swap1 pop walk_1 jump
+    walk_1_done:                                // [node, cur, root]
+        NODE_PRICE() [T_PRICE] mload xor MSB()  // [split, cur, root]
+        [T_SPLIT] mstore pop                    // [root]
+
+    // Second walk: descend again while the branch bit is above the split bit, remembering the parent.
+    0x00 [T_PARENT] mstore
+    walk_2:                                     // [cur]
+        dup1 NODE_SLOT() sload                  // [node, cur]
+        dup1 IS_LEAF() walk_2_done jumpi
+        dup1 NODE_BIT()                         // [bit, node, cur]
+        [T_SPLIT] mload dup2 gt walk_2_descend jumpi
+        pop walk_2_done jump
+        walk_2_descend:                         // [bit, node, cur]
+        dup3 [T_PARENT] mstore
+        [T_PRICE] mload swap1 TEST_BIT()        // [b, node, cur]
+        walk_2_right jumpi
+        LEFT() swap1 pop walk_2 jump
+        walk_2_right:
+        RIGHT() swap1 pop walk_2 jump
+    walk_2_done:                                // [node, cur]
+        [T_NODE] mstore [T_CUR] mstore          // []
+
+    // A fresh branch at `split` takes `cur` and the new leaf as children and replaces `cur` in its parent.
+    TREE_NEW_NODE() [T_BRANCH] mstore
+    [T_PRICE] mload [T_SPLIT] mload TEST_BIT()  // [b]
+    leaf_right jumpi
+    [T_CUR] mload 0x40 shl [T_LEAF] mload 0x20 shl or     // left = leaf, right = cur
+    children jump
+    leaf_right:
+    [T_LEAF] mload 0x40 shl [T_CUR] mload 0x20 shl or     // left = cur, right = leaf
+    children:                                   // [children]
+    [T_SPLIT] mload 0xe0 shl or [T_PARENT] mload or
+    [T_BRANCH] mload NODE_SLOT() sstore         // []
+
+    // cur.parent = branch; leaf.parent = branch
+    [T_NODE] mload [UINT32_MASK] not and [T_BRANCH] mload or
+    [T_CUR] mload NODE_SLOT() sstore
+    [T_LEAF] mload NODE_SLOT() dup1 sload [T_BRANCH] mload or swap1 sstore
+
+    [T_PARENT] mload dup1 iszero new_root jumpi // [parent]
+    NODE_SLOT() dup1 sload                      // [p, parentSlot]
+    dup1 LEFT() [T_CUR] mload eq parent_left jumpi
+    [UINT32_MASK] 0x40 shl not and [T_BRANCH] mload 0x40 shl or swap1 sstore
+    inserted jump
+    parent_left:
+    [UINT32_MASK] 0x20 shl not and [T_BRANCH] mload 0x20 shl or swap1 sstore
+    inserted jump
+
+    new_root:                                   // [0]
+        pop [T_BRANCH] mload SET_ROOT()
+        inserted jump
+    first:                                      // [0]
+        pop [T_LEAF] mload SET_ROOT()
+    inserted:
+        0x01
+    done:
+}
+
+/// @notice Removes `price` from the tree at `t`; reverts with `PriceLevelMissing(price)` if it is not stored.
+#define fn TREE_REMOVE() = takes (2) returns (0) {
+    // [t, price]
+    TREE_LOAD()                                 // [price]
+    dup1 [T_PRICE] mstore
+    LEAF_SLOT()                                 // [leafSlot]
+    dup1 sload                                  // [leafId, leafSlot]
+    dup1 present jumpi
+    [T_PRICE] mload __ERROR(PriceLevelMissing) REVERT_1()
+
+    present:
+    0x00 dup3 sstore                            // delete leaves[price]
+    swap1 pop dup1 [T_LEAF] mstore              // [leafId]
+    [T_SLOT] mload sload [UINT32_MASK] and      // [root, leafId]
+    dup2 eq is_root jumpi                       // [leafId]
+
+    // The leaf's parent branch is replaced by the leaf's sibling.
+    NODE_SLOT() sload [UINT32_MASK] and         // [branchId]
+    dup1 [T_BRANCH] mstore
+    NODE_SLOT() sload                           // [branch]
+    dup1 LEFT() [T_LEAF] mload eq sibling_right jumpi
+    dup1 LEFT() sibling jump
+    sibling_right:
+    dup1 RIGHT()
+    sibling:                                    // [siblingId, branch]
+    [T_CUR] mstore
+    [UINT32_MASK] and                           // [grandId]
+    dup1 [T_PARENT] mstore
+    dup1 iszero grand_is_root jumpi
+    NODE_SLOT() dup1 sload                      // [g, grandSlot]
+    dup1 LEFT() [T_BRANCH] mload eq grand_left jumpi
+    [UINT32_MASK] 0x40 shl not and [T_CUR] mload 0x40 shl or swap1 sstore
+    relinked jump
+    grand_left:
+    [UINT32_MASK] 0x20 shl not and [T_CUR] mload 0x20 shl or swap1 sstore
+    relinked jump
+    grand_is_root:                              // [0]
+        pop [T_CUR] mload SET_ROOT()
+    relinked:
+    // sibling.parent = grand
+    [T_CUR] mload NODE_SLOT() dup1 sload [UINT32_MASK] not and [T_PARENT] mload or swap1 sstore
+    [T_BRANCH] mload TREE_FREE_NODE()
+    [T_LEAF] mload TREE_FREE_NODE()
+    done jump
+
+    is_root:                                    // [leafId]
+        TREE_FREE_NODE()
+        0x00 SET_ROOT()
+    done:
+}

@@ -1,0 +1,175 @@
+/// @title Math
+/// @notice `mulDiv` (OpenZeppelin `Math`, floor and ceil), the protocol fee, price keys, priority keys,
+///         `⌊log₂⌋` and the order-to-order match amounts.
+/// @dev Spec: `AsyncSwapSpec/Fee.lean`, `Order.lean` (`priceKey`), `Priority.lean` (`priorityKey`),
+///      `RadixTree.lean` (`solMsb_eq_log2`), `Match.lean` (`_matchAmounts`).
+
+#define constant MATH_X = 0x800
+#define constant MATH_Y = 0x820
+#define constant MATH_D = 0x840
+
+#define error MathOverflowedMulDiv()
+
+#define constant PRICE_SCALE = 0x0de0b6b3a7640000 // 1e18
+
+/// @notice `Math.mulDiv(x, y, d)`: `⌊x·y / d⌋` over the full 512-bit product.
+/// @dev As OpenZeppelin 5.0.2: `MathOverflowedMulDiv()` when `d <= p1` (the quotient does not fit, or `d == 0`
+///      with a product of 256 bits or more), Panic(0x12) when `d == 0` and the product fits in 256 bits.
+#define fn MUL_DIV() = takes (3) returns (1) {
+    // [x, y, d]
+    [MATH_X] mstore [MATH_Y] mstore [MATH_D] mstore     // []
+    [MATH_Y] mload [MATH_X] mload mul                   // [p0]
+    0x00 not [MATH_Y] mload [MATH_X] mload mulmod       // [mm, p0]
+    dup2 dup2 lt                                        // [mm < p0, mm, p0]
+    swap1 dup3 swap1 sub sub                            // [p1, p0]
+    dup1 iszero small jumpi                             // [p1, p0]
+
+    // p1 != 0: the quotient fits only if d > p1.
+    dup1 [MATH_D] mload gt full jumpi                   // [p1, p0]
+    __ERROR(MathOverflowedMulDiv) REVERT_0()
+
+    div_zero:
+        PANIC(0x12)
+
+    small:                                              // [0, p0]
+        pop [MATH_D] mload                              // [d, p0]
+        dup1 iszero div_zero jumpi
+        swap1 div                                       // [p0 / d]
+        done jump
+
+    full:                                               // [p1, p0]
+        // Subtract the remainder from the 512-bit product.
+        [MATH_D] mload [MATH_Y] mload [MATH_X] mload mulmod   // [r, p1, p0]
+        dup3 dup2 gt                                    // [r > p0, r, p1, p0]
+        swap1 swap2                                     // [p1, r > p0, r, p0]
+        sub                                             // [p1', r, p0]
+        swap2 sub                                       // [p0 - r, p1']
+        // Divide out the largest power of two dividing d.
+        [MATH_D] mload dup1 0x00 sub and                // [t, p0, p1]
+        dup1 [MATH_D] mload div [MATH_D] mstore         // d /= t
+        swap1 dup2 swap1 div                            // [p0 / t, t, p1]
+        dup2 dup1 0x00 sub div 0x01 add                 // [flip, p0, t, p1]   flip = 2^256 / t
+        dup4 mul or                                     // [p0 | p1·flip, t, p1]
+        swap2 pop pop                                   // [p0]
+        // Inverse of d mod 2^256 (Newton–Raphson from a 4-bit seed), then the exact quotient.
+        [MATH_D] mload 0x03 mul 0x02 xor                // [inv, p0]
+        INV_STEP() INV_STEP() INV_STEP() INV_STEP() INV_STEP() INV_STEP()
+        mul                                             // [p0 · inv]
+    done:
+}
+
+#define macro INV_STEP() = takes (1) returns (1) {
+    // [inv]
+    dup1 [MATH_D] mload mul 0x02 sub mul                // [inv · (2 − d·inv)]
+}
+
+/// @notice `Math.mulDiv(x, y, d, Rounding.Ceil)`: the floor, plus one when the division is inexact.
+#define fn MUL_DIV_UP() = takes (3) returns (1) {
+    // [x, y, d]
+    dup3 dup3 dup3 mulmod iszero iszero                 // [inexact, x, y, d]
+    swap3 swap2 swap1                                   // [x, y, d, inexact]
+    MUL_DIV()                                           // [q, inexact]
+    CHECKED_ADD()                                       // [q + inexact]
+}
+
+/// @notice `ProtocolFee.poolFee(net) = net · 3 / 997`, in the split form that cannot overflow.
+#define macro POOL_FEE() = takes (1) returns (1) {
+    // [net]
+    0x3e5 dup2 div 0x03 mul                             // [3·(net / 997), net]
+    swap1 0x3e5 swap1 mod                               // [net % 997, 3·q]
+    0x03 mul 0x3e5 swap1 div                            // [3·(net % 997) / 997, 3·q]
+    add                                                 // [fee]
+}
+
+/// @notice `AsyncFiller.priceKey(buy, amountIn, amountOut)`: the WAD price, `in/out` for a buy and `out/in`
+///         for a sell, clamped into `[1, 2^128 − 1]`.
+#define fn PRICE_KEY() = takes (3) returns (1) {
+    // [buy, amountIn, amountOut]
+    is_buy jumpi                                        // [amountIn, amountOut]
+    swap1                                               // [amountOut, amountIn]
+    is_buy:                                             // [numerator, denominator]
+    [PRICE_SCALE] swap1 MUL_DIV()                       // [raw]
+    dup1 iszero zero jumpi
+    [UINT128_MASK] dup2 gt iszero done jumpi            // raw ≤ 2^128 − 1
+    pop [UINT128_MASK] done jump
+    zero:
+        pop 0x01
+    done:
+}
+
+/// @notice `AsyncFiller.priorityKey(fee, sequence) = (fee << 64) | (2^64 − 1 − sequence)`.
+#define macro PRIORITY_KEY() = takes (2) returns (1) {
+    // [fee, sequence]
+    0x40 shl                                            // [fee << 64, sequence]
+    swap1 [UINT64_MASK] sub                             // [max64 − sequence, fee << 64]
+    or
+}
+
+/// @notice `⌊log₂ v⌋` for `v < 2^128`; 0 for 0 (`RadixPriceTree._mostSignificantBit`).
+#define macro MSB() = takes (1) returns (1) {
+    // [v]
+    dup1 0xffffffffffffffff lt 0x06 shl                 // [r, v]
+    MSB_STEP(0xffffffff, 0x05)
+    MSB_STEP(0xffff, 0x04)
+    MSB_STEP(0xff, 0x03)
+    MSB_STEP(0x0f, 0x02)
+    MSB_STEP(0x03, 0x01)
+    dup2 dup2 shr 0x01 lt or                            // [r, v]
+    swap1 pop                                           // [msb]
+}
+
+#define macro MSB_STEP(mask, bits) = takes (2) returns (2) {
+    // [r, v]
+    dup2 dup2 shr                                       // [v >> r, r, v]
+    <mask> lt <bits> shl                                // [(v >> r > mask) << bits, r, v]
+    or                                                  // [r', v]
+}
+
+/* ─────────────────────────────────── matching ─────────────────────────────────── */
+
+#define constant MA_REST_IN  = 0x880
+#define constant MA_REST_MIN = 0x8a0
+#define constant MA_INC_IN   = 0x8c0
+#define constant MA_INC_MIN  = 0x8e0
+
+/// @notice `AsyncMatching.matchAmounts(sellIn, sellMin, buyIn, buyMin, restingBuy) → (asset, quote)`.
+/// @dev Both branches of the Solidity are one computation over (resting, incoming): the resting side's price
+///      sizes what it receives (`out`), capped at its own escrow; `other` is what it gives, rounded up; the
+///      incoming side must afford `other` and receive at least its limit for it. `(0, 0)` means no match.
+#define fn MATCH_AMOUNTS() = takes (5) returns (2) {
+    // [sellIn, sellMin, buyIn, buyMin, restingBuy]
+    dup5 buy_rests jumpi
+    [MA_REST_IN] mstore [MA_REST_MIN] mstore [MA_INC_IN] mstore [MA_INC_MIN] mstore
+    sized jump
+    buy_rests:
+    [MA_INC_IN] mstore [MA_INC_MIN] mstore [MA_REST_IN] mstore [MA_REST_MIN] mstore
+    sized:                                              // [restingBuy]
+
+    // out = mulDiv(incoming.in, resting.in, resting.min), capped at resting.in
+    [MA_REST_MIN] mload [MA_REST_IN] mload [MA_INC_IN] mload MUL_DIV()   // [out, restingBuy]
+    [MA_REST_IN] mload dup2 gt iszero capped jumpi
+    pop [MA_REST_IN] mload
+    capped:
+    dup1 iszero none_1 jumpi                            // [out, restingBuy]
+
+    // other = mulDivUp(out, resting.min, resting.in); the incoming escrow must cover it
+    [MA_REST_IN] mload [MA_REST_MIN] mload dup3 MUL_DIV_UP()             // [other, out, restingBuy]
+    dup1 [MA_INC_IN] mload lt none_2 jumpi
+
+    // the incoming side's limit: out ≥ mulDivUp(other, incoming.min, incoming.in)
+    [MA_INC_IN] mload [MA_INC_MIN] mload dup3 MUL_DIV_UP()               // [m, other, out, restingBuy]
+    dup3 lt none_2 jumpi                                // [other, out, restingBuy]
+
+    dup3 sell_rests_done jumpi
+    swap1                                               // seller rested: [asset = out, quote = other]
+    sell_rests_done:                                    // buyer rested: [asset = other, quote = out]
+    done jump
+
+    none_1:                                             // [out, restingBuy]
+        pop 0x00 0x00 done jump
+    none_2:                                             // [other, out, restingBuy]
+        pop pop 0x00 0x00
+    done:                                               // [asset, quote, restingBuy]
+    swap2 pop                                           // [quote, asset] → reorder below
+    swap1                                               // [asset, quote]
+}
