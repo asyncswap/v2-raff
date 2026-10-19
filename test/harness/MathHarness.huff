@@ -1,0 +1,36 @@
+/// @notice Exposes the Huff `Math` routines for `test/Math.t.sol`, `test/AsyncMatching.t.sol` and
+///         `test/ProtocolFee.t.sol`.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+
+#define function mulDiv(uint256,uint256,uint256) pure returns (uint256)
+#define function mulDivUp(uint256,uint256,uint256) pure returns (uint256)
+#define function poolFee(uint256) pure returns (uint256)
+#define function priceKey(bool,uint256,uint256) pure returns (uint128)
+#define function priorityKey(uint64,uint64) pure returns (uint128)
+#define function matchAmounts(uint256,uint256,uint256,uint256,bool) pure returns (uint256, uint256)
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG(mulDiv) eq mul_div jumpi
+    dup1 __FUNC_SIG(mulDivUp) eq mul_div_up jumpi
+    dup1 __FUNC_SIG(poolFee) eq pool_fee jumpi
+    dup1 __FUNC_SIG(priceKey) eq price_key jumpi
+    dup1 __FUNC_SIG(priorityKey) eq priority_key jumpi
+    dup1 __FUNC_SIG(matchAmounts) eq match_amounts jumpi
+    0x00 0x00 revert
+
+    mul_div:
+        0x44 calldataload 0x24 calldataload 0x04 calldataload MUL_DIV() RETURN_1()
+    mul_div_up:
+        0x44 calldataload 0x24 calldataload 0x04 calldataload MUL_DIV_UP() RETURN_1()
+    pool_fee:
+        0x04 calldataload POOL_FEE() RETURN_1()
+    price_key:
+        0x44 calldataload 0x24 calldataload 0x04 calldataload PRICE_KEY() RETURN_1()
+    priority_key:
+        0x24 calldataload 0x04 calldataload PRIORITY_KEY() RETURN_1()
+    match_amounts:
+        0x84 calldataload 0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload
+        MATCH_AMOUNTS() RETURN_2()
+}

@@ -1,1 +1,594 @@
-#include "./IRouter.huff"
+/// @title Router
+/// @notice The user-facing entry points: it opens the PoolManager unlock, moves the maker's / filler's tokens
+///         into the PoolManager, and calls the hook. Makers must have granted the Router as their executor
+///         (`AsyncSwap.setExecutor`, or a signed grant bundled into `swapWithSig`).
+/// @dev Huff build of `asyncswap/v2-from-proofs` `src/Router.sol`; same ABI. Spec: `AsyncSwapProtocol/V2/Model.lean`
+///      (`swap`, `matchBook`, `fillOrder`, `cancelOrder`, `cancelWithSig`, `fillFromPoolLiquidity`),
+///      `AsyncSwapProtocol/Model.lean` (`swapWithSig`), `AsyncSwapSpec/Hashing.lean` (`routerPermit_inj`,
+///      `hashCancel_inj`, domain separation). Constructor: `(IPoolManager manager, AsyncSwap hook,
+///      ISignatureTransfer permit2)`.
+///
+///      An `AsyncOrder` argument is 12 static words at calldata 0x04: key (0x04–0xa3: currency0, currency1, fee,
+///      tickSpacing, hooks), owner 0xa4, zeroForOne 0xc4, amountIn 0xe4, amountOutMin 0x104, priorityFee 0x124,
+///      sqrtPrice 0x144, salt 0x164; the next argument starts at 0x184.
+///
+///      The unlock payload (read back only by this contract) is a word array at calldata 0x44 of the callback:
+///        action 0 (Create):        order (12 words), usePermit, permit nonce, permit deadline, signature
+///        action 1 (Fill):          key (5), id, filler, output, live
+///        action 2 (Cancel):        key (5), id
+///        action 3 (MatchBook):     key (5), maxMatches
+///        action 4 (LiquidityFill): key (5), id
+
+#include "./lib/Common.huff"
+#include "./lib/PoolManager.huff"
+#include "./lib/Signatures.huff"
+
+#define error NotPoolManager()
+#define error WrongHook()
+#define error NotOrderOwner()
+#define error OrderNotFound(bytes32)
+#define error NativeInputNotSupported()
+#define error InvalidMsgValue(uint256, uint256)
+#define error PriceAboveMax(uint256, uint256)
+#define error SignatureExpired(uint256)
+#define error NonceAlreadyUsed(address, uint256)
+#define error InvalidSignature()
+#define error NativeTransferFailed()
+
+#define constant CANCEL_NONCE_SEED = 0x00   // cancelNonceUsed[signer][nonce] = keccak(nonce, keccak(signer, 0))
+
+#define constant EIP712_NAME_HASH = 0x72fa434507d3d5766e832a9d6d1ba085a977e53ff88f2df236938184359bd33e // "AsyncSwapRouter"
+#define constant ASYNC_ORDER_TYPEHASH = 0x1a36c9d2e20588fe9287a14a2ae5b1920f088d96a5ed77ae55ed1363810cba57
+#define constant CANCEL_ORDER_TYPEHASH = 0x45c81b3e9ce5f2c103481a0f320a6a1f8a29846114c80283070d86c9fd3c0609
+
+#define constant MAX_MATCHES = 0x08
+
+#define constant ACTION_CREATE = 0x00
+#define constant ACTION_FILL = 0x01
+#define constant ACTION_CANCEL = 0x02
+#define constant ACTION_MATCH_BOOK = 0x03
+#define constant ACTION_LIQUIDITY_FILL = 0x04
+
+/// @dev The string Permit2 appends to its `PermitWitnessTransferFrom(...)` stub (281 bytes):
+///      "AsyncOrder witness)" ‖ ASYNC_ORDER_TYPE ‖ POOL_KEY_TYPE ‖ TOKEN_PERMISSIONS_TYPE.
+#define table WITNESS_TYPE {
+    0x4173796e634f72646572207769746e657373294173796e634f726465722861646472657373206d616b65722c6164647265737320746f6b656e496e2c6164647265737320746f6b656e4f75742c75696e7432353620616d6f756e74496e2c75696e7432353620616d6f756e744f75744d696e2c75696e74323536207072696f726974794665652c506f6f6c4b657920706f6f6c29506f6f6c4b657928616464726573732063757272656e6379302c616464726573732063757272656e6379312c75696e743234206665652c696e743234207469636b53706163696e672c6164647265737320686f6f6b7329546f6b656e5065726d697373696f6e73286164647265737320746f6b656e2c75696e7432353620616d6f756e7429
+}
+
+/* ───────────────────────────────────── immutables ───────────────────────────────────── */
+
+#define constant IMMUTABLES = __codesize(RUNTIME)
+
+#define macro MANAGER() = takes (0) returns (1) { 0x40 mload }
+#define macro HOOK() = takes (0) returns (1) { 0x60 mload }
+#define macro PERMIT2() = takes (0) returns (1) { 0x80 mload }
+
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    [IMMUTABLES] __codesize(CONSTRUCTOR) 0x100 codecopy
+    0x60 0x60 codesize sub [IMMUTABLES] 0x100 add codecopy      // (manager, hook, permit2)
+    [IMMUTABLES] 0x60 add 0x100 return
+}
+
+/* ─────────────────────────────────────── locals ─────────────────────────────────────── */
+
+#define constant R_ID     = 0x140
+#define constant R_OWNER  = 0x160
+#define constant R_ZFO    = 0x180
+#define constant R_IN     = 0x1a0
+#define constant R_MIN    = 0x1c0
+#define constant R_LIVE   = 0x1e0
+#define constant R_OUTPUT = 0x200
+#define constant R_INPUT  = 0x220
+
+#define constant MEM_PERMIT = 0x1400
+
+/* ─────────────────────────────────────── helpers ─────────────────────────────────────── */
+
+#define macro CHECK_HOOK() = takes (0) returns (0) {
+    0x84 calldataload HOOK() eq ok jumpi
+    __ERROR(WrongHook) REVERT_0()
+    ok:
+}
+
+/// @dev `hook.call(CALL_0[0:size])`, bubbling a revert; up to `retSize` bytes of returndata at CALL_0.
+#define macro HOOK_CALL() = takes (2) returns (0) {
+    // [size, retSize]
+    [CALL_0] swap1             // [size, CALL_0, retSize]
+    [CALL_0] 0x00 HOOK() gas call
+    ok jumpi
+    BUBBLE()
+    ok:
+}
+
+#define macro HOOK_STATICCALL() = takes (2) returns (0) {
+    // [size, retSize]
+    dup2 swap1                 // [size, retSize, retSize]
+    [CALL_0] swap1             // [size, CALL_0, retSize, retSize]
+    [CALL_0] HOOK() gas staticcall
+    ok jumpi
+    BUBBLE()
+    ok:                        // [retSize]
+    returndatasize lt iszero decodable jumpi
+    0x00 0x00 revert
+    decodable:
+}
+
+/// @dev Copies the order's key (calldata 0x04) to E_KEY and returns its poolId.
+#define macro LOAD_ORDER_KEY() = takes (0) returns (1) {
+    0xa0 0x04 [E_KEY] calldatacopy
+    0xa0 [E_KEY] sha3
+}
+
+/// @dev `AsyncOrderLibrary.orderId(order)`: keccak(abi.encode(chainid, poolId, owner, zeroForOne, salt)).
+#define macro ORDER_ID() = takes (1) returns (1) {
+    // [poolId]
+    chainid [CALL_0] mstore
+    0xc20 mstore
+    LOAD_ADDRESS(0xa4) 0xc40 mstore
+    LOAD_BOOL(0xc4) 0xc60 mstore
+    0x164 calldataload 0xc80 mstore
+    0xa0 [CALL_0] sha3
+}
+
+/// @dev `hook.getOrder(key, id)` (key at calldata 0x04) → the 11-word OrderInfo at CALL_0; reverts
+///      `OrderNotFound(id)` when the order is not open.
+#define macro GET_ORDER() = takes (1) returns (0) {
+    // [id]
+    __FUNC_SIG("getOrder((address,address,uint24,int24,address),bytes32)") CALL_SELECTOR()
+    0xa0 0x04 [CALL_4] calldatacopy
+    dup1 [CALL_A4] mstore
+    0x160 0xc4 HOOK_STATICCALL()
+    0xce0 mload open jumpi
+    __ERROR(OrderNotFound) REVERT_1()
+    open:
+    pop
+}
+
+/// @dev `IERC20Minimal(token).transferFrom(from, to, amount)` as Solidity calls it: bubble a revert, and decode
+///      a `bool` from the returndata (reverting on a short or non-bool result; the value itself is unused).
+#define macro TRANSFER_FROM() = takes (4) returns (0) {
+    // [token, from, to, amount]
+    __FUNC_SIG("transferFrom(address,address,uint256)") CALL_SELECTOR()
+    swap1 [CALL_4] mstore
+    swap1 [CALL_24] mstore
+    swap1 [CALL_44] mstore                      // [token]
+    0x20 [CALL_0] 0x64 [CALL_0] 0x00 dup6 gas call
+    ok jumpi
+    BUBBLE()
+    ok:
+    pop
+    0x20 returndatasize lt bad jumpi
+    [CALL_0] mload 0x01 lt bad jumpi
+    done jump
+    bad:
+    0x00 0x00 revert
+    done:
+}
+
+/// @dev Unlock with the `len`-byte payload at CALL_44; return its first `words` words.
+#define macro UNLOCK_AND_RETURN(words) = takes (1) returns (0) {
+    // [len]
+    PM_UNLOCK()
+    <words> 0x05 shl                            // [size]
+    dup1 0x40 add returndatasize lt iszero decodable jumpi
+    0x00 0x00 revert
+    decodable:
+    dup1 0x40 0x00 returndatacopy
+    0x00 return
+}
+
+/// @dev `msg.value` must be `expected`, else `InvalidMsgValue(expected, msg.value)`.
+#define macro REQUIRE_VALUE() = takes (1) returns (0) {
+    // [expected]
+    dup1 callvalue eq ok jumpi
+    callvalue swap1 __ERROR(InvalidMsgValue) REVERT_2()
+    ok:
+    pop
+}
+
+/// @dev The Create payload's order (12 words) from calldata 0x04, then `usePermit`.
+#define macro WRITE_CREATE_HEAD() = takes (1) returns (0) {
+    // [usePermit]
+    [ACTION_CREATE] [CALL_44] mstore
+    0x180 0x04 [CALL_64] calldatacopy
+    0xde4 mstore
+}
+
+/* ──────────────────────────────────────── create ──────────────────────────────────────── */
+
+/// @notice `swap(order)`: open an order for `msg.sender`. ERC-20 input and bid are pulled with the maker's
+///         allowance to this contract; a native input is `msg.value`. Then the order is matched against the
+///         book up to `MAX_MATCHES` times.
+#define macro SWAP() = takes (0) returns (0) {
+    CHECK_HOOK()
+    LOAD_ADDRESS(0xa4) caller eq own jumpi
+    __ERROR(NotOrderOwner) REVERT_0()
+    own:
+    LOAD_BOOL(0xc4) 0x05 shl 0x24 sub calldataload   // [input] = zeroForOne ? currency0 : currency1
+    iszero native jumpi
+    0x00 REQUIRE_VALUE()
+    valued jump
+    native:
+    0xe4 calldataload REQUIRE_VALUE()
+    valued:
+    0x00 WRITE_CREATE_HEAD()
+    0x00 0xe04 mstore 0x00 0xe24 mstore 0x00 0xe44 mstore
+    0x220 UNLOCK_AND_RETURN(0x01)
+}
+
+/// @notice `swapWithSig(order, permit, grant)`: a relayer opens an order the maker signed. The input is pulled
+///         through Permit2 with the order as witness (`hashOrder`); an optional signed executor grant for this
+///         contract is applied first. ERC-20 input only.
+#define macro SWAP_WITH_SIG() = takes (0) returns (0) {
+    CHECK_HOOK()
+    LOAD_BOOL(0xc4) 0x05 shl 0x24 sub calldataload
+    erc20 jumpi
+    __ERROR(NativeInputNotSupported) REVERT_0()
+    erc20:
+
+    0x1a4 calldataload 0x04 add                 // [grant]
+    dup1 calldataload iszero granted jumpi
+    // hook.isExecutor(key, owner, this)
+    __FUNC_SIG("isExecutor((address,address,uint24,int24,address),address,address)") CALL_SELECTOR()
+    0xa0 0x04 [CALL_4] calldatacopy
+    LOAD_ADDRESS(0xa4) [CALL_A4] mstore
+    address [CALL_C4] mstore
+    0xe4 0x20 swap1 HOOK_STATICCALL()
+    [CALL_0] mload granted jumpi
+    // hook.setExecutorWithSig(key, owner, this, true, grant.nonce, grant.deadline, grant.signature)
+    __FUNC_SIG("setExecutorWithSig((address,address,uint24,int24,address),address,address,bool,uint256,uint256,bytes)") CALL_SELECTOR()
+    0xa0 0x04 [CALL_4] calldatacopy
+    LOAD_ADDRESS(0xa4) [CALL_A4] mstore
+    address [CALL_C4] mstore
+    0x01 [CALL_E4] mstore
+    dup1 0x20 add calldataload [CALL_104] mstore
+    dup1 0x40 add calldataload [CALL_124] mstore
+    0x160 0xd44 mstore
+    dup1 0x60 add calldataload dup2 add         // [sigPos, grant]
+    dup1 calldataload                           // [len, sigPos, grant]
+    dup1 0xd64 mstore
+    0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and   // [padded, sigPos, grant]
+    dup1 dup3 0x20 add 0xd84 calldatacopy
+    swap1 pop                                   // [padded, grant]
+    0x184 add 0x00 swap1 HOOK_CALL()            // size = 4 + 0x180 + padded
+    granted:
+    pop
+
+    // Create with the Permit2 permit.
+    0x01 WRITE_CREATE_HEAD()
+    0x184 calldataload 0x04 add                 // [permit]
+    dup1 calldataload 0xe04 mstore
+    dup1 0x20 add calldataload 0xe24 mstore
+    dup1 0x40 add calldataload add              // [sigPos]
+    dup1 calldataload                           // [len, sigPos]
+    dup1 0xe44 mstore
+    0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and   // [padded, sigPos]
+    dup1 dup3 0x20 add 0xe64 calldatacopy
+    swap1 pop 0x220 add                         // [len]
+    UNLOCK_AND_RETURN(0x01)
+}
+
+/* ───────────────────────────────────────── fill ───────────────────────────────────────── */
+
+/// @notice `fillOrder(order, maxPrice)`: pay the live gross output — stored minimum plus fee — capped by
+///         `maxPrice`, and receive the whole escrow. A native output is `msg.value`, exactly the live price.
+#define macro FILL_ORDER() = takes (0) returns (0) {
+    CHECK_HOOK()
+    LOAD_ORDER_KEY() ORDER_ID() dup1 [R_ID] mstore
+    GET_ORDER()
+    0xc20 mload [R_ZFO] mstore
+    0xd00 mload [R_MIN] mstore
+    // live = amountOutMin + hook.calculatePoolFee(key.fee, amountOutMin)
+    __FUNC_SIG("calculatePoolFee(uint24,uint256)") CALL_SELECTOR()
+    0x44 calldataload [CALL_4] mstore
+    [R_MIN] mload [CALL_24] mstore
+    0x44 0x20 swap1 HOOK_STATICCALL()
+    [CALL_0] mload [R_MIN] mload CHECKED_ADD() dup1 [R_LIVE] mstore   // [live]
+    0x184 calldataload dup2 gt iszero priced jumpi
+    0x184 calldataload swap1 __ERROR(PriceAboveMax) REVERT_2()
+    priced:
+    pop
+    [R_ZFO] mload 0x05 shl 0x04 add calldataload dup1 [R_OUTPUT] mstore   // output = zfo ? currency1 : currency0
+    paid_in_tokens jumpi
+    [R_LIVE] mload REQUIRE_VALUE()
+    0x00 0x00 0x00 0x00 [R_LIVE] mload HOOK() gas call
+    forwarded jumpi
+    __ERROR(NativeTransferFailed) REVERT_0()
+    paid_in_tokens:
+    0x00 REQUIRE_VALUE()
+    forwarded:
+
+    [ACTION_FILL] [CALL_44] mstore
+    0xa0 0x04 [CALL_64] calldatacopy
+    [R_ID] mload 0xd04 mstore
+    caller 0xd24 mstore
+    [R_OUTPUT] mload 0xd44 mstore
+    [R_LIVE] mload 0xd64 mstore
+    0x140 UNLOCK_AND_RETURN(0x03)
+}
+
+/* ──────────────────────────────────────── cancel ──────────────────────────────────────── */
+
+/// @dev Unlock with a (key from calldata 0x04, word) payload for `action`, returning one word.
+#define macro UNLOCK_KEY_WORD(action) = takes (1) returns (0) {
+    // [word]
+    <action> [CALL_44] mstore
+    0xa0 0x04 [CALL_64] calldatacopy
+    0xd04 mstore
+    0xe0 UNLOCK_AND_RETURN(0x01)
+}
+
+/// @notice `cancelOrder(order)`: the maker cancels; the remaining escrow is refunded, the bid is not.
+#define macro CANCEL_ORDER() = takes (0) returns (0) {
+    CHECK_HOOK()
+    LOAD_ADDRESS(0xa4) caller eq own jumpi
+    __ERROR(NotOrderOwner) REVERT_0()
+    own:
+    LOAD_ORDER_KEY() ORDER_ID()
+    UNLOCK_KEY_WORD(0x02)
+}
+
+/// @notice `cancelWithSig(order, nonce, deadline, signature)`: the maker signs `CancelOrder(maker, tokenIn,
+///         tokenOut, amountIn(stored), orderId, nonce, deadline)` in this contract's domain; anyone submits it.
+#define macro CANCEL_WITH_SIG() = takes (0) returns (0) {
+    CHECK_HOOK()
+    LOAD_ORDER_KEY() ORDER_ID() dup1 [R_ID] mstore
+    GET_ORDER()
+    [CALL_0] mload [R_OWNER] mstore
+    0xc20 mload [R_ZFO] mstore
+    0xce0 mload [R_IN] mstore
+
+    0x1a4 calldataload timestamp gt iszero live jumpi
+    0x1a4 calldataload __ERROR(SignatureExpired) REVERT_1()
+    live:
+    0x184 calldataload [CANCEL_NONCE_SEED] [R_OWNER] mload HASH_2() swap1 HASH_2()   // [slot]
+    dup1 sload iszero fresh jumpi
+    0x184 calldataload [R_OWNER] mload __ERROR(NonceAlreadyUsed) REVERT_2()
+    fresh:
+    0x01 swap1 sstore
+
+    [CANCEL_ORDER_TYPEHASH] [S_STRUCT] mstore
+    [R_OWNER] mload 0x10e0 mstore
+    [R_ZFO] mload 0x05 shl 0x24 sub calldataload 0x1100 mstore      // tokenIn
+    [R_ZFO] mload 0x05 shl 0x04 add calldataload 0x1120 mstore      // tokenOut
+    [R_IN] mload 0x1140 mstore
+    [R_ID] mload 0x1160 mstore
+    0x184 calldataload 0x1180 mstore
+    0x1a4 calldataload 0x11a0 mstore
+    0x100 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
+    0x1c4 calldataload 0x04 add swap1           // [digest, sigPos]
+    [R_OWNER] mload IS_VALID_SIGNATURE() valid jumpi
+    __ERROR(InvalidSignature) REVERT_0()
+    valid:
+    [R_ID] mload UNLOCK_KEY_WORD(0x02)
+}
+
+/* ─────────────────────────────────── keeper entry points ─────────────────────────────────── */
+
+/// @notice `matchBook(key, maxMatches)`: anyone continues a crossed book.
+#define macro MATCH_BOOK() = takes (0) returns (0) {
+    CHECK_HOOK()
+    0xa4 calldataload UNLOCK_KEY_WORD(0x03)
+}
+
+/// @notice `fillFromPoolLiquidity(order)`: anyone swaps an order's escrow through the pool when that meets its
+///         minimum.
+#define macro FILL_FROM_POOL_LIQUIDITY() = takes (0) returns (0) {
+    CHECK_HOOK()
+    LOAD_ORDER_KEY() ORDER_ID()
+    UNLOCK_KEY_WORD(0x04)
+}
+
+/* ──────────────────────────────────── unlock callback ──────────────────────────────────── */
+
+/// @dev `hook.<selector>(key, word)` with the key and word of the callback payload; returns its one word as
+///      the callback's `bytes`.
+#define macro HOOK_KEY_WORD() = takes (1) returns (0) {
+    // [selector]
+    CALL_SELECTOR()
+    0xa0 0x64 [CALL_4] calldatacopy
+    0x104 calldataload [CALL_A4] mstore
+    0xc4 0x20 swap1 HOOK_CALL()
+    0x20 [CALL_0] RETURN_BYTES()
+}
+
+#define macro UNLOCK_CALLBACK() = takes (0) returns (0) {
+    MANAGER() caller eq from_manager jumpi
+    __ERROR(NotPoolManager) REVERT_0()
+    from_manager:
+    0x44 calldataload
+    dup1 iszero action_create jumpi
+    dup1 [ACTION_FILL] eq action_fill jumpi
+    dup1 [ACTION_CANCEL] eq cancel jumpi
+    dup1 [ACTION_MATCH_BOOK] eq match_book jumpi
+    __FUNC_SIG("fillFromPoolLiquidity((address,address,uint24,int24,address),bytes32)") HOOK_KEY_WORD()
+    cancel:
+        __FUNC_SIG("cancelOrder((address,address,uint24,int24,address),bytes32)") HOOK_KEY_WORD()
+    match_book:
+        __FUNC_SIG("matchBook((address,address,uint24,int24,address),uint256)") HOOK_KEY_WORD()
+    action_fill:
+        FILL_BODY()
+    action_create:
+        CREATE_BODY()
+}
+
+/// @dev `_fill`: an ERC-20 output is pulled from the filler and credited to the hook; a native output was
+///      forwarded to the hook before the unlock.
+#define macro FILL_BODY() = takes (0) returns (0) {
+    0x144 calldataload iszero native jumpi
+    0x144 calldataload PM_SYNC()
+    0x164 calldataload MANAGER() 0x124 calldataload 0x144 calldataload TRANSFER_FROM()
+    HOOK() PM_SETTLE_FOR()
+    native:
+    __FUNC_SIG("executeOrder((address,address,uint24,int24,address),bytes32,address)") CALL_SELECTOR()
+    0xa0 0x64 [CALL_4] calldatacopy
+    0x104 calldataload [CALL_A4] mstore
+    0x124 calldataload [CALL_C4] mstore
+    0xe4 0x60 swap1 HOOK_CALL()
+    0x60 [CALL_0] RETURN_BYTES()
+}
+
+/// @dev `_create` (`swapBody`): `PoolManager.swap` → `beforeSwap` opens the order and takes the input and bid
+///      as the hook's claims; the Router settles the maker's input for itself and the bid for the hook; then
+///      the new order is matched.
+#define macro CREATE_BODY() = takes (0) returns (0) {
+    // manager.swap(key, SwapParams(zeroForOne, -amountIn, sqrtPrice), abi.encode(UserParams(owner, this,
+    //              amountOutMin, priorityFee, salt)))
+    __FUNC_SIG("swap((address,address,uint24,int24,address),(bool,int256,uint160),bytes)") CALL_SELECTOR()
+    0xa0 0x64 [CALL_4] calldatacopy
+    0x124 calldataload [CALL_A4] mstore
+    0x144 calldataload 0x00 sub [CALL_C4] mstore
+    0x1a4 calldataload [CALL_E4] mstore
+    0x120 [CALL_104] mstore
+    0xa0 [CALL_124] mstore
+    0x104 calldataload 0xd44 mstore
+    address 0xd64 mstore
+    0x164 calldataload 0xd84 mstore
+    0x184 calldataload 0xda4 mstore
+    0x1c4 calldataload 0xdc4 mstore
+    0x1e4 PM_CALL()
+
+    // id = hook.lastOrderId()
+    __FUNC_SIG("lastOrderId()") CALL_SELECTOR()
+    0x04 0x20 swap1 HOOK_STATICCALL()
+    [CALL_0] mload [R_ID] mstore
+
+    0x124 calldataload 0x05 shl 0x84 sub calldataload     // [input] = zeroForOne ? currency0 : currency1
+    dup1 [R_INPUT] mstore
+    erc20 jumpi
+    0x144 calldataload PM_SETTLE()
+    paid jump
+    erc20:
+    [R_INPUT] mload PM_SYNC()
+    0x1e4 calldataload permit jumpi
+    0x144 calldataload MANAGER() 0x104 calldataload [R_INPUT] mload TRANSFER_FROM()
+    settle jump
+    permit:
+    PERMIT_TRANSFER()
+    settle:
+    0x00 PM_SETTLE()
+    paid:
+
+    0x184 calldataload iszero no_bid jumpi
+    __FUNC_SIG("numeraire()") CALL_SELECTOR()
+    0x04 0x20 swap1 HOOK_STATICCALL()
+    [CALL_0] mload dup1 PM_SYNC()                         // [numeraire]
+    0x184 calldataload MANAGER() 0x104 calldataload dup4 TRANSFER_FROM()
+    pop
+    HOOK() PM_SETTLE_FOR()
+    no_bid:
+
+    // hook.matchNewOrder(key, id, MAX_MATCHES)
+    __FUNC_SIG("matchNewOrder((address,address,uint24,int24,address),bytes32,uint256)") CALL_SELECTOR()
+    0xa0 0x64 [CALL_4] calldatacopy
+    [R_ID] mload [CALL_A4] mstore
+    [MAX_MATCHES] [CALL_C4] mstore
+    0xe4 0x20 swap1 HOOK_CALL()
+
+    [R_ID] mload [CALL_0] mstore
+    0x20 [CALL_0] RETURN_BYTES()
+}
+
+/// @dev `permit2.permitWitnessTransferFrom(PermitTransferFrom((input, amountIn), nonce, deadline),
+///      SignatureTransferDetails(manager, amountIn), owner, hashOrder(order), permit2WitnessType(), signature)`.
+#define macro PERMIT_TRANSFER() = takes (0) returns (0) {
+    // hashOrder(order): keccak(ASYNC_ORDER_TYPEHASH, owner, tokenIn, tokenOut, amountIn, amountOutMin,
+    //                          priorityFee, hashPoolKey(key))
+    0xa0 0x64 [E_KEY] calldatacopy
+    HASH_POOL_KEY()                                       // [poolHash]
+    [ASYNC_ORDER_TYPEHASH] [S_STRUCT] mstore
+    0x104 calldataload 0x10e0 mstore
+    [R_INPUT] mload 0x1100 mstore
+    0x64 0x124 calldataload 0x05 shl add calldataload 0x1120 mstore   // tokenOut
+    0x144 calldataload 0x1140 mstore
+    0x164 calldataload 0x1160 mstore
+    0x184 calldataload 0x1180 mstore
+    0x11a0 mstore
+    0x100 [S_STRUCT] sha3                                 // [witness]
+
+    __FUNC_SIG("permitWitnessTransferFrom(((address,uint256),uint256,uint256),(address,uint256),address,bytes32,string,bytes)")
+    0xe0 shl [MEM_PERMIT] mstore
+    [R_INPUT] mload 0x1404 mstore
+    0x144 calldataload 0x1424 mstore
+    0x204 calldataload 0x1444 mstore
+    0x224 calldataload 0x1464 mstore
+    MANAGER() 0x1484 mstore
+    0x144 calldataload 0x14a4 mstore
+    0x104 calldataload 0x14c4 mstore
+    0x14e4 mstore                                         // witness
+    0x140 0x1504 mstore
+    0x280 0x1524 mstore
+    __tablesize(WITNESS_TYPE) 0x1544 mstore
+    __tablesize(WITNESS_TYPE) __tablestart(WITNESS_TYPE) 0x1564 codecopy
+    0x244 calldataload                                    // [sigLen]
+    dup1 0x1684 mstore
+    0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and   // [padded]
+    dup1 0x264 0x16a4 calldatacopy
+    0x2a4 add                                             // [size]
+    0x00 0x00 swap2 [MEM_PERMIT] 0x00 PERMIT2() gas call
+    ok jumpi
+    BUBBLE()
+    ok:
+}
+
+/* ───────────────────────────────────────── views ───────────────────────────────────────── */
+
+#define macro CANCEL_NONCE_USED() = takes (0) returns (0) {
+    0x24 calldataload [CANCEL_NONCE_SEED] LOAD_ADDRESS(0x04) HASH_2() swap1 HASH_2() sload RETURN_1()
+}
+
+/// @notice ERC-5267 `eip712Domain()`: (0x0f, "AsyncSwapRouter", "2", chainid, this, 0, []).
+#define macro EIP712_DOMAIN() = takes (0) returns (0) {
+    0x0f 0xf8 shl 0x00 mstore
+    0xe0 0x20 mstore
+    0x120 0x40 mstore
+    chainid 0x60 mstore
+    address 0x80 mstore
+    0x00 0xa0 mstore
+    0x160 0xc0 mstore
+    0x0f 0xe0 mstore
+    __RIGHTPAD(0x4173796e6353776170526f75746572) 0x100 mstore   // "AsyncSwapRouter"
+    0x01 0x120 mstore
+    __RIGHTPAD(0x32) 0x140 mstore                               // "2"
+    0x00 0x160 mstore
+    0x180 0x00 return
+}
+
+/* ───────────────────────────────────────── main ───────────────────────────────────────── */
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x60 [IMMUTABLES] 0x40 codecopy
+    0x00 calldataload 0xe0 shr
+    // payable
+    dup1 __FUNC_SIG("swap(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))") eq swap jumpi
+    dup1 __FUNC_SIG("fillOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),uint256)") eq fill_order jumpi
+    NON_PAYABLE()
+    dup1 __FUNC_SIG("unlockCallback(bytes)") eq unlock_callback jumpi
+    dup1 __FUNC_SIG("matchBook((address,address,uint24,int24,address),uint256)") eq match_book jumpi
+    dup1 __FUNC_SIG("cancelOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))") eq cancel_order jumpi
+    dup1 __FUNC_SIG("fillFromPoolLiquidity(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))") eq fill_from_pool_liquidity jumpi
+    dup1 __FUNC_SIG("swapWithSig(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),(uint256,uint256,bytes),(bool,uint256,uint256,bytes))") eq swap_with_sig jumpi
+    dup1 __FUNC_SIG("cancelWithSig(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),uint256,uint256,bytes)") eq cancel_with_sig jumpi
+    dup1 __FUNC_SIG("cancelNonceUsed(address,uint256)") eq cancel_nonce_used jumpi
+    dup1 __FUNC_SIG("manager()") eq manager jumpi
+    dup1 __FUNC_SIG("hook()") eq hook jumpi
+    dup1 __FUNC_SIG("permit2()") eq permit2 jumpi
+    dup1 __FUNC_SIG("MAX_MATCHES()") eq max_matches jumpi
+    dup1 __FUNC_SIG("eip712Domain()") eq eip712_domain jumpi
+    0x00 0x00 revert
+
+    swap:                     SWAP()
+    fill_order:               FILL_ORDER()
+    unlock_callback:          UNLOCK_CALLBACK()
+    match_book:               MATCH_BOOK()
+    cancel_order:             CANCEL_ORDER()
+    fill_from_pool_liquidity: FILL_FROM_POOL_LIQUIDITY()
+    swap_with_sig:            SWAP_WITH_SIG()
+    cancel_with_sig:          CANCEL_WITH_SIG()
+    cancel_nonce_used:        CANCEL_NONCE_USED()
+    manager:                  MANAGER() RETURN_1()
+    hook:                     HOOK() RETURN_1()
+    permit2:                  PERMIT2() RETURN_1()
+    max_matches:              [MAX_MATCHES] RETURN_1()
+    eip712_domain:            EIP712_DOMAIN()
+}
