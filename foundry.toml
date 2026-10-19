@@ -26,3 +26,6 @@ depth = 48
 fail_on_revert = false
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[lint]
+lint_on_build = false

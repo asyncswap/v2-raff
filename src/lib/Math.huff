@@ -4,9 +4,9 @@
 /// @dev Spec: `AsyncSwapSpec/Fee.lean`, `Order.lean` (`priceKey`), `Priority.lean` (`priorityKey`),
 ///      `RadixTree.lean` (`solMsb_eq_log2`), `Match.lean` (`_matchAmounts`).
 
-#define constant MATH_X = 0x800
-#define constant MATH_Y = 0x820
-#define constant MATH_D = 0x840
+#define constant MATH_X = 0xa00
+#define constant MATH_Y = 0xa20
+#define constant MATH_D = 0xa40
 
 #define error MathOverflowedMulDiv()
 
@@ -127,10 +127,10 @@
 
 /* ─────────────────────────────────── matching ─────────────────────────────────── */
 
-#define constant MA_REST_IN  = 0x880
-#define constant MA_REST_MIN = 0x8a0
-#define constant MA_INC_IN   = 0x8c0
-#define constant MA_INC_MIN  = 0x8e0
+#define constant MA_REST_IN  = 0xa80
+#define constant MA_REST_MIN = 0xaa0
+#define constant MA_INC_IN   = 0xac0
+#define constant MA_INC_MIN  = 0xae0
 
 /// @notice `AsyncMatching.matchAmounts(sellIn, sellMin, buyIn, buyMin, restingBuy) → (asset, quote)`.
 /// @dev Both branches of the Solidity are one computation over (resting, incoming): the resting side's price

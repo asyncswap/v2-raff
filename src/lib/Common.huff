@@ -7,11 +7,17 @@
 // region. 0x00–0x3f is scratch (mapping hashes, single-word returns) and never holds a live value across a
 // call to another routine.
 #define constant MEM_SCRATCH = 0x00
-//   0x080–0x2ff  entry points            0x880–0x8ff  matchAmounts
-//   0x300–0x3ff  matching                0x900–0x9ff  event data
-//   0x400–0x5ff  order book              0xa00–0xcff  external calldata / returndata
-//   0x600–0x7ff  radix tree              0xd00–0x10ff EIP-712 encoding, signature checks
-//   0x800–0x87f  mulDiv
+//   0x040–0x09f  the contract's immutables, copied in once per call
+//   0x0a0–0x2ff  entry points            0xa00–0xa7f  mulDiv
+//   0x300–0x5ff  matching                0xa80–0xaff  matchAmounts
+//   0x600–0x7ff  order book              0xb00–0xbff  event data
+//   0x800–0x9ff  radix tree              0xc00–0xeff  external calldata / returndata
+//                                        0xf00–       EIP-712 encoding, signature checks
+// Every entry point that takes a PoolKey copies it to E_KEY (5 words) first.
+#define constant E_KEY    = 0xa0
+#define constant MEM_LOG  = 0xb00
+#define constant MEM_CALL = 0xc00
+#define constant MEM_SIG  = 0xf00
 
 #define constant ADDRESS_MASK = 0xffffffffffffffffffffffffffffffffffffffff
 #define constant UINT128_MASK = 0xffffffffffffffffffffffffffffffff

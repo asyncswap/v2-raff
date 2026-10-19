@@ -1,0 +1,83 @@
+/// @title Signatures
+/// @notice EIP-712 domain and typed-data hashing, the `PoolKey` struct hash, and OpenZeppelin 5.0.2's
+///         `SignatureChecker.isValidSignatureNow` (ECDSA for 65-byte signatures with the low-`s` rule, else
+///         ERC-1271). The including contract defines the constant `EIP712_NAME_HASH`.
+/// @dev Spec: `AsyncSwapSpec/Hashing.lean`.
+
+#define constant DOMAIN_TYPEHASH = 0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f
+#define constant EIP712_VERSION_HASH = 0xad7c5bef027816a800da1736444fb58a807ef4c9603b7848673f7e3a68eb14a5 // "2"
+#define constant POOL_KEY_TYPEHASH = 0x90172dcd3ace21b906ae6acfb8cc73a023df1317b7cda09eeda9489ed5604ae5
+#define constant HALF_CURVE_ORDER = 0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0
+
+#define constant S_TYPED  = 0xf00
+#define constant S_DOMAIN = 0xf60
+#define constant S_KEY    = 0x1000
+#define constant S_STRUCT = 0x10c0
+#define constant S_CHECK  = 0x1200
+
+/// @notice `_domainSeparatorV4()`: `keccak(DOMAIN_TYPEHASH, name, version, chainid, this)`.
+#define macro DOMAIN_SEPARATOR() = takes (0) returns (1) {
+    [DOMAIN_TYPEHASH] [S_DOMAIN] mstore
+    [EIP712_NAME_HASH] 0xf80 mstore
+    [EIP712_VERSION_HASH] 0xfa0 mstore
+    chainid 0xfc0 mstore
+    address 0xfe0 mstore
+    0xa0 [S_DOMAIN] sha3
+}
+
+/// @notice `_hashTypedDataV4(structHash)`: `keccak("\x19\x01" ‖ domainSeparator ‖ structHash)`.
+#define macro HASH_TYPED_DATA() = takes (1) returns (1) {
+    // [structHash]
+    0x1901 [S_TYPED] mstore
+    DOMAIN_SEPARATOR() 0xf20 mstore
+    0xf40 mstore
+    0x42 0xf1e sha3
+}
+
+/// @notice `OrderSignatures.hashPoolKey`: `keccak(POOL_KEY_TYPEHASH, currency0, currency1, fee, tickSpacing,
+///         hooks)` of the key at E_KEY.
+#define macro HASH_POOL_KEY() = takes (0) returns (1) {
+    [POOL_KEY_TYPEHASH] [S_KEY] mstore
+    0xa0 [E_KEY] 0x1020 mcopy
+    0xc0 [S_KEY] sha3
+}
+
+/// @notice `SignatureChecker.isValidSignatureNow(signer, digest, signature)`, the signature being the
+///         `bytes` whose length word is at calldata position `sigPos`.
+#define fn IS_VALID_SIGNATURE() = takes (3) returns (1) {
+    // [signer, digest, sigPos]
+    dup3 calldataload 0x41 eq iszero erc1271 jumpi
+
+    // ECDSA.tryRecover: r, s, v from the 65 bytes; reject a high s; ecrecover.
+    dup2 [S_CHECK] mstore                               // digest
+    dup3 0x60 add calldataload 0xf8 shr 0x1220 mstore   // v
+    dup3 0x20 add calldataload 0x1240 mstore            // r
+    dup3 0x40 add calldataload                          // [s, signer, digest, sigPos]
+    dup1 0x1260 mstore
+    [HALF_CURVE_ORDER] lt erc1271 jumpi
+    0x00 0x1280 mstore
+    0x20 0x1280 0x80 [S_CHECK] 0x01 gas staticcall pop
+    0x1280 mload                                        // [recovered, signer, digest, sigPos]
+    dup1 iszero not_recovered jumpi
+    dup2 eq iszero erc1271 jumpi
+    pop pop pop 0x01 done jump
+
+    not_recovered:
+        pop
+    erc1271:                                            // [signer, digest, sigPos]
+    // signer.staticcall(isValidSignature(digest, signature))
+    __FUNC_SIG("isValidSignature(bytes32,bytes)") 0xe0 shl [S_CHECK] mstore
+    dup2 0x1204 mstore
+    0x40 0x1224 mstore
+    dup3 calldataload                                   // [len, signer, digest, sigPos]
+    dup1 0x1244 mstore
+    0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and   // [padded, …]
+    dup1 dup5 0x20 add 0x1264 calldatacopy
+    0x64 add                                            // [size, signer, digest, sigPos]
+    0x20 swap1 [S_CHECK] swap1                          // [size, S_CHECK, 0x20, signer, …]
+    [S_CHECK] dup5 gas staticcall                       // [ok, signer, digest, sigPos]
+    0x20 returndatasize lt iszero and
+    [S_CHECK] mload __FUNC_SIG("isValidSignature(bytes32,bytes)") 0xe0 shl eq and
+    swap3 pop pop pop                                   // [valid]
+    done:
+}

@@ -1,0 +1,179 @@
+/// @title PoolManager
+/// @notice Calls into the Uniswap v4 PoolManager. The including contract defines `MANAGER()` (pushes the
+///         manager's address). Calldata is built at MEM_CALL; a failed call re-raises its revert data, as a
+///         Solidity high-level call does.
+
+#define constant CALL_0   = 0xc00
+#define constant CALL_4   = 0xc04
+#define constant CALL_24  = 0xc24
+#define constant CALL_44  = 0xc44
+#define constant CALL_64  = 0xc64
+#define constant CALL_84  = 0xc84
+#define constant CALL_A4  = 0xca4
+#define constant CALL_C4  = 0xcc4
+#define constant CALL_E4  = 0xce4
+#define constant CALL_104 = 0xd04
+#define constant CALL_124 = 0xd24
+
+#define constant IS_UNLOCKED_SLOT = 0xc090fc4683624cfc3884e9d8de5eca132f2d0ec062aff75d43c0465d5ceeab23
+#define constant POOLS_SLOT = 0x06
+#define constant LIQUIDITY_OFFSET = 0x03
+
+#define constant MIN_SQRT_PRICE_PLUS_ONE = 0x1000276a4                                   // 4295128739 + 1
+#define constant MAX_SQRT_PRICE_MINUS_ONE = 0xfffd8963efd1fc6a506488495d951d5263988d25     // MAX_SQRT_PRICE − 1
+
+/// @dev Writes `selector` left-aligned at CALL_0.
+#define macro CALL_SELECTOR() = takes (1) returns (0) {
+    // [selector]
+    0xe0 shl [CALL_0] mstore
+}
+
+/// @dev `manager.call(CALL_0[0:size])`, bubbling a revert; up to 0x20 bytes of returndata at CALL_0.
+#define macro PM_CALL() = takes (1) returns (0) {
+    // [size]
+    0x20 swap1 [CALL_0] swap1  // [size, CALL_0, 0x20]          argsSize, retOffset, retSize
+    [CALL_0] 0x00              // [0, CALL_0, size, CALL_0, 0x20]
+    MANAGER() gas call         // [ok]
+    ok jumpi
+    BUBBLE()
+    ok:
+}
+
+/// @dev `manager.staticcall(CALL_0[0:size])` returning the first word.
+#define macro PM_STATICCALL_WORD() = takes (1) returns (1) {
+    // [size]
+    0x20 swap1 [CALL_0] swap1  // [size, CALL_0, 0x20]
+    [CALL_0]                   // [CALL_0, size, CALL_0, 0x20]
+    MANAGER() gas staticcall   // [ok]
+    ok jumpi
+    BUBBLE()
+    ok:
+    0x20 returndatasize lt iszero word jumpi
+    0x00 0x00 revert
+    word:
+    [CALL_0] mload
+}
+
+/// @notice `manager.take(currency, to, amount)`.
+#define macro PM_TAKE() = takes (3) returns (0) {
+    // [currency, to, amount]
+    __FUNC_SIG("take(address,address,uint256)") CALL_SELECTOR()
+    [CALL_4] mstore [CALL_24] mstore [CALL_44] mstore
+    0x64 PM_CALL()
+}
+
+/// @notice `manager.mint(to, id, amount)`.
+#define macro PM_MINT() = takes (3) returns (0) {
+    // [to, id, amount]
+    __FUNC_SIG("mint(address,uint256,uint256)") CALL_SELECTOR()
+    [CALL_4] mstore [CALL_24] mstore [CALL_44] mstore
+    0x64 PM_CALL()
+}
+
+/// @notice `manager.burn(from, id, amount)`.
+#define macro PM_BURN() = takes (3) returns (0) {
+    // [from, id, amount]
+    __FUNC_SIG("burn(address,uint256,uint256)") CALL_SELECTOR()
+    [CALL_4] mstore [CALL_24] mstore [CALL_44] mstore
+    0x64 PM_CALL()
+}
+
+/// @notice `manager.sync(currency)`.
+#define macro PM_SYNC() = takes (1) returns (0) {
+    // [currency]
+    __FUNC_SIG("sync(address)") CALL_SELECTOR()
+    [CALL_4] mstore
+    0x24 PM_CALL()
+}
+
+/// @notice `manager.settle{value}()`.
+#define macro PM_SETTLE() = takes (1) returns (0) {
+    // [value]
+    __FUNC_SIG("settle()") CALL_SELECTOR()
+    0x00 0x00 0x04 [CALL_0]    // [CALL_0, 4, 0, 0, value]
+    dup5 MANAGER() gas call    // [ok, value]
+    ok jumpi
+    BUBBLE()
+    ok:
+    pop
+}
+
+/// @notice `manager.settleFor(recipient)`.
+#define macro PM_SETTLE_FOR() = takes (1) returns (0) {
+    // [recipient]
+    __FUNC_SIG("settleFor(address)") CALL_SELECTOR()
+    [CALL_4] mstore
+    0x24 PM_CALL()
+}
+
+/// @notice `manager.exttload(slot)`.
+#define macro PM_EXTTLOAD() = takes (1) returns (1) {
+    // [slot]
+    __FUNC_SIG("exttload(bytes32)") CALL_SELECTOR()
+    [CALL_4] mstore
+    0x24 PM_STATICCALL_WORD()
+}
+
+/// @notice `manager.extsload(slot)`.
+#define macro PM_EXTSLOAD() = takes (1) returns (1) {
+    // [slot]
+    __FUNC_SIG("extsload(bytes32)") CALL_SELECTOR()
+    [CALL_4] mstore
+    0x24 PM_STATICCALL_WORD()
+}
+
+/// @notice `manager.balanceOf(owner, id)` (ERC-6909).
+#define macro PM_BALANCE_OF() = takes (2) returns (1) {
+    // [owner, id]
+    __FUNC_SIG("balanceOf(address,uint256)") CALL_SELECTOR()
+    [CALL_4] mstore [CALL_24] mstore
+    0x44 PM_STATICCALL_WORD()
+}
+
+/// @notice `TransientStateLibrary.isUnlocked(manager)`.
+#define macro PM_IS_UNLOCKED() = takes (0) returns (1) {
+    [IS_UNLOCKED_SLOT] PM_EXTTLOAD() iszero iszero
+}
+
+/// @notice `StateLibrary.getLiquidity(manager, poolId)`: the pool's active liquidity.
+#define macro PM_LIQUIDITY() = takes (1) returns (1) {
+    // [poolId]
+    0x00 mstore [POOLS_SLOT] 0x20 mstore
+    0x40 0x00 sha3 [LIQUIDITY_OFFSET] add
+    PM_EXTSLOAD() [UINT128_MASK] and
+}
+
+/// @notice `manager.donate(key, amount0, amount1, "")`, the key copied from memory at `key`.
+#define macro PM_DONATE(key) = takes (2) returns (0) {
+    // [amount0, amount1]
+    __FUNC_SIG("donate((address,address,uint24,int24,address),uint256,uint256,bytes)") CALL_SELECTOR()
+    0xa0 <key> [CALL_4] mcopy
+    [CALL_A4] mstore [CALL_C4] mstore
+    0x100 [CALL_E4] mstore
+    0x00 [CALL_104] mstore
+    0x124 PM_CALL()
+}
+
+/// @notice `manager.updateDynamicLPFee(key, fee)`.
+#define macro PM_UPDATE_DYNAMIC_FEE(key) = takes (1) returns (0) {
+    // [fee]
+    __FUNC_SIG("updateDynamicLPFee((address,address,uint24,int24,address),uint24)") CALL_SELECTOR()
+    0xa0 <key> [CALL_4] mcopy
+    [CALL_A4] mstore
+    0xc4 PM_CALL()
+}
+
+/// @notice `manager.swap(key, SwapParams(zeroForOne, amountSpecified, sqrtPriceLimitX96), "")` → BalanceDelta.
+#define macro PM_SWAP(key) = takes (3) returns (1) {
+    // [zeroForOne, amountSpecified, sqrtPriceLimitX96]
+    __FUNC_SIG("swap((address,address,uint24,int24,address),(bool,int256,uint160),bytes)") CALL_SELECTOR()
+    0xa0 <key> [CALL_4] mcopy
+    [CALL_A4] mstore [CALL_C4] mstore [CALL_E4] mstore
+    0x120 [CALL_104] mstore
+    0x00 [CALL_124] mstore
+    0x144 PM_CALL()
+    0x20 returndatasize lt iszero word jumpi
+    0x00 0x00 revert
+    word:
+    [CALL_0] mload
+}

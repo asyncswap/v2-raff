@@ -17,15 +17,15 @@
 #define constant TREE_NODE_OFFSET = 0x100000000
 #define constant TREE_LEAF_OFFSET = 0x100000000000000000000000000000000
 
-#define constant T_SLOT   = 0x600
-#define constant T_BASE   = 0x620
-#define constant T_PRICE  = 0x640
-#define constant T_LEAF   = 0x660
-#define constant T_CUR    = 0x680
-#define constant T_NODE   = 0x6a0
-#define constant T_SPLIT  = 0x6c0
-#define constant T_PARENT = 0x6e0
-#define constant T_BRANCH = 0x700
+#define constant T_SLOT   = 0x800
+#define constant T_BASE   = 0x820
+#define constant T_PRICE  = 0x840
+#define constant T_LEAF   = 0x860
+#define constant T_CUR    = 0x880
+#define constant T_NODE   = 0x8a0
+#define constant T_SPLIT  = 0x8c0
+#define constant T_PARENT = 0x8e0
+#define constant T_BRANCH = 0x900
 
 /// @dev `keccak(t)` into `T_SLOT` / `T_BASE`.
 #define macro TREE_LOAD() = takes (1) returns (0) {
