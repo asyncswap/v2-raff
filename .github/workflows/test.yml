@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FOUNDRY_PROFILE: ci
+  # Huff Neo Compiler release used to build and test the contracts.
+  HNC_VERSION: v1.6.2
+
+jobs:
+  check:
+    name: Foundry project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Install Huff Neo
+        run: |
+          mkdir -p "$HOME/.huff-neo/bin"
+          curl -sSfL "https://github.com/cakevm/huff-neo/releases/download/${HNC_VERSION}/hnc-${HNC_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz -C "$HOME/.huff-neo/bin"
+          echo "$HOME/.huff-neo/bin" >> "$GITHUB_PATH"
+
+      - name: Show versions
+        run: |
+          forge --version
+          hnc --version
+
+      - name: Run Forge fmt
+        run: forge fmt --check
+
+      - name: Run Huff tests
+        run: |
+          for file in $(grep -l '#define test' src/*.huff); do
+            echo "::group::hnc test $file"
+            hnc "$file" test
+            echo "::endgroup::"
+          done
+
+      - name: Run Forge tests
+        run: forge test -vvv
