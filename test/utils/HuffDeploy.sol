@@ -5,11 +5,11 @@ import {Vm} from "forge-std/Vm.sol";
 import {HuffNeoDeployer} from "foundry-huff-neo/HuffNeoDeployer.sol";
 import {HuffNeoConfig} from "foundry-huff-neo/HuffNeoConfig.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {IRouter as Router} from "interfaces/IRouter.sol";
-import {INativeClaims as NativeClaims} from "interfaces/INativeClaims.sol";
-import {IMatchingEngine as MatchingEngine} from "interfaces/IMatchingEngine.sol";
-import {ISignatureTransfer} from "interfaces/ISignatureTransfer.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {IRouter as Router} from "src/interface/IRouter.sol";
+import {INativeClaims as NativeClaims} from "src/interface/INativeClaims.sol";
+import {IMatchingEngine as MatchingEngine} from "src/interface/IMatchingEngine.sol";
+import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
 
 /// @notice Deploys the Huff contracts in `src/` (compiled by `hnc` through `vm.ffi`). The tests are
 ///         asyncswap/contracts' own; their deploy lines call this library, and `interfaces/` gives them the ABI.

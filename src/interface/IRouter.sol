@@ -46,8 +46,7 @@ interface IRouter {
     function swap(AsyncOrder calldata order, bytes memory userData) external payable;
     /// @notice Fill an open order, paying its live net price plus the fee, capped at `maxPrice`.
     function fillOrder(AsyncOrder calldata order, uint256 maxPrice, bytes calldata data) external payable;
-    function swapWithSig(AsyncOrder calldata order, PermitData calldata permit, ExecutorGrant calldata grant)
-        external;
+    function swapWithSig(AsyncOrder calldata order, PermitData calldata permit, ExecutorGrant calldata grant) external;
     function cancelWithSig(AsyncOrder calldata order, uint256 nonce, uint256 deadline, bytes calldata signature)
         external;
     function cancelOrder(AsyncOrder calldata order) external;

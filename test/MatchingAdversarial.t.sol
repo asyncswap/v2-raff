@@ -2,9 +2,9 @@
 pragma solidity 0.8.26;
 
 import {NativeAsyncSwapTest} from "./NativeAsyncSwap.t.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
-import {IRouter as Router} from "interfaces/IRouter.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
+import {IRouter as Router} from "src/interface/IRouter.sol";
 import {MockERC20} from "./utils/MockERC20.sol";
 import {PoolIdLibrary, PoolKey} from "v4-core/types/PoolKey.sol";
 

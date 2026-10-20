@@ -3,10 +3,10 @@ pragma solidity ^0.8.26;
 
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
-import {ISignatureTransfer} from "interfaces/ISignatureTransfer.sol";
+import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
 import {Permit2Bytecode} from "./utils/Permit2Bytecode.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {IRouter as Router} from "interfaces/IRouter.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {IRouter as Router} from "src/interface/IRouter.sol";
 import {Test} from "forge-std/Test.sol";
 import {MockERC20} from "./utils/MockERC20.sol";
 import {PoolManager} from "v4-core/PoolManager.sol";

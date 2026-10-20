@@ -3,17 +3,18 @@
 Async Swap v2 in [Huff](https://www.huff-neo.rs), compiled with [huff-neo](https://github.com/cakevm/huff-neo)
 (`hnc`): a port of [`asyncswap/contracts`](https://github.com/asyncswap/contracts) (`main` @ `6fa977a`) with the
 same ABI, events, errors, revert strings and behaviour. The acceptance test is `asyncswap/contracts`' own suite,
-copied here with three kinds of edits: its imports take the ABI from `interfaces/`, its deploy lines deploy the
+copied here with three kinds of edits: its imports take the ABI from `src/interface/`, its deploy lines deploy the
 Huff, and the two Solidity subclasses it defined (a fee variant, and a constructor harness that skips the
 hook-address check) are Huff builds with a compile-time flag instead:
 
 | | passed | failed | skipped |
 | --- | ---: | ---: | ---: |
-| `asyncswap/contracts`, Solidity | 178 | 0 | 1 |
-| this repo, Huff | 178 + 1 | 0 | 1 |
+| `asyncswap/contracts`, Solidity | 181 | 0 | 0 |
+| this repo, Huff | 181 + 1 | 0 | 0 |
 
-The skipped test is the Unichain fork test, which needs `UNICHAIN_FORK_RPC_URL`. The `+ 1` is
-`test/huff/CodeSize.t.sol`, which keeps the Huff runtimes under EIP-170. Created from the
+With `UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org` and `UNICHAIN_FORK_BLOCK=61709000`, as CI sets them;
+the three Unichain fork tests run the Huff against live mainnet state (PoolManager, USDC, Permit2). Without the
+RPC they skip. The `+ 1` is `test/huff/CodeSize.t.sol`, which keeps the Huff runtimes under EIP-170. Created from the
 [`asyncswap/raff`](https://github.com/asyncswap/raff) template.
 
 ## Layout
@@ -26,11 +27,11 @@ The skipped test is the Unichain fork test, which needs `UNICHAIN_FORK_RPC_URL`.
 | `src/NativeClaims.huff` | Redeems native-ETH claims |
 | `src/MatchingEngine.huff` | The standalone matching benchmark |
 | `src/lib/` | Order book (`AsyncFiller`), radix price tree, 512-bit `mulDiv` and match amounts, EIP-712 and `SignatureChecker`, PoolManager calls |
-| `interfaces/` | The Solidity ABI: `IAsyncSwap`, `IRouter`, `IFeeVault`, `INativeClaims`, `IMatchingEngine`, `IAsyncFiller` (order-book types, events, errors), `ISignatureTransfer`, the `AsyncOrder` struct |
+| `src/interface/` | The Solidity ABI: `IAsyncSwap`, `IRouter`, `IFeeVault`, `INativeClaims`, `IMatchingEngine`, `IAsyncFiller` (order-book types, events, errors), `ISignatureTransfer`, the `AsyncOrder` struct |
 | `test/` | `asyncswap/contracts`' tests. They import the interfaces under the contracts' names and deploy through `test/utils/HuffDeploy.sol`; `test/utils/OrderSignatures.sol` and `CurrencySettler.sol` are the two Solidity helpers they call |
 | `docs/`, `MAINNET_READINESS.md` | Copied from `asyncswap/contracts` |
 
-`src/` is Huff only.
+`src/` is the Huff and, in `src/interface/`, its Solidity interfaces.
 
 Constructor arguments are ABI-encoded after the creation code, as in Solidity. The hook takes `(poolManager,
 numeraire, owner)` and must sit at an address whose low 14 bits are exactly `0x2888`; the Router takes
@@ -80,7 +81,8 @@ forge soldeer install
 
 ```sh
 forge test                                   # needs hnc on PATH; ffi is on in foundry.toml
-FOUNDRY_INVARIANT_RUNS=64 FOUNDRY_INVARIANT_DEPTH=64 forge test   # the CI depth
+UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org UNICHAIN_FORK_BLOCK=61709000 \
+  FOUNDRY_INVARIANT_RUNS=64 FOUNDRY_INVARIANT_DEPTH=64 forge test   # what CI runs
 ./script/huff-codegen.sh                     # after changing src/FeeVault.huff
 hnc src/AsyncSwap.huff -b                   # creation code (append the constructor arguments)
 ```
