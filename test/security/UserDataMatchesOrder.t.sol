@@ -2,8 +2,8 @@
 pragma solidity ^0.8.26;
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 
 /// @notice `UserParams.amountOutMin` must equal `order.amountOutMin`; the Router rejects a submission
 ///         whose hookData diverges from the signed order.

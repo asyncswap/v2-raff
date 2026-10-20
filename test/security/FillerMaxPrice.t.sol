@@ -2,8 +2,8 @@
 pragma solidity ^0.8.26;
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 
 /// @notice A filler's `maxPrice` bounds what they pay: the fill reverts when the maker's live price
 ///         exceeds it, including after a maker `updatePrice`.

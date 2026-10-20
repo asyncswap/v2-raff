@@ -6,8 +6,8 @@ import {Hooks} from "v4-core/libraries/Hooks.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
 import {PoolManager} from "v4-core/PoolManager.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {ISignatureTransfer} from "@async-swap/interfaces/ISignatureTransfer.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {ISignatureTransfer} from "interfaces/ISignatureTransfer.sol";
 import {MockERC20} from "../utils/MockERC20.sol";
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 

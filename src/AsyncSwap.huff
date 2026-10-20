@@ -11,7 +11,8 @@
 ///      BEFORE_INITIALIZE | BEFORE_ADD_LIQUIDITY | BEFORE_SWAP | BEFORE_SWAP_RETURNS_DELTA (`0x2888`). The
 ///      constructor deploys the FeeVault, as the Solidity's `new FeeVault(poolManager)`.
 ///
-///      `-c POOL_FEE_MODE=1` builds the fee variant the FeeClaims tests use (`calculatePoolFee = amount / 100`).
+///      Test-only builds: `-c POOL_FEE_MODE=1` (`calculatePoolFee = amount / 100`, the FeeClaims tests) and
+///      `-c SKIP_HOOK_ADDRESS_CHECK=1` (the constructor tests).
 
 #include "./lib/Common.huff"
 #include "./lib/Math.huff"
@@ -91,6 +92,10 @@
 /// @dev 0: `calculatePoolFee = net · 3 / 997` (30 bps of gross). 1: `amount / 100` (the FeeClaims test hook).
 #define constant POOL_FEE_MODE = 0x00
 
+/// @dev 1 skips the hook-address check, for the constructor tests that deploy at an arbitrary address (the
+///      Solidity tests override `validateHookAddress` for the same purpose). Never set for a deployment.
+#define constant SKIP_HOOK_ADDRESS_CHECK = 0x00
+
 /* ────────────────────────────────────── immutables ────────────────────────────────────── */
 
 // The constructor appends (poolManager, numeraire, feeVault) to the runtime; MAIN copies them to 0x40–0x9f.
@@ -147,9 +152,11 @@
     0x60 dup1 codesize sub 0x00 codecopy
 
     // BaseHook: Hooks.validateHookPermissions(this, getHookPermissions())
-    address [ALL_HOOK_MASK] and [HOOK_FLAGS] eq valid jumpi
-    address __ERROR(HookAddressNotValid) REVERT_1()
-    valid:
+    if ([SKIP_HOOK_ADDRESS_CHECK] == 0x00) {
+        address [ALL_HOOK_MASK] and [HOOK_FLAGS] eq valid jumpi
+        address __ERROR(HookAddressNotValid) REVERT_1()
+        valid:
+    }
     0x20 mload extcodesize has_code jumpi
     __ERROR(InvalidNumeraire) REVERT_0()
     has_code:

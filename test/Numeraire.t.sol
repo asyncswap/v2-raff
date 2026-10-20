@@ -4,11 +4,11 @@ pragma solidity 0.8.26;
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {Test} from "forge-std/Test.sol";
-import {AsyncSwap} from "src/AsyncSwap.sol";
-import {BaseHook} from "src/BaseHook.sol";
-import {Router} from "src/Router.sol";
-import {AsyncOrder} from "src/types/AsyncOrder.sol";
-import {ISignatureTransfer} from "src/interfaces/ISignatureTransfer.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+
+import {IRouter as Router} from "interfaces/IRouter.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {ISignatureTransfer} from "interfaces/ISignatureTransfer.sol";
 import {MockERC20} from "./utils/MockERC20.sol";
 import {Permit2Bytecode} from "./utils/Permit2Bytecode.sol";
 import {PoolManager} from "v4-core/PoolManager.sol";
@@ -20,13 +20,6 @@ import {CustomRevert} from "v4-core/libraries/CustomRevert.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {PoolKey} from "v4-core/types/PoolKey.sol";
 import {PoolIdLibrary} from "v4-core/types/PoolId.sol";
-
-/// @dev Only bypasses permission-address mining for constructor rejection tests.
-contract NumeraireConstructorHarness is AsyncSwap {
-    constructor(IPoolManager manager, Currency quote, address owner_) AsyncSwap(manager, quote, owner_) {}
-
-    function validateHookAddress(BaseHook) internal pure override {}
-}
 
 contract NumeraireTest is Test {
     using PoolIdLibrary for PoolKey;
@@ -74,27 +67,38 @@ contract NumeraireTest is Test {
     }
 
     function test_rejectZeroNumeraire() public {
+        bytes memory code =
+            HuffDeploy.unboundHookCreationCode(abi.encode(manager, Currency.wrap(address(0)), address(this)));
         vm.expectRevert(AsyncSwap.InvalidNumeraire.selector);
-        new NumeraireConstructorHarness(manager, Currency.wrap(address(0)), address(this));
+        HuffDeploy.create(code);
     }
 
     function test_rejectNonContractNumeraire() public {
+        bytes memory code = HuffDeploy.unboundHookCreationCode(
+            abi.encode(manager, Currency.wrap(makeAddr("not a token")), address(this))
+        );
         vm.expectRevert(AsyncSwap.InvalidNumeraire.selector);
-        new NumeraireConstructorHarness(manager, Currency.wrap(makeAddr("not a token")), address(this));
+        HuffDeploy.create(code);
     }
 
     /// @dev CREATE2 deployments run the constructor from the deterministic deployer, so the owner
     ///      must come from the argument, never from `msg.sender`.
     function test_ownerIsExplicitArgumentNotDeployer() public {
         address protocolOwner = makeAddr("protocol owner");
-        AsyncSwap h = new NumeraireConstructorHarness(manager, Currency.wrap(address(usdc)), protocolOwner);
+        AsyncSwap h = AsyncSwap(
+            payable(HuffDeploy.create(
+                    HuffDeploy.unboundHookCreationCode(abi.encode(manager, Currency.wrap(address(usdc)), protocolOwner))
+                ))
+        );
         assertEq(h.owner(), protocolOwner);
         assertTrue(h.owner() != address(this));
     }
 
     function test_rejectZeroOwner() public {
+        bytes memory code =
+            HuffDeploy.unboundHookCreationCode(abi.encode(manager, Currency.wrap(address(usdc)), address(0)));
         vm.expectRevert(AsyncSwap.ZeroAddress.selector);
-        new NumeraireConstructorHarness(manager, Currency.wrap(address(usdc)), address(0));
+        HuffDeploy.create(code);
     }
 
     function test_acceptNumeraireOnEitherSortedSide() public {

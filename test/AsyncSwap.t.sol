@@ -2,9 +2,9 @@
 pragma solidity ^0.8.26;
 
 import {SetupHook} from "./SetupHook.t.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {AsyncFiller} from "@async-swap/libraries/AsyncFiller.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {IAsyncFiller as AsyncFiller} from "interfaces/IAsyncFiller.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {CurrencyLibrary} from "v4-core/types/Currency.sol";
 import {PoolModifyLiquidityTest} from "v4-core/test/PoolModifyLiquidityTest.sol";

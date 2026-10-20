@@ -2,8 +2,8 @@
 src = "src"
 out = "out"
 libs = ["dependencies", "lib"]
-# The Huff contracts are compiled by `hnc` through `vm.ffi` (foundry-huff-neo). `src/` is the
-# asyncswap/contracts Solidity (a full copy); the tests take their types and ABI from it but deploy the Huff in huff/.
+# `src/` is Huff only, compiled by `hnc` through `vm.ffi` (foundry-huff-neo). `interfaces/` is the
+# Solidity ABI the tests (asyncswap/contracts' suite) call it through.
 ffi = true
 fs_permissions = [
   { access = "read", path = "./broadcast/" },

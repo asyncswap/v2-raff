@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 import {SetupHook} from "../SetupHook.t.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 
 /// @notice `order.owner`, `UserParams.user`, and the submitting account must agree; a mismatch
 ///         reverts before any input is transferred.
