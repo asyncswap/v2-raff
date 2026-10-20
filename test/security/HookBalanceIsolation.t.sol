@@ -3,9 +3,9 @@ pragma solidity ^0.8.26;
 
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {CurrencySettler} from "@async-swap/libraries/CurrencySettler.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {CurrencySettler} from "test/utils/CurrencySettler.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 import {MockERC20} from "../utils/MockERC20.sol";
 import {Test} from "forge-std/Test.sol";
 import {PoolManager} from "v4-core/PoolManager.sol";

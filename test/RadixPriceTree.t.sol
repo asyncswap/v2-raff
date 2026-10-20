@@ -4,32 +4,14 @@ pragma solidity 0.8.26;
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {Test} from "forge-std/Test.sol";
-import {RadixPriceTree} from "@async-swap/libraries/RadixPriceTree.sol";
 
-contract RadixHarness {
-    using RadixPriceTree for RadixPriceTree.Tree;
-
-    RadixPriceTree.Tree internal tree;
-
-    function insert(uint128 price) external returns (bool) {
-        return tree.insert(price);
-    }
-
-    function remove(uint128 price) external {
-        tree.remove(price);
-    }
-
-    function best(bool highest) external view returns (bool, uint128) {
-        return tree.best(highest);
-    }
-
-    function nextNodeId() external view returns (uint32) {
-        return tree.nextNodeId;
-    }
-
-    function freeCount() external view returns (uint256) {
-        return tree.freeIds.length;
-    }
+/// @dev The Huff `RadixPriceTree` behind `test/harness/RadixHarness.huff`.
+interface RadixHarness {
+    function insert(uint128 price) external returns (bool);
+    function remove(uint128 price) external;
+    function best(bool highest) external view returns (bool, uint128);
+    function nextNodeId() external view returns (uint32);
+    function freeCount() external view returns (uint256);
 }
 
 /// @notice Node ids released by `remove` are recycled: the counter only tracks the peak

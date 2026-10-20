@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {Test, Vm} from "forge-std/Test.sol";
-import {MatchingEngine} from "src/MatchingEngine.sol";
+import {IMatchingEngine as MatchingEngine} from "interfaces/IMatchingEngine.sol";
 
 contract MatchingEngineTest is Test {
     MatchingEngine private engine;

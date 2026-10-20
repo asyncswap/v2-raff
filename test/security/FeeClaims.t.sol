@@ -4,9 +4,9 @@ pragma solidity 0.8.26;
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {AsyncSwap} from "src/AsyncSwap.sol";
-import {FeeVault} from "src/FeeVault.sol";
-import {AsyncOrder} from "src/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {IFeeVault as FeeVault} from "interfaces/IFeeVault.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {PoolIdLibrary} from "v4-core/types/PoolId.sol";
@@ -14,14 +14,6 @@ import {PoolKey} from "v4-core/types/PoolKey.sol";
 import {Hooks} from "v4-core/libraries/Hooks.sol";
 
 /// @dev Exercise fee accounting with a larger test fee. Production rate is tested separately.
-contract FeeTestHook is AsyncSwap {
-    constructor(IPoolManager manager, Currency numeraire, address owner_) AsyncSwap(manager, numeraire, owner_) {}
-
-    function calculatePoolFee(uint24, uint256 amount) public pure override returns (uint256) {
-        return amount / 100;
-    }
-}
-
 contract FeeClaimsTest is SetupHook {
     using PoolIdLibrary for PoolKey;
 

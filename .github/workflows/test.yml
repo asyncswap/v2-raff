@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  # Huff Neo Compiler release that builds huff/.
+  # Huff Neo Compiler release that builds src/.
   HNC_VERSION: v1.6.2
 
 jobs:
@@ -45,12 +45,12 @@ jobs:
       - name: Check generated Huff is current
         run: |
           ./script/huff-codegen.sh
-          git diff --exit-code huff/generated
+          git diff --exit-code src/generated
 
       - name: Run Forge fmt
         run: forge fmt --check
 
-      # asyncswap/contracts' suite, deploying the Huff in huff/; the invariant suites at the depth
+      # asyncswap/contracts' suite, deploying the Huff in src/; the invariant suites at the depth
       # asyncswap/contracts' CI uses. test/huff/CodeSize.t.sol keeps the Huff runtimes under EIP-170.
       - name: Run Forge tests
         env:

@@ -1,7 +1,7 @@
 /// @notice Exposes the Huff `RadixPriceTree` with the interface of `test/RadixPriceTree.t.sol`'s `RadixHarness`.
-#include "../lib/Common.huff"
-#include "../lib/Math.huff"
-#include "../lib/RadixPriceTree.huff"
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/RadixPriceTree.huff"
 
 #define constant TREE = 0x01
 

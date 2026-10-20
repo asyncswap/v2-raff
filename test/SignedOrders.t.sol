@@ -3,10 +3,10 @@ pragma solidity ^0.8.26;
 
 import {SetupHook} from "./SetupHook.t.sol";
 import {Permit2Bytecode} from "./utils/Permit2Bytecode.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {Router} from "@async-swap/Router.sol";
-import {OrderSignatures} from "@async-swap/libraries/OrderSignatures.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {IRouter as Router} from "interfaces/IRouter.sol";
+import {OrderSignatures} from "test/utils/OrderSignatures.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 
 interface IPermit2Domain {

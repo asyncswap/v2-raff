@@ -2,9 +2,9 @@
 pragma solidity ^0.8.26;
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {AsyncSwap} from "@async-swap/AsyncSwap.sol";
-import {AsyncOrder} from "@async-swap/types/AsyncOrder.sol";
-import {Router} from "@async-swap/Router.sol";
+import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {IRouter as Router} from "interfaces/IRouter.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
 import {IUnlockCallback} from "v4-core/interfaces/callback/IUnlockCallback.sol";
 import {PoolId} from "v4-core/types/PoolId.sol";
