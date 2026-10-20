@@ -1,28 +1,30 @@
 name: CI
 
+permissions: {}
+
 on:
   push:
   pull_request:
   workflow_dispatch:
 
 env:
-  FOUNDRY_PROFILE: ci
-  # Huff Neo Compiler release used to build and test the contracts.
+  # Huff Neo Compiler release that builds huff/.
   HNC_VERSION: v1.6.2
 
 jobs:
   check:
     name: Foundry project
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
         with:
+          persist-credentials: false
           submodules: recursive
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: stable
 
       - name: Install Huff Neo
         run: |
@@ -36,16 +38,22 @@ jobs:
           forge --version
           hnc --version
 
+      - name: Install Soldeer dependencies
+        run: forge soldeer install
+
+      # The hook's constructor deploys the FeeVault from this generated creation code.
+      - name: Check generated Huff is current
+        run: |
+          ./script/huff-codegen.sh
+          git diff --exit-code huff/generated
+
       - name: Run Forge fmt
         run: forge fmt --check
 
-      - name: Run Huff tests
-        run: |
-          for file in $(grep -l '#define test' src/*.huff); do
-            echo "::group::hnc test $file"
-            hnc "$file" test
-            echo "::endgroup::"
-          done
-
+      # asyncswap/contracts' suite, deploying the Huff in huff/; the invariant suites at the depth
+      # asyncswap/contracts' CI uses. test/huff/CodeSize.t.sol keeps the Huff runtimes under EIP-170.
       - name: Run Forge tests
+        env:
+          FOUNDRY_INVARIANT_RUNS: "64"
+          FOUNDRY_INVARIANT_DEPTH: "64"
         run: forge test -vvv

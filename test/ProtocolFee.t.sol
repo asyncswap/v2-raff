@@ -1,43 +1,58 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.8.26;
+import {AsyncOrder} from "src/types/AsyncOrder.sol";
+import {AsyncSwap} from "src/AsyncSwap.sol";
+import {SetupHook} from "./SetupHook.t.sol";
 
-import {Test} from "forge-std/Test.sol";
-import {Huff} from "./utils/Huff.sol";
-import {IMathHarness} from "./utils/IMathHarness.sol";
-
-/// @dev Spec: `AsyncSwapSpec/Fee.lean`, run against the Huff `POOL_FEE`.
-contract ProtocolFeeTest is Test {
-    IMathHarness m;
-
-    function setUp() public {
-        m = IMathHarness(Huff.deploy("test/harness/MathHarness.huff"));
+contract ProtocolFeeTest is SetupHook {
+    function test_fillSplitsHundredUsdcAndPaysFullInput() public {
+        address maker = makeAddr("maker");
+        address filler = makeAddr("filler");
+        topUp(maker, 1 ether);
+        topUp(filler, 100_000_000);
+        AsyncOrder memory order = AsyncOrder(key, maker, true, 1 ether, 99_700_000, 0, 2 ** 96, bytes32(0));
+        vm.startPrank(maker);
+        token0.approve(address(router), 1 ether);
+        router.swap(order, abi.encode(AsyncSwap.UserParams(maker, address(router), 99_700_000, 0)));
+        vm.stopPrank();
+        order.salt = _expectedSalt(maker, 1 ether, 99_700_000);
+        uint256 makerBefore = token1.balanceOf(maker);
+        uint256 fillerBefore = token0.balanceOf(filler);
+        vm.startPrank(filler);
+        token1.approve(address(router), 100_000_000);
+        vm.expectRevert("Price exceeds maxPrice");
+        router.fillOrder(order, 99_700_000, "");
+        assertEq(token1.balanceOf(filler), 100_000_000);
+        router.fillOrder(order, 100_000_000, "");
+        vm.stopPrank();
+        assertEq(token1.balanceOf(maker) - makerBefore, 99_700_000);
+        assertEq(token0.balanceOf(filler) - fillerBefore, 1 ether);
+        assertEq(token1.balanceOf(filler), 0);
+        assertEq(manager.balanceOf(address(hook.feeVault()), currency0.toId()), 0);
+        assertEq(manager.balanceOf(address(hook.feeVault()), currency1.toId()), 300_000);
     }
 
-    /// `poolFee_eq`: the split form equals `net * 3 / 997`.
-    function testFuzz_splitFormEqualsStraightforward(uint256 net) public view {
-        net = bound(net, 0, type(uint256).max / 3);
-        assertEq(m.poolFee(net), net * 3 / 997);
+    function test_feeIsPointThreePercent() public view {
+        assertEq(hook.calculatePoolFee(0x800000, 0.997 ether), 0.003 ether);
+        assertEq(hook.calculatePoolFee(0x800000, 997_000), 3_000);
     }
 
-    /// `poolFee_eq_30bps_of_gross`: exactly 30 bps of gross, rounded down.
-    function testFuzz_thirtyBpsOfGross(uint256 net) public view {
-        net = bound(net, 0, type(uint256).max / 4);
-        uint256 fee = m.poolFee(net);
-        assertEq(fee, 3 * (net + fee) / 1000);
+    function test_feeRoundsDownAtSmallestUnit() public view {
+        assertEq(hook.calculatePoolFee(0x800000, 332), 0);
+        assertEq(hook.calculatePoolFee(0x800000, 333), 1);
+        assertEq(hook.calculatePoolFee(0x800000, 664), 1);
     }
 
-    /// `poolFee_le_net`, `poolFee_mono`, `poolFee_eq_zero_iff`.
-    function testFuzz_boundsAndMonotone(uint256 a, uint256 b) public view {
-        a = bound(a, 0, type(uint256).max / 4);
-        b = bound(b, 0, type(uint256).max / 4);
-        assertLe(m.poolFee(a), a);
-        if (a <= b) assertLe(m.poolFee(a), m.poolFee(b));
-        assertEq(m.poolFee(a) == 0, a < 333);
+    function testFuzz_feeIsPointThreePercentOfGross(uint128 net) public view {
+        uint256 fee = hook.calculatePoolFee(0x800000, net);
+        uint256 gross = uint256(net) + fee;
+        assertEq(fee, (gross * 3) / 1_000);
+        assertEq(gross - fee, net);
     }
 
-    /// `poolFee_lt_two_pow_256`: no overflow on the whole `uint256` range.
-    function test_noOverflowAtMax() public view {
-        uint256 fee = m.poolFee(type(uint256).max);
-        assertEq(fee, (type(uint256).max / 997) * 3 + ((type(uint256).max % 997) * 3) / 997);
+    function testFuzz_feeCannotOverflow(uint256 amount) public view {
+        uint256 fee = hook.calculatePoolFee(0x800000, amount);
+        assertEq(fee, (amount / 997) * 3 + ((amount % 997) * 3) / 997);
+        assertLe(fee, amount);
     }
 }

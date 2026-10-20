@@ -1,0 +1,378 @@
+/// @title MatchingEngine
+/// @notice Standalone price-time matching harness: a radix-indexed limit book that emits deterministic fill
+///         instructions. Algorithm and gas benchmark only; it does not custody or settle tokens.
+/// @dev Huff build of `asyncswap/contracts` `src/MatchingEngine.sol`, on the same `RadixPriceTree` as the hook.
+///      The Solidity's reentrancy guard is a transient flag here: the engine makes no external calls, and the
+///      flag is set and cleared within each call either way.
+///
+///      Book of `market`: M = keccak(market, 0):
+///        M + 0   nextOrderId (0–63) | nextSequence (64–127)
+///        M + 1   bid tree      M + 2   ask tree
+///        M + 3   bid levels: keccak(price, M + 3)      M + 4   ask levels: keccak(price, M + 4)
+///        M + 5   orders: keccak(orderId, M + 5) → 3 slots
+///      Level: head (0–63) | tail (64–127) | orderCount (128–159).
+///      Order: O + 0 owner | isBuy (160) | active (168) | sequence (176–239); O + 1 price | remaining << 128;
+///             O + 2 previous | next << 64.
+
+#include "./lib/Common.huff"
+#include "./lib/Math.huff"
+#include "./lib/RadixPriceTree.huff"
+
+#define error ZeroAmount()
+#define error ZeroPrice()
+#define error InvalidMatchBound()
+#define error NotOrderOwner()
+#define error OrderNotFound()
+#define error ReentrantCall()
+
+#define event OrderPlaced(bytes32 indexed, uint64 indexed, address indexed, bool, uint128, uint128, uint64)
+#define event OrderCancelled(bytes32 indexed, uint64 indexed, address indexed)
+#define event OrderFilled(bytes32 indexed, uint64 indexed, uint64 indexed, uint128, uint128, uint256)
+
+#define constant ENTERED_SLOT = 0x00
+#define constant MAX_MATCHES_PER_CALL = 0x08
+
+#define constant G_MARKET = 0xa0
+#define constant G_M      = 0xc0
+#define constant G_INC    = 0xe0
+#define constant G_MAKER  = 0x100
+#define constant G_TAKER  = 0x120
+#define constant G_QTY    = 0x140
+#define constant G_PRICE  = 0x160
+#define constant G_COUNT  = 0x180
+#define constant G_BID    = 0x1a0
+#define constant G_ASK    = 0x1c0
+#define constant G_R      = 0x1e0
+#define constant G_RO     = 0x200
+#define constant G_RL     = 0x220
+#define constant G_RB     = 0x240
+
+#define macro NON_REENTRANT() = takes (0) returns (0) {
+    [ENTERED_SLOT] tload iszero ok jumpi
+    __ERROR(ReentrantCall) REVERT_0()
+    ok:
+    0x01 [ENTERED_SLOT] tstore
+}
+
+#define macro LOAD_MARKET() = takes (0) returns (0) {
+    0x04 calldataload dup1 [G_MARKET] mstore
+    0x00 swap1 HASH_2() [G_M] mstore
+}
+
+#define macro ORDER_AT() = takes (1) returns (1) {
+    // [orderId]
+    [G_M] mload 0x05 add swap1 HASH_2()
+}
+
+/// @dev Level slot of `price` on side `isBuy` (bids M + 3, asks M + 4).
+#define macro LEVEL_AT() = takes (2) returns (1) {
+    // [isBuy, price]
+    [G_M] mload 0x04 add sub swap1 HASH_2()
+}
+
+#define macro TREE_OF() = takes (1) returns (1) {
+    // [isBuy]
+    [G_M] mload 0x02 add sub
+}
+
+#define macro O_REMAINING() = takes (1) returns (1) { 0x80 shr }
+#define macro O_BUY() = takes (1) returns (1) { 0xa0 shr 0xff and }
+#define macro O_SEQ() = takes (1) returns (1) { 0xb0 shr [UINT64_MASK] and }
+
+/// @notice `_append(orderId)`: join the tail of the order's price level.
+#define fn APPEND() = takes (1) returns (0) {
+    // [id]
+    dup1 [G_R] mstore
+    ORDER_AT() dup1 [G_RO] mstore
+    dup1 0x01 add sload [UINT128_MASK] and      // [price, O]
+    swap1 sload O_BUY()                         // [isBuy, price]
+    dup2 dup2 LEVEL_AT() dup1 [G_RL] mstore sload   // [lvl, isBuy, price]
+    dup1 0x80 shr [UINT32_MASK] and has_level jumpi
+    dup3 dup3 TREE_OF() TREE_INSERT() pop
+    has_level:                                  // [lvl, isBuy, price]
+    swap2 pop pop                               // [lvl]
+    dup1 0x40 shr [UINT64_MASK] and             // [tail, lvl]
+    dup1 [G_RO] mload 0x02 add sstore           // order.previous = tail (next is 0)
+    dup1 iszero first jumpi
+    // orders[tail].next = id
+    ORDER_AT() 0x02 add dup1 sload [UINT64_MASK] 0x40 shl not and [G_R] mload 0x40 shl or swap1 sstore
+    linked jump
+    first:
+    pop [UINT64_MASK] not and [G_R] mload or    // head = id
+    lvl_set jump
+    linked:
+    lvl_set:                                    // [lvl]
+    [UINT64_MASK] 0x40 shl not and [G_R] mload 0x40 shl or   // tail = id
+    0x01 0x80 shl add                           // ++orderCount
+    [G_RL] mload sstore
+}
+
+/// @notice `_remove(orderId)`: unlink from the level; drop the price and the level when it empties; delete
+///         the order.
+#define fn REMOVE() = takes (1) returns (0) {
+    // [id]
+    ORDER_AT() dup1 [G_RO] mstore
+    dup1 0x01 add sload [UINT128_MASK] and [G_PRICE] mstore
+    sload O_BUY() dup1 [G_RB] mstore            // isBuy
+    [G_PRICE] mload swap1 LEVEL_AT() dup1 [G_RL] mstore sload   // [lvl]
+    [G_RO] mload 0x02 add sload                 // [links, lvl]
+    dup1 0x40 shr [UINT64_MASK] and             // [next, links, lvl]
+    swap1 [UINT64_MASK] and                     // [prev, next, lvl]
+    dup1 prev_link jumpi
+    // head = next
+    swap2 [UINT64_MASK] not and dup2 or swap2
+    prev_done jump
+    prev_link:                                  // orders[prev].next = next
+    dup2 dup2 ORDER_AT() 0x02 add dup1 sload [UINT64_MASK] 0x40 shl not and swap1 swap2 0x40 shl or swap1 sstore
+    prev_done:
+    dup2 next_link jumpi
+    // tail = prev
+    swap2 [UINT64_MASK] 0x40 shl not and dup3 0x40 shl or swap2
+    next_done jump
+    next_link:                                  // orders[next].previous = prev
+    dup1 dup3 ORDER_AT() 0x02 add dup1 sload [UINT64_MASK] not and swap1 swap2 or swap1 sstore
+    next_done:
+    pop pop                                     // [lvl]
+    0x01 0x80 shl swap1 sub                     // --orderCount
+    dup1 0x80 shr [UINT32_MASK] and kept jumpi
+    pop 0x00                                    // delete the level
+    [G_PRICE] mload [G_RB] mload TREE_OF() TREE_REMOVE()
+    kept:
+    [G_RL] mload sstore
+    0x00 [G_RO] mload sstore
+    0x00 [G_RO] mload 0x01 add sstore
+    0x00 [G_RO] mload 0x02 add sstore
+}
+
+/// @notice `_fill(makerId, takerId, quantity, price)`.
+#define fn FILL() = takes (0) returns (0) {
+    [G_QTY] mload 0x80 shl                      // [q << 128]
+    dup1 [G_MAKER] mload ORDER_AT() 0x01 add dup1 sload swap1 swap2 swap1 sub swap1 sstore
+    [G_TAKER] mload ORDER_AT() 0x01 add dup1 sload swap1 swap2 swap1 sub swap1 sstore
+    [G_QTY] mload [MEM_LOG] mstore
+    [G_PRICE] mload 0xb20 mstore
+    [PRICE_SCALE] [G_PRICE] mload [G_QTY] mload MUL_DIV() 0xb40 mstore
+    [G_TAKER] mload [G_MAKER] mload [G_MARKET] mload __EVENT_HASH(OrderFilled) 0x60 [MEM_LOG] log4
+}
+
+#define macro REMAINING_OF() = takes (1) returns (1) {
+    // [id]
+    ORDER_AT() 0x01 add sload O_REMAINING()
+}
+
+#define macro MIN() = takes (2) returns (1) {
+    // [a, b]
+    dup2 dup2 lt is_a jumpi
+    pop done jump
+    is_a:
+    swap1 pop
+    done:
+}
+
+/// @notice `_matchIncoming(incomingId)`.
+#define fn MATCH_INCOMING() = takes (0) returns (0) {
+    0x00 [G_COUNT] mstore
+    loop:
+        [MAX_MATCHES_PER_CALL] [G_COUNT] mload lt iszero done jumpi
+        [G_INC] mload REMAINING_OF() iszero done jumpi
+        [G_INC] mload ORDER_AT() sload O_BUY()  // [incBuy]
+        dup1 iszero dup1 TREE_OF() TREE_BEST()  // [found, opp, incBuy]
+        iszero done_1 jumpi
+        [G_INC] mload ORDER_AT() 0x01 add sload [UINT128_MASK] and   // [incPrice, opp, incBuy]
+        dup3 incoming_buy jumpi
+        dup2 swap1 gt done_1 jumpi              // sell: incPrice > opp
+        cross jump
+        incoming_buy:
+        dup2 swap1 lt done_1 jumpi              // buy: incPrice < opp
+        cross:                                  // [opp, incBuy]
+        dup1 dup3 iszero LEVEL_AT() sload [UINT64_MASK] and   // [makerId, opp, incBuy]
+        dup1 [G_MAKER] mstore
+        REMAINING_OF() [G_INC] mload REMAINING_OF() MIN() [G_QTY] mstore
+        [G_INC] mload [G_TAKER] mstore
+        [G_MAKER] mload ORDER_AT() 0x01 add sload [UINT128_MASK] and [G_PRICE] mstore
+        FILL()
+        [G_MAKER] mload REMAINING_OF() still_open jumpi
+        [G_MAKER] mload REMOVE()
+        still_open:
+        pop pop
+        [G_COUNT] mload 0x01 add [G_COUNT] mstore
+        loop jump
+    done_1:
+        pop pop
+    done:
+}
+
+/// @notice `_clearBestPair()` → whether a crossed pair was cleared.
+#define fn CLEAR_BEST_PAIR() = takes (0) returns (1) {
+    0x01 0x01 TREE_OF() TREE_BEST()             // [hasBid, bidPrice]
+    iszero none_1 jumpi
+    0x00 0x00 TREE_OF() TREE_BEST()             // [hasAsk, askPrice, bidPrice]
+    iszero none_2 jumpi
+    dup1 dup3 lt none_2 jumpi                   // bidPrice < askPrice
+    0x00 LEVEL_AT() sload [UINT64_MASK] and [G_ASK] mstore   // [bidPrice]
+    0x01 LEVEL_AT() sload [UINT64_MASK] and [G_BID] mstore
+    // maker = ask.sequence < bid.sequence ? ask : bid
+    [G_BID] mload ORDER_AT() sload O_SEQ() [G_ASK] mload ORDER_AT() sload O_SEQ() lt
+    ask_older jumpi
+    [G_BID] mload [G_MAKER] mstore [G_ASK] mload [G_TAKER] mstore
+    roles jump
+    ask_older:
+    [G_ASK] mload [G_MAKER] mstore [G_BID] mload [G_TAKER] mstore
+    roles:
+    [G_ASK] mload REMAINING_OF() [G_BID] mload REMAINING_OF() MIN() [G_QTY] mstore
+    [G_MAKER] mload ORDER_AT() 0x01 add sload [UINT128_MASK] and [G_PRICE] mstore
+    FILL()
+    [G_BID] mload REMAINING_OF() bid_open jumpi
+    [G_BID] mload REMOVE()
+    bid_open:
+    [G_ASK] mload REMAINING_OF() ask_open jumpi
+    [G_ASK] mload REMOVE()
+    ask_open:
+    0x01 done jump
+    none_2:
+    pop pop 0x00 done jump
+    none_1:
+    pop 0x00
+    done:
+}
+
+/// @notice `placeOrder(market, isBuy, amount, price)` → orderId.
+#define macro PLACE_ORDER() = takes (0) returns (0) {
+    NON_REENTRANT()
+    LOAD_BOOL(0x24) pop
+    0x44 calldataload dup1 0x80 shr bad jumpi
+    0x64 calldataload dup1 0x80 shr bad jumpi
+    swap1 nonzero_amount jumpi
+    __ERROR(ZeroAmount) REVERT_0()
+    nonzero_amount:
+    nonzero_price jumpi
+    __ERROR(ZeroPrice) REVERT_0()
+    nonzero_price:
+    LOAD_MARKET()
+    // orderId = ++nextOrderId; sequence = ++nextSequence (checked uint64)
+    [G_M] mload sload                           // [hdr]
+    dup1 [UINT64_MASK] and 0x01 add             // [id, hdr]
+    dup2 0x40 shr [UINT64_MASK] and 0x01 add    // [seq, id, hdr]
+    dup2 [UINT64_MASK] lt overflow jumpi
+    dup1 [UINT64_MASK] lt overflow jumpi
+    dup1 0x40 shl dup3 or [G_M] mload sstore    // header
+    swap2 pop                                   // [id, seq]
+    dup1 [G_INC] mstore
+    ORDER_AT()                                  // [O, seq]
+    swap1 0xb0 shl 0x01 0xa8 shl or LOAD_BOOL(0x24) 0xa0 shl or caller or   // [w0, O]
+    dup2 sstore
+    0x44 calldataload 0x80 shl 0x64 calldataload or dup2 0x01 add sstore
+    pop
+    MATCH_INCOMING()
+    [G_INC] mload REMAINING_OF() rests jumpi
+    [G_INC] mload ORDER_AT() dup1 0x00 swap1 sstore dup1 0x01 add 0x00 swap1 sstore 0x02 add 0x00 swap1 sstore
+    placed jump
+    rests:
+    [G_INC] mload APPEND()
+    placed:
+    // OrderPlaced(market, id, owner, isBuy, amount, price, sequence)
+    LOAD_BOOL(0x24) [MEM_LOG] mstore
+    0x44 calldataload 0xb20 mstore
+    0x64 calldataload 0xb40 mstore
+    [G_M] mload sload 0x40 shr [UINT64_MASK] and 0xb60 mstore
+    caller [G_INC] mload [G_MARKET] mload __EVENT_HASH(OrderPlaced) 0x80 [MEM_LOG] log4
+    0x00 [ENTERED_SLOT] tstore
+    [G_INC] mload RETURN_1()
+    overflow:
+    PANIC(0x11)
+    bad:
+    0x00 0x00 revert
+}
+
+#define macro MATCH_BOOK() = takes (0) returns (0) {
+    NON_REENTRANT()
+    0x24 calldataload dup1 0x08 shr bad jumpi
+    dup1 iszero bad_bound jumpi
+    dup1 [MAX_MATCHES_PER_CALL] lt bad_bound jumpi
+    LOAD_MARKET()
+    0x00 [G_COUNT] mstore                       // [max]
+    loop:
+        dup1 [G_COUNT] mload lt iszero done jumpi
+        CLEAR_BEST_PAIR() iszero done jumpi
+        [G_COUNT] mload 0x01 add [G_COUNT] mstore
+        loop jump
+    done:
+    0x00 [ENTERED_SLOT] tstore
+    [G_COUNT] mload RETURN_1()
+    bad_bound:
+    __ERROR(InvalidMatchBound) REVERT_0()
+    bad:
+    0x00 0x00 revert
+}
+
+#define macro CANCEL_ORDER() = takes (0) returns (0) {
+    NON_REENTRANT()
+    0x24 calldataload dup1 0x40 shr bad jumpi
+    LOAD_MARKET()
+    dup1 ORDER_AT() sload                       // [w0, id]
+    dup1 0xa8 shr 0xff and active jumpi
+    __ERROR(OrderNotFound) REVERT_0()
+    active:
+    [ADDRESS_MASK] and caller eq owned jumpi
+    __ERROR(NotOrderOwner) REVERT_0()
+    owned:
+    dup1 REMOVE()
+    caller swap1 [G_MARKET] mload __EVENT_HASH(OrderCancelled) 0x00 0x00 log4
+    0x00 [ENTERED_SLOT] tstore
+    RETURN_EMPTY()
+    bad:
+    0x00 0x00 revert
+}
+
+/// @notice `getOrder(market, orderId)` → (owner, price, remaining, sequence, previous, next, isBuy, active).
+#define macro GET_ORDER() = takes (0) returns (0) {
+    0x24 calldataload dup1 0x40 shr bad jumpi
+    LOAD_MARKET()
+    ORDER_AT()
+    dup1 sload
+    dup1 [ADDRESS_MASK] and 0x00 mstore
+    dup1 O_SEQ() 0x60 mstore
+    dup1 O_BUY() 0xc0 mstore
+    0xa8 shr 0xff and 0xe0 mstore
+    dup1 0x01 add sload dup1 [UINT128_MASK] and 0x20 mstore O_REMAINING() 0x40 mstore
+    0x02 add sload dup1 [UINT64_MASK] and 0x80 mstore 0x40 shr [UINT64_MASK] and 0xa0 mstore
+    0x100 0x00 return
+    bad:
+    0x00 0x00 revert
+}
+
+#define macro BEST_PRICE() = takes (0) returns (0) {
+    LOAD_MARKET()
+    LOAD_BOOL(0x24) dup1 TREE_OF() TREE_BEST() RETURN_2()
+}
+
+#define macro LEVEL_ORDER_COUNT() = takes (0) returns (0) {
+    0x44 calldataload dup1 0x80 shr bad jumpi
+    LOAD_MARKET()
+    LOAD_BOOL(0x24) LEVEL_AT() sload 0x80 shr [UINT32_MASK] and RETURN_1()
+    bad:
+    0x00 0x00 revert
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    NON_PAYABLE()
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("placeOrder(bytes32,bool,uint128,uint128)") eq place_order jumpi
+    dup1 __FUNC_SIG("matchBook(bytes32,uint8)") eq match_book jumpi
+    dup1 __FUNC_SIG("cancelOrder(bytes32,uint64)") eq cancel_order jumpi
+    dup1 __FUNC_SIG("getOrder(bytes32,uint64)") eq get_order jumpi
+    dup1 __FUNC_SIG("bestPrice(bytes32,bool)") eq best_price jumpi
+    dup1 __FUNC_SIG("levelOrderCount(bytes32,bool,uint128)") eq level_order_count jumpi
+    dup1 __FUNC_SIG("PRICE_SCALE()") eq price_scale jumpi
+    dup1 __FUNC_SIG("MAX_MATCHES_PER_CALL()") eq max_matches jumpi
+    0x00 0x00 revert
+
+    place_order:       PLACE_ORDER()
+    match_book:        MATCH_BOOK()
+    cancel_order:      CANCEL_ORDER()
+    get_order:         GET_ORDER()
+    best_price:        BEST_PRICE()
+    level_order_count: LEVEL_ORDER_COUNT()
+    price_scale:       [PRICE_SCALE] RETURN_1()
+    max_matches:       [MAX_MATCHES_PER_CALL] RETURN_1()
+}
