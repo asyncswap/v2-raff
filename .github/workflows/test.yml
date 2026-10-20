@@ -56,4 +56,7 @@ jobs:
         env:
           FOUNDRY_INVARIANT_RUNS: "64"
           FOUNDRY_INVARIANT_DEPTH: "64"
+          # The Unichain fork tests run against live mainnet state at a pinned block.
+          UNICHAIN_FORK_RPC_URL: https://mainnet.unichain.org
+          UNICHAIN_FORK_BLOCK: "61709000"
         run: forge test -vvv

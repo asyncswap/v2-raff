@@ -2,8 +2,8 @@
 pragma solidity ^0.8.26;
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 
 /// @notice Regression: a FIFO reprice must leave both price levels well linked.
 /// @dev `AsyncFiller._append` used to set `previous` but not `next`, so an order re-appended by

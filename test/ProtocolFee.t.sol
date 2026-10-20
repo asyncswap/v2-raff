@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.26;
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
 import {SetupHook} from "./SetupHook.t.sol";
 
 contract ProtocolFeeTest is SetupHook {

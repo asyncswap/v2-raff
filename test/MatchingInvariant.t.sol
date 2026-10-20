@@ -5,12 +5,12 @@ import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {Test} from "forge-std/Test.sol";
 import {StdInvariant} from "forge-std/StdInvariant.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {INativeClaims as NativeClaims} from "interfaces/INativeClaims.sol";
-import {IRouter as Router} from "interfaces/IRouter.sol";
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
-import {IAsyncFiller as AsyncFiller} from "interfaces/IAsyncFiller.sol";
-import {ISignatureTransfer} from "interfaces/ISignatureTransfer.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {INativeClaims as NativeClaims} from "src/interface/INativeClaims.sol";
+import {IRouter as Router} from "src/interface/IRouter.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
+import {IAsyncFiller as AsyncFiller} from "src/interface/IAsyncFiller.sol";
+import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
 import {MockERC20} from "./utils/MockERC20.sol";
 import {PoolManager} from "v4-core/PoolManager.sol";
 import {Hooks} from "v4-core/libraries/Hooks.sol";

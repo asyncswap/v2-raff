@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
 import {CurrencySettler} from "test/utils/CurrencySettler.sol";
-import {IAsyncFiller as AsyncFiller} from "interfaces/IAsyncFiller.sol";
+import {IAsyncFiller as AsyncFiller} from "src/interface/IAsyncFiller.sol";
 import {SetupHook} from "../SetupHook.t.sol";
 import {Currency, IPoolManager, SwapParams} from "v4-core/interfaces/IPoolManager.sol";
 import {IHooks} from "v4-core/interfaces/IHooks.sol";

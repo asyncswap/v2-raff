@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {PoolKey} from "v4-core/types/PoolKey.sol";
 

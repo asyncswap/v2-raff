@@ -4,9 +4,9 @@ pragma solidity 0.8.26;
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {IFeeVault as FeeVault} from "interfaces/IFeeVault.sol";
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {IFeeVault as FeeVault} from "src/interface/IFeeVault.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 import {IPoolManager} from "v4-core/interfaces/IPoolManager.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {PoolIdLibrary} from "v4-core/types/PoolId.sol";

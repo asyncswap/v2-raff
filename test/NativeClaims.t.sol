@@ -6,9 +6,9 @@ import {HuffDeploy} from "./utils/HuffDeploy.sol";
 import {NativeAsyncSwapTest} from "./NativeAsyncSwap.t.sol";
 import {PoolModifyLiquidityTest} from "v4-core/test/PoolModifyLiquidityTest.sol";
 import {ModifyLiquidityParams} from "v4-core/types/PoolOperation.sol";
-import {INativeClaims as NativeClaims} from "interfaces/INativeClaims.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {INativeClaims as NativeClaims} from "src/interface/INativeClaims.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 
 contract RejectETH {
     receive() external payable {

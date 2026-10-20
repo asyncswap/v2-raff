@@ -2,8 +2,8 @@
 pragma solidity ^0.8.26;
 
 import {SetupHook} from "../SetupHook.t.sol";
-import {IAsyncSwap as AsyncSwap} from "interfaces/IAsyncSwap.sol";
-import {AsyncOrder} from "interfaces/types/AsyncOrder.sol";
+import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
+import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 
 /// @notice Crossing is decided exactly. Book price keys are truncated WAD ratios, so two orders
 ///         can share a key without crossing; `AsyncMatching._crosses` resolves equal keys with a
