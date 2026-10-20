@@ -1,0 +1,80 @@
+/// @title FeeVault
+/// @notice Holds and redeems protocol fee claims, never maker escrow.
+/// @dev Huff build of `asyncswap/contracts` `src/FeeVault.sol`. The hook deploys it from its constructor with
+///      `(IPoolManager manager)` appended to this creation code; `hook` is the deployer.
+
+#include "./lib/Common.huff"
+#include "./lib/PoolManager.huff"
+
+#define error Unauthorized()
+#define error ZeroAddress()
+
+#define event FeesCollected(address indexed, address indexed, uint256)
+
+#define constant IMMUTABLES = __codesize(RUNTIME)
+
+#define macro MANAGER() = takes (0) returns (1) { 0x40 mload }
+#define macro HOOK() = takes (0) returns (1) { 0x60 mload }
+
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    [IMMUTABLES] __codesize(CONSTRUCTOR) 0x100 codecopy
+    0x20 0x20 codesize sub [IMMUTABLES] 0x100 add codecopy   // poolManager
+    caller [IMMUTABLES] 0x120 add mstore                     // hook = msg.sender
+    [IMMUTABLES] 0x40 add 0x100 return
+}
+
+/// @notice `collect(currency, recipient)`: the hook's current owner redeems all fees of one currency.
+#define macro COLLECT() = takes (0) returns (0) {
+    // msg.sender == hook.owner()
+    __FUNC_SIG("owner()") CALL_SELECTOR()
+    0x20 [CALL_0] 0x04 [CALL_0] HOOK() gas staticcall
+    ok jumpi
+    BUBBLE()
+    ok:
+    0x20 returndatasize lt bad jumpi
+    [CALL_0] mload dup1 0xa0 shr bad jumpi
+    caller eq authorized jumpi
+    __ERROR(Unauthorized) REVERT_0()
+    authorized:
+    LOAD_ADDRESS(0x24)
+    dup1 has_recipient jumpi
+    __ERROR(ZeroAddress) REVERT_0()
+    has_recipient:
+    [CALL_64] mstore
+    LOAD_ADDRESS(0x04) [CALL_44] mstore
+    0x40 PM_UNLOCK()
+    RETURN_EMPTY()
+    bad:
+    0x00 0x00 revert
+}
+
+#define macro UNLOCK_CALLBACK() = takes (0) returns (0) {
+    MANAGER() caller eq from_manager jumpi
+    __ERROR(Unauthorized) REVERT_0()
+    from_manager:
+    0x64 calldataload 0x44 calldataload         // [currency, recipient]
+    dup1 address PM_BALANCE_OF()                // [amount, currency, recipient]
+    dup1 iszero nothing jumpi
+    dup1 dup3 address PM_BURN()
+    dup1 dup4 dup4 PM_TAKE()
+    nothing:
+    [MEM_LOG] mstore                            // [currency, recipient]
+    __EVENT_HASH(FeesCollected) 0x20 [MEM_LOG] log3
+    0x00 [MEM_LOG] RETURN_BYTES()
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x40 [IMMUTABLES] 0x40 codecopy
+    NON_PAYABLE()
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("unlockCallback(bytes)") eq unlock_callback jumpi
+    dup1 __FUNC_SIG("collect(address,address)") eq collect jumpi
+    dup1 __FUNC_SIG("poolManager()") eq pool_manager jumpi
+    dup1 __FUNC_SIG("hook()") eq hook jumpi
+    0x00 0x00 revert
+
+    unlock_callback: UNLOCK_CALLBACK()
+    collect:         COLLECT()
+    pool_manager:    MANAGER() RETURN_1()
+    hook:            HOOK() RETURN_1()
+}

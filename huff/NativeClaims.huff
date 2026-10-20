@@ -1,0 +1,68 @@
+/// @title NativeClaims
+/// @notice Redeems the caller's PoolManager native ETH claims to a chosen recipient.
+/// @dev Huff build of `asyncswap/contracts` `src/NativeClaims.sol`. Approve this contract for native claim
+///      ID 0 on PoolManager before redeeming. Constructor: `(IPoolManager manager)`. The reentrancy flag is
+///      transient (it is set and cleared within one call, as the Solidity's storage flag is).
+
+#include "./lib/Common.huff"
+#include "./lib/PoolManager.huff"
+
+#define error OnlyPoolManager()
+#define error InvalidRedemption()
+#define error ReentrantRedemption()
+
+#define event NativeRedeemed(address indexed, address indexed, uint256)
+
+#define constant REDEEMING_SLOT = 0x00
+#define constant IMMUTABLES = __codesize(RUNTIME)
+
+#define macro MANAGER() = takes (0) returns (1) { 0x40 mload }
+
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    [IMMUTABLES] __codesize(CONSTRUCTOR) 0x100 codecopy
+    0x20 0x20 codesize sub [IMMUTABLES] 0x100 add codecopy
+    [IMMUTABLES] 0x20 add 0x100 return
+}
+
+/// @notice `redeem(recipient, amount)`.
+#define macro REDEEM() = takes (0) returns (0) {
+    [REDEEMING_SLOT] tload iszero entered jumpi
+    __ERROR(ReentrantRedemption) REVERT_0()
+    entered:
+    0x01 [REDEEMING_SLOT] tstore
+    LOAD_ADDRESS(0x04) dup1 iszero bad_redemption jumpi
+    0x24 calldataload dup1 iszero bad_redemption jumpi
+    [CALL_84] mstore [CALL_64] mstore
+    caller [CALL_44] mstore
+    0x60 PM_UNLOCK()
+    0x00 [REDEEMING_SLOT] tstore
+    RETURN_EMPTY()
+    bad_redemption:
+    __ERROR(InvalidRedemption) REVERT_0()
+}
+
+#define macro UNLOCK_CALLBACK() = takes (0) returns (0) {
+    MANAGER() caller eq from_manager jumpi
+    __ERROR(OnlyPoolManager) REVERT_0()
+    from_manager:
+    // Burn first. A failed transfer atomically restores both claims and allowance.
+    0x84 calldataload 0x00 0x44 calldataload PM_BURN()         // burn(owner, 0, amount)
+    0x84 calldataload 0x64 calldataload 0x00 PM_TAKE()         // take(native, recipient, amount)
+    0x84 calldataload [MEM_LOG] mstore
+    0x64 calldataload 0x44 calldataload __EVENT_HASH(NativeRedeemed) 0x20 [MEM_LOG] log3
+    0x00 [MEM_LOG] RETURN_BYTES()
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x20 [IMMUTABLES] 0x40 codecopy
+    NON_PAYABLE()
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("unlockCallback(bytes)") eq unlock_callback jumpi
+    dup1 __FUNC_SIG("redeem(address,uint256)") eq redeem jumpi
+    dup1 __FUNC_SIG("poolManager()") eq pool_manager jumpi
+    0x00 0x00 revert
+
+    unlock_callback: UNLOCK_CALLBACK()
+    redeem:          REDEEM()
+    pool_manager:    MANAGER() RETURN_1()
+}

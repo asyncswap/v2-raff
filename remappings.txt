@@ -1,0 +1,9 @@
+@async-swap/=src/
+@openzeppelin/contracts/=dependencies/v4-core/lib/openzeppelin-contracts/contracts/
+@uniswap/v4-core/=dependencies/v4-core/
+forge-std-1.16.0/=dependencies/forge-std-1.16.0/
+forge-std/=dependencies/forge-std/src/
+foundry-huff-neo/=lib/foundry-huff-neo/src/
+solmate-6.8.0/=dependencies/solmate-6.8.0/
+uniswap-v4-core-4/=dependencies/uniswap-v4-core-4/
+v4-core/=dependencies/v4-core/src

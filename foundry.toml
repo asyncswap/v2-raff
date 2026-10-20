@@ -1,31 +1,24 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["lib"]
-# The Huff contracts are compiled by `hnc` through `vm.ffi` (foundry-huff-neo).
+libs = ["dependencies", "lib"]
+# The Huff contracts are compiled by `hnc` through `vm.ffi` (foundry-huff-neo). `src/` is the
+# asyncswap/contracts Solidity (a full copy); the tests take their types and ABI from it but deploy the Huff in huff/.
 ffi = true
-solc_version = "0.8.26"
-evm_version = "cancun"
-optimizer = true
-optimizer_runs = 200
-remappings = [
-    "forge-std/=lib/forge-std/src/",
-    "foundry-huff-neo/=lib/foundry-huff-neo/src/",
-    "v4-core/=lib/v4-periphery/lib/v4-core/src/",
-    "v4-core-test/=lib/v4-periphery/lib/v4-core/test/",
-    "@openzeppelin/contracts/=lib/v4-periphery/lib/v4-core/lib/openzeppelin-contracts/contracts/",
-    "solmate/=lib/v4-periphery/lib/v4-core/lib/solmate/",
+fs_permissions = [
+  { access = "read", path = "./broadcast/" },
+  { access = "read-write", path = "./deployments/" },
 ]
-
-[profile.default.fuzz]
-runs = 256
-
-[profile.default.invariant]
-runs = 32
-depth = 48
-fail_on_revert = false
-
-# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+solc_version = "0.8.26"
+optimizer = true
+optimizer_runs = 1_000
 
 [lint]
 lint_on_build = false
+
+[dependencies]
+forge-std = "1.16.0"
+uniswap-v4-core = "4"
+solmate = "6.8.0"
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

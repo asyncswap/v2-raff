@@ -1,0 +1,22 @@
+/// @notice Exposes the Huff `RadixPriceTree` with the interface of `test/RadixPriceTree.t.sol`'s `RadixHarness`.
+#include "../lib/Common.huff"
+#include "../lib/Math.huff"
+#include "../lib/RadixPriceTree.huff"
+
+#define constant TREE = 0x01
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("insert(uint128)") eq insert jumpi
+    dup1 __FUNC_SIG("remove(uint128)") eq remove jumpi
+    dup1 __FUNC_SIG("best(bool)") eq best jumpi
+    dup1 __FUNC_SIG("nextNodeId()") eq next_node_id jumpi
+    dup1 __FUNC_SIG("freeCount()") eq free_count jumpi
+    0x00 0x00 revert
+
+    insert:       0x04 calldataload [TREE] TREE_INSERT() RETURN_1()
+    remove:       0x04 calldataload [TREE] TREE_REMOVE() RETURN_EMPTY()
+    best:         0x04 calldataload [TREE] TREE_BEST() RETURN_2()
+    next_node_id: [TREE] sload 0x20 shr [UINT32_MASK] and RETURN_1()
+    free_count:   [TREE] sload 0x40 shr [UINT32_MASK] and RETURN_1()
+}
