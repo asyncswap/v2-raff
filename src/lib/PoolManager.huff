@@ -3,6 +3,38 @@
 ///         manager's address). Calldata is built at MEM_CALL; a failed call re-raises its revert data, as a
 ///         Solidity high-level call does.
 
+//.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
+//SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs.      .sSSS s.      SSSSs
+//S SSS SSSSS S SSS SSSSS S SSS SSSS' S SSS SSSS'      S SSS SSSs.   S SSS
+//S  SS SSSS' S  SS SSSSS S  SS       S  SS            S  SS SSSSS   S  SS
+//S..SSsSSSa. S..SSsSSSSS S..SSsss    S..SSsss         S..SS SSSSS   S..SS
+//S:::S SSSSS S:::S SSSSS S:::SSSS    S:::SSSS          S::S SSSS    S:::S
+//S;;;S SSSSS S;;;S SSSSS S;;;S       S;;;S              S;S SSS     S;;;S
+//S%%%S SSSSS S%%%S SSSSS S%%%S       S%%%S               SS SS      S%%%S
+//SSSSS SSSSS SSSSS SSSSS SSSSS       SSSSS                SsS     SsSSSSSsS
+//
+//    r   fGr
+//  rr  GrGGrG
+//rrr       GraG
+//r          GfrrraGa
+//r             GaarrrrrrGr
+//              GrarrrrrGrG
+//               GaGfra GraG
+//               Ga ar    ff
+//               Ga  Gr    G
+//              fr   af    Gr
+//             Gr    Gr    G
+//_mmsaki 2025 ________________
+
+//:'######::'########::'#######::'########:::::'###:::::'######:::'########:
+//'##... ##:... ##..::'##.... ##: ##.... ##:::'## ##:::'##... ##:: ##.....::
+// ##:::..::::: ##:::: ##:::: ##: ##:::: ##::'##:. ##:: ##:::..::: ##:::::::
+//. ######::::: ##:::: ##:::: ##: ########::'##:::. ##: ##::'####: ######:::
+//:..... ##:::: ##:::: ##:::: ##: ##.. ##::: #########: ##::: ##:: ##...::::
+//'##::: ##:::: ##:::: ##:::: ##: ##::. ##:: ##.... ##: ##::: ##:: ##:::::::
+//. ######::::: ##::::. #######:: ##:::. ##: ##:::: ##:. ######::: ########:
+//:......::::::..::::::.......:::..:::::..::..:::::..:::......::::........::
+//
 #define constant CALL_0   = 0xc00
 #define constant CALL_4   = 0xc04
 #define constant CALL_24  = 0xc24
@@ -22,6 +54,14 @@
 #define constant MIN_SQRT_PRICE_PLUS_ONE = 0x1000276a4                                   // 4295128739 + 1
 #define constant MAX_SQRT_PRICE_MINUS_ONE = 0xfffd8963efd1fc6a506488495d951d5263988d25     // MAX_SQRT_PRICE − 1
 
+//'########::'##::::'##:'########::'##:::::::'####::'######::
+// ##.... ##: ##:::: ##: ##.... ##: ##:::::::. ##::'##... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##:::..::
+// ########:: ##:::: ##: ########:: ##:::::::: ##:: ##:::::::
+// ##.....::: ##:::: ##: ##.... ##: ##:::::::: ##:: ##:::::::
+// ##:::::::: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##::: ##:
+// ##::::::::. #######:: ########:: ########:'####:. ######::
+//..::::::::::.......:::........:::........::....:::......:::
 /// @dev Writes `selector` left-aligned at CALL_0.
 #define macro CALL_SELECTOR() = takes (1) returns (0) {
     // [selector]

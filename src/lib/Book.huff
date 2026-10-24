@@ -22,6 +22,38 @@
 ///      Level `L` (`PriceLevel`): L + 0 head, L + 1 tail, L + 2 orderCount, L + 3 priority tree,
 ///      L + 4 seed of `priorityOrderIds[priorityKey] = keccak(priorityKey, L + 4)`.
 
+//.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
+//SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs.      .sSSS s.      SSSSs
+//S SSS SSSSS S SSS SSSSS S SSS SSSS' S SSS SSSS'      S SSS SSSs.   S SSS
+//S  SS SSSS' S  SS SSSSS S  SS       S  SS            S  SS SSSSS   S  SS
+//S..SSsSSSa. S..SSsSSSSS S..SSsss    S..SSsss         S..SS SSSSS   S..SS
+//S:::S SSSSS S:::S SSSSS S:::SSSS    S:::SSSS          S::S SSSS    S:::S
+//S;;;S SSSSS S;;;S SSSSS S;;;S       S;;;S              S;S SSS     S;;;S
+//S%%%S SSSSS S%%%S SSSSS S%%%S       S%%%S               SS SS      S%%%S
+//SSSSS SSSSS SSSSS SSSSS SSSSS       SSSSS                SsS     SsSSSSSsS
+//
+//    r   fGr
+//  rr  GrGGrG
+//rrr       GraG
+//r          GfrrraGa
+//r             GaarrrrrrGr
+//              GrarrrrrGrG
+//               GaGfra GraG
+//               Ga ar    ff
+//               Ga  Gr    G
+//              fr   af    Gr
+//             Gr    Gr    G
+//_mmsaki 2025 ________________
+
+//'####:'##::: ##:'########:'########:'########::'########::::'###:::::'######::'########:
+//. ##:: ###:: ##:... ##..:: ##.....:: ##.... ##: ##.....::::'## ##:::'##... ##: ##.....::
+//: ##:: ####: ##:::: ##:::: ##::::::: ##:::: ##: ##::::::::'##:. ##:: ##:::..:: ##:::::::
+//: ##:: ## ## ##:::: ##:::: ######::: ########:: ######:::'##:::. ##: ##::::::: ######:::
+//: ##:: ##. ####:::: ##:::: ##...:::: ##.. ##::: ##...:::: #########: ##::::::: ##...::::
+//: ##:: ##:. ###:::: ##:::: ##::::::: ##::. ##:: ##::::::: ##.... ##: ##::: ##: ##:::::::
+//'####: ##::. ##:::: ##:::: ########: ##:::. ##: ##::::::: ##:::: ##:. ######:: ########:
+//....::..::::..:::::..:::::........::..:::::..::..::::::::..:::::..:::......:::........::
+//
 #define error OrderAlreadyExists()
 #define error OrderNotFound()
 #define error NotOrderOwner()
@@ -32,6 +64,15 @@
 #define error PriorityFeeNotEscrowed()
 #define error InvalidOrderingModeChange()
 
+//:'######::'########::'#######::'########:::::'###:::::'######:::'########:
+//'##... ##:... ##..::'##.... ##: ##.... ##:::'## ##:::'##... ##:: ##.....::
+// ##:::..::::: ##:::: ##:::: ##: ##:::: ##::'##:. ##:: ##:::..::: ##:::::::
+//. ######::::: ##:::: ##:::: ##: ########::'##:::. ##: ##::'####: ######:::
+//:..... ##:::: ##:::: ##:::: ##: ##.. ##::: #########: ##::: ##:: ##...::::
+//'##::: ##:::: ##:::: ##:::: ##: ##::. ##:: ##.... ##: ##::: ##:: ##:::::::
+//. ######::::: ##::::. #######:: ##:::. ##: ##:::: ##:. ######::: ########:
+//:......::::::..::::::.......:::..:::::..::..:::::..:::......::::........::
+//
 #define constant MODE_FIFO = 0x00
 #define constant MODE_PRIORITY_FEE = 0x01
 #define constant MIN_PRIORITY_FEE = 0x0186a0   // 100_000: $0.10 in six-decimal USDC
@@ -50,8 +91,15 @@
 #define constant B_ZFO   = 0x740
 #define constant B_FEE   = 0x760
 
-/* ─────────────────────────────────── slots ─────────────────────────────────── */
-
+// Slots
+//'########::'##::::'##:'########::'##:::::::'####::'######::
+// ##.... ##: ##:::: ##: ##.... ##: ##:::::::. ##::'##... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##:::..::
+// ########:: ##:::: ##: ########:: ##:::::::: ##:: ##:::::::
+// ##.....::: ##:::: ##: ##.... ##: ##:::::::: ##:: ##:::::::
+// ##:::::::: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##::: ##:
+// ##::::::::. #######:: ########:: ########:'####:. ######::
+//..::::::::::.......:::........:::........::....:::......:::
 /// @dev The order record of `id` in pool `P`.
 #define macro ORDER_SLOT() = takes (2) returns (1) {
     // [P, id]
@@ -82,8 +130,7 @@
     sload 0x80 shr 0xff and
 }
 
-/* ────────────────────────────── record fields ────────────────────────────── */
-
+// Record fields
 #define macro O_OWNER() = takes (1) returns (1) { [ADDRESS_MASK] and }
 #define macro O_BUY() = takes (1) returns (1) { 0xa0 shr 0xff and }
 #define macro O_ZFO() = takes (1) returns (1) { 0xa8 shr 0xff and }
@@ -123,8 +170,7 @@
     0x40 shl [B_P] mload sload add [B_P] mload sstore
 }
 
-/* ─────────────────────────────── level maintenance ─────────────────────────────── */
-
+// Level maintenance
 /// @notice `AsyncFiller._append(id)`: enter the order at B_O / B_ID into its level — by priority key in
 ///         `PriorityFee` mode (recomputed from the paid bid and sequence), at the tail in `FIFO` mode.
 #define fn BOOK_APPEND() = takes (0) returns (0) {
@@ -229,8 +275,7 @@
     swap1 0x01 add [B_P] mload sstore           // [seq]
 }
 
-/* ─────────────────────────────────── transitions ─────────────────────────────────── */
-
+// Transitions
 /// @notice `AsyncFiller.addOrder`. Inputs: B_P, B_ID, B_OWNER, B_IN, B_MIN, B_BUY, B_ZFO, B_FEE.
 #define fn BOOK_ADD() = takes (0) returns (0) {
     [B_P] mload ORDERING_MODE() priority jumpi
@@ -272,8 +317,7 @@
     dup3 0x80 shl or swap1 sstore pop
 }
 
-/* ──────────────────────────────────── queries ──────────────────────────────────── */
-
+// Queries
 /// @notice `AsyncFiller.bestAtPrice(isBuy, price)`: the queue head in FIFO mode; the highest priority key
 ///         in PriorityFee mode.
 #define fn BOOK_BEST_AT_PRICE() = takes (3) returns (1) {
