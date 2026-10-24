@@ -1,0 +1,345 @@
+{
+  "method": "Actual Router.matchBook receipts including intrinsic gas and refunds; standard ERC20s, 128 blockers and 32 resting pairs. Repeated-owner and distinct-owner fixtures measured separately; not a universal bound.",
+  "source_commits": {
+    "solidity": "e5e6ffd959c64f4c126021b8ffc3d48de0d7d597",
+    "python": "ae12c16ed2d039d7cc155b03a6922a6356a9b50c",
+    "huff_parent": "97acd04847bcc3ea2bdbf6652c2a558a457a6536"
+  },
+  "source_sha256": {
+    "src/AsyncSwap.huff": "4122917da88ab22a0eb50dd6b2d310755a29199da01a0466ef9585a9a09ed6f7",
+    "src/lib/PoolManager.huff": "fb7fd2290daff16ed3472cdb076441420b1e64b6e6ce81dcfd77048189680fe6"
+  },
+  "receipt_comparison": {
+    "method": "Actual Router.matchBook transactions on isolated Anvil, imported Foundry fixture; 128 blockers, 32 pairs, standard ERC20s, no LPs; gasUsed includes intrinsic gas and applied refunds. Each transaction starts from the same state. Not a worst-case bound.",
+    "client": "anvil/v1.8.6",
+    "rows": [
+      {
+        "matches": 1,
+        "solidity": 468461,
+        "huff_before": 375854,
+        "huff_after": 352695,
+        "all_events_identical": false,
+        "current_events_identical": true,
+        "prior_events_identical": false,
+        "savings_vs_solidity_percent": 24.711982427566003,
+        "savings_vs_previous_huff_percent": 6.161701086060011
+      },
+      {
+        "matches": 2,
+        "solidity": 565649,
+        "huff_before": 489616,
+        "huff_after": 430525,
+        "all_events_identical": false,
+        "current_events_identical": true,
+        "prior_events_identical": false,
+        "savings_vs_solidity_percent": 23.88831236332072,
+        "savings_vs_previous_huff_percent": 12.068845789353288
+      },
+      {
+        "matches": 4,
+        "solidity": 832049,
+        "huff_before": 725556,
+        "huff_after": 594601,
+        "all_events_identical": false,
+        "current_events_identical": true,
+        "prior_events_identical": false,
+        "savings_vs_solidity_percent": 28.53774236853839,
+        "savings_vs_previous_huff_percent": 18.04891696850416
+      },
+      {
+        "matches": 8,
+        "solidity": 1394556,
+        "huff_before": 1230868,
+        "huff_after": 956185,
+        "all_events_identical": false,
+        "current_events_identical": true,
+        "prior_events_identical": false,
+        "savings_vs_solidity_percent": 31.434449387475293,
+        "savings_vs_previous_huff_percent": 22.316202874719306
+      }
+    ],
+    "compilers": {
+      "solidity": {
+        "solc": "0.8.26+commit.8a97fa7a",
+        "optimizer": {
+          "enabled": true,
+          "runs": 43690
+        },
+        "implementation": "Solidity"
+      },
+      "huff": {
+        "implementation": "native Huff",
+        "hnc": "hnc 1.6.2 (rev: 8278e5c9)",
+        "fixture_compiler": {
+          "solc": "0.8.26+commit.8a97fa7a",
+          "optimizer": {
+            "enabled": true,
+            "runs": 43690
+          }
+        }
+      }
+    },
+    "fixture_hashes": {
+      "solidity": "6ef68f2bb45bee91da8a53d35143c44fdaa69716a8b8ebf88cd11f6cc14bfcc8",
+      "huff_before": "2e0adce320973cdf5560c3851a4e1ea8af7f8722889e27dcb68b0c6315ea759c",
+      "huff_after": "a2e2f1771d1a72f1521d1405e7ffd81f0a8e73d092f9cd34ce1e9dd323c6372a"
+    }
+  },
+  "distinct_owner_receipts": [
+    {
+      "matches": 1,
+      "solidity": 468461,
+      "huff": 352695,
+      "current_events_identical": true
+    },
+    {
+      "matches": 2,
+      "solidity": 619047,
+      "huff": 483186,
+      "current_events_identical": true
+    },
+    {
+      "matches": 4,
+      "solidity": 962071,
+      "huff": 754289,
+      "current_events_identical": true
+    },
+    {
+      "matches": 8,
+      "solidity": 1706643,
+      "huff": 1336745,
+      "current_events_identical": true
+    }
+  ],
+  "gross_matrix": [
+    {
+      "distinct_owners": false,
+      "blockers": 0,
+      "matches": 1,
+      "solidity": 493570,
+      "huff": 360810
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 0,
+      "matches": 2,
+      "solidity": 649447,
+      "huff": 461409
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 0,
+      "matches": 4,
+      "solidity": 972385,
+      "huff": 671001
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 0,
+      "matches": 8,
+      "solidity": 1641245,
+      "huff": 1123588
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 0,
+      "matches": 16,
+      "solidity": 2988969,
+      "huff": 2036565
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 0,
+      "matches": 32,
+      "solidity": 5657161,
+      "huff": 3835995
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 1,
+      "matches": 1,
+      "solidity": 500854,
+      "huff": 365730
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 1,
+      "matches": 2,
+      "solidity": 649125,
+      "huff": 463621
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 1,
+      "matches": 4,
+      "solidity": 960940,
+      "huff": 665364
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 1,
+      "matches": 8,
+      "solidity": 1642769,
+      "huff": 1125454
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 1,
+      "matches": 16,
+      "solidity": 3010084,
+      "huff": 2053085
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 1,
+      "matches": 32,
+      "solidity": 5651519,
+      "huff": 3842010
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 16,
+      "matches": 1,
+      "solidity": 516042,
+      "huff": 376728
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 16,
+      "matches": 2,
+      "solidity": 675668,
+      "huff": 480522
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 16,
+      "matches": 4,
+      "solidity": 1006114,
+      "huff": 696502
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 16,
+      "matches": 8,
+      "solidity": 1694028,
+      "huff": 1163865
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 16,
+      "matches": 16,
+      "solidity": 3081017,
+      "huff": 2106601
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 16,
+      "matches": 32,
+      "solidity": 5856850,
+      "huff": 3986874
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 128,
+      "matches": 1,
+      "solidity": 550068,
+      "huff": 400744
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 128,
+      "matches": 2,
+      "solidity": 714621,
+      "huff": 507477
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 128,
+      "matches": 4,
+      "solidity": 1054936,
+      "huff": 729332
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 128,
+      "matches": 8,
+      "solidity": 1758643,
+      "huff": 1206448
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 128,
+      "matches": 16,
+      "solidity": 3184887,
+      "huff": 2175288
+    },
+    {
+      "distinct_owners": false,
+      "blockers": 128,
+      "matches": 32,
+      "solidity": 6028489,
+      "huff": 4099475
+    },
+    {
+      "distinct_owners": true,
+      "blockers": 128,
+      "matches": 1,
+      "solidity": 549951,
+      "huff": 400628
+    },
+    {
+      "distinct_owners": true,
+      "blockers": 128,
+      "matches": 2,
+      "solidity": 767905,
+      "huff": 560024
+    },
+    {
+      "distinct_owners": true,
+      "blockers": 128,
+      "matches": 4,
+      "solidity": 1217358,
+      "huff": 888915
+    },
+    {
+      "distinct_owners": true,
+      "blockers": 128,
+      "matches": 8,
+      "solidity": 2148669,
+      "huff": 1586924
+    },
+    {
+      "distinct_owners": true,
+      "blockers": 128,
+      "matches": 16,
+      "solidity": 4008823,
+      "huff": 2980131
+    },
+    {
+      "distinct_owners": true,
+      "blockers": 128,
+      "matches": 32,
+      "solidity": 7720442,
+      "huff": 5753258
+    }
+  ],
+  "optimizer_runs": 43690,
+  "hnc": "1.6.2",
+  "huff_hook_runtime_bytes": 22168,
+  "solidity_core_runtime_bytes": {
+    "AsyncSwap": 22337,
+    "AsyncMatching": 24158,
+    "Router": 20609,
+    "NativeClaims": 1964,
+    "TokenClaims": 2110,
+    "FeeVault": 2320,
+    "MatchingEngine": 11367,
+    "TickPrice": 3331
+  },
+  "test_counts": {
+    "solidity": 867,
+    "huff": 250,
+    "python": 48
+  },
+  "proof_scope": "Regenerated Lean models and focused refinements build. Shared-memory mutation in ClaimTransfers.credit remains opaque; no batch-memory refinement or complete protocol proof is claimed."
+}

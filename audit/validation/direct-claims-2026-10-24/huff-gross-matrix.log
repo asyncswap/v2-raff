@@ -1,0 +1,116 @@
+No files changed, compilation skipped
+
+Ran 5 tests for test/current/EligibleGas.t.sol:EligibleGasTest
+[PASS] test_gas128Blockers() (gas: 159173146)
+Logs:
+  distinct_owners: 0
+  blockers: 128
+  matches: 1
+  gross_gas: 400744
+  blockers: 128
+  matches: 2
+  gross_gas: 507477
+  blockers: 128
+  matches: 4
+  gross_gas: 729332
+  blockers: 128
+  matches: 8
+  gross_gas: 1206448
+  blockers: 128
+  matches: 16
+  gross_gas: 2175288
+  blockers: 128
+  matches: 32
+  gross_gas: 4099475
+
+[PASS] test_gas128BlockersDistinctOwners() (gas: 167738047)
+Logs:
+  distinct_owners: 1
+  blockers: 128
+  matches: 1
+  gross_gas: 400628
+  blockers: 128
+  matches: 2
+  gross_gas: 560024
+  blockers: 128
+  matches: 4
+  gross_gas: 888915
+  blockers: 128
+  matches: 8
+  gross_gas: 1586924
+  blockers: 128
+  matches: 16
+  gross_gas: 2980131
+  blockers: 128
+  matches: 32
+  gross_gas: 5753258
+
+[PASS] test_gasNoBlockers() (gas: 61988695)
+Logs:
+  distinct_owners: 0
+  blockers: 0
+  matches: 1
+  gross_gas: 360810
+  blockers: 0
+  matches: 2
+  gross_gas: 461409
+  blockers: 0
+  matches: 4
+  gross_gas: 671001
+  blockers: 0
+  matches: 8
+  gross_gas: 1123588
+  blockers: 0
+  matches: 16
+  gross_gas: 2036565
+  blockers: 0
+  matches: 32
+  gross_gas: 3835995
+
+[PASS] test_gasOneBlocker() (gas: 62935532)
+Logs:
+  distinct_owners: 0
+  blockers: 1
+  matches: 1
+  gross_gas: 365730
+  blockers: 1
+  matches: 2
+  gross_gas: 463621
+  blockers: 1
+  matches: 4
+  gross_gas: 665364
+  blockers: 1
+  matches: 8
+  gross_gas: 1125454
+  blockers: 1
+  matches: 16
+  gross_gas: 2053085
+  blockers: 1
+  matches: 32
+  gross_gas: 3842010
+
+[PASS] test_gasSixteenBlockers() (gas: 74747071)
+Logs:
+  distinct_owners: 0
+  blockers: 16
+  matches: 1
+  gross_gas: 376728
+  blockers: 16
+  matches: 2
+  gross_gas: 480522
+  blockers: 16
+  matches: 4
+  gross_gas: 696502
+  blockers: 16
+  matches: 8
+  gross_gas: 1163865
+  blockers: 16
+  matches: 16
+  gross_gas: 2106601
+  blockers: 16
+  matches: 32
+  gross_gas: 3986874
+
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 324.70ms (602.04ms CPU time)
+
+Ran 1 test suite in 328.65ms (324.70ms CPU time): 5 tests passed, 0 failed, 0 skipped (5 total tests)

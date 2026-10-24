@@ -336,18 +336,16 @@
 }
 
 #define fn TRANSFER_ESCROW() = takes (3) returns (0) {
-    dup3 dup2 address F_BURN()
-    swap1 F_MINT()
+    CREDIT_CLAIM()
 }
 
-/// @notice `AsyncFiller.settlePriorityFee(key, id, maker, amount)`: donate a bid to active LPs, or forfeit it
-///         to the FeeVault when the pool has none; the hook's numeraire claim is burned either way.
+/// @notice Credit escrowed numeraire claims to FeeVault, independently of LP liquidity.
+///         Matching combines credits and flushes after its bounded loop.
 #define fn SETTLE_PRIORITY_FEE() = takes (3) returns (0) {
     // [id, maker, amount]
     dup3 iszero skip jumpi
     forfeit:
-    dup3 NUMERAIRE() address F_BURN()
-    dup3 NUMERAIRE() FEE_VAULT() F_MINT()
+    dup3 NUMERAIRE() FEE_VAULT() swap1 CREDIT_CLAIM()
     __EVENT_HASH(PriorityFeeForfeited)
     logged:                                     // [hash, id, maker, amount]
     dup4 [MEM_LOG] mstore
@@ -805,6 +803,8 @@
     bad: __ERROR(InvalidMatchBound) REVERT_0()
 }
 #define fn MATCH_BOOK_LOOP() = takes (0) returns (1) {
+    0x01 0x2a00 mstore
+    0x00 0x3000 mstore
     0x00 [M_COUNT] mstore
     loop:
         [M_MAX] mload [M_COUNT] mload lt iszero done jumpi
@@ -826,6 +826,8 @@
     done_1:
         pop
     done:
+    FLUSH_CLAIMS()
+    0x00 0x2a00 mstore
     [M_COUNT] mload
 }
 
@@ -1374,4 +1376,44 @@
     eip712_domain:            EIP712_DOMAIN()
     get_hook_permissions:     GET_HOOK_PERMISSIONS()
     not_implemented:          NOT_IMPLEMENTED()
+}
+
+// Bounded claim credits, flushed in first-credit order at the end of each match call.
+#define fn CREDIT_CLAIM() = takes (3) returns (0) {
+    dup2 address eq immediate jumpi
+    0x2a00 mload batch jumpi
+    immediate:
+    swap1 PM_TRANSFER_CLAIM() done jump
+    batch:
+    0x2a20 mstore 0x2a40 mstore 0x2a60 mstore
+    0x00 0x2a80 mstore
+    loop:
+    0x3000 mload 0x2a80 mload eq append jumpi
+    0x2a80 mload 0x60 mul 0x3020 add 0x2aa0 mstore
+    0x2aa0 mload mload 0x2a20 mload eq
+    0x2aa0 mload 0x20 add mload 0x2a40 mload eq and found jumpi
+    0x2a80 mload 0x01 add 0x2a80 mstore loop jump
+    found:
+    0x2aa0 mload 0x40 add dup1 mload 0x2a60 mload CHECKED_ADD() swap1 mstore done jump
+    append:
+    0x21 0x3000 mload lt bounded jumpi
+    PANIC(0x32)
+    bounded:
+    0x3000 mload 0x60 mul 0x3020 add 0x2aa0 mstore
+    0x2a20 mload 0x2aa0 mload mstore
+    0x2a40 mload 0x2aa0 mload 0x20 add mstore
+    0x2a60 mload 0x2aa0 mload 0x40 add mstore
+    0x3000 mload 0x01 add 0x3000 mstore
+    done:
+}
+#define fn FLUSH_CLAIMS() = takes (0) returns (0) {
+    0x00 0x2a80 mstore
+    loop:
+    0x3000 mload 0x2a80 mload eq done jumpi
+    0x2a80 mload 0x60 mul 0x3020 add 0x2aa0 mstore
+    0x2aa0 mload 0x40 add mload
+    0x2aa0 mload mload
+    0x2aa0 mload 0x20 add mload PM_TRANSFER_CLAIM()
+    0x2a80 mload 0x01 add 0x2a80 mstore loop jump
+    done:
 }

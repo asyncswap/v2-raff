@@ -1,0 +1,155 @@
+................................................                         [100%]
+48 passed in 3.82s
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/EligiblePythonVectors.t.sol
+{
+  "seed": 20261023,
+  "campaigns": 8,
+  "operations": 514,
+  "matches": 128,
+  "state_checks": 8109,
+  "wallet_checks": 8109
+}
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonHashes.t.sol
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonHashes.t.sol
+Compiling 1 files with Solc 0.8.26
+Solc 0.8.26 finished in 3.38s
+Compiler run successful with warnings:
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> src/libraries/AsyncFiller.sol:213:9:
+    |
+213 |         address hook
+    |         ^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> src/libraries/AsyncMatching.sol:163:9:
+    |
+163 |         address hook
+    |         ^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> test/formal/FormalMatchD.sol:414:38:
+    |
+414 |     function _feeOps(Trace memory t, Case memory c, bytes32 id, address maker, uint256 amount) internal view {
+    |                                      ^^^^^^^^^^^^^
+
+Warning (2018): Function state mutability can be restricted to pure
+   --> test/formal/FormalMatchD.sol:409:5:
+    |
+409 |     function _escrowLeg(Trace memory t, Currency c, address to, uint256 amount) internal view {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+   --> test/formal/FormalMatchD.sol:414:5:
+    |
+414 |     function _feeOps(Trace memory t, Case memory c, bytes32 id, address maker, uint256 amount) internal view {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 1 test for test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6534)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 362.50µs (40.04µs CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 67305423)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 57.50ms (51.53ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 67335475)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 57.12ms (55.19ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 67489990)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 62.47ms (60.50ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 168950467)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 89.81ms (86.17ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 134014656)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 97.35ms (91.77ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 161996447)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 96.77ms (91.46ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 144211374)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 103.44ms (97.85ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 187542252)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 109.74ms (104.72ms CPU time)
+
+Ran 1 test for test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 199361164)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 121.05ms (117.50ms CPU time)
+
+Ran 10 test suites in 124.10ms (795.62ms CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/EligiblePythonVectors.t.sol
+{
+  "seed": 20261023,
+  "campaigns": 8,
+  "operations": 514,
+  "matches": 128,
+  "state_checks": 8109,
+  "wallet_checks": 8109
+}
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonHashes.t.sol
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonHashes.t.sol
+No files changed, compilation skipped
+
+Ran 1 test for test/current/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6534)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 438.67µs (53.92µs CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 130822005)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 262.04ms (46.94ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 63670835)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 262.74ms (31.23ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 63722943)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 269.65ms (52.83ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 63636618)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 275.09ms (43.78ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 163009725)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 287.82ms (67.18ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 139745407)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 292.78ms (54.51ms CPU time)
+
+Ran 1 test for test/current/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 174217290)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 292.61ms (67.16ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 179380070)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 302.34ms (98.06ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 159166808)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 318.53ms (54.64ms CPU time)
+
+Ran 10 test suites in 322.17ms (2.56s CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/huff/TickParity.t.sol
+No files changed, compilation skipped
+
+Ran 1 test for test/huff/TickParity.t.sol:TickParityTest
+[PASS] test_pythonTickVectors() (gas: 3418084)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 22.51ms (22.05ms CPU time)
+
+Ran 1 test suite in 23.01ms (22.51ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Shared Python traces passed on both Solidity and native Huff; tick-key vectors passed on Huff.

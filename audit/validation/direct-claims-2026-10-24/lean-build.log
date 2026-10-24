@@ -1,0 +1,13 @@
+⚠ [4/76] Replayed Generated.AsyncSwap
+warning: Generated/AsyncSwap.lean:580:2: This `do` element and its control-flow region are dead code. Consider refactoring your code to remove it.
+warning: Generated/AsyncSwap.lean:2066:2: This `do` element and its control-flow region are dead code. Consider refactoring your code to remove it.
+warning: Generated/AsyncSwap.lean:2411:2: This `do` element and its control-flow region are dead code. Consider refactoring your code to remove it.
+warning: Generated/AsyncSwap.lean:2440:2: This `do` element and its control-flow region are dead code. Consider refactoring your code to remove it.
+⚠ [5503/5659] Built Generated.Router (5.0s)
+warning: Generated/Router.lean:547:2: This `do` element and its control-flow region are dead code. Consider refactoring your code to remove it.
+warning: Generated/Router.lean:596:2: This `do` element and its control-flow region are dead code. Consider refactoring your code to remove it.
+⚠ [9068/9070] Replayed Refinement.ClaimBatch
+warning: Refinement/ClaimBatch.lean: imports `Mathlib` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [9069/9070] Replayed Refinement.FillCap
+warning: Refinement/FillCap.lean: imports `Mathlib` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+Build completed successfully (9070 jobs).

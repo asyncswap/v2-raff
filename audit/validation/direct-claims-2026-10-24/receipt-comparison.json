@@ -1,0 +1,76 @@
+{
+  "method": "Actual Router.matchBook transactions on isolated Anvil, imported Foundry fixture; 128 blockers, 32 pairs, standard ERC20s, no LPs; gasUsed includes intrinsic gas and applied refunds. Each transaction starts from the same state. Not a worst-case bound.",
+  "client": "anvil/v1.8.6",
+  "rows": [
+    {
+      "matches": 1,
+      "solidity": 468461,
+      "huff_before": 375854,
+      "huff_after": 352695,
+      "all_events_identical": false,
+      "current_events_identical": true,
+      "prior_events_identical": false,
+      "savings_vs_solidity_percent": 24.711982427566003,
+      "savings_vs_previous_huff_percent": 6.161701086060011
+    },
+    {
+      "matches": 2,
+      "solidity": 565649,
+      "huff_before": 489616,
+      "huff_after": 430525,
+      "all_events_identical": false,
+      "current_events_identical": true,
+      "prior_events_identical": false,
+      "savings_vs_solidity_percent": 23.88831236332072,
+      "savings_vs_previous_huff_percent": 12.068845789353288
+    },
+    {
+      "matches": 4,
+      "solidity": 832049,
+      "huff_before": 725556,
+      "huff_after": 594601,
+      "all_events_identical": false,
+      "current_events_identical": true,
+      "prior_events_identical": false,
+      "savings_vs_solidity_percent": 28.53774236853839,
+      "savings_vs_previous_huff_percent": 18.04891696850416
+    },
+    {
+      "matches": 8,
+      "solidity": 1394556,
+      "huff_before": 1230868,
+      "huff_after": 956185,
+      "all_events_identical": false,
+      "current_events_identical": true,
+      "prior_events_identical": false,
+      "savings_vs_solidity_percent": 31.434449387475293,
+      "savings_vs_previous_huff_percent": 22.316202874719306
+    }
+  ],
+  "compilers": {
+    "solidity": {
+      "solc": "0.8.26+commit.8a97fa7a",
+      "optimizer": {
+        "enabled": true,
+        "runs": 43690
+      },
+      "implementation": "Solidity"
+    },
+    "huff": {
+      "implementation": "native Huff",
+      "hnc": "hnc 1.6.2 (rev: 8278e5c9)",
+      "fixture_compiler": {
+        "solc": "0.8.26+commit.8a97fa7a",
+        "optimizer": {
+          "enabled": true,
+          "runs": 43690
+        }
+      }
+    }
+  },
+  "fixture_hashes": {
+    "solidity": "6ef68f2bb45bee91da8a53d35143c44fdaa69716a8b8ebf88cd11f6cc14bfcc8",
+    "huff_before": "2e0adce320973cdf5560c3851a4e1ea8af7f8722889e27dcb68b0c6315ea759c",
+    "huff_after": "a2e2f1771d1a72f1521d1405e7ffd81f0a8e73d092f9cd34ce1e9dd323c6372a"
+  }
+}

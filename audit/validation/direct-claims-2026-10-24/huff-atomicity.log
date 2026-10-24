@@ -1,0 +1,15 @@
+Compiling 100 files with Solc 0.8.26
+Solc 0.8.26 finished in 2.67s
+Compiler run successful with warnings:
+Warning (2018): Function state mutability can be restricted to view
+   --> test/formal/FormalProbesA.sol:125:5:
+    |
+125 |     function _assertNoWrites(address target) internal {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 1 test for test/current/ClaimBatch.t.sol:ClaimBatchTest
+[PASS] test_laterTransferFailureRestoresOrdersAndEarlierCredits() (gas: 1895981)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 165.44ms (1.04ms CPU time)
+
+Ran 1 test suite in 166.34ms (165.44ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)

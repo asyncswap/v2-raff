@@ -1,0 +1,44 @@
+Compiling 1 files with Solc 0.8.26
+Solc 0.8.26 finished in 3.82s
+Compiler run successful with warnings:
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> src/libraries/AsyncFiller.sol:213:9:
+    |
+213 |         address hook
+    |         ^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> src/libraries/AsyncMatching.sol:163:9:
+    |
+163 |         address hook
+    |         ^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> test/formal/FormalMatchD.sol:414:38:
+    |
+414 |     function _feeOps(Trace memory t, Case memory c, bytes32 id, address maker, uint256 amount) internal view {
+    |                                      ^^^^^^^^^^^^^
+
+Warning (2018): Function state mutability can be restricted to pure
+   --> test/formal/FormalMatchD.sol:409:5:
+    |
+409 |     function _escrowLeg(Trace memory t, Currency c, address to, uint256 amount) internal view {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+   --> test/formal/FormalMatchD.sol:414:5:
+    |
+414 |     function _feeOps(Trace memory t, Case memory c, bytes32 id, address maker, uint256 amount) internal view {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 6 tests for test/formal/AsyncSwapTransferEscrow.t.sol:AsyncSwapTransferEscrowFormalTest
+[PASS] testFuzz_transferEscrow_claim_transfer_reverts(uint256[6],uint8,bool,uint256) (runs: 256, μ: 2261050, ~: 1989925)
+[PASS] testFuzz_transferEscrow_erc20(uint256[6],uint8,bool,bool,uint256) (runs: 256, μ: 2572570, ~: 2065706)
+[PASS] testFuzz_transferEscrow_native(uint256[6],uint8,bool,uint256) (runs: 256, μ: 1886995, ~: 1938704)
+[PASS] testFuzz_transferEscrow_ok(uint256[6],uint8) (runs: 256, μ: 2383340, ~: 2051949)
+[PASS] testFuzz_transferEscrow_reverts_iff(uint256[6],uint8,uint8,uint256) (runs: 256, μ: 2184333, ~: 1968254)
+[PASS] testFuzz_transferEscrow_run(uint256[6],uint8) (runs: 256, μ: 2383062, ~: 2051528)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 337.75ms (1.85s CPU time)
+
+Ran 1 test suite in 345.22ms (337.75ms CPU time): 6 tests passed, 0 failed, 0 skipped (6 total tests)

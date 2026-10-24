@@ -1,0 +1,15 @@
+No files changed, compilation skipped
+
+Ran 1 test for test/huff/CodeSize.t.sol:CodeSizeTest
+[PASS] test_huffRuntimesFitEip170() (gas: 18647484)
+Logs:
+  TokenClaims     649
+  AsyncSwap       22168
+  Router          7909
+  FeeVault        794
+  NativeClaims    622
+  MatchingEngine  5339
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 160.65ms (160.20ms CPU time)
+
+Ran 1 test suite in 161.39ms (160.65ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)

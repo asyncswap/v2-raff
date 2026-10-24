@@ -242,3 +242,9 @@
     swap1 0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and 0x40 add
     swap1 0x40 swap1 sub return
 }
+
+#define macro PM_TRANSFER_CLAIM() = takes (3) returns (0) {
+    __FUNC_SIG("transfer(address,uint256,uint256)") CALL_SELECTOR()
+    [CALL_4] mstore [CALL_24] mstore [CALL_44] mstore
+    0x64 PM_CALL()
+}
