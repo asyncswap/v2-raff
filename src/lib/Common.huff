@@ -1,11 +1,43 @@
 /// @title Common
 /// @notice Memory map, revert / return helpers and the checked arithmetic every contract here shares.
 
-/* ─────────────────────────────────── memory map ─────────────────────────────────── */
-
+// Memory map
 // Huff has no allocator: every routine owns a fixed region, and no routine calls one that owns the same
 // region. 0x00–0x3f is scratch (mapping hashes, single-word returns) and never holds a live value across a
 // call to another routine.
+
+//.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
+//SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs.      .sSSS s.      SSSSs
+//S SSS SSSSS S SSS SSSSS S SSS SSSS' S SSS SSSS'      S SSS SSSs.   S SSS
+//S  SS SSSS' S  SS SSSSS S  SS       S  SS            S  SS SSSSS   S  SS
+//S..SSsSSSa. S..SSsSSSSS S..SSsss    S..SSsss         S..SS SSSSS   S..SS
+//S:::S SSSSS S:::S SSSSS S:::SSSS    S:::SSSS          S::S SSSS    S:::S
+//S;;;S SSSSS S;;;S SSSSS S;;;S       S;;;S              S;S SSS     S;;;S
+//S%%%S SSSSS S%%%S SSSSS S%%%S       S%%%S               SS SS      S%%%S
+//SSSSS SSSSS SSSSS SSSSS SSSSS       SSSSS                SsS     SsSSSSSsS
+//
+//    r   fGr
+//  rr  GrGGrG
+//rrr       GraG
+//r          GfrrraGa
+//r             GaarrrrrrGr
+//              GrarrrrrGrG
+//               GaGfra GraG
+//               Ga ar    ff
+//               Ga  Gr    G
+//              fr   af    Gr
+//             Gr    Gr    G
+//_mmsaki 2025 ________________
+
+//:'######::'########::'#######::'########:::::'###:::::'######:::'########:
+//'##... ##:... ##..::'##.... ##: ##.... ##:::'## ##:::'##... ##:: ##.....::
+// ##:::..::::: ##:::: ##:::: ##: ##:::: ##::'##:. ##:: ##:::..::: ##:::::::
+//. ######::::: ##:::: ##:::: ##: ########::'##:::. ##: ##::'####: ######:::
+//:..... ##:::: ##:::: ##:::: ##: ##.. ##::: #########: ##::: ##:: ##...::::
+//'##::: ##:::: ##:::: ##:::: ##: ##::. ##:: ##.... ##: ##::: ##:: ##:::::::
+//. ######::::: ##::::. #######:: ##:::. ##: ##:::: ##:. ######::: ########:
+//:......::::::..::::::.......:::..:::::..::..:::::..:::......::::........::
+//
 #define constant MEM_SCRATCH = 0x00
 //   0x040–0x09f  the contract's immutables, copied in once per call
 //   0x0a0–0x2ff  entry points            0xa00–0xa7f  mulDiv
@@ -24,13 +56,29 @@
 #define constant UINT64_MASK  = 0xffffffffffffffff
 #define constant UINT32_MASK  = 0xffffffff
 
-/* ──────────────────────────────────── reverts ──────────────────────────────────── */
-
+// Reverts
+//'####:'##::: ##:'########:'########:'########::'########::::'###:::::'######::'########:
+//. ##:: ###:: ##:... ##..:: ##.....:: ##.... ##: ##.....::::'## ##:::'##... ##: ##.....::
+//: ##:: ####: ##:::: ##:::: ##::::::: ##:::: ##: ##::::::::'##:. ##:: ##:::..:: ##:::::::
+//: ##:: ## ## ##:::: ##:::: ######::: ########:: ######:::'##:::. ##: ##::::::: ######:::
+//: ##:: ##. ####:::: ##:::: ##...:::: ##.. ##::: ##...:::: #########: ##::::::: ##...::::
+//: ##:: ##:. ###:::: ##:::: ##::::::: ##::. ##:: ##::::::: ##.... ##: ##::: ##: ##:::::::
+//'####: ##::. ##:::: ##:::: ########: ##:::. ##: ##::::::: ##:::: ##:. ######:: ########:
+//....::..::::..:::::..:::::........::..:::::..::..::::::::..:::::..:::......:::........::
+//
 #define error Panic(uint256)
 
 #define constant PANIC_UNDER_OVERFLOW = 0x11
 #define constant PANIC_DIVISION_BY_ZERO = 0x12
 
+//'########::'##::::'##:'########::'##:::::::'####::'######::
+// ##.... ##: ##:::: ##: ##.... ##: ##:::::::. ##::'##... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##:::..::
+// ########:: ##:::: ##: ########:: ##:::::::: ##:: ##:::::::
+// ##.....::: ##:::: ##: ##.... ##: ##:::::::: ##:: ##:::::::
+// ##:::::::: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##::: ##:
+// ##::::::::. #######:: ########:: ########:'####:. ######::
+//..::::::::::.......:::........:::........::....:::......:::
 /// @dev `revert Err()`; the caller pushes `__ERROR(Err)` (builtins cannot be macro arguments).
 #define macro REVERT_0() = takes (1) returns (0) {
     // [selector]
@@ -75,8 +123,7 @@
     ok:
 }
 
-/* ──────────────────────────────────── hashing ──────────────────────────────────── */
-
+// Hashing
 /// @dev `keccak(key, seed)`: the slot of `mapping[key]` whose seed slot is `seed`.
 #define macro HASH_2() = takes (2) returns (1) {
     // [key, seed]
@@ -84,8 +131,7 @@
     0x40 0x00 sha3
 }
 
-/* ──────────────────────────────────── returns ──────────────────────────────────── */
-
+// Returns
 #define macro RETURN_1() = takes (1) returns (0) {
     // [a]
     0x00 mstore
@@ -104,8 +150,7 @@
     0x00 0x00 return
 }
 
-/* ─────────────────────────────── checked arithmetic ─────────────────────────────── */
-
+// Checked arithmetic
 /// @dev `a + b`, Panic(0x11) on overflow.
 #define macro CHECKED_ADD() = takes (2) returns (1) {
     // [a, b]
@@ -125,8 +170,7 @@
     sub                            // [a - b]
 }
 
-/* ───────────────────────────────────── calldata ───────────────────────────────────── */
-
+// Calldata
 /// @dev `abi.decode` of an address word at `offset`: reverts if the upper 96 bits are dirty.
 #define macro LOAD_ADDRESS(offset) = takes (0) returns (1) {
     <offset> calldataload            // [word]
