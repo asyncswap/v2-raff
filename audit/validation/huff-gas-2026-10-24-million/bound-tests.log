@@ -1,0 +1,8 @@
+No files changed, compilation skipped
+
+Ran 2 tests for test/huff/ExactBound.t.sol:ExactBoundTest
+[PASS] testFuzz_exactFullWidthRoundTrips(uint256,uint256) (runs: 1024, μ: 155509, ~: 178518)
+[PASS] test_wideCompactWideReuse() (gas: 284453)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 76.76ms (18.63ms CPU time)
+
+Ran 1 test suite in 85.43ms (76.76ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)

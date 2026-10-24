@@ -202,13 +202,10 @@
     done:
 }
 
-/// @dev `delete self.orders[id]` for the order at B_O.
+/// @dev Logically delete the order at B_O; public views gate retained fields on amountIn.
 #define macro DELETE_ORDER() = takes (0) returns (0) {
-    0x00 [B_O] mload sstore
-    0x00 [B_O] mload 0x01 add sstore
+    // amountIn is the sole liveness marker; other words are overwritten on recreation.
     0x00 [B_O] mload 0x02 add sstore
-    0x00 [B_O] mload 0x03 add sstore
-    0x00 [B_O] mload 0x04 add sstore
 }
 
 /// @dev B_O = order slot of B_ID in B_P.
@@ -331,4 +328,12 @@
 #define macro SET_QUEUE_SEQUENCE() = takes (2) returns (0) {
     // [slot, sequence]
     dup1 sload [UINT64_MASK] and swap1 swap2 0x40 shl or swap1 sstore
+}
+
+/// @dev Canonical zero for a deleted order's retained field. [O, offset].
+#define macro LIVE_ORDER_FIELD() = takes (2) returns (1) {
+    dup1 0x02 add sload iszero absent jumpi
+    add sload done jump
+    absent: pop pop 0x00
+    done:
 }

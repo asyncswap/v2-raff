@@ -853,13 +853,13 @@
     // Native output may only consume the filler's same-tx deposit.
     LOAD_BOOL(0xc4) CURRENCY_OUT() token_output jumpi
     [PENDING_NATIVE_DEPOSIT_SLOT] tload         // [pending, O]
-    dup2 0x03 add sload dup1 CALC_POOL_FEE() CHECKED_ADD()   // [gross, pending, O]
+    0x03 dup3 LIVE_ORDER_FIELD() dup1 CALC_POOL_FEE() CHECKED_ADD()   // [gross, pending, O]
     dup1 dup3 lt iszero covered jumpi
     __ERROR(UnaccountedNativeOutput) REVERT_0()
     covered:
     swap1 sub [PENDING_NATIVE_DEPOSIT_SLOT] tstore
     token_output:                               // [O]
-    dup1 0x03 add sload CALC_POOL_FEE() [E_Y] mstore   // fee
+    0x03 dup2 LIVE_ORDER_FIELD() CALC_POOL_FEE() [E_Y] mstore   // fee
 
     // AsyncFiller.fill
     caller LOAD_ADDRESS(0xa4) [E_P] mload EXECUTOR_SLOT() sload authorized jumpi
@@ -977,7 +977,7 @@
     0x1140 mstore
     0x184 calldataload 0x1160 mstore
     [E_ID] mload 0x1180 mstore
-    [E_ID] mload ORDER_AT() 0x04 add sload [UINT64_MASK] and 0x11a0 mstore
+    [E_ID] mload ORDER_AT() 0x04 swap1 LIVE_ORDER_FIELD() [UINT64_MASK] and 0x11a0 mstore
     0x1a4 calldataload 0x11c0 mstore
     0x1c4 calldataload 0x11e0 mstore
     0x140 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
@@ -1159,12 +1159,12 @@
 
 #define macro ASYNC_ORDER_INFO() = takes (0) returns (0) {
     LOAD_PID(0x04)
-    0x24 calldataload ORDER_AT() dup1 0x03 add sload swap1 0x02 add sload RETURN_2()
+    0x24 calldataload ORDER_AT() dup1 0x03 swap1 LIVE_ORDER_FIELD() swap1 0x02 add sload RETURN_2()
 }
 
 #define macro ASYNC_ORDER_PRIORITY_FEE() = takes (0) returns (0) {
     LOAD_PID(0x04)
-    0x24 calldataload ORDER_AT() sload O_PAID_FEE() RETURN_1()
+    0x24 calldataload ORDER_AT() 0x00 swap1 LIVE_ORDER_FIELD() O_PAID_FEE() RETURN_1()
 }
 
 #define macro ORDERING_MODE_VIEW() = takes (0) returns (0) {
@@ -1203,6 +1203,7 @@
 #define macro ORDER_BOOK_ORDER() = takes (0) returns (0) {
     LOAD_PID(0x04)
     0x24 calldataload ORDER_AT()
+    dup1 0x02 add sload iszero absent jumpi
     dup1 sload dup1 O_OWNER() 0x00 mstore O_BUY() 0x80 mstore
     dup1 0x02 add sload 0x20 mstore
     dup1 0x03 add sload 0x40 mstore
@@ -1210,6 +1211,8 @@
     dup1 0x04 add sload 0x40 shr 0xa0 mstore
     sload O_FEE() 0xc0 mstore
     0xe0 0x00 return
+    absent:
+    pop 0xe0 calldatasize 0x00 calldatacopy 0xe0 0x00 return
 }
 
 #define macro IS_EXECUTOR() = takes (0) returns (0) {
@@ -1336,7 +1339,7 @@
     set_min_order: SET_MIN_ORDER()
     set_default_min: ONLY_OWNER() 0x04 calldataload 0x04 sstore RETURN_EMPTY()
     default_min: 0x04 sload RETURN_1()
-    order_created_sequence: LOAD_PID(0x04) 0x24 calldataload ORDER_AT() 0x04 add sload [UINT64_MASK] and RETURN_1()
+    order_created_sequence: LOAD_PID(0x04) 0x24 calldataload ORDER_AT() 0x04 swap1 LIVE_ORDER_FIELD() [UINT64_MASK] and RETURN_1()
     use_nonce: USE_NONCE()
     async_order_info:         ASYNC_ORDER_INFO()
     calculate_pool_fee:       CALCULATE_POOL_FEE()

@@ -1,6 +1,26 @@
 /// Exact 512-bit rational ordering and cached exact extrema per priority subtree.
 #define constant EXACT_BOUND_OFFSET = 0x200000000000000000000000000000000
-#define macro BOUND_SLOT() = takes (1) returns (1) { 0x01 shl [T_BASE] mload [EXACT_BOUND_OFFSET] add add }
+#define macro BOUND_SLOT() = takes (1) returns (1) { 0x03 mul [T_BASE] mload [EXACT_BOUND_OFFSET] add add }
+// Nonzero packed word: uint128 numerator | uint128 denominator << 128.
+// Zero marker: full-width numerator and denominator in the next two words.
+#define macro LOAD_BOUND() = takes (1) returns (2) {
+    dup1 sload dup1 iszero wide jumpi
+    swap1 pop dup1 [UINT128_MASK] and swap1 0x80 shr swap1 done jump
+    wide:
+    pop dup1 0x01 add sload swap1 0x02 add sload swap1
+    done:
+}
+#define macro STORE_BOUND() = takes (3) returns (0) {
+    // [slot, numerator, denominator]
+    0x2940 mstore 0x2960 mstore 0x2980 mstore
+    0x2960 mload 0x80 shr 0x2980 mload 0x80 shr or wide jumpi
+    0x2960 mload 0x2980 mload 0x80 shl or 0x2940 mload sstore done jump
+    wide:
+    0x2960 mload 0x2940 mload 0x01 add sstore
+    0x2980 mload 0x2940 mload 0x02 add sstore
+    0x00 0x2940 mload sstore
+    done:
+}
 #define fn RAT_LE() = takes (4) returns (1) {
     // [an, ad, bn, bd]
     0x2300 mstore 0x2320 mstore 0x2340 mstore 0x2360 mstore
@@ -20,15 +40,15 @@
     no: 0x00
     done:
 }
-// Each node caches the two-word exact extremum, not a mutable order reference.
+// Each node caches an exact immutable ratio value, not a mutable order reference.
 #define fn REPAIR_EXACT() = takes (2) returns (0) {
     // [cursor, forceFirst]
     0x2440 mstore 0x24e0 mstore
     loop:
     0x2440 mload iszero done jumpi
     0x2440 mload NODE_SLOT() sload dup1 0x2500 mstore
-    LEFT() BOUND_SLOT() dup1 sload 0x2460 mstore 0x01 add sload 0x2480 mstore
-    0x2500 mload RIGHT() BOUND_SLOT() dup1 sload 0x24a0 mstore 0x01 add sload 0x24c0 mstore
+    LEFT() BOUND_SLOT() LOAD_BOUND() 0x2460 mstore 0x2480 mstore
+    0x2500 mload RIGHT() BOUND_SLOT() LOAD_BOUND() 0x24a0 mstore 0x24c0 mstore
     0x24c0 mload 0x24a0 mload 0x2480 mload 0x2460 mload RAT_LE()
     [B_BUY] mload eq choose_right jumpi
     0x2460 mload 0x2520 mstore 0x2480 mload 0x2540 mstore store jump
@@ -37,11 +57,9 @@
     store:
     0x2440 mload BOUND_SLOT() 0x2560 mstore
     0x24e0 mload write jumpi
-    0x2560 mload sload 0x2520 mload eq
-    0x2560 mload 0x01 add sload 0x2540 mload eq and done jumpi
+    0x2560 mload LOAD_BOUND() 0x2520 mload eq swap1 0x2540 mload eq and done jumpi
     write:
-    0x2520 mload 0x2560 mload sstore
-    0x2540 mload 0x2560 mload 0x01 add sstore
+    0x2540 mload 0x2520 mload 0x2560 mload STORE_BOUND()
     0x00 0x24e0 mstore
     0x2500 mload [UINT32_MASK] and 0x2440 mstore loop jump
     done:
@@ -54,19 +72,18 @@
     [B_BUY] mload iszero sell jumpi
     swap1
     sell:
-    0x2560 mload sstore
-    0x2560 mload 0x01 add sstore
+    0x2560 mload STORE_BOUND()
     0x01 0x2580 mload NODE_SLOT() sload [UINT32_MASK] and REPAIR_EXACT()
 }
 /// Highest priority leaf whose exact price equals the root extremum. One path, no backtracking.
 #define fn EXACT_BEST() = takes (1) returns (1) {
     dup1 0x2640 mstore BOUND_SLOT()
-    dup1 sload 0x2600 mstore 0x01 add sload 0x2620 mstore
+    LOAD_BOUND() 0x2600 mstore 0x2620 mstore
     loop:
     0x2640 mload NODE_SLOT() sload dup1 0x2660 mstore
     IS_LEAF() leaf jumpi
     0x2660 mload RIGHT() dup1 0x2680 mstore BOUND_SLOT()
-    dup1 sload 0x26a0 mstore 0x01 add sload 0x26c0 mstore
+    LOAD_BOUND() 0x26a0 mstore 0x26c0 mstore
     [B_BUY] mload buy jumpi
     0x2620 mload 0x2600 mload 0x26c0 mload 0x26a0 mload RAT_LE() chosen jump
     buy: 0x26c0 mload 0x26a0 mload 0x2620 mload 0x2600 mload RAT_LE()

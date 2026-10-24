@@ -1,0 +1,16 @@
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/RadixPriceTree.huff"
+#define constant B_O = 0x640
+#define constant B_BUY = 0x680
+#define constant B_L = 0x660
+#define macro O_PK() = takes (1) returns (1) { 0x80 shr }
+#include "../../src/lib/ExactPrice.huff"
+#define macro MAIN() = takes (0) returns (0) {
+    0x8000 [T_BASE] mstore
+    0x00 calldataload iszero read jumpi
+    0x40 calldataload 0x20 calldataload 0x01 BOUND_SLOT() STORE_BOUND()
+    read:
+    0x01 BOUND_SLOT() LOAD_BOUND() 0x00 mstore 0x20 mstore
+    0x40 0x00 return
+}

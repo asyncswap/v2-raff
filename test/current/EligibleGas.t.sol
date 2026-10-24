@@ -48,15 +48,16 @@ contract EligibleGasTest is CurrentHuffHarness {
         assertTrue(vm.revertToState(snap));
     }
 
-    function _bench(uint256 blockers) internal {
+    function _bench(uint256 blockers, bool distinctOwners) internal {
+        emit log_named_uint("distinct_owners", distinctOwners ? 1 : 0);
         for (uint256 i; i < blockers; ++i) {
             _rest(key, address(uint160(0x1000 + i)), true, 2e15 - 1, 2_000_000, 100001 + i);
         }
         for (uint256 i; i < 32; ++i) {
-            _rest(key, alice, true, 1e18, 1e9, 100000);
+            _rest(key, distinctOwners ? address(uint160(0x10000 + i)) : alice, true, 1e18, 1e9, 100000);
         }
         for (uint256 i; i < 32; ++i) {
-            _rest(key, bob, false, 1e9, 1e18, 100000);
+            _rest(key, distinctOwners ? address(uint160(0x20000 + i)) : bob, false, 1e9, 1e18, 100000);
         }
         if (blockers == 128 && vm.envOr("EXPORT_GAS_FIXTURE", false)) {
             // dumpState exports touched accounts; ensure the Router's immutable runtime is included.
@@ -72,7 +73,7 @@ contract EligibleGasTest is CurrentHuffHarness {
             emit log_named_uint("matches", cap);
             uint256 used = _measure(cap);
             emit log_named_uint("gross_gas", used);
-            if (blockers == 128) {
+            if (blockers == 128 && !distinctOwners) {
                 // Measured Solidity references, optimizer 43,690, identical cold-storage fixture.
                 // Keep this benchmark cheaper; these constants are not general transaction limits.
                 if (cap == 1) assertLt(used, 571_633, "Huff 1-match gas regression");
@@ -80,25 +81,29 @@ contract EligibleGasTest is CurrentHuffHarness {
                 if (cap == 4) assertLt(used, 1_194_054, "Huff 4-match gas regression");
                 if (cap == 8) {
                     assertLt(used, 2_054_602, "Huff 8-match gas regression");
-                    assertLt(used, 1_800_000, "packed sequence gas regression");
+                    assertLt(used, 1_500_000, "compact cache gas regression");
                 }
             }
         }
     }
 
     function test_gasNoBlockers() public {
-        _bench(0);
+        _bench(0, false);
     }
 
     function test_gasOneBlocker() public {
-        _bench(1);
+        _bench(1, false);
     }
 
     function test_gasSixteenBlockers() public {
-        _bench(16);
+        _bench(16, false);
     }
 
     function test_gas128Blockers() public {
-        _bench(128);
+        _bench(128, false);
+    }
+
+    function test_gas128BlockersDistinctOwners() public {
+        _bench(128, true);
     }
 }

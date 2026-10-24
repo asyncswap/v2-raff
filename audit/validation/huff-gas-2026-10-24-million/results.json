@@ -1,0 +1,236 @@
+{
+  "baseline_commit": "e55aff2ab062bdb59f806d1665231e81747c3627",
+  "target_receipt_gas": 1000000,
+  "target_met_by_current_code": false,
+  "current_code_eight_matches": 1230868,
+  "prototype_eight_matches_repeated_owners": 955435,
+  "prototype_eight_matches_distinct_owners": 1335631,
+  "prototype_status": "Separate patch awaiting the event-semantics decision. Shared Python order/wallet traces pass against existing Solidity and experimental Huff; PoolManager claim events intentionally differ. Solidity has not been changed to batch settlement. Not a universal eight-match bound.",
+  "receipt_comparison": {
+    "method": "Actual Router.matchBook transactions on isolated Anvil, imported Foundry fixture; 128 blockers, 32 pairs, standard ERC20s, no LPs; gasUsed includes intrinsic gas and applied refunds. Each transaction starts from the same state. Not a worst-case bound.",
+    "client": "anvil/v1.8.6",
+    "rows": [
+      {
+        "matches": 1,
+        "solidity": 490024,
+        "huff_before": 407929,
+        "huff_after": 375854,
+        "all_events_identical": true,
+        "savings_vs_solidity_percent": 23.29885883140418,
+        "savings_vs_previous_huff_percent": 7.862887904512794
+      },
+      {
+        "matches": 2,
+        "solidity": 626378,
+        "huff_before": 520133,
+        "huff_after": 489616,
+        "all_events_identical": true,
+        "savings_vs_solidity_percent": 21.833780879915963,
+        "savings_vs_previous_huff_percent": 5.867153208890807
+      },
+      {
+        "matches": 4,
+        "solidity": 943316,
+        "huff_before": 810050,
+        "huff_after": 725556,
+        "all_events_identical": true,
+        "savings_vs_solidity_percent": 23.08452310784509,
+        "savings_vs_previous_huff_percent": 10.430714153447319
+      },
+      {
+        "matches": 8,
+        "solidity": 1631254,
+        "huff_before": 1410079,
+        "huff_after": 1230868,
+        "all_events_identical": true,
+        "savings_vs_solidity_percent": 24.54467544600657,
+        "savings_vs_previous_huff_percent": 12.709287919329338
+      }
+    ],
+    "compilers": {
+      "solidity": {
+        "solc": "0.8.26+commit.8a97fa7a",
+        "optimizer": {
+          "enabled": true,
+          "runs": 43690
+        },
+        "implementation": "Solidity"
+      },
+      "huff": {
+        "implementation": "native Huff",
+        "hnc": "hnc 1.6.2 (rev: 8278e5c9)",
+        "fixture_compiler": {
+          "solc": "0.8.26+commit.8a97fa7a",
+          "optimizer": {
+            "enabled": true,
+            "runs": 43690
+          }
+        }
+      }
+    },
+    "fixture_hashes": {
+      "solidity": "987089bc0303ad9a6047b3c806de4aa900f6bf8828126b002039b130cf93ae56",
+      "huff_before": "160793bb9d4b5ecc9fe14df2885a58094ede063d736b9edef849bca16e6aaf6e",
+      "huff_after": "2e0adce320973cdf5560c3851a4e1ea8af7f8722889e27dcb68b0c6315ea759c"
+    }
+  },
+  "gross_matrix": [
+    {
+      "blockers": 128,
+      "matches": 1,
+      "gross_gas": 423905
+    },
+    {
+      "blockers": 128,
+      "matches": 2,
+      "gross_gas": 566577
+    },
+    {
+      "blockers": 128,
+      "matches": 4,
+      "gross_gas": 860316
+    },
+    {
+      "blockers": 128,
+      "matches": 8,
+      "gross_gas": 1481203
+    },
+    {
+      "blockers": 128,
+      "matches": 16,
+      "gross_gas": 2724942
+    },
+    {
+      "blockers": 128,
+      "matches": 32,
+      "gross_gas": 5199369
+    },
+    {
+      "blockers": 128,
+      "matches": 1,
+      "gross_gas": 423789
+    },
+    {
+      "blockers": 128,
+      "matches": 2,
+      "gross_gas": 610260
+    },
+    {
+      "blockers": 128,
+      "matches": 4,
+      "gross_gas": 991599
+    },
+    {
+      "blockers": 128,
+      "matches": 8,
+      "gross_gas": 1787686
+    },
+    {
+      "blockers": 128,
+      "matches": 16,
+      "gross_gas": 3381729
+    },
+    {
+      "blockers": 128,
+      "matches": 32,
+      "gross_gas": 6556765
+    },
+    {
+      "blockers": 0,
+      "matches": 1,
+      "gross_gas": 383970
+    },
+    {
+      "blockers": 0,
+      "matches": 2,
+      "gross_gas": 520510
+    },
+    {
+      "blockers": 0,
+      "matches": 4,
+      "gross_gas": 801985
+    },
+    {
+      "blockers": 0,
+      "matches": 8,
+      "gross_gas": 1398343
+    },
+    {
+      "blockers": 0,
+      "matches": 16,
+      "gross_gas": 2586219
+    },
+    {
+      "blockers": 0,
+      "matches": 32,
+      "gross_gas": 4935872
+    },
+    {
+      "blockers": 1,
+      "matches": 1,
+      "gross_gas": 388891
+    },
+    {
+      "blockers": 1,
+      "matches": 2,
+      "gross_gas": 522722
+    },
+    {
+      "blockers": 1,
+      "matches": 4,
+      "gross_gas": 796348
+    },
+    {
+      "blockers": 1,
+      "matches": 8,
+      "gross_gas": 1400209
+    },
+    {
+      "blockers": 1,
+      "matches": 16,
+      "gross_gas": 2602739
+    },
+    {
+      "blockers": 1,
+      "matches": 32,
+      "gross_gas": 4941886
+    },
+    {
+      "blockers": 16,
+      "matches": 1,
+      "gross_gas": 399889
+    },
+    {
+      "blockers": 16,
+      "matches": 2,
+      "gross_gas": 539622
+    },
+    {
+      "blockers": 16,
+      "matches": 4,
+      "gross_gas": 827485
+    },
+    {
+      "blockers": 16,
+      "matches": 8,
+      "gross_gas": 1438620
+    },
+    {
+      "blockers": 16,
+      "matches": 16,
+      "gross_gas": 2656255
+    },
+    {
+      "blockers": 16,
+      "matches": 32,
+      "gross_gas": 5086768
+    }
+  ],
+  "source_sha256": {
+    "src/AsyncSwap.huff": "f57aa21dc15c5ade02df3753ff0abbdd2ef85bcd7fbe0fee3558874be7d3ca8e",
+    "src/lib/Book.huff": "776af902d3fa053d6200363f271adf6a5a6cacebaeb41b9479c711eafaf71465",
+    "src/lib/ExactPrice.huff": "ba726e3b694414567cca6faed31356bd4f4d8f34f1e5f154d186b8afa9bdfec7"
+  },
+  "hook_runtime_bytes": 21688,
+  "optimizer_runs": 43690
+}
