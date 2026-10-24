@@ -16,9 +16,9 @@ import {LPFeeLibrary} from "v4-core/libraries/LPFeeLibrary.sol";
 import {Currency} from "v4-core/types/Currency.sol";
 import {PoolIdLibrary, PoolKey} from "v4-core/types/PoolKey.sol";
 
-/// @notice Opt-in settlement tests against real Unichain PoolManager and USDC bytecode.
+/// @notice Pinned-fork settlement tests against real Unichain PoolManager and USDC bytecode.
 /// @dev Test-only hook installation and participant funding are cheatcodes. No broadcast occurs.
-/// Run with UNICHAIN_FORK_RPC_URL and UNICHAIN_FORK_BLOCK set to a pinned mainnet block.
+/// Defaults to the unichain RPC alias at block 61,709,000; environment variables can override both.
 contract UnichainForkTest is Test {
     using PoolIdLibrary for PoolKey;
 
@@ -33,12 +33,9 @@ contract UnichainForkTest is Test {
     address buyer = makeAddr("fork buyer");
 
     function setUp() public {
-        string memory rpc = vm.envOr("UNICHAIN_FORK_RPC_URL", string(""));
-        if (bytes(rpc).length == 0) {
-            vm.skip(true);
-            return;
-        }
-        vm.createSelectFork(rpc, vm.envUint("UNICHAIN_FORK_BLOCK"));
+        string memory rpc = vm.envOr("UNICHAIN_FORK_RPC_URL", string("unichain"));
+        uint256 fork = vm.createFork(rpc, vm.envOr("UNICHAIN_FORK_BLOCK", uint256(61_709_000)));
+        vm.selectFork(fork);
         assertEq(block.chainid, 130, "wrong target chain");
         assertGt(address(MANAGER).code.length, 0);
         assertGt(PERMIT2.code.length, 0);
@@ -88,9 +85,10 @@ contract UnichainForkTest is Test {
     function testFork_nativeUsdcMatchAndCancelResidual() public {
         uint256 quoteBefore = IERC20(USDC).balanceOf(seller);
         uint256 ethBefore = buyer.balance;
-        AsyncOrder memory ask = _submit(seller, true, 2 ether, 5_000e6, 0);
-        _submit(buyer, false, 2_500e6, 1 ether, 0);
-        assertEq(IERC20(USDC).balanceOf(seller) - quoteBefore, 2_500e6);
+        AsyncOrder memory ask = _submit(seller, true, 2 ether, 5_000e6, 100_000);
+        _submit(buyer, false, 2_500e6, 1 ether, 100_000);
+        assertEq(IERC20(USDC).balanceOf(seller), quoteBefore - 100_000);
+        assertEq(MANAGER.balanceOf(seller, uint160(USDC)), 2_500e6);
         assertEq(buyer.balance, ethBefore);
         assertEq(MANAGER.balanceOf(buyer, 0), 1 ether);
         assertEq(_remaining(ask), 1 ether);
@@ -118,9 +116,9 @@ contract UnichainForkTest is Test {
         for (uint256 i; i < 10; ++i) {
             address actor = address(uint160(0xB000 + i));
             _fund(actor);
-            _submit(actor, true, 1 ether, 2_500e6, 0);
+            _submit(actor, true, 1 ether, 2_500e6, 100_000);
         }
-        AsyncOrder memory bid = _submit(buyer, false, 25_000e6, 10 ether, 0);
+        AsyncOrder memory bid = _submit(buyer, false, 25_000e6, 10 ether, 100_000);
         assertEq(buyer.balance + MANAGER.balanceOf(buyer, 0), 108 ether);
         assertEq(_remaining(bid), 5_000e6);
         vm.prank(makeAddr("permissionless keeper"));

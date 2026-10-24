@@ -1,0 +1,11 @@
+Compiling 1 files with Solc 0.8.26
+Solc 0.8.26 finished in 1.19s
+Compiler run successful!
+
+Ran 3 tests for test/UnichainFork.t.sol:UnichainForkTest
+[PASS] testFork_nativeUsdcMatchAndCancelResidual() (gas: 1551862)
+[PASS] testFork_permissionlessContinuationAfterEightMatches() (gas: 11768274)
+[PASS] testFork_priorityBidNonRefundableWithoutActiveLp() (gas: 817320)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 18.44s (21.48s CPU time)
+
+Ran 1 test suite in 18.44s (18.44s CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
