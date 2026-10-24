@@ -45,6 +45,27 @@ contract RadixPriceTreeTest is Test {
         assertEq(h.freeCount(), 15);
     }
 
+    function test_packedFreeListCrossesWordBoundaries() public {
+        for (uint128 round; round < 5; ++round) {
+            uint128 base = round * 1000;
+            for (uint128 i = 1; i <= 65; ++i) {
+                assertTrue(h.insert(base + i));
+                assertFalse(h.insert(base + i), "duplicate must not allocate");
+                (bool found, uint128 high) = h.best(true);
+                assertTrue(found);
+                assertEq(high, base + i);
+            }
+            assertEq(h.nextNodeId(), 129, "reuse bounds the allocator across 17 packed words");
+            for (uint128 i = 1; i <= 65; ++i) {
+                h.remove(base + i);
+                (bool found, uint128 low) = h.best(false);
+                assertEq(found, i != 65);
+                if (found) assertEq(low, base + i + 1);
+            }
+            assertEq(h.freeCount(), 129);
+        }
+    }
+
     function test_recycledIdsKeepBestCorrect(uint128[12] memory prices, uint8 removeMask) public {
         bool[12] memory present;
         uint256 count;

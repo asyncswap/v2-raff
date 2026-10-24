@@ -1,12 +1,12 @@
 /// @title RadixPriceTree
 /// @notice A Patricia (compressed binary) trie over `uint128` keys: the book's price index and, in
-///         `PriorityFee` mode, each level's priority index.
+///         each level's priority index.
 /// @dev Spec: `AsyncSwapSpec/RadixTree.lean`, `RadixStorage.lean`, `RadixInsert.lean`, `RadixRemove.lean`,
 ///      `Bounds.lean` (`IdAlloc`). Same algorithm, id recycling and errors as `asyncswap/contracts` `RadixPriceTree`.
 ///
 ///      A tree lives at a slot `t`:
 ///        t                         header: root (bits 0–31) | nextNodeId (32–63) | free-list length (64–95)
-///        keccak(t) + i             free list, i < 2^32 (a stack of released ids)
+///        keccak(t) + floor(i / 8)  free list: eight 32-bit released ids per word
 ///        keccak(t) + 2^32 + id     node: parent (0–31) | left (32–63) | right (64–95) | price (96–223)
 ///                                        | bit (224–231) | leaf (232)
 ///        keccak(t) + 2^128 + price leaf id of `price` (0 = absent)
@@ -173,11 +173,12 @@
     [T_SLOT] mload sload                        // [hdr]
     dup1 0x40 shr [UINT32_MASK] and             // [free, hdr]
     dup1 iszero fresh jumpi
-    0x01 swap1 sub [T_BASE] mload add           // [itemSlot, hdr]
-    dup1 sload                                  // [id, itemSlot, hdr]
-    0x00 dup3 sstore                            // freeIds.pop()
-    swap2 0x01 0x40 shl swap1 sub               // [hdr − 2^64, itemSlot, id]
-    [T_SLOT] mload sstore pop                   // [id]
+    0x01 swap1 sub                         // [index = free - 1, hdr]
+    dup1 0x07 and 0x05 shl 0x920 mstore
+    0x03 shr [T_BASE] mload add sload
+    0x920 mload shr [UINT32_MASK] and      // [id, hdr]
+    // Logical pop: stale packed lanes are unreachable and overwritten on the next push.
+    swap1 0x01 0x40 shl swap1 sub [T_SLOT] mload sstore
     done jump
     fresh:                                      // [0, hdr]
         pop dup1 0x20 shr [UINT32_MASK] and     // [next, hdr]
@@ -191,15 +192,19 @@
     done:
 }
 
-/// @dev `_freeNode`: reset the node and push its id onto the free list.
+/// @dev Release an unreachable node ID into the packed free list.
 #define fn TREE_FREE_NODE() = takes (1) returns (0) {
     // [id]
-    // Unreachable nodes are fully initialized on reuse; retaining their words avoids redundant writes.
-    [T_SLOT] mload sload                        // [hdr, id]
-    dup1 0x40 shr [UINT32_MASK] and             // [free, hdr, id]
-    [T_BASE] mload add                          // [itemSlot, hdr, id]
-    swap1 swap2 swap1 sstore                    // [hdr]   freeIds.push(id)
-    0x01 0x40 shl add [T_SLOT] mload sstore     // []
+    // Both node words and inactive free-list lanes are overwritten before reuse.
+    0x960 mstore
+    [T_SLOT] mload sload
+    dup1 0x40 shr [UINT32_MASK] and
+    dup1 0x07 and 0x05 shl 0x920 mstore
+    0x03 shr [T_BASE] mload add dup1 0x940 mstore sload
+    [UINT32_MASK] 0x920 mload shl not and
+    0x960 mload 0x920 mload shl or 0x940 mload sstore
+    0x01 0x40 shl add [T_SLOT] mload sstore
+
 }
 
 /// @notice Inserts `price` into the tree at `t`. Returns `0`, touching nothing, when it is already stored.

@@ -6,7 +6,8 @@ exact-price selection within coarse tick buckets, FeeVault bid routing, claim-ba
 minimum-order checks, proportional residual limits, and shared signature nonces.
 
 Validation compares native Huff and Solidity executions with independently calculated Python results.
-See [current validation](docs/huff-sync-2026-10-24.md) for coverage, gas measurements, and limitations.
+See [gas optimization and validation](docs/huff-gas-2026-10-24.md) for current measurements and
+[baseline synchronization](docs/huff-sync-2026-10-24.md) for the earlier port coverage.
 Storage layouts differ; matching public behavior is the comparison target. The historical storage-specific
 fixtures under `test/formal/` are retained separately and are not current refinement proofs.
 

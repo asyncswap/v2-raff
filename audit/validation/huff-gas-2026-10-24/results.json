@@ -1,0 +1,158 @@
+{
+  "method": "Actual Router.matchBook transactions on isolated Anvil, imported Foundry fixture; 128 blockers, 32 pairs, standard ERC20s, no LPs; gasUsed includes intrinsic gas and applied refunds. Each transaction starts from the same state. Not a worst-case bound.",
+  "client": "anvil/v1.8.6",
+  "rows": [
+    {
+      "matches": 1,
+      "solidity": 490024,
+      "huff_before": 575351,
+      "huff_after": 409633,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 16.405522994792086,
+      "savings_vs_previous_huff_percent": 28.802939423065222
+    },
+    {
+      "matches": 2,
+      "solidity": 626378,
+      "huff_before": 775110,
+      "huff_after": 538220,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 14.074249095594038,
+      "savings_vs_previous_huff_percent": 30.562113764497944
+    },
+    {
+      "matches": 4,
+      "solidity": 943316,
+      "huff_before": 1191594,
+      "huff_after": 846223,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 10.292733294039325,
+      "savings_vs_previous_huff_percent": 28.98394923103004
+    },
+    {
+      "matches": 8,
+      "solidity": 1631254,
+      "huff_before": 2086548,
+      "huff_after": 1482424,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 9.123655788736762,
+      "savings_vs_previous_huff_percent": 28.95327593709802
+    }
+  ],
+  "compilers": {
+    "solidity": {
+      "solc": "0.8.26+commit.8a97fa7a",
+      "optimizer": {
+        "enabled": true,
+        "runs": 43690
+      },
+      "implementation": "Solidity"
+    },
+    "huff": {
+      "implementation": "native Huff",
+      "hnc": "hnc 1.6.2 (rev: 8278e5c9)",
+      "fixture_compiler": {
+        "solc": "0.8.26+commit.8a97fa7a",
+        "optimizer": {
+          "enabled": true,
+          "runs": 43690
+        }
+      }
+    }
+  },
+  "fixture_hashes": {
+    "solidity": "987089bc0303ad9a6047b3c806de4aa900f6bf8828126b002039b130cf93ae56",
+    "huff_before": "903bcd712b9dca8b965bfeef2e23e3a24d078913f08285cc1f07c54dd645c231",
+    "huff_after": "0e35d8021086113ba6b1684bf1ef3ec811c3f64bca1809dc82048b4bec81b714"
+  },
+  "date": "2026-10-24",
+  "huff_baseline_commit": "a82a0b8a4c58215f8a6e89677c56d70b97ccbdfa",
+  "huff_current_tests": {
+    "passed": 245,
+    "failed": 0,
+    "skipped": 0,
+    "excluded": "test/formal/** historical storage-layout fixtures"
+  },
+  "python_tests_passed": 43,
+  "shared_stateful": {
+    "campaigns": 8,
+    "operations": 514,
+    "matches": 128,
+    "state_checks": 8109,
+    "wallet_checks": 8109
+  },
+  "matching_vectors": 100,
+  "huff_tick_vectors": 174,
+  "extra_tick_fuzz_runs": 1024,
+  "gross_matrix": {
+    "solidity": {
+      "128/1": 571633,
+      "128/2": 775361,
+      "128/4": 1194054,
+      "128/8": 2054602,
+      "128/16": 3776982,
+      "128/32": 7213365,
+      "0/1": 515143,
+      "0/2": 710201,
+      "0/4": 1111526,
+      "0/8": 1937234,
+      "0/16": 3581122,
+      "0/32": 6842164,
+      "1/1": 522424,
+      "1/2": 709879,
+      "1/4": 1100079,
+      "1/8": 1938755,
+      "1/16": 3602232,
+      "1/32": 6836509,
+      "16/1": 537611,
+      "16/2": 736416,
+      "16/4": 1145245,
+      "16/8": 1990004,
+      "16/16": 3673146,
+      "16/32": 7041781
+    },
+    "huff": {
+      "128/1": 505696,
+      "128/2": 692170,
+      "128/4": 1077420,
+      "128/8": 1873138,
+      "128/16": 3468447,
+      "128/32": 6638947,
+      "0/1": 451430,
+      "0/2": 631440,
+      "0/4": 1003760,
+      "0/8": 1773620,
+      "0/16": 3308363,
+      "0/32": 6318654,
+      "1/1": 458399,
+      "1/2": 631652,
+      "1/4": 992218,
+      "1/8": 1773770,
+      "1/16": 3325550,
+      "1/32": 6329837,
+      "16/1": 473490,
+      "16/2": 656836,
+      "16/4": 1035830,
+      "16/8": 1823036,
+      "16/16": 3390650,
+      "16/32": 6507676
+    }
+  },
+  "source_sha256": {
+    "src/AsyncSwap.huff": "0fae529c473e26eafd3793d5643cce4f46808c40bc43afcd3cb3ac3422f2b250",
+    "src/FeeVault.huff": "b24083775dd1e4d5e484d057647e20fbae14fc4dbc896a496d6c9795df666ccd",
+    "src/MatchingEngine.huff": "23565d8f516417e7974b61f4a025981a5cbe5ae9fce7df6d851c3fa03c3415b7",
+    "src/NativeClaims.huff": "08a9bf7c8e8bec926802fba4449911bb47ca033f2b45652a52dc81deaf3e51a5",
+    "src/Router.huff": "c2a333759de2a4e8c7508cc8298c35b18fdc906d7e028e6578a613dc743a22f2",
+    "src/TokenClaims.huff": "b43e8178a63d56df3344550297e3e7205043055772a6c8ebd03fb1f464a176eb",
+    "src/generated/FeeVaultCreation.huff": "ad503c08b5ec19e7bc902c7e81a880f8f6acc6c15759e935c54b88e5d0e1aa6b",
+    "src/lib/Book.huff": "af1c453cb859841458bfe712408bae942132e8a72c2e7053aeef807330c94b2e",
+    "src/lib/Common.huff": "cfec0001a2432a12073d6ab6bcab86ceeef72e613e3cb378b404944a95e0b055",
+    "src/lib/ExactPrice.huff": "f8b00944bc427c429599acafbd8bf4af3357f3f55e8e66616c24736e85d688b1",
+    "src/lib/Math.huff": "566b121336ceacae87f8d03cc7545e1790a9a6cd5ba2d68ac626a493fb4cf93e",
+    "src/lib/PoolManager.huff": "27308d1f125dcf83cbd60bee74d35484033fd26a3969ce23fd631a95cec9f8ad",
+    "src/lib/RadixPriceTree.huff": "dbbaa66fa7ce8aadc7909e5ae44b62ff5491dea4bb9e37643b29ba2d8122be5a",
+    "src/lib/Signatures.huff": "ba927e84c0012dde49037a7675238d99c8fa169294070f4396c16b26e2246278",
+    "src/lib/TickPrice.huff": "e667d05304860aac3b5b569f15d8fb18395dbb019df55b032d4dfdef303f9d50"
+  }
+}

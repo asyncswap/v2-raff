@@ -1,0 +1,22 @@
+Compiling 101 files with Solc 0.8.26
+Solc 0.8.26 finished in 2.51s
+Compiler run successful with warnings:
+Warning (2018): Function state mutability can be restricted to view
+   --> test/formal/FormalProbesA.sol:125:5:
+    |
+125 |     function _assertNoWrites(address target) internal {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 2 tests for test/huff/TickInversion.t.sol:TickInversionTest
+[PASS] testFuzz_exactTickBoundaryAndNeighbours(int24) (runs: 1024, μ: 27960, ~: 27903)
+[PASS] testFuzz_matchesV4TickMath(uint160) (runs: 1024, μ: 11358, ~: 11272)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 129.00ms (169.59ms CPU time)
+
+Ran 3 tests for test/RadixPriceTree.t.sol:RadixPriceTreeTest
+[PASS] test_counterTracksPeakNotHistory() (gas: 48005133)
+[PASS] test_packedFreeListCrossesWordBoundaries() (gas: 62252033)
+[PASS] test_recycledIdsKeepBestCorrect(uint128[12],uint8) (runs: 1024, μ: 1446227, ~: 1438140)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 129.04ms (163.11ms CPU time)
+
+Ran 2 test suites in 135.31ms (258.04ms CPU time): 5 tests passed, 0 failed, 0 skipped (5 total tests)

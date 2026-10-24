@@ -61,6 +61,8 @@ contract EligibleGasTest is CurrentHuffHarness {
         if (blockers == 128 && vm.envOr("EXPORT_GAS_FIXTURE", false)) {
             // dumpState exports touched accounts; ensure the Router's immutable runtime is included.
             vm.etch(address(router), address(router).code);
+            (,, address storedVault) = hook.asyncOrders(poolId);
+            assertEq(storedVault, address(hook.feeVault()), "pool vault before export");
             vm.dumpState("deployments/eligible-gas-state.json");
             emit log_named_address("benchmark_router", address(router));
             emit log_named_bytes("benchmark_calldata", abi.encodeCall(router.matchBook, (key, 8)));
@@ -68,7 +70,16 @@ contract EligibleGasTest is CurrentHuffHarness {
         for (uint8 cap = 1; cap <= 32; cap *= 2) {
             emit log_named_uint("blockers", blockers);
             emit log_named_uint("matches", cap);
-            emit log_named_uint("gross_gas", _measure(cap));
+            uint256 used = _measure(cap);
+            emit log_named_uint("gross_gas", used);
+            if (blockers == 128) {
+                // Measured Solidity references, optimizer 43,690, identical cold-storage fixture.
+                // Keep this benchmark cheaper; these constants are not general transaction limits.
+                if (cap == 1) assertLt(used, 571_633, "Huff 1-match gas regression");
+                if (cap == 2) assertLt(used, 775_361, "Huff 2-match gas regression");
+                if (cap == 4) assertLt(used, 1_194_054, "Huff 4-match gas regression");
+                if (cap == 8) assertLt(used, 2_054_602, "Huff 8-match gas regression");
+            }
         }
     }
 

@@ -172,8 +172,7 @@
 }
 
 // Level maintenance
-/// @notice `AsyncFiller._append(id)`: enter the order at B_O / B_ID into its level — by priority key in
-///         `PriorityFee` mode (recomputed from the paid bid and sequence), at the tail in `FIFO` mode.
+/// @notice Enter B_O / B_ID into its price level by escrowed bid and queue sequence.
 #define fn BOOK_APPEND() = takes (0) returns (0) {
     LOAD_POSITION()
     [B_L] mload 0x02 add sload dup1 [B_COUNT] mstore
@@ -196,7 +195,7 @@
     [B_O] mload 0x01 add sload O_PK()
     dup1 [B_L] mload 0x03 add TREE_REMOVE()
     [B_L] mload 0x04 add swap1 HASH_2() 0x00 swap1 sstore
-    0x24c0 mload REPAIR_EXACT()
+    0x00 0x24c0 mload REPAIR_EXACT()
     [B_L] mload 0x02 add dup1 sload 0x01 swap1 sub dup1 [B_COUNT] mstore swap1 sstore
     0x00 not OPEN_ORDER_COUNT_ADD()
     [B_COUNT] mload done jumpi
@@ -211,7 +210,7 @@
     0x00 [B_O] mload 0x02 add sstore
     0x00 [B_O] mload 0x03 add sstore
     0x00 [B_O] mload 0x04 add sstore
-    0x00 [B_O] mload 0x05 add sstore
+    // Slot 5 is unused in the priority-only layout and is never written.
     0x00 [B_O] mload 0x06 add sstore
 }
 
@@ -296,13 +295,13 @@
 }
 
 // Queries
-/// @notice `AsyncFiller.bestAtPrice(isBuy, price)`: the queue head in FIFO mode; the highest priority key
-///         in PriorityFee mode.
+/// @notice Select the best exact price within the level, then its highest priority key.
 #define fn BOOK_BEST_AT_PRICE() = takes (3) returns (1) {
     // [P, buy, price]
-    dup1 [B_P] mstore LEVEL_SLOT() 0x03 add TREE_LOAD()
+    dup2 [B_BUY] mstore
+    dup1 [B_P] mstore LEVEL_SLOT() dup1 [B_L] mstore 0x03 add TREE_LOAD()
     [T_SLOT] mload sload [UINT32_MASK] and dup1 iszero done jumpi
-    BOUND_SLOT() sload
+    EXACT_BEST()
     done:
 }
 

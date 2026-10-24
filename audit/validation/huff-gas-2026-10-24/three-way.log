@@ -1,0 +1,194 @@
+...........................................                              [100%]
+43 passed in 5.44s
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/EligiblePythonVectors.t.sol
+{
+  "seed": 20261023,
+  "campaigns": 8,
+  "operations": 514,
+  "matches": 128,
+  "state_checks": 8109,
+  "wallet_checks": 8109
+}
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonVectors.t.sol
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonHashes.t.sol
+/Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonHashes.t.sol
+Compiling 3 files with Solc 0.8.26
+Solc 0.8.26 finished in 19.11s
+Compiler run successful with warnings:
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> test/formal/FormalMatchD.sol:420:38:
+    |
+420 |     function _feeOps(Trace memory t, Case memory c, bytes32 id, address maker, uint256 amount) internal view {
+    |                                      ^^^^^^^^^^^^^
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/security/EligiblePythonVectors.t.sol:1008:5:
+     |
+1008 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/security/EligiblePythonVectors.t.sol:1998:5:
+     |
+1998 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/security/EligiblePythonVectors.t.sol:2988:5:
+     |
+2988 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/security/EligiblePythonVectors.t.sol:6904:5:
+     |
+6904 |     function _phase25() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+     --> test/security/EligiblePythonVectors.t.sol:11731:5:
+      |
+11731 |     function _phase31() internal {
+      |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 1 test for test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6534)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 19.21ms (9.86ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 68728063)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 93.59ms (80.13ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 134607835)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 107.57ms (86.12ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 68912569)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 112.63ms (96.95ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 68758115)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 115.03ms (97.84ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 145436365)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 167.31ms (146.66ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 162888141)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 170.52ms (152.92ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 188970963)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 171.35ms (149.43ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 170539450)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 192.32ms (178.09ms CPU time)
+
+Ran 1 test for test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 202903529)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 224.74ms (187.70ms CPU time)
+
+Ran 10 test suites in 231.79ms (1.37s CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/EligiblePythonVectors.t.sol
+{
+  "seed": 20261023,
+  "campaigns": 8,
+  "operations": 514,
+  "matches": 128,
+  "state_checks": 8109,
+  "wallet_checks": 8109
+}
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonVectors.t.sol
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonHashes.t.sol
+/Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonHashes.t.sol
+Compiling 3 files with Solc 0.8.26
+Solc 0.8.26 finished in 16.54s
+Compiler run successful with warnings:
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:1008:5:
+     |
+1008 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:1998:5:
+     |
+1998 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:2988:5:
+     |
+2988 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:6904:5:
+     |
+6904 |     function _phase25() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+     --> test/current/EligiblePythonVectors.t.sol:11731:5:
+      |
+11731 |     function _phase31() internal {
+      |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 1 test for test/current/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6534)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 794.88µs (151.88µs CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 69213999)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 283.01ms (50.72ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 69179782)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 285.13ms (42.07ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 69334680)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 307.16ms (34.80ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 138278320)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 327.50ms (100.51ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 166744310)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 330.24ms (81.37ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 173343250)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 338.26ms (109.97ms CPU time)
+
+Ran 1 test for test/current/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 186004708)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 347.52ms (112.89ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 148576389)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 352.62ms (71.34ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 191559998)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 356.33ms (103.97ms CPU time)
+
+Ran 10 test suites in 358.09ms (2.93s CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
+Compiling 1 files with Solc 0.8.26
+Solc 0.8.26 finished in 867.77ms
+Compiler run successful!
+
+Ran 1 test for test/huff/TickParity.t.sol:TickParityTest
+[PASS] test_pythonTickVectors() (gas: 3418084)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 18.83ms (18.50ms CPU time)
+
+Ran 1 test suite in 19.32ms (18.83ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Shared Python traces passed on both Solidity and native Huff; tick-key vectors passed on Huff.

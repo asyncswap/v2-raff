@@ -90,6 +90,69 @@
     rounded:
     dup1 0xffffffff and iszero iszero swap1 0x20 shr add
 }
+/// Logarithmic v4 tick inversion: 14 fractional log2 bits and one exact boundary check.
+#define fn TICK_AT_SQRT() = takes (0) returns (1) {
+    0x20c0 mload 0x20 shl dup1 0x2140 mstore
+    dup1 0x80 shr dup1 iszero small_msb jumpi
+    MSB() 0x80 add swap1 pop msb_ready jump
+    small_msb: pop MSB()
+    msb_ready: 0x2160 mstore
+    0x80 0x2160 mload sub 0x40 shl 0x21a0 mstore
+    0x80 0x2160 mload lt lower jumpi
+    0x2140 mload 0x7f 0x2160 mload sub shr normalized jump
+    lower: 0x2140 mload 0x2160 mload 0x7f sub shl
+    normalized: 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x3f shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x3e shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x3d shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x3c shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x3b shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x3a shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x39 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x38 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x37 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x36 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x35 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x34 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x33 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x2180 mload dup1 mul 0x7f shr dup1 0x80 shr
+    dup1 0x32 shl 0x21a0 mload or 0x21a0 mstore
+    shr 0x2180 mstore
+    0x3627a301d71055774c85 0x21a0 mload mul 0x21a0 mstore
+    0x28f6481ab7f045a5af012a19d003aaa 0x21a0 mload sub 0x80 sar 0x21c0 mstore
+    0xdb2df09e81959a81455e260799a0632f 0x21a0 mload add 0x80 sar 0x21e0 mstore
+    0x21c0 mload 0x21e0 mload eq low jumpi
+    0x21e0 mload SQRT_AT_TICK() 0x20c0 mload lt low jumpi
+    0x21e0 mload done jump
+    low: 0x21c0 mload
+    done:
+}
 #define fn BOOK_PRICE_KEY() = takes (4) returns (1) {
     // [buy, zeroForOne, input, minimum]
     0x2000 mstore 0x2020 mstore 0x2040 mstore 0x2060 mstore
@@ -112,16 +175,7 @@
     0x01000276a3 dup2 lt low_clamp jumpi
     0xfffd8963efd1fc6a506488495d951d5263988d26 dup2 lt iszero high_clamp_sqrt jumpi
     pop
-    0x0d89e8 0x00 sub 0x20e0 mstore
-    0x0d89e8 0x2100 mstore
-    loop:
-    0x2100 mload 0x20e0 mload slt iszero tick_done jumpi
-    0x20e0 mload 0x2100 mload add 0x01 add 0x01 sar dup1 0x2120 mstore
-    SQRT_AT_TICK()
-    0x20c0 mload lt lower_hi jumpi
-    0x2120 mload 0x20e0 mstore loop jump
-    lower_hi: 0x01 0x2120 mload sub 0x2100 mstore loop jump
-    tick_done: 0x20e0 mload key_done jump
+    TICK_AT_SQRT() key_done jump
     low_clamp: pop 0x0d89e8 0x00 sub key_done jump
     high_clamp_sqrt:
     high_clamp: pop 0x0d89e8

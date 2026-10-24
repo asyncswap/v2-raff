@@ -1,0 +1,68 @@
+{
+  "method": "Actual Router.matchBook transactions on isolated Anvil, imported Foundry fixture; 128 blockers, 32 pairs, standard ERC20s, no LPs; gasUsed includes intrinsic gas and applied refunds. Each transaction starts from the same state. Not a worst-case bound.",
+  "client": "anvil/v1.8.6",
+  "rows": [
+    {
+      "matches": 1,
+      "solidity": 490024,
+      "huff_before": 575351,
+      "huff_after": 409633,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 16.405522994792086,
+      "savings_vs_previous_huff_percent": 28.802939423065222
+    },
+    {
+      "matches": 2,
+      "solidity": 626378,
+      "huff_before": 775110,
+      "huff_after": 538220,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 14.074249095594038,
+      "savings_vs_previous_huff_percent": 30.562113764497944
+    },
+    {
+      "matches": 4,
+      "solidity": 943316,
+      "huff_before": 1191594,
+      "huff_after": 846223,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 10.292733294039325,
+      "savings_vs_previous_huff_percent": 28.98394923103004
+    },
+    {
+      "matches": 8,
+      "solidity": 1631254,
+      "huff_before": 2086548,
+      "huff_after": 1482424,
+      "all_events_identical": true,
+      "savings_vs_solidity_percent": 9.123655788736762,
+      "savings_vs_previous_huff_percent": 28.95327593709802
+    }
+  ],
+  "compilers": {
+    "solidity": {
+      "solc": "0.8.26+commit.8a97fa7a",
+      "optimizer": {
+        "enabled": true,
+        "runs": 43690
+      },
+      "implementation": "Solidity"
+    },
+    "huff": {
+      "implementation": "native Huff",
+      "hnc": "hnc 1.6.2 (rev: 8278e5c9)",
+      "fixture_compiler": {
+        "solc": "0.8.26+commit.8a97fa7a",
+        "optimizer": {
+          "enabled": true,
+          "runs": 43690
+        }
+      }
+    }
+  },
+  "fixture_hashes": {
+    "solidity": "987089bc0303ad9a6047b3c806de4aa900f6bf8828126b002039b130cf93ae56",
+    "huff_before": "903bcd712b9dca8b965bfeef2e23e3a24d078913f08285cc1f07c54dd645c231",
+    "huff_after": "0e35d8021086113ba6b1684bf1ef3ec811c3f64bca1809dc82048b4bec81b714"
+  }
+}
