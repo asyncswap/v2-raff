@@ -289,11 +289,7 @@ abstract contract FormalMatchD is HookUnlockBase {
 
     /// @dev `_crosses(bidKey, askKey, buy, sell)` as documented in `AsyncMatching`: strictly ordered keys
     ///      decide; equal keys use the exact cross-multiply `buyIn·sellIn ≥ sellOut·buyOut`.
-    function _crossesSpec(OrderInfo memory buy, OrderInfo memory sell)
-        internal
-        pure
-        returns (bool)
-    {
+    function _crossesSpec(OrderInfo memory buy, OrderInfo memory sell) internal pure returns (bool) {
         if (buy.price != sell.price) return buy.price > sell.price;
         return buy.amountIn * sell.amountIn >= sell.amountOutMin * buy.amountOutMin;
     }
@@ -303,11 +299,7 @@ abstract contract FormalMatchD is HookUnlockBase {
     }
 
     /// @dev `_matchPair(bidId, askId)`: the older order's side rests.
-    function _makerBuy(OrderInfo memory buy, OrderInfo memory sell)
-        internal
-        pure
-        returns (bool)
-    {
+    function _makerBuy(OrderInfo memory buy, OrderInfo memory sell) internal pure returns (bool) {
         return buy.sequence < sell.sequence;
     }
 

@@ -69,7 +69,7 @@ contract HookBalanceIsolationTest is Test {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.hookTo( abi.encode(manager, Currency.wrap(address(t1)), address(this)), address(flags));
+        HuffDeploy.hookTo(abi.encode(manager, Currency.wrap(address(t1)), address(this)), address(flags));
         AsyncSwap hook = AsyncSwap(payable(address(flags)));
         PoolKey memory key =
             PoolKey(Currency.wrap(address(t0)), Currency.wrap(address(t1)), LPFeeLibrary.DYNAMIC_FEE_FLAG, 1, hook);

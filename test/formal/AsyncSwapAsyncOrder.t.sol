@@ -26,13 +26,9 @@ contract AsyncSwapAsyncOrderFormalTest is FormalSlotsB {
     }
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrder.lean:25 — never reverts.
-    function testFuzz_asyncOrder_never_reverts(
-        address sender,
-        bytes32 pid,
-        bytes32 oid,
-        OrderInfo memory o,
-        bool set
-    ) public {
+    function testFuzz_asyncOrder_never_reverts(address sender, bytes32 pid, bytes32 oid, OrderInfo memory o, bool set)
+        public
+    {
         if (set) _storeOrder(PoolId.wrap(pid), oid, o);
         (bool ok,) = _call(sender, pid, oid);
         assertTrue(ok);
@@ -40,9 +36,7 @@ contract AsyncSwapAsyncOrderFormalTest is FormalSlotsB {
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrder.lean:31 — ok (a, w') iff a = stored amountIn ∧ w' = w; also on
     ///         a real placed order.
-    function testFuzz_asyncOrder_ok_iff(bytes32 pid, bytes32 oid, OrderInfo memory o, uint96 amountIn)
-        public
-    {
+    function testFuzz_asyncOrder_ok_iff(bytes32 pid, bytes32 oid, OrderInfo memory o, uint96 amountIn) public {
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();
         assertEq(hook.asyncOrder(PoolId.wrap(pid), oid), o.amountIn);

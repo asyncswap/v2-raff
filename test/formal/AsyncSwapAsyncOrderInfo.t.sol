@@ -15,9 +15,7 @@ contract AsyncSwapAsyncOrderInfoFormalTest is FormalSlotsB {
     }
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrderInfo.lean:21 — returns (amountIn, amountOutMin), world untouched.
-    function testFuzz_asyncOrderInfo_run(address sender, bytes32 pid, bytes32 oid, OrderInfo memory o)
-        public
-    {
+    function testFuzz_asyncOrderInfo_run(address sender, bytes32 pid, bytes32 oid, OrderInfo memory o) public {
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();
         (bool ok, bytes memory ret) = _call(sender, pid, oid);
@@ -41,9 +39,7 @@ contract AsyncSwapAsyncOrderInfoFormalTest is FormalSlotsB {
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrderInfo.lean:33 — ok ((a, b), w') iff a, b are the stored legs
     ///         ∧ w' = w; also on a real placed order.
-    function testFuzz_asyncOrderInfo_ok_iff(bytes32 pid, bytes32 oid, OrderInfo memory o, uint96 amountIn)
-        public
-    {
+    function testFuzz_asyncOrderInfo_ok_iff(bytes32 pid, bytes32 oid, OrderInfo memory o, uint96 amountIn) public {
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();
         (uint256 a, uint256 b) = hook.asyncOrderInfo(PoolId.wrap(pid), oid);

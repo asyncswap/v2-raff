@@ -54,8 +54,8 @@ contract NCRProbe {
         nestedTried = true;
         (nestedOk, nestedRet) =
             address(claims).call(abi.encodeCall(NativeClaims.redeem, (nestedRecipient, nestedAmount)));
-        bool reentrant = !nestedOk && keccak256(nestedRet)
-            == keccak256(abi.encodeWithSelector(NativeClaims.ReentrantRedemption.selector));
+        bool reentrant = !nestedOk
+            && keccak256(nestedRet) == keccak256(abi.encodeWithSelector(NativeClaims.ReentrantRedemption.selector));
         seenFlag = bytes32(uint256(reentrant ? 1 : 0));
     }
 }

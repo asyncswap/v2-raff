@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
-
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {Test} from "forge-std/Test.sol";
@@ -105,7 +104,6 @@ contract UnichainForkTest is Test {
     }
 
     function testFork_priorityBidNonRefundableWithoutActiveLp() public {
-        hook.setOrderingMode(key, AsyncFiller.OrderingMode.PriorityFee);
         uint256 beforeBalance = IERC20(USDC).balanceOf(seller);
         AsyncOrder memory ask = _submit(seller, true, 1 ether, 2_500e6, 100_000);
         vm.prank(seller);

@@ -536,7 +536,14 @@ contract SpecSigFormalTest is FormalProbesA {
         return keccak256(
             _leanPreimage(
                 _leanDomainSep("AsyncSwap Router", address(router)),
-                OrderSignatures.hashCancel(o, _routerOrderId(o), amountIn, hook.orderCreatedSequence(o.key.toId(), _routerOrderId(o)), nonce, deadline)
+                OrderSignatures.hashCancel(
+                    o,
+                    _routerOrderId(o),
+                    amountIn,
+                    hook.orderCreatedSequence(o.key.toId(), _routerOrderId(o)),
+                    nonce,
+                    deadline
+                )
             )
         );
     }

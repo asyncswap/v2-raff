@@ -155,9 +155,7 @@ contract FormalBase is SetupHook {
         w[4] = _loadHook(bytes32(o + 4));
         w[5] = _loadHook(bytes32(o + 5));
         uint256 seq = uint64(uint256(_loadHook(bytes32(o + 6))));
-        w[6] = bytes32(
-            ((h0 >> 160) & 1) | (((h0 >> 168) & 1) << 8) | (seq << 16) | (uint256(uint64(h0 >> 184)) << 80)
-        );
+        w[6] = bytes32(((h0 >> 160) & 1) | (((h0 >> 168) & 1) << 8) | (seq << 16) | (uint256(uint64(h0 >> 184)) << 80));
         w[7] = bytes32((h1 >> 128) | (((h0 >> 176) & 1) << 128));
     }
 
@@ -168,7 +166,9 @@ contract FormalBase is SetupHook {
             | (((w6 >> 8) & 0xff != 0 ? uint256(1) : 0) << 168) | (((w7 >> 128) & 0xff != 0 ? uint256(1) : 0) << 176)
             | (uint256(uint64(w6 >> 80)) << 184);
         vm.store(address(hook), bytes32(o), bytes32(h0));
-        vm.store(address(hook), bytes32(o + 1), bytes32(uint256(uint128(uint256(w[3]))) | (uint256(uint128(w7)) << 128)));
+        vm.store(
+            address(hook), bytes32(o + 1), bytes32(uint256(uint128(uint256(w[3]))) | (uint256(uint128(w7)) << 128))
+        );
         vm.store(address(hook), bytes32(o + 2), w[1]);
         vm.store(address(hook), bytes32(o + 3), w[2]);
         vm.store(address(hook), bytes32(o + 4), w[4]);

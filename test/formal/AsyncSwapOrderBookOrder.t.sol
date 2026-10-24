@@ -20,9 +20,7 @@ contract AsyncSwapOrderBookOrderFormalTest is FormalSlotsB {
 
     /// @notice formal/Refinement/Swarm/AsyncSwapOrderBookOrder.lean:25 — returns (owner, amountIn, amountOutMin, price,
     ///         isBuy, previous, next) of the stored record, world unchanged.
-    function testFuzz_orderBookOrder_run(address sender, bytes32 pid, bytes32 oid, OrderInfo memory o)
-        public
-    {
+    function testFuzz_orderBookOrder_run(address sender, bytes32 pid, bytes32 oid, OrderInfo memory o) public {
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();
         (bool ok, bytes memory ret) = _call(sender, pid, oid);

@@ -20,12 +20,7 @@ contract AsyncSwapAsyncOrderPriorityFeeFormalTest is FormalSlotsB {
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrderPriorityFee.lean:21 — returns `escrowed ? priorityFee : 0`,
     ///         world untouched.
-    function testFuzz_asyncOrderPriorityFee_run(
-        address sender,
-        bytes32 pid,
-        bytes32 oid,
-        OrderInfo memory o
-    ) public {
+    function testFuzz_asyncOrderPriorityFee_run(address sender, bytes32 pid, bytes32 oid, OrderInfo memory o) public {
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();
         (bool ok, bytes memory ret) = _call(sender, pid, oid);
@@ -57,9 +52,7 @@ contract AsyncSwapAsyncOrderPriorityFeeFormalTest is FormalSlotsB {
     }
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrderPriorityFee.lean:46 — not escrowed ⇒ 0 (also a real FIFO order).
-    function testFuzz_asyncOrderPriorityFee_not_escrowed(bytes32 pid, bytes32 oid, OrderInfo memory o)
-        public
-    {
+    function testFuzz_asyncOrderPriorityFee_not_escrowed(bytes32 pid, bytes32 oid, OrderInfo memory o) public {
         o.priorityFeeEscrowed = false;
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();
@@ -71,12 +64,7 @@ contract AsyncSwapAsyncOrderPriorityFeeFormalTest is FormalSlotsB {
 
     /// @notice formal/Refinement/Swarm/AsyncSwapAsyncOrderPriorityFee.lean:52 — escrowed ⇒ the stored priorityFee (also a
     ///         real escrowed PriorityFee-mode order).
-    function testFuzz_asyncOrderPriorityFee_escrowed(
-        bytes32 pid,
-        bytes32 oid,
-        OrderInfo memory o,
-        uint64 fee
-    ) public {
+    function testFuzz_asyncOrderPriorityFee_escrowed(bytes32 pid, bytes32 oid, OrderInfo memory o, uint64 fee) public {
         o.priorityFeeEscrowed = true;
         _storeOrder(PoolId.wrap(pid), oid, o);
         vm.record();

@@ -22,7 +22,15 @@ contract RouterCancelWithSigFormalTest is FormalProbesA {
         returns (bytes32)
     {
         return _digest(
-            router.DOMAIN_SEPARATOR(), OrderSignatures.hashCancel(o, _routerOrderId(o), amountIn, hook.orderCreatedSequence(o.key.toId(), _routerOrderId(o)), nonce, deadline)
+            router.DOMAIN_SEPARATOR(),
+            OrderSignatures.hashCancel(
+                o,
+                _routerOrderId(o),
+                amountIn,
+                hook.orderCreatedSequence(o.key.toId(), _routerOrderId(o)),
+                nonce,
+                deadline
+            )
         );
     }
 

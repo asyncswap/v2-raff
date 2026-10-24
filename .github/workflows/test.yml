@@ -50,7 +50,8 @@ jobs:
       - name: Run Forge fmt
         run: forge fmt --check
 
-      # asyncswap/contracts' suite, deploying the Huff in src/; the invariant suites at the depth
+      # Current behavior suite; historical storage-layout fixtures in test/formal are retained separately.
+      # Deploys native Huff; the invariant suites run at the depth
       # asyncswap/contracts' CI uses. test/huff/CodeSize.t.sol keeps the Huff runtimes under EIP-170.
       - name: Run Forge tests
         env:
@@ -59,4 +60,4 @@ jobs:
           # The Unichain fork tests run against live mainnet state at a pinned block.
           UNICHAIN_FORK_RPC_URL: https://mainnet.unichain.org
           UNICHAIN_FORK_BLOCK: "61709000"
-        run: forge test -vvv
+        run: forge test --no-match-path 'test/formal/**' -vvv

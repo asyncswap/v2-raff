@@ -43,7 +43,7 @@ contract NoReturnTokenTest is Test {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.hookTo( abi.encode(manager, Currency.wrap(address(usdc)), address(this)), address(flags));
+        HuffDeploy.hookTo(abi.encode(manager, Currency.wrap(address(usdc)), address(this)), address(flags));
         hook = AsyncSwap(payable(address(flags)));
         router = HuffDeploy.router(manager, hook, ISignatureTransfer(Permit2Bytecode.PERMIT2));
         key = PoolKey(Currency.wrap(t0), Currency.wrap(t1), LPFeeLibrary.DYNAMIC_FEE_FLAG, 1, hook);

@@ -27,7 +27,7 @@ contract FeeClaimsTest is SetupHook {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.feeTestHookTo( abi.encode(manager, currency1, address(this)), address(flags));
+        HuffDeploy.feeTestHookTo(abi.encode(manager, currency1, address(this)), address(flags));
         hook = AsyncSwap(payable(address(flags)));
         vault = hook.feeVault();
         _deployRouter();
