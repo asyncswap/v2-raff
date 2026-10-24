@@ -563,8 +563,8 @@
     [M_SECOND] mload [M_SELL] mstore
     sided:                                      // [fBuy]
     // makerBuy = first.createdSequence < second.createdSequence ? first.isBuy : second.isBuy (= !first.isBuy)
-    [M_SECOND] mload ORDER_AT() 0x04 add sload
-    [M_FIRST] mload ORDER_AT() 0x04 add sload lt
+    [M_SECOND] mload ORDER_AT() 0x04 add sload [UINT64_MASK] and
+    [M_FIRST] mload ORDER_AT() 0x04 add sload [UINT64_MASK] and lt
     first_older jumpi
     iszero
     first_older:                                // [makerBuy]
@@ -632,6 +632,7 @@
     O_PAID_FEE()                                // [paid, O]
     swap1 0x02 add sload                        // [oldIn, paid]
     dup1 [R_USED] mload swap1 CHECKED_SUB() [R_REMIN] mstore    // remainingInput
+    [R_REMIN] mload iszero fully_filled jumpi
     dup1 [R_REMIN] mload [R_O] mload 0x03 add sload MUL_DIV_UP() [R_REMMIN] mstore
 
     // _settleMatchedPriorityFee
@@ -644,7 +645,13 @@
     0x00 [R_UNFILLED] mstore
     settled:
     pop pop
-
+    partial_fill jump
+    fully_filled:
+    pop
+    0x00 [R_UNFILLED] mstore
+    [R_OWNER] mload [R_ID] mload SETTLE_PRIORITY_FEE()
+    close jump
+    partial_fill:
     [R_REMIN] mload iszero close jumpi
     [R_O] mload sload O_BUY() buy_notional jumpi
     [R_REMMIN] mload dust_check jump
@@ -666,7 +673,7 @@
     swap1 [R_O] mload 0x01 add dup1 sload [UINT128_MASK] not and   // [w1 & ~price, slot, priceChanged]
     swap2 swap1 swap2 or swap1 sstore           // O+1 = updatedPrice | pk     [priceChanged]
     iszero same_seq jumpi
-    NEXT_SEQUENCE() [R_O] mload 0x06 add sstore
+    NEXT_SEQUENCE() [R_O] mload 0x04 add SET_QUEUE_SEQUENCE()
     same_seq:
     BOOK_APPEND()
     done jump
@@ -943,7 +950,7 @@
     dup2 dup2 0x02 add sload dup3 sload O_ZFO() dup4 sload O_BUY() BOOK_PRICE_KEY()   // [price, O, newMin]
     dup2 0x01 add dup1 sload [UINT128_MASK] not and           // [w1', slot, price, O, newMin]
     swap1 swap2 or swap1 sstore                 // [O, newMin]
-    NEXT_SEQUENCE() dup2 0x06 add sstore
+    NEXT_SEQUENCE() dup2 0x04 add SET_QUEUE_SEQUENCE()
     pop
     BOOK_APPEND()
     [MEM_LOG] [E_V] mload swap1 mstore          // old
@@ -970,7 +977,7 @@
     0x1140 mstore
     0x184 calldataload 0x1160 mstore
     [E_ID] mload 0x1180 mstore
-    [E_ID] mload ORDER_AT() 0x04 add sload 0x11a0 mstore
+    [E_ID] mload ORDER_AT() 0x04 add sload [UINT64_MASK] and 0x11a0 mstore
     0x1a4 calldataload 0x11c0 mstore
     0x1c4 calldataload 0x11e0 mstore
     0x140 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
@@ -1200,7 +1207,7 @@
     dup1 0x02 add sload 0x20 mstore
     dup1 0x03 add sload 0x40 mstore
     dup1 0x01 add sload O_PRICE() 0x60 mstore
-    dup1 0x06 add sload 0xa0 mstore
+    dup1 0x04 add sload 0x40 shr 0xa0 mstore
     sload O_FEE() 0xc0 mstore
     0xe0 0x00 return
 }
@@ -1329,7 +1336,7 @@
     set_min_order: SET_MIN_ORDER()
     set_default_min: ONLY_OWNER() 0x04 calldataload 0x04 sstore RETURN_EMPTY()
     default_min: 0x04 sload RETURN_1()
-    order_created_sequence: LOAD_PID(0x04) 0x24 calldataload ORDER_AT() 0x04 add sload RETURN_1()
+    order_created_sequence: LOAD_PID(0x04) 0x24 calldataload ORDER_AT() 0x04 add sload [UINT64_MASK] and RETURN_1()
     use_nonce: USE_NONCE()
     async_order_info:         ASYNC_ORDER_INFO()
     calculate_pool_fee:       CALCULATE_POOL_FEE()

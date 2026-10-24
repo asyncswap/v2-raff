@@ -1,0 +1,123 @@
+...........................................                              [100%]
+43 passed in 6.30s
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/EligiblePythonVectors.t.sol
+{
+  "seed": 20261023,
+  "campaigns": 8,
+  "operations": 514,
+  "matches": 128,
+  "state_checks": 8109,
+  "wallet_checks": 8109
+}
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonHashes.t.sol
+Formatted /Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/contracts/test/security/PriorityPythonHashes.t.sol
+No files changed, compilation skipped
+
+Ran 1 test for test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6534)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 14.16ms (162.92µs CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 68758115)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 135.04ms (128.08ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 68912569)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 179.96ms (177.17ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 68728063)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 198.78ms (190.10ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 134607835)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 230.63ms (207.15ms CPU time)
+
+Ran 1 test for test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 202903529)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 241.38ms (236.01ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 145436365)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 255.22ms (249.97ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 162888141)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 270.55ms (252.89ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 188970963)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 291.48ms (284.27ms CPU time)
+
+Ran 1 test for test/security/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 170539450)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 297.82ms (280.72ms CPU time)
+
+Ran 10 test suites in 302.58ms (2.12s CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/EligiblePythonVectors.t.sol
+{
+  "seed": 20261023,
+  "campaigns": 8,
+  "operations": 514,
+  "matches": 128,
+  "state_checks": 8109,
+  "wallet_checks": 8109
+}
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonHashes.t.sol
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonVectors.t.sol
+/Users/meek/developer/asyncswap/v2-raff/test/current/PriorityPythonHashes.t.sol
+No files changed, compilation skipped
+
+Ran 1 test for test/current/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6534)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 287.04µs (69.04µs CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 68114164)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 377.43ms (53.87ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 68079947)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 390.04ms (57.55ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 147893012)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 438.26ms (121.64ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 137571017)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 448.95ms (108.03ms CPU time)
+
+Ran 1 test for test/current/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 181479792)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 484.02ms (158.73ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 190484000)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 490.17ms (148.30ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 68234845)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 503.78ms (44.86ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 165948195)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 507.52ms (108.79ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 172413487)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 521.17ms (127.19ms CPU time)
+
+Ran 10 test suites in 525.35ms (4.16s CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
+Formatted /Users/meek/developer/asyncswap/v2-raff/test/huff/TickParity.t.sol
+No files changed, compilation skipped
+
+Ran 1 test for test/huff/TickParity.t.sol:TickParityTest
+[PASS] test_pythonTickVectors() (gas: 3418084)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 25.59ms (24.52ms CPU time)
+
+Ran 1 test suite in 26.46ms (25.59ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Shared Python traces passed on both Solidity and native Huff; tick-key vectors passed on Huff.

@@ -78,7 +78,10 @@ contract EligibleGasTest is CurrentHuffHarness {
                 if (cap == 1) assertLt(used, 571_633, "Huff 1-match gas regression");
                 if (cap == 2) assertLt(used, 775_361, "Huff 2-match gas regression");
                 if (cap == 4) assertLt(used, 1_194_054, "Huff 4-match gas regression");
-                if (cap == 8) assertLt(used, 2_054_602, "Huff 8-match gas regression");
+                if (cap == 8) {
+                    assertLt(used, 2_054_602, "Huff 8-match gas regression");
+                    assertLt(used, 1_800_000, "packed sequence gas regression");
+                }
             }
         }
     }

@@ -15,9 +15,8 @@
 ///        O + 1   price (0–127) | priorityKey (128–255)
 ///        O + 2   amountIn (0 = no such order)
 ///        O + 3   amountOutMin
-///        O + 4   previous (FIFO)
-///        O + 5   next (FIFO)
-///        O + 6   sequence
+///        O + 4   createdSequence (0–63) | queue sequence (64–127)
+///        O + 5/6 unused
 ///
 ///      Level `L` (`PriceLevel`): L + 0 head, L + 1 tail, L + 2 orderCount, L + 3 priority tree,
 ///      L + 4 seed of `priorityOrderIds[priorityKey] = keccak(priorityKey, L + 4)`.
@@ -179,7 +178,7 @@
     has_level jumpi
     [B_PRICE] mload [B_BUY] mload [B_P] mload SIDE_TREE() TREE_INSERT() pop
     has_level:
-    [B_O] mload 0x06 add sload [B_O] mload sload O_FEE() PRIORITY_KEY_OF()
+    [B_O] mload 0x04 add sload 0x40 shr [B_O] mload sload O_FEE() PRIORITY_KEY_OF()
     dup1 0x80 shl [B_PRICE] mload or [B_O] mload 0x01 add sstore
     dup1 [B_L] mload 0x03 add TREE_INSERT() pop
     [B_L] mload 0x04 add swap1 HASH_2() [B_ID] mload swap1 sstore
@@ -210,8 +209,6 @@
     0x00 [B_O] mload 0x02 add sstore
     0x00 [B_O] mload 0x03 add sstore
     0x00 [B_O] mload 0x04 add sstore
-    // Slot 5 is unused in the priority-only layout and is never written.
-    0x00 [B_O] mload 0x06 add sstore
 }
 
 /// @dev B_O = order slot of B_ID in B_P.
@@ -274,8 +271,7 @@
     [B_MIN] mload [B_IN] mload [B_ZFO] mload [B_BUY] mload BOOK_PRICE_KEY()
     NEXT_SEQUENCE()
     ORDER_TO_B()
-    dup1 [B_O] mload 0x06 add sstore
-    dup1 [B_O] mload 0x04 add sstore
+    dup1 dup1 0x40 shl or [B_O] mload 0x04 add sstore
     0x00 PRIORITY_KEY_OF() 0x80 shl or [B_O] mload 0x01 add sstore
     [B_FEE] mload 0xb8 shl 0x01 0xb0 shl or
     [B_ZFO] mload 0xa8 shl or [B_BUY] mload 0xa0 shl or [B_OWNER] mload or [B_O] mload sstore
@@ -329,4 +325,10 @@
     no_head:
     pop pop 0x00
     done:
+}
+
+/// @dev Creation sequence stays in the low 64 bits; queue sequence occupies the next 64.
+#define macro SET_QUEUE_SEQUENCE() = takes (2) returns (0) {
+    // [slot, sequence]
+    dup1 sload [UINT64_MASK] and swap1 swap2 0x40 shl or swap1 sstore
 }

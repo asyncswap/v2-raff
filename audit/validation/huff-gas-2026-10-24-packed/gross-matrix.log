@@ -1,0 +1,92 @@
+Compiling 1 files with Solc 0.8.26
+Solc 0.8.26 finished in 2.72s
+Compiler run successful!
+
+Ran 4 tests for test/current/EligibleGas.t.sol:EligibleGasTest
+[PASS] test_gas128Blockers() (gas: 181262690)
+Logs:
+  blockers: 128
+  matches: 1
+  gross_gas: 494390
+  blockers: 128
+  matches: 2
+  gross_gas: 669558
+  blockers: 128
+  matches: 4
+  gross_gas: 1032193
+  blockers: 128
+  matches: 8
+  gross_gas: 1782683
+  blockers: 128
+  matches: 16
+  gross_gas: 3287499
+  blockers: 128
+  matches: 32
+  gross_gas: 6276895
+
+[PASS] test_gasNoBlockers() (gas: 75484576)
+Logs:
+  blockers: 0
+  matches: 1
+  gross_gas: 440124
+  blockers: 0
+  matches: 2
+  gross_gas: 608827
+  blockers: 0
+  matches: 4
+  gross_gas: 958533
+  blockers: 0
+  matches: 8
+  gross_gas: 1683166
+  blockers: 0
+  matches: 16
+  gross_gas: 3127414
+  blockers: 0
+  matches: 32
+  gross_gas: 5956602
+
+[PASS] test_gasOneBlocker() (gas: 76565349)
+Logs:
+  blockers: 1
+  matches: 1
+  gross_gas: 447093
+  blockers: 1
+  matches: 2
+  gross_gas: 609040
+  blockers: 1
+  matches: 4
+  gross_gas: 946991
+  blockers: 1
+  matches: 8
+  gross_gas: 1683316
+  blockers: 1
+  matches: 16
+  gross_gas: 3144602
+  blockers: 1
+  matches: 32
+  gross_gas: 5967785
+
+[PASS] test_gasSixteenBlockers() (gas: 89650425)
+Logs:
+  blockers: 16
+  matches: 1
+  gross_gas: 462185
+  blockers: 16
+  matches: 2
+  gross_gas: 634224
+  blockers: 16
+  matches: 4
+  gross_gas: 990603
+  blockers: 16
+  matches: 8
+  gross_gas: 1732582
+  blockers: 16
+  matches: 16
+  gross_gas: 3209701
+  blockers: 16
+  matches: 32
+  gross_gas: 6145623
+
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 349.50ms (527.01ms CPU time)
+
+Ran 1 test suite in 351.21ms (349.50ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
