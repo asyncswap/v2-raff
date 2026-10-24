@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
-
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
 import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
@@ -45,7 +44,7 @@ contract NativeInputMsgValueTest is Test {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.hookTo(abi.encode(manager, currency1, address(this)), address(flags));
+        HuffDeploy.hookTo( abi.encode(manager, currency1, address(this)), address(flags));
         hook = AsyncSwap(payable(address(flags)));
         router = HuffDeploy.router(manager, hook, ISignatureTransfer(Permit2Bytecode.PERMIT2));
 
@@ -78,7 +77,7 @@ contract NativeInputMsgValueTest is Test {
             zeroForOne: zeroForOne,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -91,7 +90,7 @@ contract NativeInputMsgValueTest is Test {
         router.swap{value: 0}(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: bob, executor: address(router), amountOutMin: 1 wei, priorityFee: 0})
+                AsyncSwap.UserParams({user: bob, executor: address(router), amountOutMin: 1 wei, priorityFee: 100_000})
             )
         );
         vm.stopPrank();

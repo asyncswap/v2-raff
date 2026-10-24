@@ -1,0 +1,7 @@
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/TickPrice.huff"
+#define macro MAIN() = takes (0) returns (0) {
+    0x60 calldataload 0x40 calldataload 0x20 calldataload 0x00 calldataload BOOK_PRICE_KEY()
+    0x00 mstore 0x20 0x00 return
+}

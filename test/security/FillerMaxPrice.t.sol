@@ -28,7 +28,7 @@ contract FillerMaxPriceTest is SetupHook {
             zeroForOne: zeroForOne,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -47,7 +47,7 @@ contract FillerMaxPriceTest is SetupHook {
             order,
             abi.encode(
                 AsyncSwap.UserParams({
-                    user: alice, executor: address(router), amountOutMin: originalOutMin, priorityFee: 0
+                    user: alice, executor: address(router), amountOutMin: originalOutMin, priorityFee: 100_000
                 })
             )
         );

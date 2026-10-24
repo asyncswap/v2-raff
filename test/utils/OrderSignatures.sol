@@ -40,11 +40,11 @@ library OrderSignatures {
     );
 
     bytes32 internal constant UPDATE_PRICE_TYPEHASH = keccak256(
-        "UpdatePrice(address maker,address tokenIn,address tokenOut,uint256 amountIn,uint256 newAmountOutMin,bytes32 orderId,uint256 nonce,uint256 deadline)"
+        "UpdatePrice(address maker,address tokenIn,address tokenOut,uint256 amountIn,uint256 newAmountOutMin,bytes32 orderId,uint64 createdSequence,uint256 nonce,uint256 deadline)"
     );
 
     bytes32 internal constant CANCEL_ORDER_TYPEHASH = keccak256(
-        "CancelOrder(address maker,address tokenIn,address tokenOut,uint256 amountIn,bytes32 orderId,uint256 nonce,uint256 deadline)"
+        "CancelOrder(address maker,address tokenIn,address tokenOut,uint256 amountIn,bytes32 orderId,uint64 createdSequence,uint256 nonce,uint256 deadline)"
     );
 
     function tokens(AsyncOrder memory order) internal pure returns (address tokenIn, address tokenOut) {
@@ -97,11 +97,13 @@ library OrderSignatures {
     }
 
     /// @param amountIn the order's stored input, so the maker sees the size of the order they reprice.
+    /// @param createdSequence Immutable incarnation; an identical replacement cannot reuse this signature.
     function hashUpdatePrice(
         AsyncOrder memory order,
         bytes32 orderId,
         uint256 amountIn,
         uint256 newAmountOutMin,
+        uint64 createdSequence,
         uint256 nonce,
         uint256 deadline
     ) internal pure returns (bytes32) {
@@ -115,6 +117,7 @@ library OrderSignatures {
                 amountIn,
                 newAmountOutMin,
                 orderId,
+                createdSequence,
                 nonce,
                 deadline
             )
@@ -123,14 +126,27 @@ library OrderSignatures {
 
     /// @dev Carries a nonce: order ids can recur (identical order re-placed in the same block after a
     ///      cancel), so order deletion alone does not stop a signed cancel from being replayed.
-    function hashCancel(AsyncOrder memory order, bytes32 orderId, uint256 amountIn, uint256 nonce, uint256 deadline)
-        internal
-        pure
-        returns (bytes32)
-    {
+    function hashCancel(
+        AsyncOrder memory order,
+        bytes32 orderId,
+        uint256 amountIn,
+        uint64 createdSequence,
+        uint256 nonce,
+        uint256 deadline
+    ) internal pure returns (bytes32) {
         (address tokenIn, address tokenOut) = tokens(order);
         return keccak256(
-            abi.encode(CANCEL_ORDER_TYPEHASH, order.owner, tokenIn, tokenOut, amountIn, orderId, nonce, deadline)
+            abi.encode(
+                CANCEL_ORDER_TYPEHASH,
+                order.owner,
+                tokenIn,
+                tokenOut,
+                amountIn,
+                orderId,
+                createdSequence,
+                nonce,
+                deadline
+            )
         );
     }
 }

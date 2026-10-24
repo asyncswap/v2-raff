@@ -1,0 +1,58 @@
+/// Exact 512-bit rational ordering and cached best order per priority subtree.
+#define constant EXACT_BOUND_OFFSET = 0x200000000000000000000000000000000
+#define macro BOUND_SLOT() = takes (1) returns (1) { [T_BASE] mload [EXACT_BOUND_OFFSET] add add }
+#define fn RAT_LE() = takes (4) returns (1) {
+    // [an, ad, bn, bd]
+    0x2300 mstore 0x2320 mstore 0x2340 mstore 0x2360 mstore
+    0x2300 mload 0x2360 mload mul 0x2380 mstore
+    0x00 not 0x2300 mload 0x2360 mload mulmod 0x2400 mstore
+    0x2380 mload 0x2400 mload sub
+    0x2400 mload 0x2380 mload gt swap1 sub 0x23a0 mstore
+    0x2340 mload 0x2320 mload mul 0x23c0 mstore
+    0x00 not 0x2340 mload 0x2320 mload mulmod 0x2400 mstore
+    0x23c0 mload 0x2400 mload sub
+    0x2400 mload 0x23c0 mload gt swap1 sub 0x23e0 mstore
+    0x23e0 mload 0x23a0 mload lt yes jumpi
+    0x23e0 mload 0x23a0 mload eq iszero no jumpi
+    0x23c0 mload 0x2380 mload gt iszero done jump
+    yes: 0x01 done jump
+    no: 0x00
+    done:
+}
+#define fn ORDER_PRICE_LE() = takes (2) returns (1) {
+    ORDER_OF() 0x2540 mstore ORDER_OF() 0x2560 mstore
+    0x2540 mload sload O_BUY() buy jumpi
+    0x2560 mload 0x02 add sload 0x2560 mload 0x03 add sload
+    0x2540 mload 0x02 add sload 0x2540 mload 0x03 add sload
+    RAT_LE() done jump
+    buy:
+    0x2560 mload 0x03 add sload 0x2560 mload 0x02 add sload
+    0x2540 mload 0x03 add sload 0x2540 mload 0x02 add sload
+    RAT_LE()
+    done:
+}
+#define fn REPAIR_EXACT() = takes (1) returns (0) {
+    0x2440 mstore
+    loop:
+    0x2440 mload iszero done jumpi
+    0x2440 mload NODE_SLOT() sload dup1 0x24a0 mstore
+    LEFT() BOUND_SLOT() sload 0x2460 mstore
+    0x24a0 mload RIGHT() BOUND_SLOT() sload 0x2480 mstore
+    [B_BUY] mload buy jumpi
+    0x2460 mload 0x2480 mload ORDER_PRICE_LE() chosen jump
+    buy: 0x2480 mload 0x2460 mload ORDER_PRICE_LE()
+    chosen:
+    iszero choose_left jumpi
+    0x2480 mload store jump
+    choose_left: 0x2460 mload
+    store: 0x2440 mload BOUND_SLOT() sstore
+    0x24a0 mload [UINT32_MASK] and 0x2440 mstore
+    loop jump
+    done:
+}
+#define fn REFRESH_EXACT() = takes (0) returns (0) {
+    [B_L] mload 0x03 add TREE_LOAD()
+    [B_O] mload 0x01 add sload O_PK() LEAF_SLOT() sload
+    [B_ID] mload dup2 BOUND_SLOT() sstore
+    NODE_SLOT() sload [UINT32_MASK] and REPAIR_EXACT()
+}

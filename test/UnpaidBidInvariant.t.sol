@@ -67,6 +67,7 @@ contract UnpaidBidHandler is MatchingHandler {
     UnpaidBidder public bidder;
     uint256 public unpaidPlaced;
     mapping(bytes32 => bool) public isUnpaid;
+    bytes32[] internal unpaidIds;
 
     constructor(AsyncSwap h, Router r, MockERC20 u, PoolKey memory k) MatchingHandler(h, r, u, k, true) {
         vm.deal(address(this), 1_000 ether);
@@ -81,25 +82,29 @@ contract UnpaidBidHandler is MatchingHandler {
         if (minimum == 0) minimum = 1;
         uint256 bid = bound(fee, 100_000, type(uint64).max);
         vm.roll(block.number + 1);
-        vm.recordLogs();
+        uint256 beforeNative = address(bidder).balance;
+        uint256 beforeInputEscrow = hook.poolManager().balanceOf(address(hook), 0);
+        uint256 beforeFeeEscrow = hook.poolManager().balanceOf(address(hook), uint160(address(usdc)));
+        vm.expectRevert(IPoolManager.CurrencyNotSettled.selector);
         bidder.place(quantity, minimum, bid);
-        bytes32 salt;
-        Vm.Log[] memory logs = vm.getRecordedLogs();
-        for (uint256 i; i < logs.length; ++i) {
-            if (logs[i].topics[0] == AsyncFiller.AsyncOrderCreated.selector) {
-                (,,, salt) = abi.decode(logs[i].data, (bool, uint256, uint256, bytes32));
-            }
-        }
-        AsyncOrder memory order = AsyncOrder(key, address(bidder), true, quantity, minimum, bid, 2 ** 96, salt);
-        orders.push(order);
-        isUnpaid[id(order)] = true;
+        assertEq(address(bidder).balance, beforeNative, "unpaid unlock rolls back input");
+        assertEq(hook.poolManager().balanceOf(address(hook), 0), beforeInputEscrow, "input escrow unchanged");
+        assertEq(
+            hook.poolManager().balanceOf(address(hook), uint160(address(usdc))), beforeFeeEscrow, "fee escrow unchanged"
+        );
         ++unpaidPlaced;
+    }
+
+    /// @notice The ids of every order placed with an unpaid bid.
+    function unpaidOrderIds() external view returns (bytes32[] memory) {
+        return unpaidIds;
     }
 }
 
 /// @notice Invariants for unpaid priority bids (asyncswap/v2#9), on top of every PriorityFee-mode matching
 ///         invariant (escrow, asset conservation, best price): an unpaid bid buys no priority and can never
 ///         stop the book from matching or an order from being cancelled.
+/// forge-config: default.invariant.runs = 128
 contract UnpaidBidInvariantTest is PriorityMatchingInvariantTest {
     using PoolIdLibrary for PoolKey;
 
@@ -117,7 +122,6 @@ contract UnpaidBidInvariantTest is PriorityMatchingInvariantTest {
         Router router = HuffDeploy.router(manager, hook, ISignatureTransfer(address(0)));
         key = PoolKey(Currency.wrap(address(0)), Currency.wrap(address(usdc)), LPFeeLibrary.DYNAMIC_FEE_FLAG, 1, hook);
         manager.initialize(key, 2 ** 96);
-        hook.setOrderingMode(key, AsyncFiller.OrderingMode.PriorityFee);
         unpaid = new UnpaidBidHandler(hook, router, usdc, key);
         handler = unpaid;
         bytes4[] memory selectors = new bytes4[](6);
@@ -186,17 +190,17 @@ contract UnpaidBidInvariantTest is PriorityMatchingInvariantTest {
     /// @notice Every open order, paid or not, can be cancelled by its maker.
     function invariant_everyOpenOrderCancellable() public {
         Router router = unpaid.router();
-        uint256 count = unpaid.orderCount();
-        for (uint256 i; i < count; ++i) {
+        (bytes32[] memory ids,) = unpaid.book();
+        for (uint256 i; i < ids.length; ++i) {
+            if (hook.asyncOrder(key.toId(), ids[i]) == 0) continue;
             AsyncOrder memory order = unpaid.orderAt(i);
-            if (hook.asyncOrder(key.toId(), unpaid.id(order)) == 0) continue;
             uint256 snapshot = vm.snapshotState();
             vm.prank(order.owner);
             try router.cancelOrder(order) {}
             catch (bytes memory reason) {
                 emit log_named_bytes("cancel reverted with", reason);
                 emit log_named_address("maker", order.owner);
-                emit log_named_string("bid", unpaid.isUnpaid(unpaid.id(order)) ? "unpaid" : "paid or none");
+                emit log_named_string("bid", unpaid.isUnpaid(ids[i]) ? "unpaid" : "paid or none");
                 assertTrue(false, "an open order could not be cancelled");
             }
             vm.revertToState(snapshot);
@@ -205,21 +209,17 @@ contract UnpaidBidInvariantTest is PriorityMatchingInvariantTest {
 
     /// @notice An unpaid bid reads as 0 and never wins a price level over an order whose bid is paid.
     function invariant_unpaidBidBuysNoPriority() public view {
-        uint256 count = unpaid.orderCount();
-        for (uint256 i; i < count; ++i) {
-            AsyncOrder memory order = unpaid.orderAt(i);
-            bytes32 orderId = unpaid.id(order);
-            if (unpaid.isUnpaid(orderId)) {
-                assertEq(hook.asyncOrderPriorityFee(key.toId(), orderId), 0, "unpaid bid counted");
-            }
+        bytes32[] memory unpaidIds = unpaid.unpaidOrderIds();
+        for (uint256 i; i < unpaidIds.length; ++i) {
+            assertEq(hook.asyncOrderPriorityFee(key.toId(), unpaidIds[i]), 0, "unpaid bid counted");
         }
+        (bytes32[] memory ids,) = unpaid.book();
         for (uint256 side; side < 2; ++side) {
             (bool found, uint128 price, bytes32 bestId,) = hook.bestOrder(key.toId(), side == 1);
             if (!found || !unpaid.isUnpaid(bestId)) continue;
             // The best order is unpaid: no paid-bid order may wait at the same price behind it.
-            for (uint256 i; i < count; ++i) {
-                AsyncOrder memory order = unpaid.orderAt(i);
-                bytes32 orderId = unpaid.id(order);
+            for (uint256 i; i < ids.length; ++i) {
+                bytes32 orderId = ids[i];
                 (, uint256 amount,, uint128 p, bool buy,,) = hook.orderBookOrder(key.toId(), orderId);
                 // Same side and same price level only: a bid and an ask can share a price key without crossing.
                 if (amount == 0 || p != price || buy != (side == 1) || orderId == bestId) continue;

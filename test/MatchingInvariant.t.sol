@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
-
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {Test} from "forge-std/Test.sol";
@@ -31,6 +30,10 @@ contract MatchingHandler is Test {
     PoolKey public key;
     address[4] public actors;
     AsyncOrder[] internal orders;
+    /// @dev `id(orders[i])` and `orders[i].zeroForOne`, recorded at placement so the invariants read
+    ///      the whole book in one call instead of three per order.
+    bytes32[] internal ids;
+    bool[] internal sells;
     bool public priority;
     uint256 public submissions;
     uint256 public cancellations;
@@ -60,7 +63,7 @@ contract MatchingHandler is Test {
         address actor = actors[who % 4];
         uint256 quantity = bound(size, 1e12, 1 ether);
         uint256 quote = quantity * bound(price, 1_000e6, 4_000e6) / 1 ether;
-        uint256 bid = priority ? bound(fee, 100_000, 10e6) : 0;
+        uint256 bid = priority ? bound(fee, 100_000, 10e6) : 100_000;
         uint256 amount = sell ? quantity : quote;
         uint256 minimum = sell ? quote : quantity;
         vm.roll(block.number + 1); // unique salt, including repeated actor/amount combinations
@@ -72,7 +75,7 @@ contract MatchingHandler is Test {
         order.salt = keccak256(
             abi.encode(block.timestamp, block.number, address(hook.poolManager()), actor, amount, minimum, bid)
         );
-        orders.push(order);
+        _record(order);
         ++submissions;
     }
 
@@ -93,6 +96,12 @@ contract MatchingHandler is Test {
         uint256 p = bound(price, 1_000e6, 4_000e6);
         uint256 minimum = order.zeroForOne ? remaining * p / 1 ether : remaining * 1 ether / p;
         if (minimum == 0) return;
+        if (order.zeroForOne) {
+            // A partially filled sell keeps a pro-rated bid; raising its bid floor reverts by design.
+            (, uint256 oldMinimum) = hook.asyncOrderInfo(key.toId(), id(order));
+            uint256 required = (minimum / 1000 < 100_000 ? minimum / 1000 : 100_000);
+            if (minimum > oldMinimum && hook.asyncOrderPriorityFee(key.toId(), id(order)) < required) return;
+        }
         vm.prank(order.owner);
         hook.updatePrice(order, minimum);
         ++updates;
@@ -121,6 +130,17 @@ contract MatchingHandler is Test {
         if (hook.asyncOrder(key.toId(), orderId) == 0) return;
         router.fillFromPoolLiquidity(order);
         if (hook.asyncOrder(key.toId(), orderId) == 0) ++lpFills;
+    }
+
+    function _record(AsyncOrder memory order) internal {
+        orders.push(order);
+        ids.push(id(order));
+        sells.push(order.zeroForOne);
+    }
+
+    /// @notice Every order placed so far: its id and whether it sells the asset (`zeroForOne`).
+    function book() external view returns (bytes32[] memory, bool[] memory) {
+        return (ids, sells);
     }
 
     function id(AsyncOrder memory order) public view returns (bytes32) {
@@ -176,7 +196,6 @@ contract MatchingInvariantTest is StdInvariant, Test {
         Router router = HuffDeploy.router(manager, hook, ISignatureTransfer(address(0)));
         key = PoolKey(Currency.wrap(address(0)), Currency.wrap(address(usdc)), LPFeeLibrary.DYNAMIC_FEE_FLAG, 1, hook);
         manager.initialize(key, initialSqrtPrice());
-        if (priorityMode()) hook.setOrderingMode(key, AsyncFiller.OrderingMode.PriorityFee);
         _seedLiquidity();
         handler = new MatchingHandler(hook, router, usdc, key, priorityMode());
         targetSelector(FuzzSelector(address(handler), _selectors()));
@@ -186,12 +205,11 @@ contract MatchingInvariantTest is StdInvariant, Test {
     function invariant_escrowEqualsOutstandingObligations() public view {
         uint256 ethOwed;
         uint256 usdcOwed;
-        uint256 count = handler.orderCount();
-        for (uint256 i; i < count; ++i) {
-            AsyncOrder memory order = handler.orderAt(i);
-            bytes32 orderId = handler.id(order);
+        (bytes32[] memory ids, bool[] memory sells) = handler.book();
+        for (uint256 i; i < ids.length; ++i) {
+            bytes32 orderId = ids[i];
             uint256 remaining = hook.asyncOrder(key.toId(), orderId);
-            if (order.zeroForOne) ethOwed += remaining;
+            if (sells[i]) ethOwed += remaining;
             else usdcOwed += remaining;
             usdcOwed += hook.asyncOrderPriorityFee(key.toId(), orderId);
         }
@@ -221,9 +239,9 @@ contract MatchingInvariantTest is StdInvariant, Test {
         uint128 bestAsk = type(uint128).max;
         bool hasBid;
         bool hasAsk;
-        for (uint256 i; i < handler.orderCount(); ++i) {
-            AsyncOrder memory order = handler.orderAt(i);
-            (, uint256 amount,, uint128 price, bool buy,,) = hook.orderBookOrder(key.toId(), handler.id(order));
+        (bytes32[] memory ids,) = handler.book();
+        for (uint256 i; i < ids.length; ++i) {
+            (, uint256 amount,, uint128 price, bool buy,,) = hook.orderBookOrder(key.toId(), ids[i]);
             if (amount == 0) continue;
             if (buy) {
                 hasBid = true;
@@ -331,10 +349,10 @@ contract LpMatchingInvariantTest is MatchingInvariantTest {
     ///      (ERC20 transfer, or native claims in the maker's own name).
     function invariant_hookHoldsNoUsdcBeyondEscrow() public view {
         uint256 usdcOwed;
-        for (uint256 i; i < handler.orderCount(); ++i) {
-            AsyncOrder memory order = handler.orderAt(i);
-            bytes32 orderId = handler.id(order);
-            if (!order.zeroForOne) usdcOwed += hook.asyncOrder(key.toId(), orderId);
+        (bytes32[] memory ids, bool[] memory sells) = handler.book();
+        for (uint256 i; i < ids.length; ++i) {
+            bytes32 orderId = ids[i];
+            if (!sells[i]) usdcOwed += hook.asyncOrder(key.toId(), orderId);
             usdcOwed += hook.asyncOrderPriorityFee(key.toId(), orderId);
         }
         assertEq(manager.balanceOf(address(hook), uint160(address(usdc))), usdcOwed);

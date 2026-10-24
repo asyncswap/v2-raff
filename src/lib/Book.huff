@@ -59,6 +59,7 @@
 #define error NotOrderOwner()
 #define error NotAuthorizedExecutor()
 #define error ZeroAmount()
+#define error BelowMinimumOrder()
 #define error PriorityFeeTooLarge()
 #define error PriorityFeeTooSmall()
 #define error PriorityFeeNotEscrowed()
@@ -127,7 +128,7 @@
 
 #define macro ORDERING_MODE() = takes (1) returns (1) {
     // [P]
-    sload 0x80 shr 0xff and
+    pop 0x01
 }
 
 // Record fields
@@ -179,73 +180,27 @@
     has_level jumpi
     [B_PRICE] mload [B_BUY] mload [B_P] mload SIDE_TREE() TREE_INSERT() pop
     has_level:
-    [B_P] mload ORDERING_MODE() iszero fifo jumpi
-
-    // PriorityFee: order.priorityKey = _priorityKey(paid, sequence); index it.
-    [B_O] mload 0x06 add sload [B_O] mload sload O_PAID_FEE() PRIORITY_KEY_OF()   // [pk]
+    [B_O] mload 0x06 add sload [B_O] mload sload O_FEE() PRIORITY_KEY_OF()
     dup1 0x80 shl [B_PRICE] mload or [B_O] mload 0x01 add sstore
     dup1 [B_L] mload 0x03 add TREE_INSERT() pop
-    [B_L] mload 0x04 add swap1 HASH_2()
-    [B_ID] mload swap1 sstore
-    counted jump
-
-    fifo:
-    [B_L] mload 0x01 add sload                  // [tail]
-    dup1 [B_O] mload 0x04 add sstore            // order.previous = tail
-    0x00 [B_O] mload 0x05 add sstore            // order.next = 0
-    dup1 iszero first jumpi
-    [B_ID] mload swap1 ORDER_OF() 0x05 add sstore
-    linked jump
-    first:
-    pop [B_ID] mload [B_L] mload sstore         // head = id
-    linked:
-    [B_ID] mload [B_L] mload 0x01 add sstore    // tail = id
-
-    counted:
+    [B_L] mload 0x04 add swap1 HASH_2() [B_ID] mload swap1 sstore
+    REFRESH_EXACT()
     [B_COUNT] mload 0x01 add [B_L] mload 0x02 add sstore
     0x01 OPEN_ORDER_COUNT_ADD()
 }
-
-/// @notice `AsyncFiller._remove(id)`: leave the level; when it empties, drop the price from the tree and
-///         delete the level. FIFO links of the removed order are left as they are, as in the Solidity.
 #define fn BOOK_REMOVE() = takes (0) returns (0) {
     LOAD_POSITION()
-    [B_P] mload ORDERING_MODE() iszero fifo jumpi
-
-    [B_O] mload 0x01 add sload O_PK()           // [pk]
+    [B_L] mload 0x03 add TREE_LOAD()
+    [B_O] mload 0x01 add sload O_PK() LEAF_SLOT() sload
+    NODE_SLOT() sload [UINT32_MASK] and NODE_SLOT() sload [UINT32_MASK] and 0x24c0 mstore
+    [B_O] mload 0x01 add sload O_PK()
     dup1 [B_L] mload 0x03 add TREE_REMOVE()
-    [B_L] mload 0x04 add swap1 HASH_2()
-    0x00 swap1 sstore
-    unlinked jump
-
-    fifo:
-    [B_O] mload 0x05 add sload                  // [next]
-    [B_O] mload 0x04 add sload                  // [previous, next]
-    dup1 iszero prev_is_head jumpi
-    dup2 dup2 ORDER_OF() 0x05 add sstore
-    prev_done jump
-    prev_is_head:
-    dup2 [B_L] mload sstore
-    prev_done:
-    dup2 iszero next_is_tail jumpi
-    dup1 dup3 ORDER_OF() 0x04 add sstore
-    next_done jump
-    next_is_tail:
-    dup1 [B_L] mload 0x01 add sstore
-    next_done:
-    pop pop
-
-    unlinked:
-    [B_L] mload 0x02 add dup1 sload 0x01 swap1 sub   // [count − 1, countSlot]
-    dup1 [B_COUNT] mstore
-    swap1 sstore
+    [B_L] mload 0x04 add swap1 HASH_2() 0x00 swap1 sstore
+    0x24c0 mload REPAIR_EXACT()
+    [B_L] mload 0x02 add dup1 sload 0x01 swap1 sub dup1 [B_COUNT] mstore swap1 sstore
     0x00 not OPEN_ORDER_COUNT_ADD()
     [B_COUNT] mload done jumpi
     [B_PRICE] mload [B_BUY] mload [B_P] mload SIDE_TREE() TREE_REMOVE()
-    // delete level: head, tail (count is already 0) and the priority tree header
-    0x00 [B_L] mload sstore
-    0x00 [B_L] mload 0x01 add sstore
-    [B_L] mload 0x03 add TREE_RESET()
     done:
 }
 
@@ -277,31 +232,54 @@
 
 // Transitions
 /// @notice `AsyncFiller.addOrder`. Inputs: B_P, B_ID, B_OWNER, B_IN, B_MIN, B_BUY, B_ZFO, B_FEE.
+#define fn MIN_BID() = takes (1) returns (1) {
+    0x2710 swap1 0x0a MUL_DIV()
+    [MIN_PRIORITY_FEE] dup2 gt iszero done jumpi
+    pop [MIN_PRIORITY_FEE]
+    done:
+}
+#define fn CHECK_MINIMUM() = takes (0) returns (0) {
+    [B_P] mload 0x08 add sload dup1 0x2500 mstore iszero done jumpi
+    [B_BUY] mload iszero sell jumpi
+    0x2500 mload [B_IN] mload lt bad jumpi
+    done jump
+    sell:
+    0x2500 mload [B_MIN] mload lt bad jumpi
+    [E_PID] mload 0x00 mstore [POOLS_SLOT] 0x20 mstore 0x40 0x00 sha3 PM_EXTSLOAD()
+    0xffffffffffffffffffffffffffffffffffffffff and 0x2520 mstore
+    [B_ZFO] mload iszero reverse jumpi
+    0x01000000000000000000000000 0x2520 mload [B_IN] mload MUL_DIV()
+    0x01000000000000000000000000 0x2520 mload swap2 MUL_DIV() check jump
+    reverse:
+    0x2520 mload 0x01000000000000000000000000 [B_IN] mload MUL_DIV()
+    0x2520 mload 0x01000000000000000000000000 swap2 MUL_DIV()
+    check: 0x2500 mload gt bad jumpi
+    done jump
+    bad: __ERROR(BelowMinimumOrder) REVERT_0()
+    done:
+}
 #define fn BOOK_ADD() = takes (0) returns (0) {
-    [B_P] mload ORDERING_MODE() priority jumpi
-    [B_FEE] mload iszero fee_checked jumpi
-    __ERROR(InvalidOrderingModeChange) REVERT_0()
-    priority:
-    [MIN_PRIORITY_FEE] [B_FEE] mload lt iszero fee_checked jumpi
+    CHECK_MINIMUM()
+    [B_BUY] mload iszero sell jumpi
+    [B_IN] mload notional jump
+    sell: [B_MIN] mload
+    notional: MIN_BID() [B_FEE] mload lt iszero fee_checked jumpi
     __ERROR(PriorityFeeTooSmall) REVERT_0()
     fee_checked:
     [UINT64_MASK] [B_FEE] mload gt iszero fee_fits jumpi
     __ERROR(PriorityFeeTooLarge) REVERT_0()
     fee_fits:
-
-    [B_MIN] mload [B_IN] mload [B_BUY] mload PRICE_KEY()   // [price]
-    NEXT_SEQUENCE()                                         // [seq, price]
+    [B_FEE] mload iszero escrowed jumpi
+    [B_FEE] mload NUMERAIRE() address F_MINT()
+    escrowed:
+    [B_MIN] mload [B_IN] mload [B_ZFO] mload [B_BUY] mload BOOK_PRICE_KEY()
+    NEXT_SEQUENCE()
     ORDER_TO_B()
     dup1 [B_O] mload 0x06 add sstore
-    // O + 1: price | _priorityKey(0, sequence) << 128
+    dup1 [B_O] mload 0x04 add sstore
     0x00 PRIORITY_KEY_OF() 0x80 shl or [B_O] mload 0x01 add sstore
-    // O + 0: owner | isBuy | zeroForOne | escrowed (bid == 0) | bid
-    [B_FEE] mload 0xb8 shl
-    [B_FEE] mload iszero 0xb0 shl or
-    [B_ZFO] mload 0xa8 shl or
-    [B_BUY] mload 0xa0 shl or
-    [B_OWNER] mload or
-    [B_O] mload sstore
+    [B_FEE] mload 0xb8 shl 0x01 0xb0 shl or
+    [B_ZFO] mload 0xa8 shl or [B_BUY] mload 0xa0 shl or [B_OWNER] mload or [B_O] mload sstore
     [B_IN] mload [B_O] mload 0x02 add sstore
     [B_MIN] mload [B_O] mload 0x03 add sstore
     BOOK_APPEND()
@@ -321,14 +299,10 @@
 /// @notice `AsyncFiller.bestAtPrice(isBuy, price)`: the queue head in FIFO mode; the highest priority key
 ///         in PriorityFee mode.
 #define fn BOOK_BEST_AT_PRICE() = takes (3) returns (1) {
-    // [P, isBuy, price]
-    dup1 ORDERING_MODE()                        // [mode, P, isBuy, price]
-    swap3 swap2 swap1 LEVEL_SLOT()              // [L, mode]
-    swap1 priority jumpi
-    sload done jump
-    priority:                                   // [L]
-    0x01 dup2 0x03 add TREE_BEST()              // [found, pk, L]
-    pop swap1 0x04 add swap1 HASH_2() sload
+    // [P, buy, price]
+    dup1 [B_P] mstore LEVEL_SLOT() 0x03 add TREE_LOAD()
+    [T_SLOT] mload sload [UINT32_MASK] and dup1 iszero done jumpi
+    BOUND_SLOT() sload
     done:
 }
 

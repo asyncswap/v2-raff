@@ -29,6 +29,9 @@ contract CodeSizeTest is Test {
         address router = address(HuffDeploy.router(manager, AsyncSwap(payable(hook)), ISignatureTransfer(address(0))));
         address vault = address(AsyncSwap(payable(hook)).feeVault());
         address claims = address(HuffDeploy.nativeClaims(manager));
+        address tokenClaims = address(HuffDeploy.tokenClaims(manager));
+        console.log("TokenClaims    ", tokenClaims.code.length);
+        assertLe(tokenClaims.code.length, EIP170, "TokenClaims");
         address engine = address(HuffDeploy.matchingEngine());
         console.log("AsyncSwap      ", hook.code.length);
         console.log("Router         ", router.code.length);

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.26;
-
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
 import {SetupHook} from "../SetupHook.t.sol";
@@ -28,7 +27,7 @@ contract FeeClaimsTest is SetupHook {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.feeTestHookTo(abi.encode(manager, currency1, address(this)), address(flags));
+        HuffDeploy.feeTestHookTo( abi.encode(manager, currency1, address(this)), address(flags));
         hook = AsyncSwap(payable(address(flags)));
         vault = hook.feeVault();
         _deployRouter();
@@ -40,14 +39,14 @@ contract FeeClaimsTest is SetupHook {
     }
 
     function _create(bool direction, uint256 gross) internal returns (AsyncOrder memory order) {
-        order = AsyncOrder(key, alice, direction, gross, 1 ether, 0, 2 ** 96, bytes32(0));
+        order = AsyncOrder(key, alice, direction, gross, 1 ether, 100_000, 2 ** 96, bytes32(0));
         Currency input = direction ? key.currency0 : key.currency1;
         vm.startPrank(alice);
         if (!input.isAddressZero()) {
-            (direction ? token0 : token1).approve(address(router), gross);
+            (direction ? token0 : token1).approve(address(router), gross + order.priorityFee);
         }
         router.swap{value: input.isAddressZero() ? gross : 0}(
-            order, abi.encode(AsyncSwap.UserParams(alice, address(router), 1 ether, 0))
+            order, abi.encode(AsyncSwap.UserParams(alice, address(router), 1 ether, 100_000))
         );
         vm.stopPrank();
         order.salt = _expectedSalt(alice, gross, 1 ether);
@@ -71,12 +70,12 @@ contract FeeClaimsTest is SetupHook {
         assertEq(manager.balanceOf(address(hook), currency0.toId()), 10 ether);
         _fill(order);
         assertEq(token0.balanceOf(bob), 110 ether);
-        assertEq(token1.balanceOf(alice), 101 ether);
-        assertEq(manager.balanceOf(address(vault), currency1.toId()), 0.01 ether);
+        assertEq(token1.balanceOf(alice), 101 ether - 100_000);
+        assertEq(manager.balanceOf(address(vault), currency1.toId()), 0.01 ether + 100_000);
         vault.collect(currency1, bob);
         assertEq(token0.balanceOf(bob), 110 ether);
         assertEq(token0.balanceOf(address(manager)), 0);
-        assertEq(token1.balanceOf(bob), 99 ether);
+        assertEq(token1.balanceOf(bob), 99 ether + 100_000);
         assertEq(manager.balanceOf(address(vault), currency1.toId()), 0);
     }
 
@@ -84,38 +83,38 @@ contract FeeClaimsTest is SetupHook {
         AsyncOrder memory order = _create(false, 10 ether);
         vm.prank(alice);
         router.cancelOrder(order);
-        assertEq(token1.balanceOf(alice), 100 ether);
+        assertEq(token1.balanceOf(alice), 100 ether - 100_000);
         vault.collect(currency1, bob);
-        assertEq(token1.balanceOf(bob), 100 ether);
+        assertEq(token1.balanceOf(bob), 100 ether + 100_000);
         assertEq(manager.balanceOf(address(hook), currency1.toId()), 0);
         assertEq(manager.balanceOf(address(vault), currency1.toId()), 0);
     }
 
     function testFuzz_cancelNeverChargesFees(uint96 value, bool direction) public {
-        uint256 gross = bound(uint256(value), 1, 100 ether);
+        uint256 gross = bound(uint256(value), 1, 100 ether - 100_000);
         AsyncOrder memory order = _create(direction, gross);
         Currency input = direction ? currency0 : currency1;
         vault.collect(input, bob);
         assertEq(manager.balanceOf(address(vault), input.toId()), 0);
-        assertEq(manager.balanceOf(address(hook), input.toId()), gross);
+        assertEq(manager.balanceOf(address(hook), input.toId()), gross + (direction ? 0 : 100_000));
         vm.prank(alice);
         router.cancelOrder(order);
         assertEq(manager.balanceOf(address(hook), input.toId()), 0);
-        assertEq(input.balanceOf(address(manager)), 0);
-        assertEq(input.balanceOf(alice), 100 ether);
+        assertEq(input.balanceOf(address(manager)), direction ? 0 : 100_000);
+        assertEq(input.balanceOf(alice), 100 ether - (direction ? 0 : 100_000));
         assertEq(input.balanceOf(bob), 100 ether);
     }
 
     function testFuzz_fillConservesInput(uint96 value, bool direction) public {
-        uint256 gross = bound(uint256(value), 1, 100 ether);
+        uint256 gross = bound(uint256(value), 1, 100 ether - 100_000);
         AsyncOrder memory order = _create(direction, gross);
         Currency input = direction ? currency0 : currency1;
         _fill(order);
         assertEq(input.balanceOf(bob), 100 ether + gross);
         Currency output = direction ? currency1 : currency0;
-        assertEq(manager.balanceOf(address(vault), output.toId()), 0.01 ether);
+        assertEq(manager.balanceOf(address(vault), output.toId()), 0.01 ether + (direction ? 100_000 : 0));
         vault.collect(output, bob);
-        assertEq(output.balanceOf(bob), 99 ether);
+        assertEq(output.balanceOf(bob), 99 ether + (direction ? 100_000 : 0));
         assertEq(manager.balanceOf(address(hook), input.toId()), 0);
         vault.collect(input, bob);
         assertEq(input.balanceOf(address(manager)), 0);
@@ -133,8 +132,8 @@ contract FeeClaimsTest is SetupHook {
         router.cancelOrder(second);
         assertEq(token0.balanceOf(alice), 90 ether);
         assertEq(token0.balanceOf(address(manager)), 0);
-        assertEq(token1.balanceOf(bob), 99 ether);
-        assertEq(manager.balanceOf(address(vault), currency1.toId()), 0);
+        assertEq(token1.balanceOf(bob), 99 ether + 100_000);
+        assertEq(manager.balanceOf(address(vault), currency1.toId()), 100_000);
     }
 
     function test_failedFillDoesNotEarnFees() public {

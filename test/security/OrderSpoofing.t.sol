@@ -35,7 +35,7 @@ contract ThirdPartySubmitter {
         pm.swap(
             key,
             SwapParams(true, -1 ether, 4295128740),
-            abi.encode(AsyncSwap.UserParams({user: maker, executor: executor, amountOutMin: 1, priorityFee: 0}))
+            abi.encode(AsyncSwap.UserParams({user: maker, executor: executor, amountOutMin: 1, priorityFee: 100_000}))
         );
         key.currency0.settle(pm, address(this), 1 ether, false);
         return "";

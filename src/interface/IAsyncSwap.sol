@@ -14,6 +14,12 @@ import {IFeeVault} from "./IFeeVault.sol";
 /// @notice The Async Swap v2 hook (`src/AsyncSwap.huff`): converts an exact-input swap into an open async order,
 ///         matches crossing orders at the resting limit, and lets authorized executors fill or cancel.
 interface IAsyncSwap is IHooks {
+    function setMinOrder(PoolKey calldata key, uint256 minimum) external;
+    function setDefaultMinOrder(uint256 minimum) external;
+    function defaultMinOrder() external view returns (uint256);
+    function orderCreatedSequence(PoolId poolId, bytes32 id) external view returns (uint64);
+    function useNonce(PoolId poolId, address maker, uint256 nonce) external;
+
     /// @notice `hookData` of `IPoolManager.swap`.
     struct UserParams {
         address user;
@@ -88,6 +94,7 @@ interface IAsyncSwap is IHooks {
         view
         returns (uint256 amountIn, uint256 amountOutMin);
     function asyncOrderPriorityFee(PoolId poolId, bytes32 orderId) external view returns (uint256);
+    /// @dev Historical fixture ABI only: removed from the current Huff selector table.
     function orderingMode(PoolId poolId) external view returns (IAsyncFiller.OrderingMode);
     function bestOrder(PoolId poolId, bool isBuy)
         external
@@ -106,15 +113,17 @@ interface IAsyncSwap is IHooks {
             uint256 amountOutMin,
             uint128 priceKey,
             bool isBuy,
-            bytes32 previousOrderId,
-            bytes32 nextOrderId
+            uint64 sequence,
+            uint64 priorityFee
         );
     function isExecutor(PoolId poolId, address maker, address executor) external view returns (bool);
     function calculateHookFee(uint256) external pure returns (uint256);
     /// @notice Fee added to the maker's net output: 0.3% of gross output, rounded down.
     function calculatePoolFee(uint24, uint256 amount) external pure returns (uint256);
 
+    /// @dev Historical fixture ABI only: removed from the current Huff selector table.
     function setOrderingMode(PoolKey calldata key, IAsyncFiller.OrderingMode mode) external;
+    /// @dev Historical fixture ABI only: bids are escrowed during order creation.
     function recordPriorityFee(PoolKey calldata key, address maker, uint256 amount) external;
     /// @param data abi.encode(filler).
     function executeOrder(AsyncOrder calldata order, bytes calldata data) external;

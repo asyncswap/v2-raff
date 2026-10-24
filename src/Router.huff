@@ -76,7 +76,7 @@
 #define constant EIP712_NAME_HASH = 0x08476627fc511b8f0bf0674a96c4492f05a5c5df2795822dac01ecd5bdbd9167    // "AsyncSwap Router"
 #define constant EIP712_VERSION_HASH = 0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 // "1"
 #define constant ASYNC_ORDER_TYPEHASH = 0x1a36c9d2e20588fe9287a14a2ae5b1920f088d96a5ed77ae55ed1363810cba57
-#define constant CANCEL_ORDER_TYPEHASH = 0x45c81b3e9ce5f2c103481a0f320a6a1f8a29846114c80283070d86c9fd3c0609
+#define constant CANCEL_ORDER_TYPEHASH = 0x41b1879186ae4d57fcf7d9ac518f4a360c2bbc33c573f04aabd069d5a373042f
 
 #define constant ACTION_SWAP = 0x00
 #define constant ACTION_FILL_ORDER = 0x01
@@ -373,22 +373,29 @@
     0x1a4 calldataload timestamp gt iszero live jumpi
     __ERROR(SignatureExpired) REVERT_0()
     live:
-    0x184 calldataload [CANCEL_NONCE_SEED] 0xa4 calldataload HASH_2() swap1 HASH_2()
-    dup1 sload iszero fresh jumpi
-    __ERROR(NonceAlreadyUsed) REVERT_0()
-    fresh:
-    0x01 swap1 sstore
+    __FUNC_SIG("useNonce(bytes32,address,uint256)") CALL_SELECTOR()
+    0xa0 0x04 [E_KEY] calldatacopy
+    0xa0 [E_KEY] sha3 [CALL_4] mstore
+    0xa4 calldataload [CALL_24] mstore
+    0x184 calldataload [CALL_44] mstore
+    0x64 0x00 swap1 HOOK_CALL()
     ORDER_ID(0x04) dup1 [R_ID] mstore
     ASYNC_ORDER_INFO()                          // amountIn at CALL_0
+    [CALL_0] mload 0x2800 mstore
+    __FUNC_SIG("orderCreatedSequence(bytes32,bytes32)") CALL_SELECTOR()
+    0xa0 [E_KEY] sha3 [CALL_4] mstore [R_ID] mload [CALL_24] mstore
+    0x44 0x20 swap1 HOOK_STATICCALL()
+    [CALL_0] mload 0x2820 mstore
     [CANCEL_ORDER_TYPEHASH] [S_STRUCT] mstore
     0xa4 calldataload 0x10e0 mstore
     ORDER_INPUT(0x04) 0x1100 mstore
     ORDER_OUTPUT(0x04) 0x1120 mstore
-    [CALL_0] mload 0x1140 mstore
+    0x2800 mload 0x1140 mstore
     [R_ID] mload 0x1160 mstore
-    0x184 calldataload 0x1180 mstore
-    0x1a4 calldataload 0x11a0 mstore
-    0x100 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
+    0x2820 mload 0x1180 mstore
+    0x184 calldataload 0x11a0 mstore
+    0x1a4 calldataload 0x11c0 mstore
+    0x120 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
     0x1c4 calldataload 0x04 add swap1
     0xa4 calldataload IS_VALID_SIGNATURE() valid jumpi
     __ERROR(InvalidSignature) REVERT_0()
@@ -475,6 +482,12 @@
 /// @dev The FillOrder branch: check the live price against the filler's cap, pull an ERC-20 output from the
 ///      filler for the hook, then `hook.executeOrder(order, abi.encode(user))`.
 #define macro FILL_BODY() = takes (0) returns (0) {
+    ORDER_ID(0x64) dup1 [R_ID] mstore ASYNC_ORDER_INFO()
+    [CALL_0] mload 0x2840 mstore 0xc20 mload 0x2860 mstore
+    0x2840 mload iszero window_checked jumpi
+    0x2840 mload 0x144 calldataload gt iszero
+    REQUIRE_1(26, 0x496e7075742062656c6f77206f726465722e616d6f756e74496e000000000000)
+    window_checked:
     ORDER_ID(0x64) LIVE_PRICE(0xa4)             // [live]
     dup1 [MAX_PRICE_LOCATION] tload lt iszero
     REQUIRE_1(22, 0x50726963652065786365656473206d6178507269636500000000000000000000)
@@ -484,6 +497,10 @@
     HOOK() PM_SETTLE_FOR()
     native:
     pop pop
+    [R_ID] mload ASYNC_ORDER_INFO()
+    0x2840 mload [CALL_0] mload eq 0x2860 mload 0xc20 mload eq and
+    REQUIRE_1(25, 0x4f72646572206368616e67656420647572696e672066696c6c00000000000000)
+
     __FUNC_SIG("executeOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),bytes)") CALL_SELECTOR()
     0x180 0x64 [CALL_4] calldatacopy
     0x1a0 0xd84 mstore                          // offset of data
@@ -534,11 +551,6 @@
     0x184 calldataload MANAGER() 0x104 calldataload dup4 SAFE_TRANSFER_FROM()
     pop
     HOOK() PM_SETTLE_FOR()
-    __FUNC_SIG("recordPriorityFee((address,address,uint24,int24,address),address,uint256)") CALL_SELECTOR()
-    0xa0 0x64 [CALL_4] calldatacopy
-    0x104 calldataload [CALL_A4] mstore
-    0x184 calldataload [CALL_C4] mstore
-    0xe4 0x00 swap1 HOOK_CALL()
     no_bid:
 
     __FUNC_SIG("matchNewOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))")
@@ -587,11 +599,6 @@
 }
 
 // Views
-#define macro CANCEL_NONCE_USED() = takes (0) returns (0) {
-    0x24 calldataload [CANCEL_NONCE_SEED] LOAD_ADDRESS(0x04) HASH_2() swap1 HASH_2() sload RETURN_1()
-}
-
-/// @notice ERC-5267 `eip712Domain()`: (0x0f, "AsyncSwap Router", "1", chainid, this, 0, []).
 #define macro EIP712_DOMAIN() = takes (0) returns (0) {
     0x0f 0xf8 shl 0x00 mstore
     0xe0 0x20 mstore
@@ -630,7 +637,6 @@
     dup1 __FUNC_SIG("fillFromPoolLiquidity(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))") eq fill_from_pool_liquidity jumpi
     dup1 __FUNC_SIG("swapWithSig(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),(uint256,uint256,bytes),(uint256,uint256,bytes))") eq swap_with_sig jumpi
     dup1 __FUNC_SIG("cancelWithSig(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),uint256,uint256,bytes)") eq cancel_with_sig jumpi
-    dup1 __FUNC_SIG("cancelNonceUsed(address,uint256)") eq cancel_nonce_used jumpi
     dup1 __FUNC_SIG("PERMIT2()") eq permit2 jumpi
     dup1 __FUNC_SIG("DOMAIN_SEPARATOR()") eq domain_separator jumpi
     dup1 __FUNC_SIG("eip712Domain()") eq eip712_domain jumpi
@@ -644,7 +650,6 @@
     fill_from_pool_liquidity: FILL_FROM_POOL_LIQUIDITY()
     swap_with_sig:            SWAP_WITH_SIG()
     cancel_with_sig:          CANCEL_WITH_SIG()
-    cancel_nonce_used:        CANCEL_NONCE_USED()
     permit2:                  PERMIT2() RETURN_1()
     domain_separator:         DOMAIN_SEPARATOR() RETURN_1()
     eip712_domain:            EIP712_DOMAIN()

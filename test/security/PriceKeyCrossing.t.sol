@@ -7,8 +7,9 @@ import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 
 /// @notice Crossing is decided exactly. Book price keys are truncated WAD ratios, so two orders
 ///         can share a key without crossing; `AsyncMatching._crosses` resolves equal keys with a
-///         full-precision cross-multiply. An equal-key pair that does not cross rests and never
-///         blocks a genuinely crossing order, and an exact tie executes. See
+///         full-precision cross-multiply. An equal-key pair that does not cross rests; a later better-key incoming
+///         order can still trade, and an exact tie executes. Same-key head blocking is
+///         reproduced separately in CoarsePriceBlocking.t.sol. See
 ///         docs/price-key-crossing.md.
 contract PriceKeyCrossingTest is SetupHook {
     address alice = makeAddr("alice");
@@ -25,8 +26,8 @@ contract PriceKeyCrossingTest is SetupHook {
     }
 
     function _submit(address o, bool zeroForOne, uint256 amtIn, uint256 amtOutMin) internal {
-        AsyncOrder memory ord = AsyncOrder(key, o, zeroForOne, amtIn, amtOutMin, 0, 2 ** 96, bytes32(0));
-        bytes memory data = abi.encode(AsyncSwap.UserParams(o, address(router), amtOutMin, 0));
+        AsyncOrder memory ord = AsyncOrder(key, o, zeroForOne, amtIn, amtOutMin, 100_000, 2 ** 96, bytes32(0));
+        bytes memory data = abi.encode(AsyncSwap.UserParams(o, address(router), amtOutMin, 100_000));
         vm.startPrank(o);
         token0.approve(address(router), type(uint256).max);
         token1.approve(address(router), type(uint256).max);
@@ -41,8 +42,8 @@ contract PriceKeyCrossingTest is SetupHook {
 
     // currency1 is the numeraire. Buyer: zeroForOne=false (pays currency1). Seller: zeroForOne=true.
 
-    /// @dev An equal-key, non-crossing pair at the top of book does not block a genuinely
-    ///      crossing order from matching.
+    /// @dev An equal-key, non-crossing pair does not block this later incoming sell
+    ///      with a strictly better price key. It does not test same-key orders hidden behind a head.
     function test_equalKeyNonCrossingPairDoesNotBlockMatching() public {
         // Buy and sell whose keys both truncate to 3000000000000000001 but do NOT actually cross.
         _submit(alice, false, 3e18 + 1, 1e18); // resting buy  B1 (best bid, key K)

@@ -1,0 +1,135 @@
+/// @title TokenClaims
+/// @notice Redeems the caller's PoolManager currency claims to a chosen recipient.
+/// @dev Huff build of `asyncswap/contracts` `src/TokenClaims.sol`. Approve this contract for the currency claim
+///      ID on PoolManager before redeeming. Constructor: `(IPoolManager manager)`. The reentrancy flag is
+///      transient (it is set and cleared within one call, as the Solidity's storage flag is).
+
+#include "./lib/Common.huff"
+#include "./lib/PoolManager.huff"
+
+//.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
+//SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs.      .sSSS s.      SSSSs
+//S SSS SSSSS S SSS SSSSS S SSS SSSS' S SSS SSSS'      S SSS SSSs.   S SSS
+//S  SS SSSS' S  SS SSSSS S  SS       S  SS            S  SS SSSSS   S  SS
+//S..SSsSSSa. S..SSsSSSSS S..SSsss    S..SSsss         S..SS SSSSS   S..SS
+//S:::S SSSSS S:::S SSSSS S:::SSSS    S:::SSSS          S::S SSSS    S:::S
+//S;;;S SSSSS S;;;S SSSSS S;;;S       S;;;S              S;S SSS     S;;;S
+//S%%%S SSSSS S%%%S SSSSS S%%%S       S%%%S               SS SS      S%%%S
+//SSSSS SSSSS SSSSS SSSSS SSSSS       SSSSS                SsS     SsSSSSSsS
+//
+//    r   fGr
+//  rr  GrGGrG
+//rrr       GraG
+//r          GfrrraGa
+//r             GaarrrrrrGr
+//              GrarrrrrGrG
+//               GaGfra GraG
+//               Ga ar    ff
+//               Ga  Gr    G
+//              fr   af    Gr
+//             Gr    Gr    G
+//_mmsaki 2025 ________________
+
+//'####:'##::: ##:'########:'########:'########::'########::::'###:::::'######::'########:
+//. ##:: ###:: ##:... ##..:: ##.....:: ##.... ##: ##.....::::'## ##:::'##... ##: ##.....::
+//: ##:: ####: ##:::: ##:::: ##::::::: ##:::: ##: ##::::::::'##:. ##:: ##:::..:: ##:::::::
+//: ##:: ## ## ##:::: ##:::: ######::: ########:: ######:::'##:::. ##: ##::::::: ######:::
+//: ##:: ##. ####:::: ##:::: ##...:::: ##.. ##::: ##...:::: #########: ##::::::: ##...::::
+//: ##:: ##:. ###:::: ##:::: ##::::::: ##::. ##:: ##::::::: ##.... ##: ##::: ##: ##:::::::
+//'####: ##::. ##:::: ##:::: ########: ##:::. ##: ##::::::: ##:::: ##:. ######:: ########:
+//....::..::::..:::::..:::::........::..:::::..::..::::::::..:::::..:::......:::........::
+//
+#define error OnlyPoolManager()
+#define error InvalidRedemption()
+#define error ReentrantRedemption()
+
+#define event ClaimsRedeemed(address indexed, address indexed, address indexed, uint256)
+
+//:'######::'########::'#######::'########:::::'###:::::'######:::'########:
+//'##... ##:... ##..::'##.... ##: ##.... ##:::'## ##:::'##... ##:: ##.....::
+// ##:::..::::: ##:::: ##:::: ##: ##:::: ##::'##:. ##:: ##:::..::: ##:::::::
+//. ######::::: ##:::: ##:::: ##: ########::'##:::. ##: ##::'####: ######:::
+//:..... ##:::: ##:::: ##:::: ##: ##.. ##::: #########: ##::: ##:: ##...::::
+//'##::: ##:::: ##:::: ##:::: ##: ##::. ##:: ##.... ##: ##::: ##:: ##:::::::
+//. ######::::: ##::::. #######:: ##:::. ##: ##:::: ##:. ######::: ########:
+//:......::::::..::::::.......:::..:::::..::..:::::..:::......::::........::
+//
+#define constant REDEEMING_SLOT = 0x00
+#define constant IMMUTABLES = __codesize(RUNTIME)
+
+#define macro MANAGER() = takes (0) returns (1) { 0x40 mload }
+
+//'########:'##::: ##:'########:'########::'##:::'##:
+// ##.....:: ###:: ##:... ##..:: ##.... ##:. ##:'##::
+// ##::::::: ####: ##:::: ##:::: ##:::: ##::. ####:::
+// ######::: ## ## ##:::: ##:::: ########::::. ##::::
+// ##...:::: ##. ####:::: ##:::: ##.. ##:::::: ##::::
+// ##::::::: ##:. ###:::: ##:::: ##::. ##::::: ##::::
+// ########: ##::. ##:::: ##:::: ##:::. ##:::: ##::::
+//........::..::::..:::::..:::::..:::::..:::::..:::::
+//
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    [IMMUTABLES] __codesize(CONSTRUCTOR) 0x100 codecopy
+    0x20 0x20 codesize sub [IMMUTABLES] 0x100 add codecopy
+    [IMMUTABLES] 0x20 add 0x100 return
+}
+
+//'########::'##::::'##:'########::'##:::::::'####::'######::
+// ##.... ##: ##:::: ##: ##.... ##: ##:::::::. ##::'##... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##:::..::
+// ########:: ##:::: ##: ########:: ##:::::::: ##:: ##:::::::
+// ##.....::: ##:::: ##: ##.... ##: ##:::::::: ##:: ##:::::::
+// ##:::::::: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##::: ##:
+// ##::::::::. #######:: ########:: ########:'####:. ######::
+//..::::::::::.......:::........:::........::....:::......:::
+/// @notice `redeem(currency, recipient, amount)`.
+#define macro REDEEM() = takes (0) returns (0) {
+    [REDEEMING_SLOT] tload iszero entered jumpi
+    __ERROR(ReentrantRedemption) REVERT_0()
+    entered:
+    0x01 [REDEEMING_SLOT] tstore
+    LOAD_ADDRESS(0x24) dup1 iszero bad_redemption jumpi
+    0x44 calldataload dup1 iszero bad_redemption jumpi
+    [CALL_A4] mstore [CALL_84] mstore
+    LOAD_ADDRESS(0x04) [CALL_64] mstore
+    caller [CALL_44] mstore
+    0x80 PM_UNLOCK()
+    0x00 [REDEEMING_SLOT] tstore
+    RETURN_EMPTY()
+    bad_redemption:
+    __ERROR(InvalidRedemption) REVERT_0()
+}
+
+#define macro UNLOCK_CALLBACK() = takes (0) returns (0) {
+    MANAGER() caller eq from_manager jumpi
+    __ERROR(OnlyPoolManager) REVERT_0()
+    from_manager:
+    0xa4 calldataload 0x64 calldataload 0x44 calldataload PM_BURN()
+    0xa4 calldataload 0x84 calldataload 0x64 calldataload PM_TAKE()
+    0xa4 calldataload [MEM_LOG] mstore
+    0x64 calldataload 0x84 calldataload 0x44 calldataload __EVENT_HASH(ClaimsRedeemed) 0x20 [MEM_LOG] log4
+    0x00 [MEM_LOG] RETURN_BYTES()
+}
+
+//'########:'##::: ##:'########:'########::'##:::'##:
+// ##.....:: ###:: ##:... ##..:: ##.... ##:. ##:'##::
+// ##::::::: ####: ##:::: ##:::: ##:::: ##::. ####:::
+// ######::: ## ## ##:::: ##:::: ########::::. ##::::
+// ##...:::: ##. ####:::: ##:::: ##.. ##:::::: ##::::
+// ##::::::: ##:. ###:::: ##:::: ##::. ##::::: ##::::
+// ########: ##::. ##:::: ##:::: ##:::. ##:::: ##::::
+//........::..::::..:::::..:::::..:::::..:::::..:::::
+//
+#define macro MAIN() = takes (0) returns (0) {
+    0x20 [IMMUTABLES] 0x40 codecopy
+    NON_PAYABLE()
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("unlockCallback(bytes)") eq unlock_callback jumpi
+    dup1 __FUNC_SIG("redeem(address,address,uint256)") eq redeem jumpi
+    dup1 __FUNC_SIG("poolManager()") eq pool_manager jumpi
+    0x00 0x00 revert
+
+    unlock_callback: UNLOCK_CALLBACK()
+    redeem:          REDEEM()
+    pool_manager:    MANAGER() RETURN_1()
+}

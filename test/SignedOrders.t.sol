@@ -5,6 +5,7 @@ import {SetupHook} from "./SetupHook.t.sol";
 import {Permit2Bytecode} from "./utils/Permit2Bytecode.sol";
 import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
 import {IRouter as Router} from "src/interface/IRouter.sol";
+import {IAsyncFiller as AsyncFiller} from "src/interface/IAsyncFiller.sol";
 import {OrderSignatures} from "test/utils/OrderSignatures.sol";
 import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 import {Currency} from "v4-core/types/Currency.sol";
@@ -35,6 +36,9 @@ contract SignedOrdersTest is SetupHook {
         maker = vm.addr(makerPk);
         vm.prank(owner);
         token0.transfer(maker, 10 ether);
+        token1.mint(maker, 1 ether);
+        vm.prank(maker);
+        token1.approve(address(router), type(uint256).max);
         // One-time on-chain step: approve Permit2 for the input token. No setExecutor call.
         vm.prank(maker);
         token0.approve(Permit2Bytecode.PERMIT2, type(uint256).max);
@@ -50,7 +54,7 @@ contract SignedOrdersTest is SetupHook {
             zeroForOne: true,
             amountIn: AMOUNT_IN,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -220,7 +224,9 @@ contract SignedOrdersTest is SetupHook {
         view
         returns (bytes memory)
     {
-        bytes32 structHash = OrderSignatures.hashUpdatePrice(order, _id(order), AMOUNT_IN, newOut, nonce, deadline);
+        bytes32 structHash = OrderSignatures.hashUpdatePrice(
+            order, _id(order), AMOUNT_IN, newOut, hook.orderCreatedSequence(poolId, _id(order)), nonce, deadline
+        );
         return _sign(_digest(hook.DOMAIN_SEPARATOR(), structHash));
     }
 
@@ -241,10 +247,39 @@ contract SignedOrdersTest is SetupHook {
         hook.updatePriceWithSig(order, 0.99 ether, 7, deadline, sig);
     }
 
+    function test_updatePriceWithSig_rejectsUnusedSignatureOnReplacement() public {
+        AsyncOrder memory order = _createSigned();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory oldSig = _updateSig(order, 0.99 ether, 29, deadline);
+        uint64 generation = hook.orderCreatedSequence(poolId, _id(order));
+        vm.prank(maker);
+        router.cancelOrder(order);
+        AsyncOrder memory again = _order(AMOUNT_OUT_MIN);
+        Router.PermitData memory permit = _permit(again, 1, deadline);
+        vm.prank(relayer);
+        router.swapWithSig(again, permit, _noGrant());
+        assertGt(hook.orderCreatedSequence(poolId, _id(order)), generation);
+        assertEq(hook.asyncOrder(poolId, _id(order)), AMOUNT_IN, "same ID and input recreated");
+        vm.prank(relayer);
+        vm.expectRevert(AsyncSwap.InvalidSignature.selector);
+        hook.updatePriceWithSig(order, 0.99 ether, 29, deadline, oldSig);
+        (, uint256 minimum) = hook.asyncOrderInfo(poolId, _id(order));
+        assertEq(minimum, AMOUNT_OUT_MIN, "replacement price unchanged");
+        assertFalse(hook.nonceUsed(maker, 29), "rejection preserves unused nonce");
+        bytes memory freshSig = _updateSig(order, 0.99 ether, 29, deadline);
+        vm.prank(relayer);
+        hook.updatePriceWithSig(order, 0.99 ether, 29, deadline, freshSig);
+        (, minimum) = hook.asyncOrderInfo(poolId, _id(order));
+        assertEq(minimum, 0.99 ether, "fresh signature updates replacement");
+        assertTrue(hook.nonceUsed(maker, 29), "fresh signature consumes nonce");
+    }
+
     function test_updatePriceWithSig_rejectsWrongSigner() public {
         AsyncOrder memory order = _createSigned();
         uint256 deadline = block.timestamp + 1 hours;
-        bytes32 structHash = OrderSignatures.hashUpdatePrice(order, _id(order), AMOUNT_IN, 1, 1, deadline);
+        bytes32 structHash = OrderSignatures.hashUpdatePrice(
+            order, _id(order), AMOUNT_IN, 1, hook.orderCreatedSequence(poolId, _id(order)), 1, deadline
+        );
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(0xBAD, _digest(hook.DOMAIN_SEPARATOR(), structHash));
 
         vm.prank(relayer);
@@ -293,7 +328,9 @@ contract SignedOrdersTest is SetupHook {
         view
         returns (bytes memory)
     {
-        bytes32 structHash = OrderSignatures.hashCancel(order, _id(order), AMOUNT_IN, nonce, deadline);
+        bytes32 structHash = OrderSignatures.hashCancel(
+            order, _id(order), AMOUNT_IN, hook.orderCreatedSequence(poolId, _id(order)), nonce, deadline
+        );
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(pk, _digest(router.DOMAIN_SEPARATOR(), structHash));
         return abi.encodePacked(r, s, v);
     }
@@ -304,7 +341,7 @@ contract SignedOrdersTest is SetupHook {
         uint256 deadline = block.timestamp + 1 hours;
 
         vm.prank(relayer);
-        router.cancelWithSig(order, 0, deadline, _cancelSig(order, 0, deadline, makerPk));
+        router.cancelWithSig(order, 1, deadline, _cancelSig(order, 1, deadline, makerPk));
 
         assertEq(token0.balanceOf(maker), makerBefore + AMOUNT_IN, "input returned");
         (uint256 storedIn,) = hook.asyncOrderInfo(poolId, _id(order));
@@ -314,22 +351,22 @@ contract SignedOrdersTest is SetupHook {
     function test_cancelWithSig_rejectsWrongSigner() public {
         AsyncOrder memory order = _createSigned();
         uint256 deadline = block.timestamp + 1 hours;
-        bytes memory sig = _cancelSig(order, 0, deadline, 0xBAD);
+        bytes memory sig = _cancelSig(order, 1, deadline, 0xBAD);
 
         vm.prank(relayer);
         vm.expectRevert(Router.InvalidSignature.selector);
-        router.cancelWithSig(order, 0, deadline, sig);
+        router.cancelWithSig(order, 1, deadline, sig);
     }
 
     function test_cancelWithSig_rejectsExpired() public {
         AsyncOrder memory order = _createSigned();
         uint256 deadline = block.timestamp + 1 hours;
-        bytes memory sig = _cancelSig(order, 0, deadline, makerPk);
+        bytes memory sig = _cancelSig(order, 1, deadline, makerPk);
         vm.warp(deadline + 1);
 
         vm.prank(relayer);
         vm.expectRevert(Router.SignatureExpired.selector);
-        router.cancelWithSig(order, 0, deadline, sig);
+        router.cancelWithSig(order, 1, deadline, sig);
     }
 
     /// @dev L-02: an identical order re-placed in the same block gets the same id; the used
@@ -337,9 +374,9 @@ contract SignedOrdersTest is SetupHook {
     function test_cancelWithSig_rejectsReplayOnRecurringOrderId() public {
         AsyncOrder memory order = _createSigned();
         uint256 deadline = block.timestamp + 1 hours;
-        bytes memory sig = _cancelSig(order, 0, deadline, makerPk);
+        bytes memory sig = _cancelSig(order, 1, deadline, makerPk);
         vm.prank(relayer);
-        router.cancelWithSig(order, 0, deadline, sig);
+        router.cancelWithSig(order, 1, deadline, sig);
 
         AsyncOrder memory again = _order(AMOUNT_OUT_MIN);
         Router.PermitData memory permit = _permit(again, 1, block.timestamp + 1 hours);
@@ -349,8 +386,59 @@ contract SignedOrdersTest is SetupHook {
         assertEq(storedIn, AMOUNT_IN, "same order id reused");
 
         vm.prank(relayer);
-        vm.expectRevert(Router.NonceAlreadyUsed.selector);
-        router.cancelWithSig(order, 0, deadline, sig);
+        vm.expectRevert(AsyncSwap.NonceAlreadyUsed.selector);
+        router.cancelWithSig(order, 1, deadline, sig);
+    }
+
+    /// An unconsumed cancel for a closed incarnation cannot cancel an identical replacement.
+    function test_cancelWithSig_rejectsUnusedSignatureOnReplacement() public {
+        AsyncOrder memory order = _createSigned();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _cancelSig(order, 19, deadline, makerPk);
+        uint64 generation = hook.orderCreatedSequence(poolId, _id(order));
+        vm.prank(maker);
+        router.cancelOrder(order);
+        AsyncOrder memory again = _order(AMOUNT_OUT_MIN);
+        Router.PermitData memory permit = _permit(again, 1, deadline);
+        vm.prank(relayer);
+        router.swapWithSig(again, permit, _noGrant());
+        assertGt(hook.orderCreatedSequence(poolId, _id(order)), generation);
+        vm.prank(relayer);
+        vm.expectRevert(Router.InvalidSignature.selector);
+        router.cancelWithSig(order, 19, deadline, sig);
+        assertEq(hook.asyncOrder(poolId, _id(order)), AMOUNT_IN);
+        assertFalse(hook.nonceUsed(maker, 19), "revert restores nonce");
+    }
+
+    /// @dev The maker revokes a signed cancel they handed to a relayer with the hook's `invalidateNonce`.
+    function test_cancelWithSig_revokedByInvalidateNonce() public {
+        AsyncOrder memory order = _createSigned();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _cancelSig(order, 3, deadline, makerPk);
+
+        vm.prank(maker);
+        hook.invalidateNonce(3);
+
+        vm.prank(relayer);
+        vm.expectRevert(AsyncSwap.NonceAlreadyUsed.selector);
+        router.cancelWithSig(order, 3, deadline, sig);
+        (uint256 storedIn,) = hook.asyncOrderInfo(poolId, _id(order));
+        assertEq(storedIn, AMOUNT_IN, "order still open");
+    }
+
+    /// @dev A signed cancel burns the same nonce as the hook's signed actions.
+    function test_cancelWithSig_sharesHookNonces() public {
+        AsyncOrder memory order = _createSigned();
+        uint256 deadline = block.timestamp + 1 hours;
+        vm.prank(relayer);
+        router.cancelWithSig(order, 5, deadline, _cancelSig(order, 5, deadline, makerPk));
+        assertTrue(hook.nonceUsed(maker, 5), "cancel nonce burnt in the hook");
+    }
+
+    function test_RevertWhen_useNonceByNonExecutor() public {
+        vm.prank(relayer);
+        vm.expectRevert(AsyncFiller.NotAuthorizedExecutor.selector);
+        hook.useNonce(poolId, maker, 9);
     }
 
     /* ------------------------------ type strings ------------------------------- */
@@ -370,7 +458,7 @@ contract SignedOrdersTest is SetupHook {
         assertEq(
             OrderSignatures.CANCEL_ORDER_TYPEHASH,
             keccak256(
-                "CancelOrder(address maker,address tokenIn,address tokenOut,uint256 amountIn,bytes32 orderId,uint256 nonce,uint256 deadline)"
+                "CancelOrder(address maker,address tokenIn,address tokenOut,uint256 amountIn,bytes32 orderId,uint64 createdSequence,uint256 nonce,uint256 deadline)"
             )
         );
     }

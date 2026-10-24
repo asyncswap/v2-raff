@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
-
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
 import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
@@ -44,7 +43,7 @@ contract NativeOutputEscrowTest is Test {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.hookTo(abi.encode(manager, currency1, address(this)), address(flags));
+        HuffDeploy.hookTo( abi.encode(manager, currency1, address(this)), address(flags));
         hook = AsyncSwap(payable(address(flags)));
         router = HuffDeploy.router(manager, hook, ISignatureTransfer(Permit2Bytecode.PERMIT2));
 
@@ -59,7 +58,7 @@ contract NativeOutputEscrowTest is Test {
         manager.initialize(key, 2 ** 96);
 
         vm.deal(filler, 1 ether);
-        erc20.mint(filler, 1);
+        erc20.mint(filler, 100_001);
         vm.prank(filler);
         hook.setExecutor(poolId, address(router), true);
     }
@@ -76,7 +75,7 @@ contract NativeOutputEscrowTest is Test {
             zeroForOne: zeroForOne,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -89,18 +88,21 @@ contract NativeOutputEscrowTest is Test {
         AsyncOrder memory order = _order({ownerAddr: filler, zeroForOne: false, amountIn: 1, amountOutMin: STRANDED});
 
         vm.startPrank(filler);
-        erc20.approve(address(router), 1);
+        erc20.approve(address(router), 100_001);
         router.swap(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: filler, executor: address(router), amountOutMin: STRANDED, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: filler, executor: address(router), amountOutMin: STRANDED, priorityFee: 100_000
+                })
             )
         );
         vm.stopPrank();
 
         // Patch salt so the fillOrder path resolves the same orderId the hook stored under.
-        order.salt =
-            keccak256(abi.encode(block.timestamp, block.number, address(manager), filler, uint256(1), STRANDED, 0));
+        order.salt = keccak256(
+            abi.encode(block.timestamp, block.number, address(manager), filler, uint256(1), STRANDED, 100_000)
+        );
 
         vm.prank(filler);
         vm.expectRevert();

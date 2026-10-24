@@ -1,21 +1,14 @@
 # v2-raff
 
-Async Swap v2 in [Huff](https://www.huff-neo.rs), compiled with [huff-neo](https://github.com/cakevm/huff-neo)
-(`hnc`): a port of [`asyncswap/contracts`](https://github.com/asyncswap/contracts) (`main` @ `6fa977a`) with the
-same ABI, events, errors, revert strings and behaviour. The acceptance test is `asyncswap/contracts`' own suite,
-copied here with three kinds of edits: its imports take the ABI from `src/interface/`, its deploy lines deploy the
-Huff, and the two Solidity subclasses it defined (a fee variant, and a constructor harness that skips the
-hook-address check) are Huff builds with a compile-time flag instead:
+Native Huff implementation of the Async Swap hook, Router, fee vault, and claim redeemers.
+The current synchronization targets the local Solidity protocol, including priority-only bid escrow,
+exact-price selection within coarse tick buckets, FeeVault bid routing, claim-based matching proceeds,
+minimum-order checks, proportional residual limits, and shared signature nonces.
 
-| | passed | failed | skipped |
-| --- | ---: | ---: | ---: |
-| `asyncswap/contracts`, Solidity | 181 | 0 | 0 |
-| this repo, Huff | 181 + 1 | 0 | 0 |
-
-With `UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org` and `UNICHAIN_FORK_BLOCK=61709000`, as CI sets them;
-the three Unichain fork tests run the Huff against live mainnet state (PoolManager, USDC, Permit2). Without the
-RPC they skip. The `+ 1` is `test/huff/CodeSize.t.sol`, which keeps the Huff runtimes under EIP-170. Created from the
-[`asyncswap/raff`](https://github.com/asyncswap/raff) template.
+Validation compares native Huff and Solidity executions with independently calculated Python results.
+See [current validation](docs/huff-sync-2026-10-24.md) for coverage, gas measurements, and limitations.
+Storage layouts differ; matching public behavior is the comparison target. The historical storage-specific
+fixtures under `test/formal/` are retained separately and are not current refinement proofs.
 
 ## Layout
 
@@ -25,6 +18,7 @@ RPC they skip. The `+ 1` is `test/huff/CodeSize.t.sol`, which keeps the Huff run
 | `src/Router.huff` | `swap`, `swapWithSig` (Permit2 witness), `fillOrder`, `cancelOrder`, `cancelWithSig`, `matchBook`, `fillFromPoolLiquidity`, the unlock callback |
 | `src/FeeVault.huff` | Fee claims; the hook's constructor deploys it (`src/generated/` holds its creation code) |
 | `src/NativeClaims.huff` | Redeems native-ETH claims |
+| `src/TokenClaims.huff` | Redeems ERC-6909 currency claims |
 | `src/MatchingEngine.huff` | The standalone matching benchmark |
 | `src/lib/` | Order book (`AsyncFiller`), radix price tree, 512-bit `mulDiv` and match amounts, EIP-712 and `SignatureChecker`, PoolManager calls |
 | `src/interface/` | The Solidity ABI: `IAsyncSwap`, `IRouter`, `IFeeVault`, `INativeClaims`, `IMatchingEngine`, `IAsyncFiller` (order-book types, events, errors), `ISignatureTransfer`, the `AsyncOrder` struct |
@@ -37,55 +31,28 @@ Constructor arguments are ABI-encoded after the creation code, as in Solidity. T
 numeraire, owner)` and must sit at an address whose low 14 bits are exactly `0x2888`; the Router takes
 `(poolManager, hook, permit2)`, NativeClaims `(poolManager)`.
 
-## Differences from the Solidity
-
-Behaviour is the same; these are not observable through the ABI.
-
-- `AsyncMatching` is inlined, so there is no library to deploy and link. The hook runtime is 17,579 bytes.
-- Storage layout differs: each pool hangs off `keccak(poolId, 3)`, an order is seven slots. See
-  `src/lib/Book.huff`.
-- NativeClaims' and MatchingEngine's reentrancy flags are transient. They are set and cleared within one call,
-  as the Solidity's storage flags are.
-- Test-only builds: `-c POOL_FEE_MODE=1` (`calculatePoolFee = amount / 100`, for `test/security/FeeClaims.t.sol`)
-  and `-c SKIP_HOOK_ADDRESS_CHECK=1` (for the constructor tests in `test/Numeraire.t.sol`).
-
-## Gas
-
-Same tests, Solidity (`optimizer_runs = 1000`) against Huff:
-
-| Test | Solidity | Huff | |
-| --- | ---: | ---: | ---: |
-| `test_swap_createsOrderWithPrice` | 490,836 | 434,075 | −11.6% |
-| `test_fill_makerReceivesPricedOutput_fillerReceivesInput` | 569,140 | 484,097 | −14.9% |
-| `test_cancel_makerReclaimsInput` | 464,499 | 386,065 | −16.9% |
-| `test_crossingOrdersMatchAndTransferEscrowedTokens` | 871,144 | 738,408 | −15.2% |
-| `test_crossingOrdersPartiallyFillAndKeepResidualOnBook` | 1,014,108 | 849,216 | −16.3% |
-| `test_matchBookContinuesAfterAutomaticMatchBound` | 4,658,125 | 3,943,843 | −15.3% |
-| `test_priorityFeeBreaksEqualPriceTiesAfterPricePriority` | 1,970,410 | 1,656,665 | −15.9% |
-| `test_lpLiquidityFillsOrderWhenMakerMinimumIsMet` | 1,973,636 | 1,904,251 | −3.5% |
-| `testGas_OneCallMatchesEightDistinctLevels` (MatchingEngine) | 1,465,923 | 1,311,968 | −10.5% |
-| `testGas_100OrdersAtDistinctPrices` (MatchingEngine) | 17,466,391 | 14,606,330 | −16.4% |
-
-These are whole tests, so they include PoolManager and token work the port doesn't change. Tests that deploy
-contracts in their bodies also count foundry-huff-neo's compile-and-deploy calls, so a suite-wide total
-(−0.6%) understates the difference.
-
 ## Build and test
 
-```sh
-curl -L https://foundry.paradigm.xyz | bash && foundryup
-curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash && hnc-up
-git clone --recurse-submodules https://github.com/asyncswap/v2-raff && cd v2-raff
-forge soldeer install
-```
+Requires Foundry, `hnc`, and the checked-out dependencies. Huff is compiled through Foundry FFI.
 
 ```sh
-forge test                                   # needs hnc on PATH; ffi is on in foundry.toml
-UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org UNICHAIN_FORK_BLOCK=61709000 \
-  FOUNDRY_INVARIANT_RUNS=64 FOUNDRY_INVARIANT_DEPTH=64 forge test   # what CI runs
-./script/huff-codegen.sh                     # after changing src/FeeVault.huff
-hnc src/AsyncSwap.huff -b                   # creation code (append the constructor arguments)
+forge test --no-match-path 'test/formal/**' --fuzz-seed 0x20261024
+forge test --match-contract CodeSizeTest -vv
+forge test --match-contract EligibleGasTest -vv
 ```
 
-CI (`.github/workflows/test.yml`) runs fmt, checks that `src/generated/` is current, and runs the suite at
-the invariant depth `asyncswap/contracts`' CI uses, against the huff-neo release pinned in `HNC_VERSION`.
+From the Python `uv4` checkout, regenerate the shared expectations and test both implementations:
+
+```sh
+uv run python examples/validate_three_way.py --solidity /path/to/contracts --huff /path/to/v2-raff
+```
+
+The three-way command runs Python model tests, 100 arithmetic/matching vectors, hash vectors,
+eight stateful campaigns on both implementations, and 174 native Huff tick-key vectors.
+It checks the covered behavior; it does not establish equivalence for arbitrary bytecode or every input.
+The normal current-suite command above explicitly excludes historical storage-layout fixtures.
+An unfiltered `forge test` still includes those fixtures and is not the current compatibility check.
+
+The hook inlines matching and exact-price indexing. Its price trees and per-bucket priority trees retain
+allocator state across empty levels and fully initialize recycled nodes. Native and generic claim redeemers
+use transient reentrancy flags. The fee-test and unbound-constructor builds use compile-time constants.

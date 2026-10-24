@@ -1,0 +1,634 @@
+Compiling 142 files with Solc 0.8.26
+Solc 0.8.26 finished in 33.69s
+Compiler run successful with warnings:
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/security/NativeSettlementReentrancy.t.sol:43:28:
+   |
+43 |     function approveRouter(uint256 amt) external {
+   |                            ^^^^^^^^^^^
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:1008:5:
+     |
+1008 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:1998:5:
+     |
+1998 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:2988:5:
+     |
+2988 |     function _phase6() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+    --> test/current/EligiblePythonVectors.t.sol:6904:5:
+     |
+6904 |     function _phase25() internal {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+     --> test/current/EligiblePythonVectors.t.sol:11731:5:
+      |
+11731 |     function _phase31() internal {
+      |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to view
+   --> test/formal/FormalProbesA.sol:125:5:
+    |
+125 |     function _assertNoWrites(address target) internal {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Ran 1 test for test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest
+[PASS] test_RevertWhen_SelfExecutorFillsFromHookBalance() (gas: 11329709)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 181.12ms (180.76ms CPU time)
+
+Ran 6 tests for test/security/FeeCollect.t.sol:FeeCollectTest
+[PASS] test_customExecutor_underpayingFee_ERC20Output_reverts() (gas: 3477682)
+[PASS] test_customExecutor_underpayingFee_nativeOutput_reverts() (gas: 3175190)
+[PASS] test_info_collectRevertsIfClaimsExceedInt128() (gas: 2314747)
+[PASS] test_ownerCannotReachEscrow_onlyFees() (gas: 1761579)
+[PASS] test_reentrantMaker_cannotSpendHookFeeCredit() (gas: 2817996)
+[PASS] test_thirdParty_cannotTransferOrBurnVaultClaims() (gas: 1429802)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 243.52ms (8.83ms CPU time)
+
+Ran 7 tests for test/MatchingAdversarial.t.sol:MatchingAdversarialTest
+[PASS] test_RevertWhen_NativeOutputForwardFails() (gas: 619479)
+[PASS] test_cancel_nativeInput_makerReclaimsEth() (gas: 786286)
+[PASS] test_fill_nativeInput_fillerSendsEth_receivesErc20() (gas: 891448)
+[PASS] test_fill_nativeOutput_fillerSendsErc20_receivesEth() (gas: 889169)
+[PASS] test_rejectingBestBuyerReceivesClaimsWithoutBlocking() (gas: 1770317)
+[PASS] test_swap_nativeInput_create() (gas: 584367)
+[PASS] test_swap_nativeOutput_create() (gas: 588850)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 250.90ms (4.13ms CPU time)
+
+Ran 1 test for test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest
+[PASS] test_RevertWhen_LivePriceExceedsFillerMax() (gas: 1007767)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 254.15ms (473.50µs CPU time)
+
+Ran 30 tests for test/AsyncSwap.t.sol:AsyncSwapTest
+[PASS] test_RevertWhen_ExactOutputSwap() (gas: 1975980)
+[PASS] test_RevertWhen_RouterCallbackNotFromPoolManager() (gas: 31608)
+[PASS] test_cancel_makerReclaimsInput() (gas: 871666)
+[PASS] test_cancel_revertsAfterFill() (gas: 937852)
+[PASS] test_cancel_revertsForNonOwner() (gas: 43987)
+[PASS] test_crossingOrdersMatchAndTransferEscrowedTokens() (gas: 1518211)
+[PASS] test_crossingOrdersPartiallyFillAndKeepResidualOnBook() (gas: 1583821)
+[PASS] test_fill_makerReceivesPricedOutput_fillerReceivesInput() (gas: 1013361)
+[PASS] test_fill_reverseDirection_token1ForToken0() (gas: 953006)
+[PASS] test_fill_revertsAfterCancel() (gas: 925978)
+[PASS] test_fill_revertsWhenOrderMissing() (gas: 114210)
+[PASS] test_fill_usesUpdatedPrice() (gas: 1227640)
+[PASS] test_filledPriorityBidGoesToFeeVaultNotActiveLps() (gas: 2885335)
+[PASS] test_lpLiquidityFillsOrderWhenMakerMinimumIsMet() (gas: 2796384)
+[PASS] test_lpLiquidityFillsReverseDirection() (gas: 2730120)
+[PASS] test_lpPriceFailureLeavesOrderOpenAndRetryCanFill() (gas: 3524763)
+[PASS] test_matchBookContinuesAfterAutomaticMatchBound() (gas: 9674963)
+[PASS] test_partialMatchAndCancelForfeitTheEntirePriorityBid() (gas: 1623775)
+[PASS] test_priceBookReturnsHighestNumeraireBid() (gas: 1089510)
+[PASS] test_priceBookSortsBidsAndPreservesFifoAtPrice() (gas: 1678803)
+[PASS] test_priceBookUpdateAndCancelMaintainBestLevel() (gas: 1710746)
+[PASS] test_priorityFeeBelowTenCentsReverts() (gas: 182394)
+[PASS] test_priorityFeeBreaksEqualPriceTiesAfterPricePriority() (gas: 2475047)
+[PASS] test_setExecutor_emitsGrant() (gas: 67882)
+[PASS] test_setExecutor_emitsRevocation() (gas: 46952)
+[PASS] test_swap_createsOrderWithPrice() (gas: 675332)
+[PASS] test_swap_duplicateParamsTriggerSaltWalk() (gas: 1154421)
+[PASS] test_swap_twoOrdersSameMaker_distinctSalts() (gas: 1155220)
+[PASS] test_updatePrice_makerCanRaisePrice() (gas: 941278)
+[PASS] test_updatePrice_revertsForNonOwner() (gas: 682613)
+Suite result: ok. 30 passed; 0 failed; 0 skipped; finished in 272.14ms (31.65ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython0Test
+[PASS] test_pythonStatefulTrace() (gas: 70672872)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 290.54ms (55.96ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython3Test
+[PASS] test_pythonStatefulTrace() (gas: 138268374)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 334.62ms (95.52ms CPU time)
+
+Ran 1 test for test/huff/CodeSize.t.sol:CodeSizeTest
+[PASS] test_huffRuntimesFitEip170() (gas: 18614301)
+Logs:
+  TokenClaims     649
+  AsyncSwap       20100
+  Router          7909
+  FeeVault        794
+  NativeClaims    622
+  MatchingEngine  5272
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 352.16ms (351.67ms CPU time)
+
+Ran 2 tests for test/security/MakerIdentity.t.sol:MakerIdentityTest
+[PASS] test_mismatchedOwnerRevertsBeforeTransfer() (gas: 126976)
+[PASS] test_mismatchedUserDataRevertsBeforeTransfer() (gas: 127099)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 222.61ms (133.58µs CPU time)
+
+Ran 11 tests for test/NativeClaims.t.sol:NativeClaimsTest
+[PASS] test_RevertWhen_NativeOutputForwardFails() (gas: 619501)
+[PASS] test_cancel_nativeInput_makerReclaimsEth() (gas: 786243)
+[PASS] test_cannotRedeemAnotherOwnerOrCallCallback() (gas: 2765565)
+[PASS] test_failedRedemptionPreservesClaimsAndAllowance() (gas: 2983248)
+[PASS] test_fill_nativeInput_fillerSendsEth_receivesErc20() (gas: 891458)
+[PASS] test_fill_nativeOutput_fillerSendsErc20_receivesEth() (gas: 889156)
+[PASS] test_nativeLpFillCreditsClaims() (gas: 2608546)
+[PASS] test_redeemPartialToChosenRecipientThenNoDoubleSpend() (gas: 2874143)
+[PASS] test_reentrantRedemptionCannotUnlockAgain() (gas: 2998968)
+[PASS] test_swap_nativeInput_create() (gas: 584344)
+[PASS] test_swap_nativeOutput_create() (gas: 588815)
+Suite result: ok. 11 passed; 0 failed; 0 skipped; finished in 412.26ms (167.98ms CPU time)
+
+Ran 1 test for test/security/FifoRepriceLinks.t.sol:FifoRepriceLinksTest
+[PASS] test_repriceKeepsLevelListsWellFormed() (gas: 3934621)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 227.29ms (2.26ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython1Test
+[PASS] test_pythonStatefulTrace() (gas: 70099990)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 288.25ms (42.71ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython2Test
+[PASS] test_pythonStatefulTrace() (gas: 70073126)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 288.16ms (43.11ms CPU time)
+
+Ran 9 tests for test/MatchingEngine.t.sol:MatchingEngineTest
+[PASS] testBestPricesAreOrderedByTheRadixTree() (gas: 757733)
+[PASS] testCancelUnlinksMiddleOfPriceLevel() (gas: 622673)
+[PASS] testCrossedRemainderCanBeClearedInBoundedChunks() (gas: 1566852)
+[PASS] testFuzzBestAskMatchesMinimum(uint128[16]) (runs: 256, μ: 3129051, ~: 3136066)
+[PASS] testGas_100OrdersAtDistinctPrices() (gas: 19415939)
+Logs:
+  gas for 100 unique-price orders: 19410545
+
+[PASS] testGas_OneCallMatchesEightDistinctLevels() (gas: 2082064)
+Logs:
+  gas for one order matching eight levels: 710160
+
+[PASS] testMatchBoundCannotBeRaisedByCaller() (gas: 53951)
+[PASS] testPartiallyFilledOrderKeepsItsTimePriority() (gas: 517924)
+[PASS] testPriceTimePriorityAndPartialFills() (gas: 466367)
+Suite result: ok. 9 passed; 0 failed; 0 skipped; finished in 372.85ms (320.08ms CPU time)
+
+Ran 6 tests for test/current/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest
+[PASS] test_RevertWhen_ExecutorSkipsTheBid() (gas: 1604027)
+[PASS] test_RevertWhen_NewPoolOrderHasNoBid() (gas: 141378)
+[PASS] test_customExecutor_canRestOrderWhenBidIsPaid() (gas: 1687242)
+[PASS] test_equalBids_keepSubmissionOrder() (gas: 1234111)
+[PASS] test_newPool_equalPricesQueueByBid() (gas: 1232137)
+[PASS] test_setOrderingModeIsGone() (gas: 35272)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 199.86ms (2.20ms CPU time)
+
+Ran 1 test for test/current/PriorityPythonHashes.t.sol:PriorityPythonHashesTest
+[PASS] test_pythonHashesMatchSolidityLibrary() (gas: 6537)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 245.29µs (79.88µs CPU time)
+
+Ran 19 tests for test/current/MinimumOrder.t.sol:MinimumOrderTest
+[PASS] test_RevertWhen_BuyBelowMinimum() (gas: 168999)
+[PASS] test_RevertWhen_NonOwnerSetsMinimum() (gas: 66304)
+[PASS] test_RevertWhen_SellAsksBelowMinimum() (gas: 195515)
+[PASS] test_RevertWhen_SellInputWorthLessThanMinimum() (gas: 196526)
+[PASS] test_RevertWhen_SellInputWorthLessThanMinimum_numeraireIsCurrency0() (gas: 472352)
+[PASS] test_RevertWhen_UpdatePriceBelowMinimum() (gas: 779471)
+[PASS] test_RevertWhen_priorityFee_smallOrderBelowTenBps() (gas: 115097)
+[PASS] test_RevertWhen_updatePrice_raisesSellBidFloor() (gas: 657213)
+[PASS] test_RevertWhen_updatePrice_raisesSellBidFloor_withMinimum() (gas: 785195)
+[PASS] test_buyAtMinimum_rests() (gas: 669305)
+[PASS] test_newPoolsTakeTheDefaultMinimum() (gas: 326549)
+[PASS] test_partialMatchBuyRemainderBelowMinimum_refunded() (gas: 1503085)
+[PASS] test_partialMatchRemainderBelowMinimum_refunded() (gas: 1503843)
+[PASS] test_priorityFee_smallOrderPaysTenBps() (gas: 617019)
+[PASS] test_sellAtMinimum_rests() (gas: 747992)
+[PASS] test_sellAtMinimum_rests_numeraireIsCurrency0() (gas: 995431)
+[PASS] test_updatePrice_buyUnaffectedBySellBidFloor() (gas: 900496)
+[PASS] test_updatePrice_partiallyFilledSellKeepsProRatedBid() (gas: 1757846)
+[PASS] test_updatePrice_withinSellBidFloor() (gas: 1201477)
+Suite result: ok. 19 passed; 0 failed; 0 skipped; finished in 358.70ms (7.96ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython4Test
+[PASS] test_pythonStatefulTrace() (gas: 173661003)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 475.65ms (148.85ms CPU time)
+
+Ran 2 tests for test/security/NoReturnToken.t.sol:NoReturnTokenTest
+[PASS] test_noReturnTokenAsFillerOutput_fill() (gas: 833368)
+[PASS] test_noReturnTokenAsMakerInput_createAndCancel() (gas: 797666)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 259.64ms (1.45ms CPU time)
+
+Ran 9 tests for test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest
+[PASS] testFuzz_overpaymentReverts(uint96) (runs: 256, μ: 682417, ~: 682412)
+[PASS] test_control_fairFill_noStranding() (gas: 885381)
+[PASS] test_exactLivePrice_succeedsWithStaleStruct() (gas: 1196832)
+[PASS] test_inflatedStructPrice_rejectsOverpayment() (gas: 683905)
+[PASS] test_livePriceAboveMax_revertsAtomically() (gas: 687592)
+[PASS] test_loweredPrice_rejectsStaleDeposit() (gas: 962300)
+[PASS] test_nativeInput_rejectsMismatchedOwner() (gas: 55361)
+[PASS] test_ownerSweep_recoversDonationsWithoutTouchingOpenOrder() (gas: 969860)
+[PASS] test_underpayment_cannotConsumeDonatedEth() (gas: 682796)
+Suite result: ok. 9 passed; 0 failed; 0 skipped; finished in 473.23ms (135.51ms CPU time)
+
+Ran 12 tests for test/security/FeeClaims.t.sol:FeeClaimsTest
+[PASS] testFuzz_cancelNeverChargesFees(uint96,bool) (runs: 256, μ: 909658, ~: 873035)
+[PASS] testFuzz_fillConservesInput(uint96,bool) (runs: 256, μ: 1066873, ~: 1065903)
+[PASS] test_callbackCannotBeCalledDirectly() (gas: 952370)
+[PASS] test_cancelReverseDirection_refundsFullDeposit() (gas: 875092)
+[PASS] test_collectBeforeFill_cannotTakeEscrow() (gas: 1129032)
+[PASS] test_collectionAuthorizationFollowsOwnership() (gas: 1162966)
+[PASS] test_emptyAndRepeatedCollection() (gas: 1073625)
+[PASS] test_failedFillDoesNotEarnFees() (gas: 974235)
+[PASS] test_failedNativeRecipient_preservesClaims() (gas: 1171692)
+[PASS] test_feeUsesStoredOutput_andCollectionPreservesOtherOrders() (gas: 1844038)
+[PASS] test_nativeCancellation_refundsFullDeposit() (gas: 986284)
+[PASS] test_zeroRecipientRejected() (gas: 37805)
+Suite result: ok. 12 passed; 0 failed; 0 skipped; finished in 935.44ms (665.54ms CPU time)
+
+Ran 6 tests for test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest
+[PASS] test_RevertWhen_NativeOutputForwardFails() (gas: 619456)
+[PASS] test_cancel_nativeInput_makerReclaimsEth() (gas: 786243)
+[PASS] test_fill_nativeInput_fillerSendsEth_receivesErc20() (gas: 891413)
+[PASS] test_fill_nativeOutput_fillerSendsErc20_receivesEth() (gas: 889156)
+[PASS] test_swap_nativeInput_create() (gas: 584344)
+[PASS] test_swap_nativeOutput_create() (gas: 588815)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 206.40ms (2.70ms CPU time)
+
+Ran 1 test for test/current/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest
+[PASS] test_oneHundredPythonVectors() (gas: 184337449)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 375.12ms (152.44ms CPU time)
+
+Ran 1 test for test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest
+[PASS] test_RevertWhen_NativeInputMsgValueMismatch() (gas: 43950)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 250.86ms (36.79µs CPU time)
+
+Ran 1 test for test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest
+[PASS] test_RevertWhen_FillerDoesNotDepositNativeOutput() (gas: 630729)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 219.91ms (383.46µs CPU time)
+
+Ran 3 tests for test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest
+[PASS] test_control_eoaFill_succeeds() (gas: 986512)
+Logs:
+  maker ETH received: 0
+
+[PASS] test_reentrancyOnCancel_blocked() (gas: 2706564)
+Logs:
+  reentry attempts: 0
+  reentry successes: 0
+  maker ETH reclaimed: 0
+
+[PASS] test_reentrancyOnFill_blocked() (gas: 2757450)
+Logs:
+  reentry attempts: 0
+  reentry successes: 0
+  maker ETH received: 0
+
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 207.07ms (3.52ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython5Test
+[PASS] test_pythonStatefulTrace() (gas: 148534519)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 373.92ms (88.04ms CPU time)
+
+Ran 5 tests for test/ProtocolFee.t.sol:ProtocolFeeTest
+[PASS] testFuzz_feeCannotOverflow(uint256) (runs: 256, μ: 6224, ~: 6224)
+[PASS] testFuzz_feeIsPointThreePercentOfGross(uint128) (runs: 256, μ: 6186, ~: 6186)
+[PASS] test_feeIsPointThreePercent() (gas: 11076)
+[PASS] test_feeRoundsDownAtSmallestUnit() (gas: 16563)
+[PASS] test_fillSplitsHundredUsdcAndPaysFullInput() (gas: 1435666)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 219.48ms (8.37ms CPU time)
+
+Ran 22 tests for test/SignedOrders.t.sol:SignedOrdersTest
+[PASS] test_RevertWhen_useNonceByNonExecutor() (gas: 39438)
+[PASS] test_cancelWithSig_rejectsExpired() (gas: 784698)
+[PASS] test_cancelWithSig_rejectsReplayOnRecurringOrderId() (gas: 1524209)
+[PASS] test_cancelWithSig_rejectsUnusedSignatureOnReplacement() (gas: 1563591)
+[PASS] test_cancelWithSig_rejectsWrongSigner() (gas: 829144)
+[PASS] test_cancelWithSig_returnsInputToMaker() (gas: 994157)
+[PASS] test_cancelWithSig_revokedByInvalidateNonce() (gas: 853359)
+[PASS] test_cancelWithSig_sharesHookNonces() (gas: 972566)
+[PASS] test_invalidateNonce_revokesSignedUpdate() (gas: 833991)
+[PASS] test_setExecutorWithSig_emitsGrantForMaker() (gas: 154082)
+[PASS] test_setExecutorWithSig_emitsRevocationForMaker() (gas: 170971)
+[PASS] test_swapWithSig_relayerCreatesOrder_andGrantsExecutor() (gas: 775562)
+[PASS] test_swapWithSig_replayReverts() (gas: 1148578)
+[PASS] test_swapWithSig_revertsWhenRelayerAltersPrice() (gas: 647614)
+[PASS] test_swapWithSig_revertsWithoutExecutorGrant() (gas: 104781)
+[PASS] test_swapWithSig_skipsGrantWhenAlreadyAuthorized() (gas: 1301437)
+[PASS] test_swapWithSig_thenFill() (gas: 1008817)
+[PASS] test_typeStrings() (gas: 4769)
+[PASS] test_updatePriceWithSig_rejectsExpired() (gas: 783452)
+[PASS] test_updatePriceWithSig_rejectsTamperedPrice() (gas: 812743)
+[PASS] test_updatePriceWithSig_rejectsWrongSigner() (gas: 810537)
+[PASS] test_updatePriceWithSig_relayerUpdates() (gas: 1121821)
+Suite result: ok. 22 passed; 0 failed; 0 skipped; finished in 238.94ms (22.87ms CPU time)
+
+Ran 1 test for test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest
+[PASS] test_owner_can_cancel_directly_after_revoking_executor() (gas: 2165003)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 223.88ms (526.08µs CPU time)
+
+Ran 12 tests for test/nethermind_auditagent/NethermindAuditAgent.t.sol:NethermindAuditAgentTest
+[PASS] test_H1_fill_orderClosedBeforeMakerPayout() (gas: 920478)
+[PASS] test_H1_match_orderReducedBeforeMakerPayout() (gas: 1340197)
+[PASS] test_H2_poolLiquidityFill_orderClosedBeforeMakerPayout() (gas: 2769084)
+[PASS] test_M10_repriceKeepsMakerRole() (gas: 1827980)
+[PASS] test_M4_liquidityAddedBeforeFillGetsNoBid() (gas: 2809033)
+[PASS] test_M5_RevertWhen_LiveInputBelowFillerExpectation() (gas: 1741027)
+[PASS] test_M5_fillSucceeds_WhenFillerAcceptsLiveInput() (gas: 1907816)
+[PASS] test_M6_favorablePartialFill_keepsBuyerRemainderLimit() (gas: 1403384)
+[PASS] test_M6_favorablePartialFill_keepsRemainderLimit() (gas: 1405938)
+[PASS] test_M6_partialFillMeetingWholeMinimum_keepsRemainderResting() (gas: 1432495)
+[PASS] test_M8_crossedBacklogClearsBeforeNewerOrder() (gas: 10235884)
+[PASS] test_M9_blockedRecipientDoesNotBlockMatch() (gas: 1372290)
+Suite result: ok. 12 passed; 0 failed; 0 skipped; finished in 226.14ms (22.21ms CPU time)
+
+Ran 4 tests for test/current/EligibleGas.t.sol:EligibleGasTest
+[PASS] test_gas128Blockers() (gas: 203872949)
+Logs:
+  blockers: 128
+  matches: 1
+  gross_gas: 671434
+  blockers: 128
+  matches: 2
+  gross_gas: 948165
+  blockers: 128
+  matches: 4
+  gross_gas: 1509268
+  blockers: 128
+  matches: 8
+  gross_gas: 2628567
+  blockers: 128
+  matches: 16
+  gross_gas: 4858412
+  blockers: 128
+  matches: 32
+  gross_gas: 9153439
+
+[PASS] test_gasNoBlockers() (gas: 86463633)
+Logs:
+  blockers: 0
+  matches: 1
+  gross_gas: 548934
+  blockers: 0
+  matches: 2
+  gross_gas: 813254
+  blockers: 0
+  matches: 4
+  gross_gas: 1349536
+  blockers: 0
+  matches: 8
+  gross_gas: 2419189
+  blockers: 0
+  matches: 16
+  gross_gas: 4544588
+  blockers: 0
+  matches: 32
+  gross_gas: 8630269
+
+[PASS] test_gasOneBlocker() (gas: 88396623)
+Logs:
+  blockers: 1
+  matches: 1
+  gross_gas: 565649
+  blockers: 1
+  matches: 2
+  gross_gas: 817802
+  blockers: 1
+  matches: 4
+  gross_gas: 1352024
+  blockers: 1
+  matches: 8
+  gross_gas: 2428766
+  blockers: 1
+  matches: 16
+  gross_gas: 4574027
+  blockers: 1
+  matches: 32
+  gross_gas: 8684259
+
+[PASS] test_gasSixteenBlockers() (gas: 105041080)
+Logs:
+  blockers: 16
+  matches: 1
+  gross_gas: 601671
+  blockers: 16
+  matches: 2
+  gross_gas: 871311
+  blockers: 16
+  matches: 4
+  gross_gas: 1418229
+  blockers: 16
+  matches: 8
+  gross_gas: 2509160
+  blockers: 16
+  matches: 16
+  gross_gas: 4706370
+  blockers: 16
+  matches: 32
+  gross_gas: 8938042
+
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 1.06s (802.36ms CPU time)
+
+Ran 1 test for test/huff/TickParity.t.sol:TickParityTest
+[PASS] test_pythonTickVectors() (gas: 5820047)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 51.68ms (51.48ms CPU time)
+
+Ran 2 tests for test/RadixPriceTree.t.sol:RadixPriceTreeTest
+[PASS] test_counterTracksPeakNotHistory() (gas: 61952762)
+[PASS] test_recycledIdsKeepBestCorrect(uint128[12],uint8) (runs: 256, μ: 1561524, ~: 1547973)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 153.71ms (127.06ms CPU time)
+
+Ran 4 tests for test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest
+[PASS] test_buyAssetWithUsdcAtMarket() (gas: 581892)
+[PASS] test_dustInputNeverFillsForZeroOutput() (gas: 658261)
+[PASS] test_limitAboveSpotRestsOnBothSides() (gas: 1330328)
+[PASS] test_sellAssetForUsdcAtMarket() (gas: 601463)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 185.97ms (3.23ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython6Test
+[PASS] test_pythonStatefulTrace() (gas: 167204714)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 384.76ms (96.89ms CPU time)
+
+Ran 3 tests for test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest
+[PASS] test_equalKeyNonCrossingPairDoesNotBlockMatching() (gas: 2052959)
+[PASS] test_exactTieExecutes() (gas: 1386543)
+[PASS] test_matchBookMakesNoFalseMatch() (gas: 1325375)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 365.63ms (56.72ms CPU time)
+
+Ran 1 test for test/UnichainFork.t.sol:UnichainForkTest
+[SKIP: skipped] setUp() (gas: 0)
+Suite result: ok. 0 passed; 0 failed; 1 skipped; finished in 507.83µs (0.00ns CPU time)
+
+Ran 12 tests for test/Numeraire.t.sol:NumeraireTest
+[PASS] testFuzz_rejectPairsWithoutNumeraire(address,address) (runs: 256, μ: 42801, ~: 42926)
+[PASS] test_acceptNativeUsdcPool() (gas: 92503)
+[PASS] test_acceptNumeraireOnEitherSortedSide() (gas: 176870)
+[PASS] test_buyAssetWithSixDecimalUsdc() (gas: 1297084)
+[PASS] test_numeraireIsConfiguredToken() (gas: 7810)
+[PASS] test_ownerIsExplicitArgumentNotDeployer() (gas: 6653455)
+[PASS] test_rejectNativeNonUsdcPool() (gas: 41841)
+[PASS] test_rejectNonContractNumeraire() (gas: 2402903)
+[PASS] test_rejectTokenWithUsdcSymbolButWrongAddress() (gas: 582005)
+[PASS] test_rejectZeroNumeraire() (gas: 2376168)
+[PASS] test_rejectZeroOwner() (gas: 2380762)
+[PASS] test_sellAssetForSixDecimalUsdc() (gas: 1356780)
+Suite result: ok. 12 passed; 0 failed; 0 skipped; finished in 961.93ms (681.30ms CPU time)
+
+Ran 2 tests for test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest
+[PASS] test_RevertWhen_OrderChangesDuringFillPayment() (gas: 768616)
+[PASS] test_pendingOrder_notMatchableBeforeInputSettled() (gas: 2779442)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 298.89ms (1.62ms CPU time)
+
+Ran 1 test for test/security/OrderSpoofing.t.sol:OrderSpoofingTest
+[PASS] test_RevertWhen_NonExecutorOpensOrderForMaker() (gas: 1311967)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 246.17ms (224.46µs CPU time)
+
+Ran 8 tests for test/TokenClaims.t.sol:TokenClaimsTest
+[PASS] test_RevertWhen_CallbackNotFromPoolManager() (gas: 1376393)
+[PASS] test_RevertWhen_InvalidRedemption() (gas: 57617)
+[PASS] test_RevertWhen_RedeemingAnotherOwnersClaims() (gas: 1394865)
+[PASS] test_RevertWhen_RedeemingWithoutApproval() (gas: 1334982)
+[PASS] test_failedTransferPreservesClaimsAndAllowance() (gas: 2312625)
+[PASS] test_redeemPartialToChosenRecipientThenNoDoubleSpend() (gas: 1581019)
+[PASS] test_redeemsEachCurrencySeparately() (gas: 1463338)
+[PASS] test_reentrantRedemptionIsBlocked() (gas: 2500929)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 430.92ms (9.09ms CPU time)
+
+Ran 1 test for test/current/EligiblePythonVectors.t.sol:EligiblePython7Test
+[PASS] test_pythonStatefulTrace() (gas: 192549600)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 394.20ms (151.53ms CPU time)
+
+Ran 14 tests for test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest
+[PASS] testFuzz_fillOrRestUntouched(uint256,uint256,bool) (runs: 256, μ: 2801690, ~: 2807700)
+[PASS] test_bookMatchesFirstThenPoolFillsRemainder() (gas: 3807038)
+[PASS] test_directSelfCallEntryIsRejected() (gas: 2902666)
+[PASS] test_failedPoolFillKeepsPriorityBidEscrowed() (gas: 734925)
+[PASS] test_fillAccountingAndEvent() (gas: 2853601)
+[PASS] test_limitFailureRestoresFeeAndPrice() (gas: 3119320)
+[PASS] test_lpCollectsFillFeeOnWithdraw() (gas: 2958430)
+[PASS] test_noLiquidity_orderRestsAndEscrowIsIntact() (gas: 791103)
+[PASS] test_orderLargerThanRangeIsRejectedAtomically() (gas: 25167645)
+[PASS] test_outOfRangeLiquidityCountsAsNoLiquidity() (gas: 2715609)
+[PASS] test_retryAfterFillReverts() (gas: 2800783)
+[PASS] test_retryFillsPartiallyMatchedRemainder() (gas: 3738136)
+[PASS] test_retryRequiresMakerAuthorizedExecutor() (gas: 2804057)
+[PASS] test_retryUnknownOrderReverts() (gas: 2175797)
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 561.29ms (458.16ms CPU time)
+
+Ran 1 test for test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest
+[PASS] test_RevertWhen_UnauthorizedExecutorCreatesOrFills() (gas: 2521875)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 223.34ms (790.29µs CPU time)
+
+Ran 1 test for test/security/UnpaidPriorityBid.t.sol:UnpaidPriorityBidTest
+[PASS] test_unpaidPriorityBid_cannotBlockThePool() (gas: 1858835)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 253.36ms (392.62µs CPU time)
+
+Ran 1 test for test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest
+[PASS] test_RevertWhen_UserDataDivergesFromOrder() (gas: 94958)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 198.90ms (45.00µs CPU time)
+
+Ran 1 test for test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest
+[PASS]
+PriorityMatchingInvariantTest invariants:
+[PASS] invariant_assetsConserved
+[PASS] invariant_bestPricesAgreeWithLinearScan
+[PASS] invariant_escrowEqualsOutstandingObligations
+ PriorityMatchingInvariantTest invariants (runs: 64, calls: 4096, reverts: 0)
+
+╭-----------------+----------+-------+---------+----------╮
+| Contract        | Selector | Calls | Reverts | Discards |
++=========================================================+
+| MatchingHandler | cancel   | 835   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | clear    | 830   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | redeem   | 793   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | reprice  | 831   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | submit   | 807   | 0       | 0        |
+╰-----------------+----------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.30s (2.94s CPU time)
+
+Ran 1 test for test/MatchingInvariant.t.sol:MatchingInvariantTest
+[PASS]
+MatchingInvariantTest invariants:
+[PASS] invariant_assetsConserved
+[PASS] invariant_bestPricesAgreeWithLinearScan
+[PASS] invariant_escrowEqualsOutstandingObligations
+ MatchingInvariantTest invariants (runs: 64, calls: 4096, reverts: 0)
+
+╭-----------------+----------+-------+---------+----------╮
+| Contract        | Selector | Calls | Reverts | Discards |
++=========================================================+
+| MatchingHandler | cancel   | 835   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | clear    | 830   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | redeem   | 793   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | reprice  | 831   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | submit   | 807   | 0       | 0        |
+╰-----------------+----------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.54s (3.28s CPU time)
+
+Ran 2 tests for test/MatchingInvariant.t.sol:LpMatchingInvariantTest
+[PASS]
+LpMatchingInvariantTest invariants:
+[PASS] invariant_assetsConserved
+[PASS] invariant_bestPricesAgreeWithLinearScan
+[PASS] invariant_escrowEqualsOutstandingObligations
+[PASS] invariant_hookHoldsNoUsdcBeyondEscrow
+ LpMatchingInvariantTest invariants (runs: 64, calls: 4096, reverts: 0)
+
+╭-----------------+----------+-------+---------+----------╮
+| Contract        | Selector | Calls | Reverts | Discards |
++=========================================================+
+| MatchingHandler | cancel   | 705   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | clear    | 685   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | lpFill   | 705   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | redeem   | 641   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | reprice  | 684   | 0       | 0        |
+|-----------------+----------+-------+---------+----------|
+| MatchingHandler | submit   | 676   | 0       | 0        |
+╰-----------------+----------+-------+---------+----------╯
+
+[PASS] test_campaignPricesReachThePool() (gas: 2535490)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 3.42s (3.10s CPU time)
+
+Ran 1 test for test/UnpaidBidInvariant.t.sol:UnpaidBidInvariantTest
+[PASS]
+UnpaidBidInvariantTest invariants:
+[PASS] invariant_assetsConserved
+[PASS] invariant_bestPricesAgreeWithLinearScan
+[PASS] invariant_crossingTakerCanAlwaysTrade
+[PASS] invariant_escrowEqualsOutstandingObligations
+[PASS] invariant_everyOpenOrderCancellable
+[PASS] invariant_matchingNeverBlockedByUnpaidBid
+[PASS] invariant_unpaidBidBuysNoPriority
+ UnpaidBidInvariantTest invariants (runs: 128, calls: 8192, reverts: 0)
+
+╭------------------+-------------+-------+---------+----------╮
+| Contract         | Selector    | Calls | Reverts | Discards |
++=============================================================+
+| UnpaidBidHandler | cancel      | 1426  | 0       | 0        |
+|------------------+-------------+-------+---------+----------|
+| UnpaidBidHandler | clear       | 1322  | 0       | 0        |
+|------------------+-------------+-------+---------+----------|
+| UnpaidBidHandler | placeUnpaid | 1357  | 0       | 0        |
+|------------------+-------------+-------+---------+----------|
+| UnpaidBidHandler | redeem      | 1380  | 0       | 0        |
+|------------------+-------------+-------+---------+----------|
+| UnpaidBidHandler | reprice     | 1349  | 0       | 0        |
+|------------------+-------------+-------+---------+----------|
+| UnpaidBidHandler | submit      | 1358  | 0       | 0        |
+╰------------------+-------------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 14.18s (13.89s CPU time)
+
+Ran 51 test suites in 15.96s (39.44s CPU time): 237 tests passed, 0 failed, 1 skipped (238 total tests)

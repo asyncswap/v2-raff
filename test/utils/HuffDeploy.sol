@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import {ITokenClaims} from "src/interface/ITokenClaims.sol";
 import {Vm} from "forge-std/Vm.sol";
 import {HuffNeoDeployer} from "foundry-huff-neo/HuffNeoDeployer.sol";
 import {HuffNeoConfig} from "foundry-huff-neo/HuffNeoConfig.sol";
@@ -14,6 +15,13 @@ import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
 /// @notice Deploys the Huff contracts in `src/` (compiled by `hnc` through `vm.ffi`). The tests are
 ///         asyncswap/contracts' own; their deploy lines call this library, and `interfaces/` gives them the ABI.
 library HuffDeploy {
+    function tokenClaims(IPoolManager manager) internal returns (ITokenClaims) {
+        return ITokenClaims(
+            _create(
+                HuffNeoDeployer.config().with_args(abi.encode(manager)).creation_code_with_args("src/TokenClaims.huff")
+            )
+        );
+    }
     Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
 
     function _create(bytes memory code) private returns (address deployed) {

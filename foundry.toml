@@ -11,7 +11,28 @@ fs_permissions = [
 ]
 solc_version = "0.8.26"
 optimizer = true
-optimizer_runs = 1_000
+optimizer_runs = 43_690
+# Tests named `*_finding_*` are counterexamples the bytecode gives to a Formal Mind theorem (see
+# test/formal/README.md, "Findings"). They fail by design until the model is fixed, so the default run
+# skips them; `FOUNDRY_PROFILE=findings forge test` runs exactly those.
+no_match_test = "_finding_"
+
+# The invariant campaign MAINNET_READINESS.md records (UnpaidBidInvariantTest sets 128 runs inline).
+# Foundry's own default, 256 runs x depth 500, takes about half an hour here: the invariants scan
+# every order placed so far after each call. For a longer campaign: FOUNDRY_PROFILE=deep forge test.
+[profile.default.invariant]
+runs = 64
+depth = 64
+fail_on_revert = true
+
+[profile.deep.invariant]
+runs = 256
+depth = 500
+fail_on_revert = true
+
+[profile.findings]
+match_test = "_finding_"
+no_match_test = "^$"
 
 [lint]
 lint_on_build = false

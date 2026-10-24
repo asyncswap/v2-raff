@@ -13,9 +13,9 @@ contract RejectingNativeBuyer {
 
     function place(Router router, AsyncSwap hook, MockERC20 token, PoolKey calldata key) external {
         hook.setExecutor(key.toId(), address(router), true);
-        token.approve(address(router), 1 ether);
-        AsyncOrder memory order = AsyncOrder(key, address(this), false, 1 ether, 1 ether, 0, 2 ** 96, bytes32(0));
-        router.swap(order, abi.encode(AsyncSwap.UserParams(address(this), address(router), 1 ether, 0)));
+        token.approve(address(router), 1 ether + 100_000);
+        AsyncOrder memory order = AsyncOrder(key, address(this), false, 1 ether, 1 ether, 100_000, 2 ** 96, bytes32(0));
+        router.swap(order, abi.encode(AsyncSwap.UserParams(address(this), address(router), 1 ether, 100_000)));
     }
 
     receive() external payable {
@@ -27,14 +27,14 @@ contract RejectingNativeBuyer {
 contract MatchingAdversarialTest is NativeAsyncSwapTest {
     function test_rejectingBestBuyerReceivesClaimsWithoutBlocking() public {
         RejectingNativeBuyer rejector = new RejectingNativeBuyer();
-        erc20.mint(address(rejector), 1 ether);
+        erc20.mint(address(rejector), 1 ether + 100_000);
         rejector.place(router, hook, erc20, key);
 
         vm.deal(alice, 2 ether);
         vm.prank(alice);
         hook.setExecutor(poolId, address(router), true);
         AsyncOrder memory sell = _order(alice, true, 1 ether, 1 ether);
-        bytes memory data = abi.encode(AsyncSwap.UserParams(alice, address(router), 1 ether, 0));
+        bytes memory data = abi.encode(AsyncSwap.UserParams(alice, address(router), 1 ether, 100_000));
         vm.prank(alice);
         router.swap{value: 1 ether}(sell, data);
         assertEq(alice.balance, 1 ether);

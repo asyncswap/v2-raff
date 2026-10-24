@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
-
 import {HuffDeploy} from "../utils/HuffDeploy.sol";
 
 import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
@@ -44,7 +43,7 @@ contract NoReturnTokenTest is Test {
             Hooks.BEFORE_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                 | Hooks.BEFORE_SWAP_RETURNS_DELTA_FLAG
         );
-        HuffDeploy.hookTo(abi.encode(manager, Currency.wrap(address(usdc)), address(this)), address(flags));
+        HuffDeploy.hookTo( abi.encode(manager, Currency.wrap(address(usdc)), address(this)), address(flags));
         hook = AsyncSwap(payable(address(flags)));
         router = HuffDeploy.router(manager, hook, ISignatureTransfer(Permit2Bytecode.PERMIT2));
         key = PoolKey(Currency.wrap(t0), Currency.wrap(t1), LPFeeLibrary.DYNAMIC_FEE_FLAG, 1, hook);
@@ -71,7 +70,7 @@ contract NoReturnTokenTest is Test {
             zeroForOne: zeroForOne,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: zeroForOne ? 4295128740 : 1461446703485210103287273052203988822378723970341,
             salt: bytes32(0)
         });
@@ -80,12 +79,13 @@ contract NoReturnTokenTest is Test {
             order,
             abi.encode(
                 AsyncSwap.UserParams({
-                    user: maker, executor: address(router), amountOutMin: amountOutMin, priorityFee: 0
+                    user: maker, executor: address(router), amountOutMin: amountOutMin, priorityFee: 100_000
                 })
             )
         );
-        order.salt =
-            keccak256(abi.encode(block.timestamp, block.number, address(manager), maker, amountIn, amountOutMin, 0));
+        order.salt = keccak256(
+            abi.encode(block.timestamp, block.number, address(manager), maker, amountIn, amountOutMin, 100_000)
+        );
     }
 
     function test_noReturnTokenAsMakerInput_createAndCancel() public {

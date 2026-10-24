@@ -1,0 +1,133 @@
+/// Native tick keys, matching Solidity TickPrice and v4 TickMath integer rounding.
+#define fn SQRT_WORD() = takes (1) returns (1) {
+    dup1 iszero done jumpi
+    dup1 0x2200 mstore
+    dup1 0x80 shr dup1 iszero small jumpi
+    MSB() 0x80 add seed jump
+    small: pop dup1 MSB()
+    seed: swap1 pop 0x01 shr 0x01 swap1 shl
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div add 0x01 shr
+    dup1 0x2200 mload div dup2 dup2 lt choose_q jumpi
+    pop done jump
+    choose_q: swap1 pop
+    done:
+}
+#define fn SQRT_AT_TICK() = takes (1) returns (1) {
+    dup1 0x2240 mstore
+    dup1 0x00 sgt negative jumpi
+    abs_done jump
+    negative: 0x00 sub
+    abs_done: 0x2260 mstore
+    0x0100000000000000000000000000000000
+    0x1 0x2260 mload and iszero skip_1 jumpi
+    0xfffcb933bd6fad37aa2d162d1a594001 mul 0x80 shr
+    skip_1:
+    0x2 0x2260 mload and iszero skip_2 jumpi
+    0xfff97272373d413259a46990580e213a mul 0x80 shr
+    skip_2:
+    0x4 0x2260 mload and iszero skip_4 jumpi
+    0xfff2e50f5f656932ef12357cf3c7fdcc mul 0x80 shr
+    skip_4:
+    0x8 0x2260 mload and iszero skip_8 jumpi
+    0xffe5caca7e10e4e61c3624eaa0941cd0 mul 0x80 shr
+    skip_8:
+    0x10 0x2260 mload and iszero skip_10 jumpi
+    0xffcb9843d60f6159c9db58835c926644 mul 0x80 shr
+    skip_10:
+    0x20 0x2260 mload and iszero skip_20 jumpi
+    0xff973b41fa98c081472e6896dfb254c0 mul 0x80 shr
+    skip_20:
+    0x40 0x2260 mload and iszero skip_40 jumpi
+    0xff2ea16466c96a3843ec78b326b52861 mul 0x80 shr
+    skip_40:
+    0x80 0x2260 mload and iszero skip_80 jumpi
+    0xfe5dee046a99a2a811c461f1969c3053 mul 0x80 shr
+    skip_80:
+    0x100 0x2260 mload and iszero skip_100 jumpi
+    0xfcbe86c7900a88aedcffc83b479aa3a4 mul 0x80 shr
+    skip_100:
+    0x200 0x2260 mload and iszero skip_200 jumpi
+    0xf987a7253ac413176f2b074cf7815e54 mul 0x80 shr
+    skip_200:
+    0x400 0x2260 mload and iszero skip_400 jumpi
+    0xf3392b0822b70005940c7a398e4b70f3 mul 0x80 shr
+    skip_400:
+    0x800 0x2260 mload and iszero skip_800 jumpi
+    0xe7159475a2c29b7443b29c7fa6e889d9 mul 0x80 shr
+    skip_800:
+    0x1000 0x2260 mload and iszero skip_1000 jumpi
+    0xd097f3bdfd2022b8845ad8f792aa5825 mul 0x80 shr
+    skip_1000:
+    0x2000 0x2260 mload and iszero skip_2000 jumpi
+    0xa9f746462d870fdf8a65dc1f90e061e5 mul 0x80 shr
+    skip_2000:
+    0x4000 0x2260 mload and iszero skip_4000 jumpi
+    0x70d869a156d2a1b890bb3df62baf32f7 mul 0x80 shr
+    skip_4000:
+    0x8000 0x2260 mload and iszero skip_8000 jumpi
+    0x31be135f97d08fd981231505542fcfa6 mul 0x80 shr
+    skip_8000:
+    0x10000 0x2260 mload and iszero skip_10000 jumpi
+    0x9aa508b5b7a84e1c677de54f3e99bc9 mul 0x80 shr
+    skip_10000:
+    0x20000 0x2260 mload and iszero skip_20000 jumpi
+    0x5d6af8dedb81196699c329225ee604 mul 0x80 shr
+    skip_20000:
+    0x40000 0x2260 mload and iszero skip_40000 jumpi
+    0x2216e584f5fa1ea926041bedfe98 mul 0x80 shr
+    skip_40000:
+    0x80000 0x2260 mload and iszero skip_80000 jumpi
+    0x48a170391f7dc42444e8fa2 mul 0x80 shr
+    skip_80000:
+    0x00 0x2240 mload sgt iszero rounded jumpi
+    0x00 not div
+    rounded:
+    dup1 0xffffffff and iszero iszero swap1 0x20 shr add
+}
+#define fn BOOK_PRICE_KEY() = takes (4) returns (1) {
+    // [buy, zeroForOne, input, minimum]
+    0x2000 mstore 0x2020 mstore 0x2040 mstore 0x2060 mstore
+    0x2020 mload iszero reverse jumpi
+    0x2060 mload 0x2080 mstore 0x2040 mload 0x20a0 mstore
+    ratio_ready jump
+    reverse:
+    0x2040 mload 0x2080 mstore 0x2060 mload 0x20a0 mstore
+    ratio_ready:
+    0x20a0 mload 0x2080 mload div 0x01 0x40 shl dup2 lt iszero large jumpi
+    pop
+    0x20a0 mload 0x01 0xc0 shl 0x2080 mload MUL_DIV() SQRT_WORD()
+    sqrt_ready jump
+    large:
+    0x01 0x80 shl dup2 lt iszero high_clamp jumpi
+    pop
+    0x20a0 mload 0x01 0x80 shl 0x2080 mload MUL_DIV() SQRT_WORD() 0x20 shl
+    sqrt_ready:
+    dup1 0x20c0 mstore
+    0x01000276a3 dup2 lt low_clamp jumpi
+    0xfffd8963efd1fc6a506488495d951d5263988d26 dup2 lt iszero high_clamp_sqrt jumpi
+    pop
+    0x0d89e8 0x00 sub 0x20e0 mstore
+    0x0d89e8 0x2100 mstore
+    loop:
+    0x2100 mload 0x20e0 mload slt iszero tick_done jumpi
+    0x20e0 mload 0x2100 mload add 0x01 add 0x01 sar dup1 0x2120 mstore
+    SQRT_AT_TICK()
+    0x20c0 mload lt lower_hi jumpi
+    0x2120 mload 0x20e0 mstore loop jump
+    lower_hi: 0x01 0x2120 mload sub 0x2100 mstore loop jump
+    tick_done: 0x20e0 mload key_done jump
+    low_clamp: pop 0x0d89e8 0x00 sub key_done jump
+    high_clamp_sqrt:
+    high_clamp: pop 0x0d89e8
+    key_done:
+    0x2000 mload 0x2020 mload xor iszero inverted jumpi
+    0x0d89e9 add done jump
+    inverted: 0x0d89e9 sub
+    done:
+}

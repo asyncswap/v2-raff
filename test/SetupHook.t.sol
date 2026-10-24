@@ -104,6 +104,8 @@ contract SetupHook is Test {
         token1.transfer(user, amount);
         vm.stopPrank();
         vm.prank(user);
+        token1.approve(address(router), type(uint256).max);
+        vm.prank(user);
         hook.setExecutor(poolId, address(router), true);
         vm.startPrank(owner);
     }
@@ -114,7 +116,10 @@ contract SetupHook is Test {
     ///      Only valid when the (user, amountIn, amountOutMin) tuple is fresh in the current block —
     ///      a colliding tuple would trigger the in-contract salt-walk.
     function _expectedSalt(address user, uint256 amountIn, uint256 amountOutMin) internal view returns (bytes32) {
-        return keccak256(abi.encode(block.timestamp, block.number, address(manager), user, amountIn, amountOutMin, 0));
+        return
+            keccak256(
+                abi.encode(block.timestamp, block.number, address(manager), user, amountIn, amountOutMin, 100_000)
+            );
     }
 
     /// @dev Compute the orderId the hook will store under, for an order with the given assigned salt.

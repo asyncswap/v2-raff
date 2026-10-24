@@ -1,0 +1,98 @@
+Compiling 1 files with Solc 0.8.26
+Solc 0.8.26 finished in 5.76s
+Compiler run successful with warnings:
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> test/formal/FormalMatchD.sol:420:38:
+    |
+420 |     function _feeOps(Trace memory t, Case memory c, bytes32 id, address maker, uint256 amount) internal view {
+    |                                      ^^^^^^^^^^^^^
+
+
+Ran 4 tests for test/security/EligibleGas.t.sol:EligibleGasTest
+[PASS] test_gas128Blockers() (gas: 199068823)
+Logs:
+  blockers: 128
+  matches: 1
+  gross_gas: 571633
+  blockers: 128
+  matches: 2
+  gross_gas: 775361
+  blockers: 128
+  matches: 4
+  gross_gas: 1194054
+  blockers: 128
+  matches: 8
+  gross_gas: 2054602
+  blockers: 128
+  matches: 16
+  gross_gas: 3776982
+  blockers: 128
+  matches: 32
+  gross_gas: 7213365
+
+[PASS] test_gasNoBlockers() (gas: 85664039)
+Logs:
+  blockers: 0
+  matches: 1
+  gross_gas: 515143
+  blockers: 0
+  matches: 2
+  gross_gas: 710201
+  blockers: 0
+  matches: 4
+  gross_gas: 1111526
+  blockers: 0
+  matches: 8
+  gross_gas: 1937234
+  blockers: 0
+  matches: 16
+  gross_gas: 3581122
+  blockers: 0
+  matches: 32
+  gross_gas: 6842164
+
+[PASS] test_gasOneBlocker() (gas: 86921147)
+Logs:
+  blockers: 1
+  matches: 1
+  gross_gas: 522424
+  blockers: 1
+  matches: 2
+  gross_gas: 709879
+  blockers: 1
+  matches: 4
+  gross_gas: 1100079
+  blockers: 1
+  matches: 8
+  gross_gas: 1938755
+  blockers: 1
+  matches: 16
+  gross_gas: 3602232
+  blockers: 1
+  matches: 32
+  gross_gas: 6836509
+
+[PASS] test_gasSixteenBlockers() (gas: 101340808)
+Logs:
+  blockers: 16
+  matches: 1
+  gross_gas: 537611
+  blockers: 16
+  matches: 2
+  gross_gas: 736416
+  blockers: 16
+  matches: 4
+  gross_gas: 1145245
+  blockers: 16
+  matches: 8
+  gross_gas: 1990004
+  blockers: 16
+  matches: 16
+  gross_gas: 3673146
+  blockers: 16
+  matches: 32
+  gross_gas: 7041781
+
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 439.01ms (1.02s CPU time)
+
+Ran 1 test suite in 461.18ms (439.01ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)

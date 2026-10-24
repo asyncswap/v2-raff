@@ -50,7 +50,9 @@ contract UnauthorizedExecutor is IUnlockCallback {
         manager.swap(
             poolKey,
             sp,
-            abi.encode(AsyncSwap.UserParams({user: maker, executor: address(this), amountOutMin: 1, priorityFee: 0}))
+            abi.encode(
+                AsyncSwap.UserParams({user: maker, executor: address(this), amountOutMin: 1, priorityFee: 100_000})
+            )
         );
         Currency input = zeroForOne ? poolKey.currency0 : poolKey.currency1;
         input.settle(manager, address(this), 1, false);
@@ -80,7 +82,7 @@ contract ExecutorAuthorizationTest is SetupHook {
             zeroForOne: true,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -91,7 +93,7 @@ contract ExecutorAuthorizationTest is SetupHook {
             makerOrder,
             abi.encode(
                 AsyncSwap.UserParams({
-                    user: maker, executor: address(router), amountOutMin: amountOutMin, priorityFee: 0
+                    user: maker, executor: address(router), amountOutMin: amountOutMin, priorityFee: 100_000
                 })
             )
         );

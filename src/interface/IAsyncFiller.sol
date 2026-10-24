@@ -38,6 +38,7 @@ interface IAsyncFiller {
     error NotOrderOwner();
     error NotAuthorizedExecutor();
     error ZeroAmount();
+    error BelowMinimumOrder();
     error PriorityFeeTooLarge();
     error PriorityFeeTooSmall();
     error PriorityFeeNotEscrowed();

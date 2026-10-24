@@ -16,7 +16,7 @@ contract MakerIdentityTest is SetupHook {
     }
 
     function _reject(address orderOwner, address dataUser, string memory reason) internal {
-        AsyncOrder memory order = AsyncOrder(key, orderOwner, true, 1 ether, 0.9 ether, 0, 2 ** 96, bytes32(0));
+        AsyncOrder memory order = AsyncOrder(key, orderOwner, true, 1 ether, 0.9 ether, 100_000, 2 ** 96, bytes32(0));
         uint256 beforeBalance = token0.balanceOf(alice);
         vm.startPrank(alice);
         token0.approve(address(router), 1 ether);
@@ -25,7 +25,7 @@ contract MakerIdentityTest is SetupHook {
             order,
             abi.encode(
                 AsyncSwap.UserParams({
-                    user: dataUser, executor: address(router), amountOutMin: 0.9 ether, priorityFee: 0
+                    user: dataUser, executor: address(router), amountOutMin: 0.9 ether, priorityFee: 100_000
                 })
             )
         );

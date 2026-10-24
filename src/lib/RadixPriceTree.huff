@@ -194,7 +194,7 @@
 /// @dev `_freeNode`: reset the node and push its id onto the free list.
 #define fn TREE_FREE_NODE() = takes (1) returns (0) {
     // [id]
-    0x00 dup2 NODE_SLOT() sstore                // [id]
+    // Unreachable nodes are fully initialized on reuse; retaining their words avoids redundant writes.
     [T_SLOT] mload sload                        // [hdr, id]
     dup1 0x40 shr [UINT32_MASK] and             // [free, hdr, id]
     [T_BASE] mload add                          // [itemSlot, hdr, id]

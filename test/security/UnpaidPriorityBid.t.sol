@@ -62,65 +62,20 @@ contract UnpaidBidMaker {
     }
 }
 
-/// @notice An unpaid priority bid buys no priority and blocks nothing: crossing orders still trade,
-///         the book still matches, and the maker can always cancel (so the pool can leave PriorityFee mode).
+/// @notice Unpaid bids revert the entire unlock, leaving no persistent order or fee claim.
 contract UnpaidPriorityBidTest is SetupHook {
     function test_unpaidPriorityBid_cannotBlockThePool() public {
-        hook.setOrderingMode(key, AsyncFiller.OrderingMode.PriorityFee);
         UnpaidBidMaker griefer = new UnpaidBidMaker(manager, hook, key);
         topUp(address(griefer), 1 ether);
-
-        vm.recordLogs();
+        uint256 inputBefore = token0.balanceOf(address(griefer));
+        uint256 inputEscrow = manager.balanceOf(address(hook), currency0.toId());
+        uint256 feeEscrow = manager.balanceOf(address(hook), currency1.toId());
+        vm.expectRevert(IPoolManager.CurrencyNotSettled.selector);
         griefer.place();
-        bytes32 salt = _createdSalt();
-
-        // A taker crossing that price level still trades (before the fix this reverted with PriorityFeeNotEscrowed).
-        address taker = makeAddr("taker");
-        topUp(taker, 10 ether);
-        AsyncOrder memory bid = AsyncOrder({
-            key: key,
-            owner: taker,
-            zeroForOne: false,
-            amountIn: 1 ether,
-            amountOutMin: 0.5 ether,
-            priorityFee: 100_000,
-            sqrtPrice: 2 ** 96,
-            salt: bytes32(0)
-        });
-        vm.startPrank(taker);
-        token1.approve(address(router), type(uint256).max);
-        router.swap(
-            bid,
-            abi.encode(
-                AsyncSwap.UserParams({
-                    user: taker, executor: address(router), amountOutMin: 0.5 ether, priorityFee: 100_000
-                })
-            )
-        );
-        vm.stopPrank();
-
-        // The unpaid order can always be cancelled, if it is still on the book.
-        AsyncOrder memory unpaid = AsyncOrder({
-            key: key,
-            owner: address(griefer),
-            zeroForOne: true,
-            amountIn: 1,
-            amountOutMin: 1,
-            priorityFee: type(uint64).max,
-            sqrtPrice: 0,
-            salt: salt
-        });
-        if (hook.asyncOrder(poolId, keccak256(abi.encode(block.chainid, poolId, address(griefer), true, salt))) != 0) {
-            griefer.cancel(unpaid);
-        }
-        assertEq(hook.asyncOrder(poolId, keccak256(abi.encode(block.chainid, poolId, address(griefer), true, salt))), 0);
-    }
-
-    function _createdSalt() private returns (bytes32 salt) {
-        Vm.Log[] memory logs = vm.getRecordedLogs();
-        bytes32 topic = AsyncFiller.AsyncOrderCreated.selector;
-        for (uint256 i; i < logs.length; i++) {
-            if (logs[i].topics[0] == topic) (,,, salt) = abi.decode(logs[i].data, (bool, uint256, uint256, bytes32));
-        }
+        assertEq(token0.balanceOf(address(griefer)), inputBefore);
+        assertEq(manager.balanceOf(address(hook), currency0.toId()), inputEscrow);
+        assertEq(manager.balanceOf(address(hook), currency1.toId()), feeEscrow);
+        (bool found,,,) = hook.bestOrder(poolId, false);
+        assertFalse(found);
     }
 }

@@ -10,10 +10,10 @@ contract ProtocolFeeTest is SetupHook {
         address filler = makeAddr("filler");
         topUp(maker, 1 ether);
         topUp(filler, 100_000_000);
-        AsyncOrder memory order = AsyncOrder(key, maker, true, 1 ether, 99_700_000, 0, 2 ** 96, bytes32(0));
+        AsyncOrder memory order = AsyncOrder(key, maker, true, 1 ether, 99_700_000, 100_000, 2 ** 96, bytes32(0));
         vm.startPrank(maker);
         token0.approve(address(router), 1 ether);
-        router.swap(order, abi.encode(AsyncSwap.UserParams(maker, address(router), 99_700_000, 0)));
+        router.swap(order, abi.encode(AsyncSwap.UserParams(maker, address(router), 99_700_000, 100_000)));
         vm.stopPrank();
         order.salt = _expectedSalt(maker, 1 ether, 99_700_000);
         uint256 makerBefore = token1.balanceOf(maker);
@@ -29,7 +29,7 @@ contract ProtocolFeeTest is SetupHook {
         assertEq(token0.balanceOf(filler) - fillerBefore, 1 ether);
         assertEq(token1.balanceOf(filler), 0);
         assertEq(manager.balanceOf(address(hook.feeVault()), currency0.toId()), 0);
-        assertEq(manager.balanceOf(address(hook.feeVault()), currency1.toId()), 300_000);
+        assertEq(manager.balanceOf(address(hook.feeVault()), currency1.toId()), 400_000);
     }
 
     function test_feeIsPointThreePercent() public view {

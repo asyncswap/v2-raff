@@ -18,6 +18,8 @@
 #include "./lib/Math.huff"
 #include "./lib/RadixPriceTree.huff"
 #include "./lib/Book.huff"
+#include "./lib/ExactPrice.huff"
+#include "./lib/TickPrice.huff"
 #include "./lib/PoolManager.huff"
 #include "./lib/Signatures.huff"
 #include "./generated/FeeVaultCreation.huff"
@@ -95,6 +97,7 @@
 #define event PriorityFeeDonated(bytes32 indexed, bytes32 indexed, address indexed, uint256)
 #define event PriorityFeeForfeited(bytes32 indexed, bytes32 indexed, address indexed, uint256)
 #define event OrderingModeChanged(bytes32 indexed, uint8)
+#define event MinOrderSet(bytes32 indexed,uint256)
 
 // Storage
 //:'######::'########::'#######::'########:::::'###:::::'######:::'########:
@@ -118,7 +121,7 @@
 #define constant EIP712_NAME_HASH = 0x72bb025359d2292b4e59f168b9de8e3967bb96d5053211bfa4d833b6867bdb86    // "AsyncSwap"
 #define constant EIP712_VERSION_HASH = 0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 // "1"
 #define constant SET_EXECUTOR_TYPEHASH = 0xe4479d9c4dc3f7c35677efc85aaca516cb63a3977aae04f893f8c6b86986c965
-#define constant UPDATE_PRICE_TYPEHASH = 0xe175e7a62c398877a2c40c746d3d0aa115e2acfb47017d6517d70451225953a5
+#define constant UPDATE_PRICE_TYPEHASH = 0xb6f09517f61c498ebebb9ed85b0e826a92072b5e2aea7f43310eb0391038c5af
 
 #define constant HOOK_FLAGS = 0x2888    // BEFORE_INITIALIZE | BEFORE_ADD_LIQUIDITY | BEFORE_SWAP | BEFORE_SWAP_RETURNS_DELTA
 #define constant ALL_HOOK_MASK = 0x3fff
@@ -326,10 +329,15 @@
 }
 
 /// @dev `_transferEscrow`: burn the hook's claim, pay the recipient (claims when native).
-#define fn TRANSFER_ESCROW() = takes (3) returns (0) {
+#define fn TRANSFER_ESCROW_IMMEDIATE() = takes (3) returns (0) {
     // [currency, recipient, amount]
     dup3 dup2 address F_BURN()
     dup1 iszero F_TAKE_ANY()
+}
+
+#define fn TRANSFER_ESCROW() = takes (3) returns (0) {
+    dup3 dup2 address F_BURN()
+    swap1 F_MINT()
 }
 
 /// @notice `AsyncFiller.settlePriorityFee(key, id, maker, amount)`: donate a bid to active LPs, or forfeit it
@@ -337,13 +345,6 @@
 #define fn SETTLE_PRIORITY_FEE() = takes (3) returns (0) {
     // [id, maker, amount]
     dup3 iszero skip jumpi
-    [E_PID] mload F_LIQUIDITY() iszero forfeit jumpi
-    NUMERAIRE() 0xc0 mload eq dup4 mul          // [amount1, id, maker, amount]
-    NUMERAIRE() [E_KEY] mload eq dup5 mul       // [amount0, amount1, …]
-    PM_DONATE(0xa0)
-    dup3 NUMERAIRE() address F_BURN()
-    __EVENT_HASH(PriorityFeeDonated)
-    logged jump
     forfeit:
     dup3 NUMERAIRE() address F_BURN()
     dup3 NUMERAIRE() FEE_VAULT() F_MINT()
@@ -397,6 +398,7 @@
     dynamic:
     LOAD_KEY(0x24)
     0x01 [E_P] mload 0x07 add sstore            // asyncOrders[poolId].{poolManager, numeraire, feeVault}
+    0x04 sload [E_P] mload 0x08 add sstore
     __FUNC_SIG("beforeInitialize(address,(address,address,uint24,int24,address),uint160)") 0xe0 shl RETURN_1()
 }
 
@@ -538,37 +540,8 @@
     [M_INC] mload ORDER_AT() 0x02 add sload exists jumpi
     __ERROR(OrderNotFound) REVERT_0()
     exists:
-    0x00 [M_COUNT] mstore
-    loop:
-        [MAX_MATCHES_PER_CALL] [M_COUNT] mload lt iszero done jumpi
-        [M_INC] mload ORDER_AT()                // [incO]
-        dup1 0x02 add sload iszero done_1 jumpi
-        dup1 sload O_BUY() [M_INC_BUY] mstore
-        0x01 add sload O_PRICE() [M_INC_PRICE] mstore
-        // the opposite side's best price: asks.best(false) for a buy, bids.best(true) for a sell
-        [M_INC_BUY] mload iszero dup1 [E_P] mload SIDE_TREE() TREE_BEST()   // [found, opp]
-        iszero done_1 jumpi
-        dup1 [M_OPP] mstore
-        [M_INC_BUY] mload iszero [E_P] mload BOOK_BEST_AT_PRICE()           // [makerId]
-        dup1 iszero done_1 jumpi
-        [M_MAKER] mstore
-        [M_INC_BUY] mload incoming_buy jumpi
-        // incoming sell: _crosses(opp, incPrice, maker, incoming)
-        [M_INC] mload [M_MAKER] mload [M_INC_PRICE] mload [M_OPP] mload
-        crossed jump
-        incoming_buy:
-        // incoming buy: _crosses(incPrice, opp, incoming, maker)
-        [M_MAKER] mload [M_INC] mload [M_OPP] mload [M_INC_PRICE] mload
-        crossed:
-        CROSSES() iszero done jumpi
-        [M_MAKER] mload [M_INC] mload MATCH_PAIR()
-        iszero done jumpi
-        [M_COUNT] mload 0x01 add [M_COUNT] mstore
-        loop jump
-    done_1:
-        pop
-    done:
-    [M_COUNT] mload
+    [MAX_MATCHES_PER_CALL] [M_MAX] mstore
+    MATCH_BOOK_LOOP()
 }
 
 /// @notice `_matchPair(first, second)`: the older order's price sizes the trade; transfer the escrows,
@@ -589,9 +562,9 @@
     [M_FIRST] mload [M_BUY] mstore
     [M_SECOND] mload [M_SELL] mstore
     sided:                                      // [fBuy]
-    // makerBuy = first.sequence < second.sequence ? first.isBuy : second.isBuy (= !first.isBuy)
-    [M_SECOND] mload ORDER_AT() 0x06 add sload
-    [M_FIRST] mload ORDER_AT() 0x06 add sload lt
+    // makerBuy = first.createdSequence < second.createdSequence ? first.isBuy : second.isBuy (= !first.isBuy)
+    [M_SECOND] mload ORDER_AT() 0x04 add sload
+    [M_FIRST] mload ORDER_AT() 0x04 add sload lt
     first_older jumpi
     iszero
     first_older:                                // [makerBuy]
@@ -609,22 +582,30 @@
     dup1 O_OWNER() [M_BUY_OWNER] mstore
     O_ZFO() CURRENCY_IN() [M_BUY_IN] mstore
 
-    // _settleTransfers: asset to the buyer, quote to the seller
-    [M_ASSET] mload [M_BUY_OWNER] mload [M_SELL_IN] mload TRANSFER_ESCROW()
-    [M_QUOTE] mload [M_SELL_OWNER] mload [M_BUY_IN] mload TRANSFER_ESCROW()
-
     // _reduceMatchedOrders: sell side, then buy side
     [M_SELL] mload [R_ID] mstore
     [M_ASSET] mload [R_USED] mstore
     [M_QUOTE] mload [R_RECV] mstore
     [M_SELL_IN] mload [R_CUR] mstore
     REDUCE_AFTER_MATCH()
+    0x28c0 mload 0x28e0 mstore
     [M_BUY] mload [R_ID] mstore
     [M_QUOTE] mload [R_USED] mstore
     [M_ASSET] mload [R_RECV] mstore
     [M_BUY_IN] mload [R_CUR] mstore
     REDUCE_AFTER_MATCH()
+    0x28c0 mload 0x2900 mstore
 
+    // _settleTransfers: asset to the buyer, quote to the seller
+    [M_ASSET] mload [M_BUY_OWNER] mload [M_SELL_IN] mload TRANSFER_ESCROW()
+    [M_QUOTE] mload [M_SELL_OWNER] mload [M_BUY_IN] mload TRANSFER_ESCROW()
+
+    0x28e0 mload iszero no_sell_refund jumpi
+    0x28e0 mload [M_SELL_OWNER] mload [M_SELL_IN] mload TRANSFER_ESCROW()
+    no_sell_refund:
+    0x2900 mload iszero no_buy_refund jumpi
+    0x2900 mload [M_BUY_OWNER] mload [M_BUY_IN] mload TRANSFER_ESCROW()
+    no_buy_refund:
     [M_ASSET] mload [MEM_LOG] mstore
     [M_QUOTE] mload 0xb20 mstore
     [M_BUY] mload [M_SELL] mload [E_PID] mload __EVENT_HASH(AsyncOrdersMatched) 0x40 [MEM_LOG] log4
@@ -643,6 +624,7 @@
 ///         rest of the bid and refunding unused input) or keep the order open, re-queuing it when its price key
 ///         changed (with a fresh sequence) or, in PriorityFee mode, when its bid changed.
 #define fn REDUCE_AFTER_MATCH() = takes (0) returns (0) {
+    0x00 0x28c0 mstore
     [R_ID] mload ORDER_AT() dup1 [R_O] mstore   // [O]
     dup1 sload                                  // [w0, O]
     dup1 O_OWNER() [R_OWNER] mstore
@@ -650,13 +632,7 @@
     O_PAID_FEE()                                // [paid, O]
     swap1 0x02 add sload                        // [oldIn, paid]
     dup1 [R_USED] mload swap1 CHECKED_SUB() [R_REMIN] mstore    // remainingInput
-    [R_O] mload 0x03 add sload                  // [oldMin, oldIn, paid]
-    [R_RECV] mload dup2 gt min_left jumpi       // received < oldMin
-    pop 0x00 min_done jump
-    min_left:
-    [R_RECV] mload swap1 sub
-    min_done:
-    [R_REMMIN] mstore                           // [oldIn, paid]
+    dup1 [R_REMIN] mload [R_O] mload 0x03 add sload MUL_DIV_UP() [R_REMMIN] mstore
 
     // _settleMatchedPriorityFee
     dup2 iszero unpaid jumpi
@@ -670,13 +646,16 @@
     pop pop
 
     [R_REMIN] mload iszero close jumpi
-    [R_REMMIN] mload iszero close jumpi
+    [R_O] mload sload O_BUY() buy_notional jumpi
+    [R_REMMIN] mload dust_check jump
+    buy_notional: [R_REMIN] mload
+    dust_check: [E_P] mload 0x08 add sload gt close jumpi
 
     // still open: amounts, bid, then the price key
     [R_REMIN] mload [R_O] mload 0x02 add sstore
     [R_REMMIN] mload [R_O] mload 0x03 add sstore
     [R_O] mload sload [UINT64_MASK] 0xb8 shl not and [R_UNFILLED] mload 0xb8 shl or [R_O] mload sstore
-    [R_REMMIN] mload [R_REMIN] mload [R_O] mload sload O_BUY() PRICE_KEY()   // [updatedPrice]
+    [R_REMMIN] mload [R_REMIN] mload [R_O] mload sload O_ZFO() [R_O] mload sload O_BUY() BOOK_PRICE_KEY()   // [updatedPrice]
     dup1 [R_O] mload 0x01 add sload O_PRICE() eq iszero   // [priceChanged, updatedPrice]
     dup1 relocate jumpi
     [E_P] mload ORDERING_MODE() iszero kept jumpi
@@ -692,15 +671,16 @@
     BOOK_APPEND()
     done jump
     kept:
-    pop pop done jump
+    pop pop
+    [R_ID] mload BOOK_AT() LOAD_POSITION() REFRESH_EXACT()
+    done jump
 
     close:
     [R_ID] mload BOOK_AT()
     BOOK_REMOVE()
     DELETE_ORDER()
     [R_UNFILLED] mload [R_OWNER] mload [R_ID] mload SETTLE_PRIORITY_FEE()
-    [R_REMIN] mload iszero done jumpi
-    [R_REMIN] mload [R_OWNER] mload [R_CUR] mload TRANSFER_ESCROW()
+    [R_REMIN] mload 0x28c0 mstore
     done:
 }
 
@@ -769,6 +749,7 @@
     [E_PID] mload F_LIQUIDITY() has_liquidity jumpi
     __ERROR(NoActiveLiquidity) REVERT_0()
     has_liquidity:
+    [E_ID] mload BOOK_AT() BOOK_REMOVE() DELETE_ORDER()
     [E_W] mload [E_Z] mload CURRENCY_IN() address F_BURN()
     // previous LP fee from slot0, the 0.30% fill fee for this swap, then restore it
     [E_PID] mload 0x00 mstore [POOLS_SLOT] 0x20 mstore 0x40 0x00 sha3 PM_EXTSLOAD()
@@ -791,9 +772,6 @@
     [E_V] mload dup2 lt not_met jumpi           // amountOut < amountOutMin
     dup1 [E_Y] mstore                           // amountOut
     [E_X] mload [E_Z] mload CURRENCY_OUT() dup1 iszero F_TAKE_ANY()
-    [E_ID] mload BOOK_AT()
-    BOOK_REMOVE()
-    DELETE_ORDER()
     [E_U] mload [E_X] mload [E_ID] mload SETTLE_PRIORITY_FEE()
     [E_W] mload [MEM_LOG] mstore
     [E_Y] mload 0xb20 mstore
@@ -805,11 +783,21 @@
 
 /// @notice `matchBook(key, maxMatches)`: permissionlessly continue a crossed book, at most 8 pairs.
 #define macro MATCH_BOOK() = takes (0) returns (0) {
+    LOAD_KEY(0x04)
+    [PENDING_MATCH_ID_SLOT] tload dup1 iszero no_pending jumpi
+    ORDER_AT() 0x02 add sload iszero ready jumpi
+    0x00 RETURN_1()
+    no_pending: pop
+    ready:
     0xa4 calldataload dup1 0x08 shr bad_input jumpi
     dup1 iszero bad jumpi
     dup1 [MAX_MATCHES_PER_CALL] lt bad jumpi
     [M_MAX] mstore
-    LOAD_KEY(0x04)
+    MATCH_BOOK_LOOP() RETURN_1()
+    bad_input: 0x00 0x00 revert
+    bad: __ERROR(InvalidMatchBound) REVERT_0()
+}
+#define fn MATCH_BOOK_LOOP() = takes (0) returns (1) {
     0x00 [M_COUNT] mstore
     loop:
         [M_MAX] mload [M_COUNT] mload lt iszero done jumpi
@@ -826,16 +814,12 @@
         iszero done jumpi
         [M_COUNT] mload 0x01 add [M_COUNT] mstore
         loop jump
-    bad_input:
-    0x00 0x00 revert
-    bad:
-    __ERROR(InvalidMatchBound) REVERT_0()
     done_2:
         pop
     done_1:
         pop
     done:
-    [M_COUNT] mload RETURN_1()
+    [M_COUNT] mload
 }
 
 //'########::'##::::'##:'########::'##:::::::'####::'######::
@@ -881,6 +865,8 @@
     0x03 add sload [E_V] mstore                 // amountOutMin
     [E_ID] mload BOOK_AT()
     BOOK_REMOVE()
+    [E_W] mload sload dup1 O_PAID_FEE() swap1 O_OWNER() [E_ID] mload SETTLE_PRIORITY_FEE()
+    DELETE_ORDER()
     LOAD_BOOL(0xc4) CURRENCY_OUT() dup1 [E_U] mstore   // [output]
     dup1 paid_out jumpi
     [E_Y] mload [E_V] mload CHECKED_ADD() PM_SETTLE()
@@ -892,10 +878,8 @@
     [E_Y] mload [MEM_LOG] mstore
     [E_U] mload [E_ID] mload __EVENT_HASH(OrderFeeAccrued) 0x20 [MEM_LOG] log3
     no_fee:
-    [E_Z] mload [E_X] mload LOAD_BOOL(0xc4) CURRENCY_IN() TRANSFER_ESCROW()
-    // settleOrderPriorityFee: the stored owner and paid bid, before the record is deleted
-    [E_W] mload sload dup1 O_PAID_FEE() swap1 O_OWNER() [E_ID] mload SETTLE_PRIORITY_FEE()
-    DELETE_ORDER()
+    [E_Z] mload [E_X] mload LOAD_BOOL(0xc4) CURRENCY_IN() TRANSFER_ESCROW_IMMEDIATE()
+
     [E_Z] mload [MEM_LOG] mstore
     [E_V] mload 0xb20 mstore
     [E_X] mload [E_ID] mload [E_PID] mload __EVENT_HASH(AsyncOrderFilled) 0x40 [MEM_LOG] log4
@@ -922,7 +906,7 @@
     [E_ID] mload BOOK_AT()
     BOOK_REMOVE()
     DELETE_ORDER()
-    [E_W] mload [E_X] mload LOAD_BOOL(0xc4) CURRENCY_IN() TRANSFER_ESCROW()
+    [E_W] mload [E_X] mload LOAD_BOOL(0xc4) CURRENCY_IN() TRANSFER_ESCROW_IMMEDIATE()
     [E_U] mload [E_X] mload [E_ID] mload SETTLE_PRIORITY_FEE()
     [E_W] mload [MEM_LOG] mstore
     [E_X] mload [E_ID] mload [E_PID] mload __EVENT_HASH(AsyncOrderCancelled) 0x20 [MEM_LOG] log4
@@ -944,9 +928,19 @@
     exists:
     dup1 0x03 add sload [E_V] mstore            // old amountOutMin
     [E_ID] mload BOOK_AT()
+    dup2 [B_MIN] mstore
+    dup1 0x02 add sload [B_IN] mstore
+    dup1 sload dup1 O_BUY() [B_BUY] mstore O_ZFO() [B_ZFO] mstore
+    CHECK_MINIMUM()
+    [B_BUY] mload floor_checked jumpi
+    [E_V] mload [B_MIN] mload gt iszero floor_checked jumpi
+    [B_MIN] mload MIN_BID() [B_O] mload sload O_FEE() lt iszero floor_checked jumpi
+    __ERROR(PriorityFeeTooSmall) REVERT_0()
+    floor_checked:
+    [E_ID] mload BOOK_AT()
     BOOK_REMOVE()                               // [O, newMin]
     dup2 dup2 0x03 add sstore
-    dup2 dup2 0x02 add sload dup3 sload O_BUY() PRICE_KEY()   // [price, O, newMin]
+    dup2 dup2 0x02 add sload dup3 sload O_ZFO() dup4 sload O_BUY() BOOK_PRICE_KEY()   // [price, O, newMin]
     dup2 0x01 add dup1 sload [UINT128_MASK] not and           // [w1', slot, price, O, newMin]
     swap1 swap2 or swap1 sstore                 // [O, newMin]
     NEXT_SEQUENCE() dup2 0x06 add sstore
@@ -976,9 +970,10 @@
     0x1140 mstore
     0x184 calldataload 0x1160 mstore
     [E_ID] mload 0x1180 mstore
-    0x1a4 calldataload 0x11a0 mstore
-    0x1c4 calldataload 0x11c0 mstore
-    0x120 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
+    [E_ID] mload ORDER_AT() 0x04 add sload 0x11a0 mstore
+    0x1a4 calldataload 0x11c0 mstore
+    0x1c4 calldataload 0x11e0 mstore
+    0x140 [S_STRUCT] sha3 HASH_TYPED_DATA()     // [digest]
     0x1e4 calldataload 0x04 add swap1           // [digest, sigPos]
     0x1c4 calldataload 0x1a4 calldataload 0xa4 calldataload VERIFY()
     0x184 calldataload 0xa4 calldataload UPDATE_PRICE_BODY()
@@ -1030,52 +1025,7 @@
     RETURN_EMPTY()
 }
 
-/// @notice `recordPriorityFee(key, maker, amount)`: the order's executor converts the bid it just settled for
-///         this hook into the hook's numeraire claim; in PriorityFee mode the order re-queues by its paid bid.
-#define macro RECORD_PRIORITY_FEE() = takes (0) returns (0) {
-    [PENDING_MATCH_ID_SLOT] tload               // [id]
-    dup1 iszero unauthorized jumpi
-    [PENDING_MATCH_EXECUTOR_SLOT] tload caller eq authorized jumpi
-    unauthorized:
-    __ERROR(NotAuthorizedExecutor) REVERT_0()
-    authorized:
-    dup1 [E_ID] mstore
-    LOAD_KEY(0x04)
-    ORDER_AT() dup1 sload                       // [w0, O]
-    dup1 O_OWNER() LOAD_ADDRESS(0xa4) eq owned jumpi
-    __ERROR(OrderNotFound) REVERT_0()
-    owned:
-    0xc4 calldataload                           // [amount, w0, O]
-    dup3 0x02 add sload iszero not_escrowable jumpi
-    dup2 O_ESCROWED() not_escrowable jumpi
-    dup1 dup3 O_FEE() eq iszero not_escrowable jumpi
-    dup1 iszero not_escrowable jumpi
-    dup1 NUMERAIRE() address F_MINT()           // [amount, w0, O]
-    pop 0x01 0xb0 shl or dup2 sstore            // escrowed = true          [O]
-    pop
-    [E_P] mload ORDERING_MODE() iszero done jumpi
-    [E_ID] mload BOOK_AT()
-    BOOK_REMOVE()
-    BOOK_APPEND()
-    done:
-    RETURN_EMPTY()
-    not_escrowable:
-    __ERROR(PriorityFeeNotEscrowed) REVERT_0()
-}
-
 // Admin
-#define macro SET_ORDERING_MODE() = takes (0) returns (0) {
-    0xa4 calldataload dup1 0x01 lt iszero valid jumpi
-    0x00 0x00 revert
-    valid:
-    ONLY_OWNER()
-    LOAD_KEY(0x04)
-    dup1 [E_P] mload BOOK_SET_MODE()
-    [MEM_LOG] mstore
-    [E_PID] mload __EVENT_HASH(OrderingModeChanged) 0x20 [MEM_LOG] log2
-    RETURN_EMPTY()
-}
-
 /// @notice `sweep(currency, to)`: move the hook's own balance of `currency` (never escrow) to `to`.
 #define macro SWEEP() = takes (0) returns (0) {
     LOAD_ADDRESS(0x24) LOAD_ADDRESS(0x04)       // [currency, to]
@@ -1165,6 +1115,25 @@
     RETURN_EMPTY()
 }
 
+#define macro USE_NONCE() = takes (0) returns (0) {
+    LOAD_PID(0x04)
+    LOAD_ADDRESS(0x24) [E_X] mstore
+    caller [E_X] mload [E_P] mload EXECUTOR_SLOT() sload authorized jumpi
+    __ERROR(NotAuthorizedExecutor) REVERT_0()
+    authorized:
+    0x44 calldataload [E_X] mload NONCE_SLOT() dup1 sload iszero fresh jumpi
+    __ERROR(NonceAlreadyUsed) REVERT_0()
+    fresh: 0x01 swap1 sstore
+    0x44 calldataload [MEM_LOG] mstore
+    [E_X] mload __EVENT_HASH(NonceInvalidated) 0x20 [MEM_LOG] log2
+    RETURN_EMPTY()
+}
+#define macro SET_MIN_ORDER() = takes (0) returns (0) {
+    ONLY_OWNER() LOAD_KEY(0x04)
+    0xa4 calldataload dup1 [E_P] mload 0x08 add sstore [MEM_LOG] mstore
+    [E_PID] mload __EVENT_HASH(MinOrderSet) 0x20 [MEM_LOG] log2
+    RETURN_EMPTY()
+}
 // Views
 /// @notice `asyncOrders(poolId)` → (poolManager, numeraire, feeVault), set by `beforeInitialize`.
 #define macro ASYNC_ORDERS() = takes (0) returns (0) {
@@ -1223,7 +1192,7 @@
     0x00 0x00 revert
 }
 
-/// @notice `orderBookOrder(poolId, id)` → (maker, amountIn, amountOutMin, priceKey, isBuy, previous, next).
+/// @notice `orderBookOrder(poolId, id)` → (maker, amountIn, amountOutMin, priceKey, isBuy, sequence, priorityFee).
 #define macro ORDER_BOOK_ORDER() = takes (0) returns (0) {
     LOAD_PID(0x04)
     0x24 calldataload ORDER_AT()
@@ -1231,8 +1200,8 @@
     dup1 0x02 add sload 0x20 mstore
     dup1 0x03 add sload 0x40 mstore
     dup1 0x01 add sload O_PRICE() 0x60 mstore
-    dup1 0x04 add sload 0xa0 mstore
-    0x05 add sload 0xc0 mstore
+    dup1 0x06 add sload 0xa0 mstore
+    sload O_FEE() 0xc0 mstore
     0xe0 0x00 return
 }
 
@@ -1303,8 +1272,12 @@
     NON_PAYABLE()
 
     0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("setMinOrder((address,address,uint24,int24,address),uint256)") eq set_min_order jumpi
+    dup1 __FUNC_SIG("setDefaultMinOrder(uint256)") eq set_default_min jumpi
+    dup1 __FUNC_SIG("defaultMinOrder()") eq default_min jumpi
+    dup1 __FUNC_SIG("orderCreatedSequence(bytes32,bytes32)") eq order_created_sequence jumpi
+    dup1 __FUNC_SIG("useNonce(bytes32,address,uint256)") eq use_nonce jumpi
     dup1 __FUNC_SIG("beforeSwap(address,(address,address,uint24,int24,address),(bool,int256,uint160),bytes)") eq before_swap jumpi
-    dup1 __FUNC_SIG("recordPriorityFee((address,address,uint24,int24,address),address,uint256)") eq record_priority_fee jumpi
     dup1 __FUNC_SIG("matchNewOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))") eq match_new_order jumpi
     dup1 __FUNC_SIG("fillOrderFromPoolLiquidity(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),bytes32)") eq fill_order_from_pool jumpi
     dup1 __FUNC_SIG("executeOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),bytes)") eq execute_order jumpi
@@ -1324,13 +1297,11 @@
     dup1 __FUNC_SIG("bestOrder(bytes32,bool)") eq best_order jumpi
     dup1 __FUNC_SIG("orderBookLevel(bytes32,bool,uint128)") eq order_book_level jumpi
     dup1 __FUNC_SIG("orderBookOrder(bytes32,bytes32)") eq order_book_order jumpi
-    dup1 __FUNC_SIG("orderingMode(bytes32)") eq ordering_mode jumpi
     dup1 __FUNC_SIG("updatePrice(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),uint256)") eq update_price jumpi
     dup1 __FUNC_SIG("updatePriceWithSig(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),uint256,uint256,uint256,bytes)") eq update_price_with_sig jumpi
     dup1 __FUNC_SIG("setExecutor(bytes32,address,bool)") eq set_executor jumpi
     dup1 __FUNC_SIG("invalidateNonce(uint256)") eq invalidate_nonce jumpi
     dup1 __FUNC_SIG("nonceUsed(address,uint256)") eq nonce_used jumpi
-    dup1 __FUNC_SIG("setOrderingMode((address,address,uint24,int24,address),uint8)") eq set_ordering_mode jumpi
     dup1 __FUNC_SIG("calculateHookFee(uint256)") eq calculate_hook_fee jumpi
     dup1 __FUNC_SIG("poolManager()") eq pool_manager jumpi
     dup1 __FUNC_SIG("feeVault()") eq fee_vault jumpi
@@ -1352,10 +1323,14 @@
     0x00 0x00 revert
 
     before_swap:              BEFORE_SWAP()
-    record_priority_fee:      RECORD_PRIORITY_FEE()
     match_new_order:          MATCH_NEW_ORDER()
     fill_order_from_pool:     FILL_ORDER_FROM_POOL()
     execute_order:            EXECUTE_ORDER()
+    set_min_order: SET_MIN_ORDER()
+    set_default_min: ONLY_OWNER() 0x04 calldataload 0x04 sstore RETURN_EMPTY()
+    default_min: 0x04 sload RETURN_1()
+    order_created_sequence: LOAD_PID(0x04) 0x24 calldataload ORDER_AT() 0x04 add sload RETURN_1()
+    use_nonce: USE_NONCE()
     async_order_info:         ASYNC_ORDER_INFO()
     calculate_pool_fee:       CALCULATE_POOL_FEE()
     cancel_order:             CANCEL_ORDER()
@@ -1372,13 +1347,11 @@
     best_order:               BEST_ORDER()
     order_book_level:         ORDER_BOOK_LEVEL()
     order_book_order:         ORDER_BOOK_ORDER()
-    ordering_mode:            ORDERING_MODE_VIEW()
     update_price:             UPDATE_PRICE()
     update_price_with_sig:    UPDATE_PRICE_WITH_SIG()
     set_executor:             SET_EXECUTOR()
     invalidate_nonce:         INVALIDATE_NONCE()
     nonce_used:               NONCE_USED()
-    set_ordering_mode:        SET_ORDERING_MODE()
     calculate_hook_fee:       0x00 RETURN_1()
     pool_manager:             MANAGER() RETURN_1()
     fee_vault:                FEE_VAULT() RETURN_1()

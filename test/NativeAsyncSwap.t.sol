@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
-
 import {HuffDeploy} from "./utils/HuffDeploy.sol";
 
 import {ISignatureTransfer} from "src/interface/ISignatureTransfer.sol";
@@ -71,12 +70,19 @@ contract NativeAsyncSwapTest is Test {
         erc20.mint(alice, 100 ether);
         erc20.mint(bob, 100 ether);
         vm.prank(alice);
+        erc20.approve(address(router), type(uint256).max);
+        vm.prank(bob);
+        erc20.approve(address(router), type(uint256).max);
+        vm.prank(alice);
         hook.setExecutor(poolId, address(router), true);
     }
 
     /// @dev Predict the contract-assigned salt; mirrors `_createOrder`.
     function _expectedSalt(address user, uint256 amountIn, uint256 amountOutMin) internal view returns (bytes32) {
-        return keccak256(abi.encode(block.timestamp, block.number, address(manager), user, amountIn, amountOutMin, 0));
+        return
+            keccak256(
+                abi.encode(block.timestamp, block.number, address(manager), user, amountIn, amountOutMin, 100_000)
+            );
     }
 
     function _orderIdFor(address maker, bool zeroForOne, bytes32 salt) internal view returns (bytes32) {
@@ -94,7 +100,7 @@ contract NativeAsyncSwapTest is Test {
             zeroForOne: zeroForOne,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -117,7 +123,9 @@ contract NativeAsyncSwapTest is Test {
         router.swap{value: 1 ether}(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: alice, executor: address(router), amountOutMin: 0.95 ether, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: alice, executor: address(router), amountOutMin: 0.95 ether, priorityFee: 100_000
+                })
             )
         );
         vm.stopPrank();
@@ -138,7 +146,9 @@ contract NativeAsyncSwapTest is Test {
         router.swap{value: 1 ether}(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: alice, executor: address(router), amountOutMin: 0.95 ether, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: alice, executor: address(router), amountOutMin: 0.95 ether, priorityFee: 100_000
+                })
             )
         );
         vm.stopPrank();
@@ -166,6 +176,24 @@ contract NativeAsyncSwapTest is Test {
         assertEq(erc20.balanceOf(alice) - aliceErc20Before, 0.95 ether, "maker received real TST");
     }
 
+    /// If the hook refuses the filler's ETH, the Router reverts before any settlement.
+    function test_RevertWhen_NativeOutputForwardFails() public {
+        AsyncOrder memory order = _order(alice, false, 1 ether, 0.9 ether);
+        vm.prank(alice);
+        router.swap(order, abi.encode(AsyncSwap.UserParams(alice, address(router), 0.9 ether, 100_000)));
+        order = _withAssignedSalt(order);
+
+        uint256 gross = 0.9 ether + hook.calculatePoolFee(order.key.fee, 0.9 ether);
+        // Only the Router's value-carrying forward matches: the hook's view calls carry no value.
+        vm.mockCallRevert(address(hook), gross, bytes(""), bytes("refused"));
+        vm.prank(bob);
+        vm.expectRevert("Native output transfer to hook failed");
+        router.fillOrder{value: gross}(order, type(uint256).max, "");
+        vm.clearMockedCalls();
+
+        assertEq(hook.asyncOrder(poolId, _orderIdFor(alice, false, order.salt)), 1 ether, "order untouched");
+    }
+
     /* --------------------------- maker submit native output --------------------------- */
 
     /// Maker sells 1 TST for ≥ 0.9 ETH (zeroForOne=false; input=currency1, output=currency0=ETH).
@@ -177,7 +205,9 @@ contract NativeAsyncSwapTest is Test {
         router.swap(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: alice, executor: address(router), amountOutMin: 0.9 ether, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: alice, executor: address(router), amountOutMin: 0.9 ether, priorityFee: 100_000
+                })
             )
         );
         vm.stopPrank();
@@ -199,7 +229,9 @@ contract NativeAsyncSwapTest is Test {
         router.swap(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: alice, executor: address(router), amountOutMin: 0.9 ether, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: alice, executor: address(router), amountOutMin: 0.9 ether, priorityFee: 100_000
+                })
             )
         );
         vm.stopPrank();
@@ -238,7 +270,9 @@ contract NativeAsyncSwapTest is Test {
         router.swap{value: 1 ether}(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: alice, executor: address(router), amountOutMin: 0.95 ether, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: alice, executor: address(router), amountOutMin: 0.95 ether, priorityFee: 100_000
+                })
             )
         );
         order = _withAssignedSalt(order);

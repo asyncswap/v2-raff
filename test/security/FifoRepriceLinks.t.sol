@@ -5,12 +5,7 @@ import {SetupHook} from "../SetupHook.t.sol";
 import {IAsyncSwap as AsyncSwap} from "src/interface/IAsyncSwap.sol";
 import {AsyncOrder} from "src/interface/types/AsyncOrder.sol";
 
-/// @notice Regression: a FIFO reprice must leave both price levels well linked.
-/// @dev `AsyncFiller._append` used to set `previous` but not `next`, so an order re-appended by
-///      `updatePrice` (or by a partial fill that moved its price) kept the `next` of its old level.
-///      Its next removal then rewired the wrong level: `bestOrder` named a cancelled order, a crossed
-///      book could not be matched, and a new order at that price reverted. Found by the proof-derived
-///      invariant suite in asyncswap/v2-proofs (`official/test/proofs`).
+/// @notice Repricing and cancellation preserve the priority queue at both price levels.
 contract FifoRepriceLinksTest is SetupHook {
     address maker = makeAddr("maker");
     address maker2 = makeAddr("maker2");
@@ -34,13 +29,13 @@ contract FifoRepriceLinksTest is SetupHook {
             zeroForOne: zeroForOne,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
         vm.startPrank(owner_);
-        (zeroForOne ? token0 : token1).approve(address(router), amountIn);
-        router.swap(order, abi.encode(AsyncSwap.UserParams(owner_, address(router), amountOutMin, 0)));
+        (zeroForOne ? token0 : token1).approve(address(router), type(uint256).max);
+        router.swap(order, abi.encode(AsyncSwap.UserParams(owner_, address(router), amountOutMin, 100_000)));
         vm.stopPrank();
         order.salt = _expectedSalt(owner_, amountIn, amountOutMin);
         id = _orderIdFor(owner_, zeroForOne, order.salt);
@@ -56,9 +51,13 @@ contract FifoRepriceLinksTest is SetupHook {
         // Reprice A into level 3: it joins behind C as the tail, with no successor.
         vm.prank(maker);
         hook.updatePrice(a, 3 ether);
-        (,,,,, bytes32 aPrev, bytes32 aNext) = hook.orderBookOrder(poolId, aId);
-        assertEq(aPrev, cId, "A re-entered behind C");
-        assertEq(aNext, bytes32(0), "the tail of a level has no successor");
+        (,,, uint128 level,, uint64 sequence, uint64 fee) = hook.orderBookOrder(poolId, aId);
+        (bytes32 first, bytes32 last, uint32 size) = hook.orderBookLevel(poolId, false, level);
+        assertEq(first, cId, "older equal-price order leads");
+        assertEq(last, aId, "repriced order rejoins at tail");
+        assertEq(size, 2);
+        assertEq(fee, 100_000);
+        assertGt(sequence, hook.orderCreatedSequence(poolId, aId));
 
         // Remove A, add D at 3, then remove C and B: level 3 must be exactly [D].
         vm.prank(maker);
@@ -72,7 +71,7 @@ contract FifoRepriceLinksTest is SetupHook {
 
         (bool found, uint128 askKey, bytes32 bestAsk, address bestMaker) = hook.bestOrder(poolId, false);
         assertTrue(found, "an ask is open");
-        assertEq(askKey, 3 ether, "at the level price");
+        assertEq(askKey, level, "at the level price");
         assertEq(bestAsk, dId, "the best ask is the only live ask");
         assertEq(bestMaker, maker3);
         (bytes32 head, bytes32 tail, uint32 count) = hook.orderBookLevel(poolId, false, askKey);
@@ -93,7 +92,7 @@ contract FifoRepriceLinksTest is SetupHook {
             zeroForOne: true,
             amountIn: 1 ether,
             amountOutMin: amountOutMin,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: _expectedSalt(owner_, 1 ether, amountOutMin)
         });
@@ -107,13 +106,13 @@ contract FifoRepriceLinksTest is SetupHook {
             zeroForOne: false,
             amountIn: 4 ether,
             amountOutMin: 1 ether,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
         vm.startPrank(maker2);
-        token1.approve(address(router), 4 ether);
-        router.swap(order, abi.encode(AsyncSwap.UserParams(maker2, address(router), 1 ether, 0)));
+        token1.approve(address(router), type(uint256).max);
+        router.swap(order, abi.encode(AsyncSwap.UserParams(maker2, address(router), 1 ether, 100_000)));
         vm.stopPrank();
         order.salt = _expectedSalt(maker2, 4 ether, 1 ether);
         id = _orderIdFor(maker2, false, order.salt);

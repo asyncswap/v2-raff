@@ -8,6 +8,23 @@ import {ISignatureTransfer} from "./ISignatureTransfer.sol";
 /// @notice Entry point for makers, fillers and relayers (`src/Router.huff`). Every action goes through
 ///         `IPoolManager.unlock`.
 interface IRouter {
+    /// @notice What `unlockCallback` does (`src/Router.huff`'s `ACTION_*` constants).
+    enum ActionType {
+        Swap,
+        FillOrder,
+        Cancel,
+        SwapWithSig,
+        MatchBook,
+        PoolLiquidityFill
+    }
+
+    /// @notice `unlockCallback`'s data: `abi.encode(SwapCallback)`, then the action's own arguments.
+    struct SwapCallback {
+        ActionType action;
+        AsyncOrder order;
+        uint8 maxMatches;
+    }
+
     /// @notice Permit2 signature + nonce/deadline for a signed create.
     struct PermitData {
         uint256 nonce;
@@ -27,6 +44,7 @@ interface IRouter {
     error NonceAlreadyUsed();
 
     function PERMIT2() external view returns (ISignatureTransfer);
+    /// @dev Historical fixture ABI only: current cancellations share hook.nonceUsed.
     function cancelNonceUsed(address maker, uint256 nonce) external view returns (bool);
     function DOMAIN_SEPARATOR() external view returns (bytes32);
     function eip712Domain()

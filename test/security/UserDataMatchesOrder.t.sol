@@ -28,7 +28,7 @@ contract UserDataMatchesOrderTest is SetupHook {
             zeroForOne: true,
             amountIn: amountIn,
             amountOutMin: placeholder,
-            priorityFee: 0,
+            priorityFee: 100_000,
             sqrtPrice: 2 ** 96,
             salt: bytes32(0)
         });
@@ -39,7 +39,9 @@ contract UserDataMatchesOrderTest is SetupHook {
         router.swap(
             order,
             abi.encode(
-                AsyncSwap.UserParams({user: alice, executor: address(router), amountOutMin: realLimit, priorityFee: 0})
+                AsyncSwap.UserParams({
+                    user: alice, executor: address(router), amountOutMin: realLimit, priorityFee: 100_000
+                })
             )
         );
         vm.stopPrank();
