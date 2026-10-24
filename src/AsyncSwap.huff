@@ -22,8 +22,39 @@
 #include "./lib/Signatures.huff"
 #include "./generated/FeeVaultCreation.huff"
 
-/* ─────────────────────────────────────── errors ─────────────────────────────────────── */
+//.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
+//SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs.      .sSSS s.      SSSSs
+//S SSS SSSSS S SSS SSSSS S SSS SSSS' S SSS SSSS'      S SSS SSSs.   S SSS
+//S  SS SSSS' S  SS SSSSS S  SS       S  SS            S  SS SSSSS   S  SS
+//S..SSsSSSa. S..SSsSSSSS S..SSsss    S..SSsss         S..SS SSSSS   S..SS
+//S:::S SSSSS S:::S SSSSS S:::SSSS    S:::SSSS          S::S SSSS    S:::S
+//S;;;S SSSSS S;;;S SSSSS S;;;S       S;;;S              S;S SSS     S;;;S
+//S%%%S SSSSS S%%%S SSSSS S%%%S       S%%%S               SS SS      S%%%S
+//SSSSS SSSSS SSSSS SSSSS SSSSS       SSSSS                SsS     SsSSSSSsS
+//
+//    r   fGr
+//  rr  GrGGrG
+//rrr       GraG
+//r          GfrrraGa
+//r             GaarrrrrrGr
+//              GrarrrrrGrG
+//               GaGfra GraG
+//               Ga ar    ff
+//               Ga  Gr    G
+//              fr   af    Gr
+//             Gr    Gr    G
+//_mmsaki 2025 ________________
 
+// Errors
+//'####:'##::: ##:'########:'########:'########::'########::::'###:::::'######::'########:
+//. ##:: ###:: ##:... ##..:: ##.....:: ##.... ##: ##.....::::'## ##:::'##... ##: ##.....::
+//: ##:: ####: ##:::: ##:::: ##::::::: ##:::: ##: ##::::::::'##:. ##:: ##:::..:: ##:::::::
+//: ##:: ## ## ##:::: ##:::: ######::: ########:: ######:::'##:::. ##: ##::::::: ######:::
+//: ##:: ##. ####:::: ##:::: ##...:::: ##.. ##::: ##...:::: #########: ##::::::: ##...::::
+//: ##:: ##:. ###:::: ##:::: ##::::::: ##::. ##:: ##::::::: ##.... ##: ##::: ##: ##:::::::
+//'####: ##::. ##:::: ##:::: ########: ##:::. ##: ##::::::: ##:::: ##:. ######:: ########:
+//....::..::::..:::::..:::::........::..:::::..::..::::::::..:::::..:::......:::........::
+//
 #define error NotPoolManager()
 #define error HookNotImplemented()
 #define error HookAddressNotValid(address)
@@ -47,8 +78,7 @@
 #define error NativeTransferFailed()
 #define error ERC20TransferFailed()
 
-/* ─────────────────────────────────────── events ─────────────────────────────────────── */
-
+// Events
 #define event HookSwap(bytes32 indexed, address indexed, int128, int128, uint128, uint128)
 #define event OwnershipTransferred(address indexed, address indexed)
 #define event OwnershipTransferStarted(address indexed, address indexed)
@@ -66,8 +96,16 @@
 #define event PriorityFeeForfeited(bytes32 indexed, bytes32 indexed, address indexed, uint256)
 #define event OrderingModeChanged(bytes32 indexed, uint8)
 
-/* ─────────────────────────────────────── storage ─────────────────────────────────────── */
-
+// Storage
+//:'######::'########::'#######::'########:::::'###:::::'######:::'########:
+//'##... ##:... ##..::'##.... ##: ##.... ##:::'## ##:::'##... ##:: ##.....::
+// ##:::..::::: ##:::: ##:::: ##: ##:::: ##::'##:. ##:: ##:::..::: ##:::::::
+//. ######::::: ##:::: ##:::: ##: ########::'##:::. ##: ##::'####: ######:::
+//:..... ##:::: ##:::: ##:::: ##: ##.. ##::: #########: ##::: ##:: ##...::::
+//'##::: ##:::: ##:::: ##:::: ##: ##::. ##:: ##.... ##: ##::: ##:: ##:::::::
+//. ######::::: ##::::. #######:: ##:::. ##: ##:::: ##:. ######::: ########:
+//:......::::::..::::::.......:::..:::::..::..:::::..:::......::::........::
+//
 #define constant OWNER_SLOT         = 0x00
 #define constant PENDING_OWNER_SLOT = 0x01
 #define constant NONCE_SEED         = 0x02   // nonceUsed[maker][nonce] = keccak(nonce, keccak(maker, 2))
@@ -96,8 +134,7 @@
 ///      Solidity tests override `validateHookAddress` for the same purpose). Never set for a deployment.
 #define constant SKIP_HOOK_ADDRESS_CHECK = 0x00
 
-/* ────────────────────────────────────── immutables ────────────────────────────────────── */
-
+// Immutables
 // The constructor appends (poolManager, numeraire, feeVault) to the runtime; MAIN copies them to 0x40–0x9f.
 #define constant IMMUTABLES = __codesize(RUNTIME)
 
@@ -105,8 +142,7 @@
 #define macro NUMERAIRE() = takes (0) returns (1) { 0x60 mload }
 #define macro FEE_VAULT() = takes (0) returns (1) { 0x80 mload }
 
-/* ──────────────────────────────────── entry locals ──────────────────────────────────── */
-
+// Entry locals
 #define constant E_PID = 0x140
 #define constant E_P   = 0x160
 #define constant E_ID  = 0x180
@@ -145,8 +181,16 @@
 #define constant R_UNFILLED   = 0x5e0
 #define constant R_OLDFEE     = 0x2e0
 
-/* ───────────────────────────────────── constructor ───────────────────────────────────── */
-
+// Constructor
+//'########:'##::: ##:'########:'########::'##:::'##:
+// ##.....:: ###:: ##:... ##..:: ##.... ##:. ##:'##::
+// ##::::::: ####: ##:::: ##:::: ##:::: ##::. ####:::
+// ######::: ## ## ##:::: ##:::: ########::::. ##::::
+// ##...:::: ##. ####:::: ##:::: ##.. ##:::::: ##::::
+// ##::::::: ##:. ###:::: ##:::: ##::. ##::::: ##::::
+// ########: ##::. ##:::: ##:::: ##:::. ##:::: ##::::
+//........::..::::..:::::..:::::..:::::..:::::..:::::
+//
 #define macro CONSTRUCTOR() = takes (0) returns (0) {
     // (poolManager, numeraire, owner) → memory 0x00–0x5f
     0x60 dup1 codesize sub 0x00 codecopy
@@ -183,8 +227,16 @@
     [IMMUTABLES] 0x60 add 0x100 return
 }
 
-/* ─────────────────────────────────────── helpers ─────────────────────────────────────── */
-
+// Helpers
+//'##::::'##::'#######::'########::'####:'########:'####:'########:'########::
+// ###::'###:'##.... ##: ##.... ##:. ##:: ##.....::. ##:: ##.....:: ##.... ##:
+// ####'####: ##:::: ##: ##:::: ##:: ##:: ##:::::::: ##:: ##::::::: ##:::: ##:
+// ## ### ##: ##:::: ##: ##:::: ##:: ##:: ######:::: ##:: ######::: ########::
+// ##. #: ##: ##:::: ##: ##:::: ##:: ##:: ##...::::: ##:: ##...:::: ##.. ##:::
+// ##:.:: ##: ##:::: ##: ##:::: ##:: ##:: ##:::::::: ##:: ##::::::: ##::. ##::
+// ##:::: ##:. #######:: ########::'####: ##:::::::'####: ########: ##:::. ##:
+//..:::::..:::.......:::........:::....::..::::::::....::........::..:::::..::
+//
 #define macro ONLY_POOL_MANAGER() = takes (0) returns (0) {
     MANAGER() caller eq ok jumpi
     __ERROR(NotPoolManager) REVERT_0()
@@ -325,8 +377,15 @@
     valid:
 }
 
-/* ───────────────────────────────────────── hooks ───────────────────────────────────────── */
-
+//'##::::'##::'#######:::'#######::'##:::'##::'######::
+// ##:::: ##:'##.... ##:'##.... ##: ##::'##::'##... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:'##::: ##:::..::
+// #########: ##:::: ##: ##:::: ##: #####::::. ######::
+// ##.... ##: ##:::: ##: ##:::: ##: ##. ##::::..... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:. ##::'##::: ##:
+// ##:::: ##:. #######::. #######:: ##::. ##:. ######::
+//..:::::..:::.......::::.......:::..::::..:::......:::
+//
 /// @notice `beforeInitialize`: only pools that contain the numeraire, only with the dynamic-fee flag.
 #define macro BEFORE_INITIALIZE() = takes (0) returns (0) {
     ONLY_POOL_MANAGER()
@@ -457,8 +516,7 @@
     __ERROR(HookNotImplemented) REVERT_0()
 }
 
-/* ─────────────────────────────────────── matching ─────────────────────────────────────── */
-
+// Matching
 /// @notice `_crosses(buyKey, sellKey, buy, sell)`: strictly ordered keys decide; equal keys are decided by
 ///         the full-precision cross-multiply `floor(buyIn·sellIn / sellOut) ≥ buyOut`.
 #define fn CROSSES() = takes (4) returns (1) {
@@ -780,8 +838,14 @@
     [M_COUNT] mload RETURN_1()
 }
 
-/* ──────────────────────────────────── fill / cancel ──────────────────────────────────── */
-
+//'########::'##::::'##:'########::'##:::::::'####::'######::
+// ##.... ##: ##:::: ##: ##.... ##: ##:::::::. ##::'##... ##:
+// ##:::: ##: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##:::..::
+// ########:: ##:::: ##: ########:: ##:::::::: ##:: ##:::::::
+// ##.....::: ##:::: ##: ##.... ##: ##:::::::: ##:: ##:::::::
+// ##:::::::: ##:::: ##: ##:::: ##: ##:::::::: ##:: ##::: ##:
+// ##::::::::. #######:: ########:: ########:'####:. ######::
+//..::::::::::.......:::........:::........::....:::......:::
 /// @notice `executeOrder(order, abi.encode(filler))`: an authorized executor fills the order in full, having
 ///         paid the gross output in this unlock (`settleFor(hook)`, or ETH sent to this hook for native output).
 #define macro EXECUTE_ORDER() = takes (0) returns (0) {
@@ -865,8 +929,7 @@
     RETURN_EMPTY()
 }
 
-/* ──────────────────────────────────── maker actions ──────────────────────────────────── */
-
+// Maker actions
 /// @dev `AsyncFiller.updatePrice(order, id = E_ID, newAmountOutMin, caller)`; the key is loaded.
 #define macro UPDATE_PRICE_BODY() = takes (2) returns (0) {
     // [caller, newAmountOutMin]
@@ -1000,8 +1063,7 @@
     __ERROR(PriorityFeeNotEscrowed) REVERT_0()
 }
 
-/* ──────────────────────────────────────── admin ──────────────────────────────────────── */
-
+// Admin
 #define macro SET_ORDERING_MODE() = takes (0) returns (0) {
     0xa4 calldataload dup1 0x01 lt iszero valid jumpi
     0x00 0x00 revert
@@ -1103,8 +1165,7 @@
     RETURN_EMPTY()
 }
 
-/* ──────────────────────────────────────── views ──────────────────────────────────────── */
-
+// Views
 /// @notice `asyncOrders(poolId)` → (poolManager, numeraire, feeVault), set by `beforeInitialize`.
 #define macro ASYNC_ORDERS() = takes (0) returns (0) {
     LOAD_PID(0x04)
@@ -1221,8 +1282,16 @@
     0x180 0x00 return
 }
 
-/* ──────────────────────────────────────── main ──────────────────────────────────────── */
-
+// Main
+//'########:'##::: ##:'########:'########::'##:::'##:
+// ##.....:: ###:: ##:... ##..:: ##.... ##:. ##:'##::
+// ##::::::: ####: ##:::: ##:::: ##:::: ##::. ####:::
+// ######::: ## ## ##:::: ##:::: ########::::. ##::::
+// ##...:::: ##. ####:::: ##:::: ##.. ##:::::: ##::::
+// ##::::::: ##:. ###:::: ##:::: ##::. ##::::: ##::::
+// ########: ##::. ##:::: ##:::: ##:::. ##:::: ##::::
+//........::..::::..:::::..:::::..:::::..:::::..:::::
+//
 #define macro MAIN() = takes (0) returns (0) {
     0x60 [IMMUTABLES] 0x40 codecopy
 
