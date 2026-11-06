@@ -2,9 +2,9 @@
   "solidityCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
   "sourceTestsIncludingFindings": 1088,
   "upstreamFindingTests": 1,
-  "passedHuffTestsAndPredicates": 762,
-  "forgeResultEntries": 752,
-  "unportedRunnableTests": 325,
+  "passedHuffTestsAndPredicates": 804,
+  "forgeResultEntries": 794,
+  "unportedRunnableTests": 283,
   "note": "Foundry groups invariant predicates into one result per suite. All individual predicate statuses are checked. Discovery and imported Solidity-only helpers are not counted as execution.",
   "tests": [
     {
@@ -1866,22 +1866,22 @@
       "file": "test/TickBitmap.t.sol",
       "contract": "TickBitmapTest",
       "test": "testFuzz_sparseDomainChurn",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickBitmap.t.sol",
       "contract": "TickBitmapTest",
       "test": "test_boundariesDuplicatesAndMissingKeys",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickBitmap.t.sol",
       "contract": "TickBitmapTest",
       "test": "test_everyGroupCanBeEmptiedAndReused",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPriceKey.t.sol",
@@ -1901,57 +1901,57 @@
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "testFuzz_limitIsAValidSwapLimit",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_priceJustBelowTwoTo128IsTheEndKey",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote0Buy_limitIsOneTickAboveTheAsk",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote0Sell_limitIsTheBidTick",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote0_levelBetterThanThePoolGoesToTheBook",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote1Buy_awayFromTheReferencePaysNoFee",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote1Buy_feeWindowSendsTheOrderToTheBook",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote1Buy_outsideTheWindowPaysNoFee",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TokenClaims.t.sol",
@@ -3049,43 +3049,43 @@
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_ne_any",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_reverts_div0",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_reverts_overflow",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "test_crosses_reverts_div0_counterexample",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol",
@@ -4127,22 +4127,22 @@
       "file": "test/formal/AsyncSwapPriorityKey.t.sol",
       "contract": "AsyncSwapPriorityKeyFormalTest",
       "test": "testFuzz_priorityKey_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapPriorityKey.t.sol",
       "contract": "AsyncSwapPriorityKeyFormalTest",
       "test": "testFuzz_priorityKey_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapPriorityKey.t.sol",
       "contract": "AsyncSwapPriorityKeyFormalTest",
       "test": "testFuzz_priorityKey_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapReceive.t.sol",
@@ -6248,155 +6248,155 @@
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_onHook",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_onRouter",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_result_calldata",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_result_noCode_precompile",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_total",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashPoolKeySpec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashPoolKeySpec_total_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashSetExecutorSpec_onHook",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashSetExecutorSpec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashSetExecutorSpec_total_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_TypedDataHashSpec_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_TypedDataHashSpec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_TypedDataHashSpec_total",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_hashTypedDataV4_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_hashTypedDataV4_run_router",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_isValidSignatureNow_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_isValidSignatureNow_run_router",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_tryRecover_5888_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_tryRecover_9821_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "test_SpecSig_typehash_words",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/nethermind_auditagent/NethermindAuditAgent.t.sol",

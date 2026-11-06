@@ -8,6 +8,12 @@
 #define macro BITMAP_LOAD() = takes (2) returns (0) {
     // [tree, key]
     [BM_T] mstore
+    // Reject keys outside the bounded tick domain before touching storage.
+    dup1 iszero bad_key jumpi
+    0x1b13d1 dup2 gt bad_key jumpi
+    valid jump
+    bad_key: __FUNC_SIG("InvalidKey()") 0xe0 shl REVERT_0()
+    valid:
     dup1 0xff and 0x01 swap1 shl [BM_BIT] mstore
     0x08 shr dup1 [BM_WORD] mstore 0x08 shr [BM_GROUP] mstore
 }
@@ -17,20 +23,26 @@
 #define macro BITMAP_MIDDLE() = takes (0) returns (1) {
     [BM_T] mload 0x01 add [BM_GROUP] mload HASH_2()
 }
-#define fn BITMAP_INSERT() = takes (2) returns (0) {
+#define fn BITMAP_INSERT() = takes (2) returns (1) {
     BITMAP_LOAD()
     BITMAP_LEAF() dup1 sload
+    dup1 [BM_BIT] mload and duplicate jumpi
     dup1 [BM_BIT] mload or dup3 sstore
     swap1 pop done jumpi
     BITMAP_MIDDLE() dup1 sload
     0x01 [BM_WORD] mload 0xff and shl dup2 or dup3 sstore
     swap1 pop done jumpi
     [BM_T] mload dup1 sload 0x01 [BM_GROUP] mload shl or swap1 sstore
-    done:
+    done: 0x01 finish jump
+    duplicate: pop pop 0x00
+    finish:
 }
 #define fn BITMAP_REMOVE() = takes (2) returns (0) {
     BITMAP_LOAD()
-    BITMAP_LEAF() dup1 sload [BM_BIT] mload not and dup1 dup3 sstore
+    BITMAP_LEAF() dup1 sload
+    dup1 [BM_BIT] mload and present jumpi
+    __FUNC_SIG("PriceLevelMissing()") 0xe0 shl REVERT_0()
+    present: [BM_BIT] mload not and dup1 dup3 sstore
     swap1 pop done jumpi
     BITMAP_MIDDLE() dup1 sload 0x01 [BM_WORD] mload 0xff and shl not and dup1 dup3 sstore
     swap1 pop done jumpi

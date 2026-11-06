@@ -88,13 +88,13 @@ jobs:
           FOUNDRY_PROFILE: current
         run: >-
           forge test
-          --match-contract '.*(Reference|Funding|Transitions|TopUp|MatchAmountsFormal|MatchPairFormal|ReduceAfterMatchFormal|ReduceMatchedOrdersFormal|SettleMatchedPriorityFeeFormal|FreeNodeFormal|RemoveFormal|BestOrderFormal).*'
+          --match-contract '.*(Reference|Funding|Transitions|TopUp|MatchAmountsFormal|MatchPairFormal|ReduceAfterMatchFormal|ReduceMatchedOrdersFormal|SettleMatchedPriorityFeeFormal|FreeNodeFormal|RemoveFormal|BestOrderFormal|CrossesFormal|PriorityKeyFormal|SpecSigFormal|TickBitmap|TickPricePoolBeatsLevel).*'
           --fuzz-runs 2048
           --fuzz-seed 0x3fc1525e14690ecb57279377f4de44dc8ff0715e96573f69331aaab403047456
           -vvv
 
-      - name: Check current sizes and signature memory isolation
+      - name: Check current sizes, signature memory and pool-price parity
         env:
           FOUNDRY_PROFILE: current
           FOUNDRY_TEST: compat/current/checks
-        run: forge test -vvv
+        run: forge test --fuzz-runs 4096 -vvv

@@ -38,6 +38,7 @@
 //
 #define constant DOMAIN_TYPEHASH = 0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f
 #define constant POOL_KEY_TYPEHASH = 0x90172dcd3ace21b906ae6acfb8cc73a023df1317b7cda09eeda9489ed5604ae5
+#define constant SIG_SET_EXECUTOR_TYPEHASH = 0xe4479d9c4dc3f7c35677efc85aaca516cb63a3977aae04f893f8c6b86986c965
 #define constant HALF_CURVE_ORDER = 0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0
 
 #define constant S_TYPED  = 0xf00
@@ -66,11 +67,28 @@
 
 /// @notice `_hashTypedDataV4(structHash)`: `keccak("\x19\x01" ‖ domainSeparator ‖ structHash)`.
 #define macro HASH_TYPED_DATA() = takes (1) returns (1) {
-    // [structHash]
+    DOMAIN_SEPARATOR() TYPED_DATA_HASH()
+}
+
+/// @dev Shared typed-data preimage; explicit domain permits direct tests of the production hash.
+#define macro TYPED_DATA_HASH() = takes (2) returns (1) {
+    // [domain, structHash]
     0x1901 [S_TYPED] mstore
-    DOMAIN_SEPARATOR() 0xf20 mstore
-    0xf40 mstore
+    0xf20 mstore 0xf40 mstore
     0x42 0xf1e sha3
+}
+
+/// @dev Fixed ABI head used by setExecutorWithSig: key, maker, executor, allow, nonce, deadline.
+#define macro HASH_SET_EXECUTOR() = takes (0) returns (1) {
+    HASH_POOL_KEY()
+    [SIG_SET_EXECUTOR_TYPEHASH] [S_STRUCT] mstore
+    LOAD_ADDRESS(0xa4) 0x10e0 mstore
+    LOAD_ADDRESS(0xc4) 0x1100 mstore
+    LOAD_BOOL(0xe4) 0x1120 mstore
+    0x1140 mstore
+    0x104 calldataload 0x1160 mstore
+    0x124 calldataload 0x1180 mstore
+    0xe0 [S_STRUCT] sha3
 }
 
 /// @notice `OrderSignatures.hashPoolKey`: `keccak(POOL_KEY_TYPEHASH, currency0, currency1, fee, tickSpacing,
@@ -103,7 +121,13 @@
 
     not_recovered:
         pop
-    erc1271:                                            // [signer, digest, sigPos]
+    erc1271: IS_VALID_ERC1271_SIGNATURE()
+    done:
+}
+
+/// @dev ERC-1271 always uses STATICCALL; expose this same branch to the direct signature tests.
+#define fn IS_VALID_ERC1271_SIGNATURE() = takes (3) returns (1) {
+    // [signer, digest, sigPos]
     // signer.staticcall(isValidSignature(digest, signature))
     __FUNC_SIG("isValidSignature(bytes32,bytes)") 0xe0 shl [S_CHECK] mstore
     dup2 0x1204 mstore
@@ -118,5 +142,4 @@
     0x20 returndatasize lt iszero and
     [S_CHECK] mload __FUNC_SIG("isValidSignature(bytes32,bytes)") 0xe0 shl eq and
     swap3 pop pop pop                                   // [valid]
-    done:
 }

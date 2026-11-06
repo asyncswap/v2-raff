@@ -27,7 +27,6 @@
     [E_PID] mload 0x00 mstore [POOLS_SLOT] 0x20 mstore 0x40 0x00 sha3 PM_EXTSLOAD()
 }
 #define macro SLOT_TICK() = takes (1) returns (1) { 0xa0 shr 0x02 signextend }
-#define macro ABS() = takes (1) returns (1) { dup1 0xff sar dup1 dup3 add xor swap1 pop }
 
 #define fn DYNAMIC_FEE() = takes (0) returns (0) {
     POOL_SLOT0() SLOT_TICK() [LP_AFTER] mstore
@@ -147,51 +146,18 @@
     bad_abi: 0x00 0x00 revert
 }
 
+#include "PoolPriority.huff"
 #define fn POOL_BEATS_BOOK() = takes (0) returns (2) {
-    // [poolFirst,bookLimit]; quote orientation is already captured by zeroForOne and isBuy.
     [M_INC] mload ORDER_AT() sload O_BUY() [M_INC_BUY] mstore
     [M_INC_BUY] mload iszero dup1 [E_P] mload SIDE_TREE() BITMAP_BEST()
     iszero none_1 jumpi [M_OPP] mstore
     [E_PID] mload F_LIQUIDITY() iszero none jumpi
-    POOL_SLOT0() SLOT_TICK() [LP_BEFORE] mstore
-    [LP_BEFORE] mload
-    NUMERAIRE() 0xc0 mload eq ascending jumpi
-    0x0d89e8 sub 0x01 add key_ready jump
-    ascending: 0x0d89e9 add
-    key_ready: [M_INC_PRICE] mstore
-    [E_P] mload 0x1b add sload dup1 iszero no_window_1 jumpi
-    0x02 add number gt adjusted jumpi
-    [E_P] mload 0x1a add sload [LP_BEFORE] mload sub
-    [M_INC] mload ORDER_AT() sload O_ZFO() zfo jumpi
-    0x00 dup2 slt iszero no_window_1 jumpi apply jump
-    zfo: 0x00 dup2 sgt iszero no_window_1 jumpi
-    apply:
-    ABS() 0x01 shr
-    [M_INC_BUY] mload buy jumpi
-    [M_INC_PRICE] mload dup1 dup3 lt underflow jumpi
-    sub [M_INC_PRICE] mstore adjusted jump
-    underflow: pop pop 0x00 [M_INC_PRICE] mstore adjusted jump
-    buy: [M_INC_PRICE] mload add [M_INC_PRICE] mstore adjusted jump
-    no_window_1: pop
-    adjusted:
-    [M_INC_BUY] mload iszero sell_compare jumpi
-    [M_OPP] mload [M_INC_PRICE] mload lt iszero none jumpi
-    has_price jump
-    sell_compare: [M_OPP] mload [M_INC_PRICE] mload gt iszero none jumpi
-    has_price:
-    0x01 [M_OPP] mload sub
-    NUMERAIRE() 0xc0 mload eq level_ascending jumpi
-    0x0d89e8 sub level_ready jump
-    level_ascending: 0x0d89e8 swap1 sub
-    level_ready:
-    [M_INC] mload ORDER_AT() sload O_ZFO() iszero tick_ready jumpi
-    dup1 0x0d89e8 eq tick_ready jumpi 0x01 add
-    tick_ready: TICK_SQRT_PRICE()
-    [MIN_SQRT_PRICE_PLUS_ONE] dup2 lt iszero above_min jumpi
-    pop [MIN_SQRT_PRICE_PLUS_ONE]
-    above_min: [MAX_SQRT_PRICE_MINUS_ONE] dup2 gt iszero below_max jumpi
-    pop [MAX_SQRT_PRICE_MINUS_ONE]
-    below_max: 0x01 done jump
+    [E_P] mload 0x1b add sload
+    [E_P] mload 0x1a add sload
+    [M_OPP] mload [M_INC_BUY] mload
+    NUMERAIRE() 0xc0 mload eq
+    POOL_SLOT0() SLOT_TICK()
+    POOL_BEATS_LEVEL() done jump
     none_1: pop
     none: 0x00 0x00
     done:

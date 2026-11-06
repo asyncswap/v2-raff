@@ -21,6 +21,7 @@
 #include "./lib/TickPrice.huff"
 #include "./lib/TickBitmap.huff"
 #include "./lib/Book.huff"
+#include "./lib/BookFunding.huff"
 #include "./lib/ExactPrice.huff"
 #include "./lib/MatchAmounts.huff"
 #include "./lib/Liquidity.huff"
@@ -599,22 +600,7 @@
 }
 
 // Matching
-/// @notice `_crosses(buyKey, sellKey, buy, sell)`: strictly ordered keys decide; equal keys are decided by
-///         the full-precision cross-multiply `floor(buyIn·sellIn / sellOut) ≥ buyOut`.
-#define fn CROSSES() = takes (2) returns (1) {
-    ORDER_AT() swap1 ORDER_AT() // sell,buy
-    // Tick keys decide unequal levels. Only equal levels need the full-width ratio comparison.
-    // This also preserves Solidity's directional rounding at a tick boundary.
-    dup1 0x01 add O_LOAD() O_PRICE()
-    dup3 0x01 add O_LOAD() O_PRICE() // buyKey,sellKey,sell,buy
-    dup2 dup2 eq exact jumpi
-    gt swap2 pop pop done jump
-    exact: pop pop
-    dup1 0x02 add O_LOAD() swap1 0x03 add O_LOAD() // sellMin,sellIn,buy
-    dup3 0x03 add O_LOAD() dup4 0x02 add O_LOAD() // buyIn,buyMin,sellMin,sellIn,buy
-    swap2 swap1 swap3 swap1 RATIO_LE() swap1 pop
-    done:
-}
+#include "lib/Crossing.huff"
 
 /// @notice `matchIncoming`: match M_INC against the best opposite orders while they cross, at most 8 times.
 #define fn MATCH_INCOMING() = takes (0) returns (1) {
@@ -1081,15 +1067,7 @@
 /// @notice `setExecutorWithSig(key, maker, executor, allow, nonce, deadline, signature)`.
 #define macro SET_EXECUTOR_WITH_SIG() = takes (0) returns (0) {
     0x04 LOAD_KEY_AT()
-    HASH_POOL_KEY()                             // [poolHash]
-    [SET_EXECUTOR_TYPEHASH] [S_STRUCT] mstore
-    LOAD_ADDRESS(0xa4) 0x10e0 mstore
-    LOAD_ADDRESS(0xc4) 0x1100 mstore
-    LOAD_BOOL(0xe4) 0x1120 mstore
-    0x1140 mstore
-    0x104 calldataload 0x1160 mstore
-    0x124 calldataload 0x1180 mstore
-    0xe0 [S_STRUCT] sha3 HASH_TYPED_DATA()
+    HASH_SET_EXECUTOR() HASH_TYPED_DATA()
     0x144 calldataload 0x04 add swap1
     0x124 calldataload 0x104 calldataload 0xa4 calldataload VERIFY()
     0xe4 calldataload 0xc4 calldataload dup2 dup2 CHECK_TRUSTED_GRANT() dup2 dup2 0xa4 calldataload [E_P] mload EXECUTOR_SLOT() sstore

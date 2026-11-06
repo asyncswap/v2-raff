@@ -172,7 +172,7 @@
     LOAD_POSITION()
     [B_L] mload 0x02 add sload [B_COUNT] mstore
     [B_COUNT] mload has_level jumpi
-    [B_PRICE] mload [B_BUY] mload [B_P] mload SIDE_TREE() BITMAP_INSERT()
+    [B_PRICE] mload [B_BUY] mload [B_P] mload SIDE_TREE() BITMAP_INSERT() pop
     has_level:
     [B_O] mload 0x06 add O_LOAD() [B_O] mload O_LOAD() O_FEE() PRIORITY_KEY_OF()
     dup1 0x80 shl [B_PRICE] mload or [B_O] mload 0x01 add O_STORE()
@@ -232,32 +232,6 @@
 }
 
 // Transitions
-/// @notice `AsyncFiller.addOrder`. Inputs: B_P, B_ID, B_OWNER, B_IN, B_MIN, B_BUY, B_ZFO, B_FEE.
-#define fn BOOK_ADD() = takes (0) returns (0) {
-    BOOK_CHECK_MINIMUM()
-    [UINT64_MASK] [B_FEE] mload gt iszero fee_fits jumpi
-    __FUNC_SIG("PriorityFeeTooLarge()") 0xe0 shl REVERT_0()
-    fee_fits:
-    [B_FEE] mload iszero fee_checked jumpi
-    [B_MIN] mload [B_BUY] mload iszero sell jumpi
-    pop [B_IN] mload
-    sell: MINIMUM_BID() [B_FEE] mload lt iszero fund jumpi
-    __FUNC_SIG("PriorityFeeTooSmall()") 0xe0 shl REVERT_0()
-    fund: [B_FEE] mload NUMERAIRE() address F_MINT()
-    fee_checked:
-    [B_MIN] mload [B_IN] mload [B_ZFO] mload [B_BUY] mload CURRENT_PRICE_KEY()
-    NEXT_SEQUENCE()
-    ORDER_TO_B()
-    dup1 [B_O] mload 0x06 add O_STORE()
-    dup1 [B_O] mload 0x04 add O_STORE()
-    [B_FEE] mload PRIORITY_KEY_OF() 0x80 shl or [B_O] mload 0x01 add O_STORE()
-    [B_FEE] mload 0xb8 shl 0x01 0xb0 shl or
-    [B_ZFO] mload 0xa8 shl or [B_BUY] mload 0xa0 shl or [B_OWNER] mload or [B_O] mload O_STORE()
-    [B_IN] mload [B_O] mload 0x02 add O_STORE()
-    [B_MIN] mload [B_O] mload 0x03 add O_STORE()
-    BOOK_APPEND()
-}
-
 /// @notice `AsyncFiller.setOrderingMode`: only while the pool has no open order.
 #define macro BOOK_SET_MODE() = takes (2) returns (0) {
     // [P, mode]

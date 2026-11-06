@@ -375,12 +375,24 @@
       "deploymentChanges": [],
       "assertionsSha256": "d3f6dcef4337023cf8478351b92c4a578b08d04265c9e86531d82b7ed690005d"
     },
+    "test/TickBitmap.t.sol": {
+      "sha256": "c358f8dda46e59b499d7cff743ec5377ebd36470ef9628e2d72728da29bc63e7",
+      "deploymentChanges": [],
+      "assertionsSha256": "a33f20cd2bc2ef2ece52ef11e6eb2eac9d3e7ea73e6358c93c6b5ee7affb972d"
+    },
     "test/TickPriceKey.t.sol": {
       "sha256": "d1ac3abb608b8ae1a84d7c1b4a05bbd89099f7a4503422db6334223bc829c0d8",
       "deploymentChanges": [
         "Bind TickPrice.key to the production Huff price-key kernel; assertions unchanged, pure tests become view."
       ],
       "assertionsSha256": "710c613feb72effad5284fff71ab416d420975c0010578ede2b6da47f3dbfe22"
+    },
+    "test/TickPricePoolBeatsLevel.t.sol": {
+      "sha256": "a2fa4234454e85e8e2fb603dde27007256daa7c90f6d85233fabaa0df54a731b",
+      "deploymentChanges": [
+        "Bind price selection to the shared production Huff kernel and v4 state reads; assertions unchanged."
+      ],
+      "assertionsSha256": "2a703dbe48c51c09a7d8e840191a863fb6e5d2e37fbb81839aed16ffeccfe475"
     },
     "test/TokenClaims.t.sol": {
       "sha256": "597b5391ad4d3c0a83b0768a14129d922ab13aa3476c924ad35b7c10acb9efbc",
@@ -489,6 +501,11 @@
       "deploymentChanges": [],
       "assertionsSha256": "af1281e4452c9272ff148f991b1cd28098573188ac7a52fef306eaf51ed1258b"
     },
+    "test/formal/AsyncSwapCrosses.t.sol": {
+      "sha256": "676b689ce66c4279a3d64006de711fa07493c7c42b4568913f814abfe2a0c919",
+      "deploymentChanges": [],
+      "assertionsSha256": "a755fc18818e9f841f13cc5628e1247200c1d026ee559a8ec0aab2898f7e414d"
+    },
     "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol": {
       "sha256": "b1ade1334fe9f3eca8adafdd772ffac4d4127415b6bf3ac4c2ec87d3c78a190d",
       "deploymentChanges": [],
@@ -582,6 +599,11 @@
       "sha256": "72b38b3292d9b72a16eaff79804677bf829f1588703c2f9588183c56b434bc1e",
       "deploymentChanges": [],
       "assertionsSha256": "30261cd113f35709fa06d5c2aa083fc27ace469e199c1b6ef8a88a6434bcee0c"
+    },
+    "test/formal/AsyncSwapPriorityKey.t.sol": {
+      "sha256": "c3c23496937daef5bf4f91f46867f88843e22f7dc17c542a0211c09cd6f6a181",
+      "deploymentChanges": [],
+      "assertionsSha256": "83df861857cfcff5027d6b7cf2e085faff1cf78957549b225ca175e6486c4365"
     },
     "test/formal/AsyncSwapReceive.t.sol": {
       "sha256": "cdda629bedc625bc11c37b44f1739e9b826c03d80f6944ae9f5b2c8ff1f7f3dc",
@@ -679,9 +701,9 @@
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/formal/FormalHarnessesA.sol": {
-      "sha256": "472bcdd46ac55bbdfb9db5857c53f9436e04835cba6de00af9a78f5e26850fbf",
+      "sha256": "f0a1257b9c991673d3944301ed144db253a28dc3c7a1a3f35b68521d734bef87",
       "deploymentChanges": [
-        "Return production Huff math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
+        "Return production Huff book/math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
       ],
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
@@ -765,6 +787,13 @@
       "sha256": "dcc6bc743656c5b7fd4251abd6fa34838d73a12c5e8392f1b6dfbfae922e9b0d",
       "deploymentChanges": [],
       "assertionsSha256": "edf01dc1e68e565e18368fd9f91e80eea6b0984d97e0656e611a68d52834f682"
+    },
+    "test/formal/SpecSig.t.sol": {
+      "sha256": "5f64b3c1271b958f7a7d0aff9249af8c23388592dcac2cce23e4a99d5e5c2b52",
+      "deploymentChanges": [
+        "Install the production Huff hashing/ERC-1271 harness; hook/Router endpoint assertions remain unchanged."
+      ],
+      "assertionsSha256": "419230dc0edff739527bcbf9b838dd74902073f34a966dcdbe5bfe7dfbd02cfb"
     },
     "test/nethermind_auditagent/NethermindAuditAgent.t.sol": {
       "sha256": "a6e9094c4b936b7533c940bebbab12b31017983f91c54ddba5c797ea8b2f237b",
@@ -964,8 +993,10 @@
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/utils/TickIndexHarness.sol": {
-      "sha256": "a06689f470b854142e7306bf8dfd65761675d1fe2029221880cd2a5373719d09",
-      "deploymentChanges": [],
+      "sha256": "3f4120ad5121227750035e814e2a97c4d70196ce35612dc24cb80454b6cbbab5",
+      "deploymentChanges": [
+        "Install production Huff bitmap/radix runtime for the unchanged index harness ABI."
+      ],
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/utils/TopUpCallbackToken.sol": {
@@ -979,8 +1010,6 @@
     "test/EligiblePrice.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
     "test/IncomingLibraryDeployment.t.sol": "Solidity linked-library deployment script.",
     "test/IndexLibraryDeployment.t.sol": "Solidity linked-library deployment scripts.",
-    "test/TickBitmap.t.sol": "Direct Solidity library harness; needs an independent Huff harness.",
-    "test/TickPricePoolBeatsLevel.t.sol": "Direct Solidity library harness; needs an independent Huff harness.",
     "test/fizz/Actor.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/fizz/Base.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/fizz/FoundryTester.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
@@ -1010,12 +1039,10 @@
     "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapCallOptionalReturn.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapConstructor.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapCrosses.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapFunctionCall.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapFunctionCallWithValue.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapLibHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapPriorityKey.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapRevert.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapSafeTransferFrom.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
@@ -1032,7 +1059,6 @@
     "test/formal/SpecBook.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/SpecCore.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/SpecEip712.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/SpecSig.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/security/ClaimTransfers.t.sol": "Direct Solidity library harness.",
     "test/security/EligibleGas.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
     "test/security/EligiblePythonVectors.t.sol": "Depends on Solidity internal/storage-layout harnesses.",

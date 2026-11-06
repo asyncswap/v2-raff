@@ -1,0 +1,49 @@
+// Direct ABI fixture for production book and crossing routines. Setters only seed Huff's record layout.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/RadixPriceTree.huff"
+#include "../../src/current/lib/TickPrice.huff"
+#include "../../src/current/lib/TickBitmap.huff"
+#include "../../src/current/lib/Book.huff"
+#include "../../src/current/lib/ExactPrice.huff"
+#include "../../src/current/lib/OrderStorage.huff"
+#include "../../src/current/lib/Crossing.huff"
+#define constant POOL = 0x100
+#define fn ORDER_AT() = takes (1) returns (1) { [POOL] ORDER_SLOT() }
+#define macro MAIN() = takes (0) returns (0) {
+    [POOL] [B_P] mstore
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("setOrder(bytes32,(address,uint256,uint256,uint128,bool,bool,uint64,uint32,uint64,uint128,uint64))") eq seed jumpi
+    dup1 __FUNC_SIG("setIsBuy(bytes32,bool)") eq side jumpi
+    dup1 __FUNC_SIG("order(bytes32)") eq info jumpi
+    dup1 __FUNC_SIG("orderSlot(bytes32)") eq slot jumpi
+    dup1 __FUNC_SIG("append(bytes32)") eq append jumpi
+    dup1 __FUNC_SIG("crosses(bytes32,bytes32)") eq crosses jumpi
+    0x00 0x00 revert
+    slot: 0x04 calldataload ORDER_AT() RETURN_1()
+    seed:
+        0x04 calldataload ORDER_AT() // O
+        0x24 calldataload 0xa4 calldataload 0xa0 shl or 0xc4 calldataload 0xa8 shl or
+        0x01 0xb0 shl or 0x124 calldataload 0xb8 shl or dup2 sstore
+        0x84 calldataload 0x144 calldataload 0x80 shl or dup2 0x01 add sstore
+        0x44 calldataload dup2 0x02 add sstore
+        0x64 calldataload dup2 0x03 add sstore
+        0x164 calldataload dup2 0x04 add sstore
+        0x104 calldataload dup2 0x05 add sstore
+        0xe4 calldataload swap1 0x06 add sstore RETURN_EMPTY()
+    side:
+        0x04 calldataload ORDER_AT() dup1 sload 0x01 0xa0 shl not and
+        0x24 calldataload 0xa0 shl or swap1 sstore RETURN_EMPTY()
+    append:
+        0x04 calldataload dup1 [B_ID] mstore ORDER_AT() [B_O] mstore
+        BOOK_APPEND() RETURN_EMPTY()
+    crosses: 0x24 calldataload 0x04 calldataload CROSSES() RETURN_1()
+    info:
+        0x04 calldataload ORDER_AT()
+        dup1 sload dup1 O_OWNER() 0x00 mstore
+        dup1 O_BUY() 0x80 mstore dup1 O_ZFO() 0xa0 mstore O_FEE() 0x100 mstore
+        dup1 0x01 add sload dup1 O_PRICE() 0x60 mstore O_PK() 0x120 mstore
+        dup1 0x02 add sload 0x20 mstore dup1 0x03 add sload 0x40 mstore
+        dup1 0x04 add sload 0x140 mstore dup1 0x05 add sload 0xe0 mstore
+        0x06 add sload 0xc0 mstore 0x160 0x00 return
+}

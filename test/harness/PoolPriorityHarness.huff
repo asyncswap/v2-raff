@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: MIT
+// Reads the real v4 pool, then calls the same price-selection kernel as the production hook.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/PoolManager.huff"
+#include "../../src/current/lib/TickPrice.huff"
+#include "../../src/current/lib/PoolPriority.huff"
+#define macro MANAGER() = takes (0) returns (1) { 0x04 calldataload }
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("key(bool,bool,uint256,uint256)") eq key jumpi
+    dup1 __FUNC_SIG("poolBeatsLevel(address,bytes32,bool,bool,uint128,int24,uint64)") eq beats jumpi
+    0x00 0x00 revert
+    key: 0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload CURRENT_PRICE_KEY() RETURN_1()
+    beats:
+    0x24 calldataload PM_LIQUIDITY() iszero empty jumpi
+    0xc4 calldataload 0xa4 calldataload 0x84 calldataload 0x64 calldataload 0x44 calldataload
+    0x24 calldataload 0x00 mstore [POOLS_SLOT] 0x20 mstore 0x40 0x00 sha3 PM_EXTSLOAD()
+    0xa0 shr 0x02 signextend POOL_BEATS_LEVEL() RETURN_2()
+    empty: 0x00 0x00 RETURN_2()
+}

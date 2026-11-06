@@ -95,6 +95,13 @@ contract RadixPriceTreeHarness {
 ///         (public, reached by DELEGATECALL as the hook reaches it). This reaches the private
 ///         `AsyncFiller._priorityKey` and `AsyncMatching._crosses`.
 contract AsyncBookHarness {
+    constructor() {
+        address deployed = CurrentHuffDeploy.deploy("test/harness/BookHarness.huff", "");
+        bytes memory runtime = deployed.code;
+        // The constructor installs Huff runtime; subsequent test calls never execute Solidity helpers.
+        assembly ("memory-safe") { return(add(runtime, 32), mload(runtime)) }
+    }
+
     AsyncFiller.State internal st;
     AsyncFiller.Book internal book;
 

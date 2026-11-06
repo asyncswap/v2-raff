@@ -12,7 +12,7 @@ FORMAL_SUPPORT = {
     "FormalMatchD.sol",
 }
 FORMAL_TESTS = set(
-    """AsyncSwapBestOrder AsyncSwapOrderBookLevel RoutingPoolImpact AsyncSwapMulDiv AsyncSwapBitSet AsyncSwapFreeNode AsyncSwapInsert AsyncSwapMostSignificantBit AsyncSwapNewNode AsyncSwapRemove AsyncSwapMatchAmounts AsyncSwapMatchPair AsyncSwapReduceAfterMatch AsyncSwapReduceMatchedOrders AsyncSwapSettleMatchedPriorityFee AsyncSwapSettleTransfers AsyncSwapTransferEscrow AsyncSwapOnlyOwner AsyncSwapUpdatePriceWithSig AsyncSwapSweep AsyncSwapMatchBook
+    """AsyncSwapCrosses AsyncSwapPriorityKey SpecSig AsyncSwapBestOrder AsyncSwapOrderBookLevel RoutingPoolImpact AsyncSwapMulDiv AsyncSwapBitSet AsyncSwapFreeNode AsyncSwapInsert AsyncSwapMostSignificantBit AsyncSwapNewNode AsyncSwapRemove AsyncSwapMatchAmounts AsyncSwapMatchPair AsyncSwapReduceAfterMatch AsyncSwapReduceMatchedOrders AsyncSwapSettleMatchedPriorityFee AsyncSwapSettleTransfers AsyncSwapTransferEscrow AsyncSwapOnlyOwner AsyncSwapUpdatePriceWithSig AsyncSwapSweep AsyncSwapMatchBook
 AsyncSwapCalculateHookFee AsyncSwapAfterDonate RouterSwapWithSig FeeVaultCollect NativeClaimsUnlockCallback
 AsyncSwapBeforeSwap AsyncSwapTransferOwnership AsyncSwapFillOrderFromPoolLiquidity RefinementRouter
 AsyncSwapTryFillOrderFromPoolLiquidity AsyncSwapOrderBookOrder FeeVaultUnlockCallback RefinementAsyncSwap
@@ -30,6 +30,9 @@ def supported(path):
     p = Path(path)
     if path in {
         "test/Numeraire.t.sol",
+        "test/TickBitmap.t.sol",
+        "test/TickPricePoolBeatsLevel.t.sol",
+        "test/utils/TickIndexHarness.sol",
         "test/RadixPriceTree.t.sol",
         "test/TickPriceKey.t.sol",
         "test/nethermind_auditagent/NethermindAuditAgent.t.sol",
@@ -57,6 +60,32 @@ def adapt_formal(path, text):
     if not supported(path):
         return text, changes
     name = Path(path).name
+    if name == "TickIndexHarness.sol":
+        # The Solidity body supplies ABI only; avoid an unused immutable relocation after the runtime return.
+        text = text.replace("bool immutable useBitmap;", "bool useBitmap;")
+        pos = text.index(";", text.index("pragma ")) + 1
+        text = (
+            text[:pos]
+            + '\nimport {CurrentHuffDeploy} from "compat/current/support/CurrentHuffDeploy.sol";\n'
+            + text[pos:]
+        )
+        text = text.replace(
+            "useBitmap = use_;",
+            """useBitmap = use_;
+        address deployed = CurrentHuffDeploy.deploy(
+            use_ ? "test/harness/BitmapHarness.huff" : "test/harness/FormalRadix.huff", "");
+        bytes memory runtime = deployed.code;
+        // Both comparator implementations execute their production Huff routines.
+        assembly ("memory-safe") { return(add(runtime, 32), mload(runtime)) }""",
+        )
+        changes += [
+            "Install production Huff bitmap/radix runtime for the unchanged index harness ABI."
+        ]
+    if name == "SpecSig.t.sol":
+        text = runtime_constructor(text, "SigLibHarness", "test/harness/SignatureHarness.huff")
+        changes += [
+            "Install the production Huff hashing/ERC-1271 harness; hook/Router endpoint assertions remain unchanged."
+        ]
     if name == "FormalBase.sol":
         for old, new in [
             ("ASYNC_ORDERS_SLOT = 2", "ASYNC_ORDERS_SLOT = 3"),
@@ -80,6 +109,27 @@ def adapt_formal(path, text):
         )
         changes += [
             "Install production Huff radix operations behind the unchanged harness ABI."
+        ]
+    if name == "TickPricePoolBeatsLevel.t.sol":
+        text = re.sub(
+            r"import \{TickPrice\} from [^;]+;",
+            'import {CurrentHuffDeploy} from "compat/current/support/CurrentHuffDeploy.sol";\ninterface IPoolPriority { function key(bool,bool,uint256,uint256) external view returns(uint128); function poolBeatsLevel(IPoolManager,PoolId,bool,bool,uint128,int24,uint64) external view returns(bool,uint160); }',
+            text,
+        )
+        text = text.replace(
+            "contract TickPricePoolBeatsLevelTest is Test {",
+            "contract TickPricePoolBeatsLevelTest is Test {\n    IPoolPriority TickPrice;",
+        )
+        text = text.replace(
+            "function setUp() public {",
+            'function setUp() public {\n        TickPrice = IPoolPriority(CurrentHuffDeploy.deploy("test/harness/PoolPriorityHarness.huff", ""));',
+        )
+        text = text.replace(
+            "function test_priceJustBelowTwoTo128IsTheEndKey() public pure",
+            "function test_priceJustBelowTwoTo128IsTheEndKey() public view",
+        )
+        changes += [
+            "Bind price selection to the shared production Huff kernel and v4 state reads; assertions unchanged."
         ]
     if name == "TickPriceKey.t.sol":
         text = re.sub(
@@ -259,12 +309,13 @@ def adapt_formal(path, text):
         )
     if name == "FormalHarnessesA.sol":
         for contract, source in [
+            ("AsyncBookHarness", "test/harness/BookHarness.huff"),
             ("MathMulDivHarness", "test/harness/MathHarness.huff"),
             ("RadixPriceTreeHarness", "test/harness/FormalRadix.huff"),
         ]:
             text = runtime_constructor(text, contract, source)
         changes += [
-            "Return production Huff math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
+            "Return production Huff book/math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
         ]
     if name == "AsyncSwapMatchAmounts.t.sol":
         text = runtime_constructor(
