@@ -1,0 +1,93 @@
+{
+  "targetCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "command": "FOUNDRY_OPTIMIZER_RUNS=10000 forge test --match-contract TokenClaimsParityTest --fuzz-runs 2048 --json",
+  "toolchain": "Foundry 1.8.6, solc 0.8.26, huff-neo 1.6.2",
+  "huffSourceSha256": "631eb023a8f0abe253393927967ac9fe14f838739d88da3795270d319912c17e",
+  "results": {
+    "testFuzz_callbackEncoding(bytes,bool)": {
+      "status": "Success",
+      "kind": {
+        "Fuzz": {
+          "first_case": {
+            "gas": 85658,
+            "stipend": 22208
+          },
+          "runs": 2048,
+          "mean_gas": 63225,
+          "median_gas": 62792,
+          "failed_corpus_replays": 0
+        }
+      }
+    },
+    "testFuzz_malformedStaticHead(bytes32,bytes32,uint256,uint8)": {
+      "status": "Success",
+      "kind": {
+        "Fuzz": {
+          "first_case": {
+            "gas": 82260,
+            "stipend": 22392
+          },
+          "runs": 2048,
+          "mean_gas": 64697,
+          "median_gas": 60435,
+          "failed_corpus_replays": 0
+        }
+      }
+    },
+    "testFuzz_partialAndFullRedemption(uint128,uint128)": {
+      "status": "Success",
+      "kind": {
+        "Fuzz": {
+          "first_case": {
+            "gas": 533155,
+            "stipend": 21344
+          },
+          "runs": 2048,
+          "mean_gas": 526384,
+          "median_gas": 528113,
+          "failed_corpus_replays": 0
+        }
+      }
+    },
+    "test_callbackNoncanonicalOffsetsAndBounds()": {
+      "status": "Success",
+      "kind": {
+        "Unit": {
+          "gas": 648924
+        }
+      }
+    },
+    "test_invalidAndUnapprovedRedemptions()": {
+      "status": "Success",
+      "kind": {
+        "Unit": {
+          "gas": 762933
+        }
+      }
+    },
+    "test_nativeCurrency()": {
+      "status": "Success",
+      "kind": {
+        "Unit": {
+          "gas": 427525
+        }
+      }
+    },
+    "test_reentryBlockedAndLockCleared()": {
+      "status": "Success",
+      "kind": {
+        "Unit": {
+          "gas": 1006395
+        }
+      }
+    },
+    "test_rejectedTransferRollsBackAllowanceAndClaims()": {
+      "status": "Success",
+      "kind": {
+        "Unit": {
+          "gas": 692493
+        }
+      }
+    }
+  }
+}

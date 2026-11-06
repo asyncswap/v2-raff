@@ -106,11 +106,32 @@
     0x00 0x00 revert
 }
 
+#define constant DATA = 0x100
+#define constant DATA_LENGTH = 0x120
+/// @dev Decode the dynamic bytes argument, including noncanonical but valid ABI offsets.
+///      Bound offsets and lengths before addition so malformed input cannot wrap into the head.
+#define macro DECODE_CALLBACK() = takes (0) returns (0) {
+    0x24 calldatasize lt bad jumpi
+    0x04 calldataload dup1 0x40 shr bad jumpi
+    0x04 add dup1 0x20 add calldatasize lt bad jumpi
+    dup1 calldataload dup1 0x40 shr bad jumpi
+    dup2 0x20 add add calldatasize lt bad jumpi
+    dup1 calldataload [DATA_LENGTH] mstore
+    0x20 add [DATA] mstore
+    done jump
+    bad: 0x00 0x00 revert
+    done:
+}
+
 #define macro UNLOCK_CALLBACK() = takes (0) returns (0) {
+    DECODE_CALLBACK()
     MANAGER() caller eq from_manager jumpi
     __ERROR(Unauthorized) REVERT_0()
     from_manager:
-    0x64 calldataload 0x44 calldataload         // [currency, recipient]
+    [DATA_LENGTH] mload 0x40 gt bad_inner jumpi
+    [DATA] mload calldataload 0xa0 shr bad_inner jumpi
+    [DATA] mload 0x20 add calldataload 0xa0 shr bad_inner jumpi
+    [DATA] mload 0x20 add calldataload [DATA] mload calldataload         // [currency, recipient]
     dup1 address PM_BALANCE_OF()                // [amount, currency, recipient]
     dup1 iszero nothing jumpi
     dup1 dup3 address PM_BURN()
@@ -119,6 +140,7 @@
     [MEM_LOG] mstore                            // [currency, recipient]
     __EVENT_HASH(FeesCollected) 0x20 [MEM_LOG] log3
     0x00 [MEM_LOG] RETURN_BYTES()
+    bad_inner: 0x00 0x00 revert
 }
 
 //'########:'##::: ##:'########:'########::'##:::'##:

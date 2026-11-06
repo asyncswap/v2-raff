@@ -1,4 +1,20 @@
-# v2-raff
+# Async Swap in Huff
+
+The current port in `src/current/` targets [Solidity PR #81](https://github.com/asyncswap/contracts/pull/81), including incoming-memory matching, fee top-ups and LP routing. Its [copied acceptance suite](compat/current/README.md) passes **762 upstream tests and invariant predicates**, with unchanged assertions. The extended 85-test campaign passes at 2,048 fuzz cases. **325 runnable upstream tests remain unported**; the [per-test inventory](compat/current/results/coverage.json) records the boundary.
+
+The [Router benchmark](benchmarks/crossing/README.md) measures 1,000 transactions and 5,200 pairs. Huff uses **7.3–24.5% less gas** on single fills and **17.2–18.3% less** on eight-level sweeps, but **11.1–13.0% more** on other eight-fill workloads. Hook/Router runtimes are **24,073 / 10,623 bytes**. The [optimizer sweep](benchmarks/optimizer-runs/README.md) supports retaining 10,000 runs for Solidity among the six tested settings.
+
+```sh
+FOUNDRY_PROFILE=current forge test
+FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test
+python3 benchmarks/crossing/run.py
+```
+
+The current hook takes `(poolManager, numeraire, owner, router, minOrderUsd, assetPrecision)`; its Router takes `(poolManager, hook, permit2, mevTaxGas)`. See the acceptance guide for toolchain, fork configuration and exact coverage. The port has not been independently audited or deployed publicly.
+
+## Legacy implementation
+
+The remaining sections describe the historical root `src/` implementation. Its constructors, behavior and gas numbers are separate from the current port above. The [arithmetic experiment](docs/INCOMING_MEMORY_EXPERIMENT.md) is retained as historical context.
 
 Async Swap v2 in [Huff](https://www.huff-neo.rs), compiled with [huff-neo](https://github.com/cakevm/huff-neo)
 (`hnc`): a port of [`asyncswap/contracts`](https://github.com/asyncswap/contracts) (`main` @ `6fa977a`) with the
@@ -49,7 +65,7 @@ Behaviour is the same; these are not observable through the ABI.
 - Test-only builds: `-c POOL_FEE_MODE=1` (`calculatePoolFee = amount / 100`, for `test/security/FeeClaims.t.sol`)
   and `-c SKIP_HOOK_ADDRESS_CHECK=1` (for the constructor tests in `test/Numeraire.t.sol`).
 
-## Gas
+## Historical gas (legacy implementation)
 
 Same tests, Solidity (`optimizer_runs = 1000`) against Huff:
 

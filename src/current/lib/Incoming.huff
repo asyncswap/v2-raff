@@ -1,0 +1,124 @@
+// SPDX-License-Identifier: MIT
+// Seven packed words bridge funding transiently. Once funded they live in memory;
+// only a residual order is written to persistent storage and indexed.
+#define constant MC_ACTIVE = 0x2000
+#define constant MC_SLOT = 0x2020
+#define constant MC_ID = 0x2040
+#define constant MC_DATA = 0x2100
+#define constant STAGE_ID = 0x7e50101
+#define constant STAGE_POOL = 0x7e50102
+#define constant STAGE_WORDS = 0x7e50200
+
+#define fn O_LOAD() = takes (1) returns (1) {
+    // Only the active candidate's seven slots are redirected; all other state remains persistent.
+    [MC_ACTIVE] mload iszero stored jumpi
+    [MC_SLOT] mload dup2 sub 0x07 dup2 lt iszero other jumpi
+    0x20 mul [MC_DATA] add mload swap1 pop done jump
+    other: pop
+    stored: sload
+    done:
+}
+#define fn O_STORE() = takes (2) returns (0) {
+    // [slot,value]
+    [MC_ACTIVE] mload iszero stored jumpi
+    [MC_SLOT] mload dup2 sub 0x07 dup2 lt iszero other jumpi
+    0x20 mul [MC_DATA] add swap1 pop mstore done jump
+    other: pop
+    stored: sstore
+    done:
+}
+#define macro IS_CANDIDATE() = takes (0) returns (1) {
+    [MC_ACTIVE] mload [B_ID] mload [MC_ID] mload eq and
+}
+
+#define fn CAN_STAGE() = takes (0) returns (1) {
+    [E_PID] mload F_LIQUIDITY() iszero no_liquidity jumpi
+    0x00 done jump
+    no_liquidity:
+    [B_BUY] mload iszero dup1 [B_P] mload SIDE_TREE() BITMAP_BEST()
+    iszero none jumpi
+    [B_BUY] mload iszero [B_P] mload LEVEL_SLOT()
+    dup1 0x03 add sload [UINT32_MASK] and swap1 0x05 add swap1 HASH_2() READ_RATIO()
+    // sell limit <= buy limit, using the opposite subtree's exact extremum.
+    [B_MIN] mload [B_IN] mload [B_BUY] mload incoming_buy jumpi
+    swap1 RATIO_LE() done jump
+    incoming_buy:
+    swap2 swap1 swap3 swap1 RATIO_LE() done jump
+    none: pop 0x00
+    done:
+}
+#define macro START_CANDIDATE() = takes (0) returns (0) {
+    0x01 [MC_ACTIVE] mstore
+    [B_ID] mload dup1 [MC_ID] mstore [B_P] mload ORDER_SLOT() [MC_SLOT] mstore
+}
+#define fn SAVE_CANDIDATE() = takes (0) returns (0) {
+    [MC_ID] mload [STAGE_ID] tstore [E_PID] mload [STAGE_POOL] tstore
+    0x00
+    loop:
+    dup1 0x20 mul [MC_DATA] add mload dup2 [STAGE_WORDS] add tstore
+    0x01 add 0x07 dup2 lt loop jumpi pop
+}
+#define fn LOAD_CANDIDATE() = takes (0) returns (0) {
+    [STAGE_ID] tload dup1 [M_INC] mload eq iszero candidate_bad jumpi
+    [MC_ID] mstore 0x00 [STAGE_ID] tstore
+    0x00
+    loop:
+    dup1 [STAGE_WORDS] add tload dup2 0x20 mul [MC_DATA] add mstore
+    0x00 dup2 [STAGE_WORDS] add tstore
+    0x01 add 0x07 dup2 lt loop jumpi pop
+    [MC_DATA] mload O_OWNER() LOAD_ADDRESS(0xa4) eq iszero candidate_bad jumpi
+    [MC_DATA] 0x40 add mload iszero candidate_bad jumpi
+    [MC_ID] mload [E_P] mload ORDER_SLOT() [MC_SLOT] mstore
+    0x01 [MC_ACTIVE] mstore done jump
+    candidate_bad: __FUNC_SIG("OrderNotFound()") 0xe0 shl REVERT_0()
+    done:
+}
+#define fn PERSIST_CANDIDATE() = takes (0) returns (0) {
+    0x00 [MC_ACTIVE] mstore
+    [MC_DATA] 0x40 add mload iszero done jumpi
+    0x00
+    loop:
+    dup1 0x20 mul [MC_DATA] add mload dup2 [MC_SLOT] mload add sstore
+    0x01 add 0x07 dup2 lt loop jumpi pop
+    [MC_ID] mload BOOK_AT() BOOK_APPEND()
+    done:
+}
+
+#define fn ORDER_RATIO() = takes (1) returns (2) {
+    // [order slot] -> [num,den] in numeraire per asset.
+    dup1 0x03 add O_LOAD() dup2 0x02 add O_LOAD()
+    swap2 O_LOAD() O_BUY() iszero buy jumpi swap1
+    buy:
+}
+#define fn BEST_UNION() = takes (1) returns (1) {
+    // [isBuy] -> id from the stored book plus the funded in-memory candidate.
+    dup1 dup1 [E_P] mload SIDE_TREE() BITMAP_BEST()
+    iszero no_stored jumpi
+    dup2 [E_P] mload BOOK_BEST_AT_PRICE() selected jump
+    no_stored: pop 0x00
+    selected: // [storedId,isBuy]
+    [MC_ACTIVE] mload iszero done jumpi
+    [MC_DATA] 0x40 add mload iszero done jumpi
+    [MC_DATA] mload O_BUY() dup3 eq iszero done jumpi
+    dup1 iszero candidate jumpi
+    dup1 ORDER_AT() [MC_SLOT] mload
+    // Compare both ways to distinguish exact ties without rounded price arithmetic.
+    dup2 ORDER_RATIO() dup3 ORDER_RATIO() RATIO_LE()
+    0x260 mstore
+    dup1 ORDER_RATIO() dup4 ORDER_RATIO() RATIO_LE()
+    0x260 mload dup2 eq tie jumpi
+    dup5 eq prefer_candidate jumpi
+    pop pop done jump
+    tie:
+    pop
+    dup1 O_LOAD() O_FEE() dup3 O_LOAD() O_FEE()
+    dup1 dup3 eq equal_fee jumpi
+    lt prefer_candidate jumpi
+    pop pop done jump
+    equal_fee: pop pop
+    dup2 0x06 add O_LOAD() dup2 0x06 add O_LOAD() lt prefer_candidate jumpi
+    pop pop done jump
+    prefer_candidate: pop pop
+    candidate: pop [MC_ID] mload
+    done: swap1 pop
+}

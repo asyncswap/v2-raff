@@ -13,6 +13,22 @@ solc_version = "0.8.26"
 optimizer = true
 optimizer_runs = 1_000
 
+# PR #81 public-API acceptance suite. This compiles Huff for protocol deployments;
+# copied Solidity contracts provide ABI types and reference helpers only.
+[profile.current]
+src = "compat/current/support"
+test = "compat/current/test"
+out = "out-current"
+cache_path = "cache-current"
+optimizer_runs = 10_000
+no_match_test = "_finding_"
+remappings = ["@async-swap/=reference/contracts/src/", "reference/contracts/:src/=reference/contracts/src/"]
+
+[profile.current.invariant]
+runs = 64
+depth = 64
+fail_on_revert = true
+
 [lint]
 lint_on_build = false
 

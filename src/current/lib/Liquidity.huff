@@ -1,0 +1,200 @@
+// SPDX-License-Identifier: MIT
+// LP calls use a self-call rollback boundary; a failed venue attempt leaves the book intact.
+#define constant LP_BEFORE = 0x1200
+#define constant LP_AFTER = 0x1220
+#define constant LP_SWAPIN = 0x1240
+#define constant LP_SWAPPED = 0x1260
+#define constant LP_CONSUMED = 0x1280
+#define constant LP_FEE = 0x12a0
+#define constant LP_OUT = 0x12c0
+#define constant LP_LIMIT = 0x12e0
+#define constant LP_OWNER = 0x1300
+#define constant LP_IN = 0x1320
+#define constant LP_MIN = 0x1340
+#define constant LP_ID = 0x1360
+#define constant LP_ZFO = 0x1380
+#define constant DF_FROM = 0x13a0
+#define constant DF_TO = 0x13c0
+#define constant DF_BASE = 0x13e0
+#define constant DF_FEE = 0x1400
+#define constant DF_LPS = 0x1420
+#define constant R_KEEP_DUST = 0x280
+
+#define event DynamicFeeCharged(bytes32 indexed, bytes32 indexed, address indexed, uint256, uint256, int24)
+#define event PoolPriceObserved(bytes32 indexed, bytes32 indexed, int24, int24, int24, uint64)
+
+#define fn POOL_SLOT0() = takes (0) returns (1) {
+    [E_PID] mload 0x00 mstore [POOLS_SLOT] 0x20 mstore 0x40 0x00 sha3 PM_EXTSLOAD()
+}
+#define macro SLOT_TICK() = takes (1) returns (1) { 0xa0 shr 0x02 signextend }
+#define macro ABS() = takes (1) returns (1) { dup1 0xff sar dup1 dup3 add xor swap1 pop }
+
+#define fn DYNAMIC_FEE() = takes (0) returns (0) {
+    POOL_SLOT0() SLOT_TICK() [LP_AFTER] mstore
+    0x00 [DF_FEE] mstore
+    [E_P] mload 0x1b add sload dup1 iszero new_window jumpi
+    0x02 add number gt new_window_empty jumpi
+    [E_P] mload 0x1a add sload [LP_BEFORE] mload sub [DF_FROM] mstore
+    [E_P] mload 0x1a add sload [LP_AFTER] mload sub [DF_TO] mstore
+    [LP_OUT] mload [DF_BASE] mstore
+    0x00 [DF_FROM] mload [DF_TO] mload mul slt iszero no_cross jumpi
+    [DF_FROM] mload ABS() [DF_TO] mload ABS() add
+    [DF_FROM] mload ABS() [LP_OUT] mload MUL_DIV() [DF_BASE] mstore
+    no_cross:
+    0x00 [DF_FROM] mload [DF_TO] mload mul sgt positive jumpi
+    0x00 [DF_TO] mstore
+    positive:
+    [DF_FROM] mload ABS() [DF_FROM] mstore
+    [DF_TO] mload ABS() [DF_TO] mstore
+    [DF_FROM] mload [DF_TO] mload lt iszero observed jumpi
+    0x9c40 [DF_FROM] mload [DF_TO] mload add [DF_BASE] mload MUL_DIV()
+    [LP_OUT] mload 0x01 shr dup1 dup3 gt cap jumpi
+    pop fee_ready jump
+    cap: swap1 pop
+    fee_ready: [DF_FEE] mstore
+    [E_PID] mload F_LIQUIDITY() iszero no_lps jumpi
+    [DF_FEE] mload 0x01 shr lp_share jump
+    no_lps: 0x00
+    lp_share: dup1 [DF_LPS] mstore iszero no_donation jumpi
+    [LP_ZFO] mload CURRENCY_OUT() 0xc0 mload eq [DF_LPS] mload mul
+    [LP_ZFO] mload CURRENCY_OUT() [E_KEY] mload eq [DF_LPS] mload mul PM_DONATE(0xa0)
+    no_donation:
+    [DF_LPS] mload [DF_FEE] mload sub [LP_ZFO] mload CURRENCY_OUT() FEE_VAULT() F_MINT()
+    [DF_LPS] mload [MEM_LOG] mstore
+    [DF_LPS] mload [DF_FEE] mload sub 0xb20 mstore
+    [E_P] mload 0x1a add sload 0xb40 mstore
+    [LP_ZFO] mload CURRENCY_OUT() [LP_ID] mload [E_PID] mload __EVENT_HASH(DynamicFeeCharged) 0x60 [MEM_LOG] log4
+    observed jump
+    new_window: pop
+    new_window_empty:
+    [LP_BEFORE] mload [E_P] mload 0x1a add sstore
+    number [UINT64_MASK] and [E_P] mload 0x1b add sstore
+    observed:
+    [LP_BEFORE] mload [MEM_LOG] mstore [LP_AFTER] mload 0xb20 mstore
+    [E_P] mload 0x1a add sload 0xb40 mstore number [UINT64_MASK] and 0xb60 mstore
+    [LP_ID] mload [E_PID] mload __EVENT_HASH(PoolPriceObserved) 0x80 [MEM_LOG] log3
+}
+
+#define macro CURRENT_POOL_FILL() = takes (0) returns (0) {
+    address caller eq is_self jumpi
+    __FUNC_SIG("NotSelf()") 0xe0 shl REVERT_0()
+    is_self:
+    0x04 LOAD_KEY_AT()
+    0x1a4 calldataload dup1 0xa0 shr bad_abi jumpi [LP_LIMIT] mstore
+    0x184 calldataload dup1 [LP_ID] mstore ORDER_AT()
+    dup1 sload dup1 O_OWNER() [LP_OWNER] mstore O_ZFO() [LP_ZFO] mstore
+    dup1 0x03 add sload [LP_MIN] mstore
+    0x02 add sload dup1 [LP_IN] mstore exists jumpi
+    __FUNC_SIG("OrderNotFound()") 0xe0 shl REVERT_0()
+    exists:
+    [E_PID] mload F_LIQUIDITY() has_liquidity jumpi
+    __FUNC_SIG("NoActiveLiquidity()") 0xe0 shl REVERT_0()
+    has_liquidity:
+    0x2710 [LP_IN] mload 0x270f CHECKED_ADD() div [LP_FEE] mstore
+    [LP_FEE] mload [LP_IN] mload sub [LP_SWAPIN] mstore
+    [LP_SWAPIN] mload [LP_ZFO] mload CURRENCY_IN() address F_BURN()
+    POOL_SLOT0() dup1 SLOT_TICK() [LP_BEFORE] mstore 0xd0 shr 0xffffff and [E_Y] mstore
+    0xc8 SET_POOL_FEE()
+    [LP_LIMIT] mload dup1 limit jumpi
+    pop [MAX_SQRT_PRICE_MINUS_ONE] [LP_ZFO] mload iszero limit jumpi
+    pop [MIN_SQRT_PRICE_PLUS_ONE]
+    limit:
+    [LP_SWAPIN] mload 0x00 sub [LP_ZFO] mload PM_SWAP(0xa0)
+    [E_Y] mload SET_POOL_FEE()
+    [E_PID] mload F_LIQUIDITY() post_liquidity jumpi
+    __FUNC_SIG("NoActiveLiquidity()") 0xe0 shl REVERT_0()
+    post_liquidity:
+    dup1 0x80 sar swap1 0x0f signextend
+    [LP_ZFO] mload iszero ordered jumpi swap1
+    ordered:
+    0x00 sub [LP_SWAPPED] mstore // -inputDelta, outputDelta
+    [LP_OUT] mstore
+    [LP_LIMIT] mload partial_allowed jumpi
+    [LP_SWAPIN] mload [LP_SWAPPED] mload eq partial_allowed jumpi
+    __FUNC_SIG("PartialLiquidityFill()") 0xe0 shl REVERT_0()
+    partial_allowed:
+    // Match Solidity revert precedence: reject an incomplete input before invalid output.
+    [LP_OUT] mload 0x00 swap1 sgt iszero not_met jumpi
+    [LP_SWAPIN] mload [LP_SWAPPED] mload eq all_swapped jumpi
+    [LP_SWAPPED] mload [LP_SWAPIN] mload sub [LP_ZFO] mload CURRENCY_IN() address F_MINT()
+    [LP_SWAPIN] mload [LP_SWAPPED] mload [LP_FEE] mload MUL_DIV_UP() [LP_FEE] mstore
+    all_swapped:
+    [LP_SWAPPED] mload [LP_FEE] mload add [LP_CONSUMED] mstore
+    [LP_FEE] mload FEE_VAULT() [LP_ZFO] mload CURRENCY_IN() TRANSFER_CLAIMS()
+    [LP_FEE] mload [LP_ZFO] mload CURRENCY_IN() [LP_ID] mload EMIT_FEE()
+    DYNAMIC_FEE()
+    [DF_FEE] mload [LP_OUT] mload sub [LP_OUT] mstore
+    [LP_IN] mload [LP_CONSUMED] mload [LP_MIN] mload MUL_DIV_UP()
+    [LP_OUT] mload lt not_met jumpi
+    [LP_IN] mload [LP_CONSUMED] mload eq whole jumpi
+    // A partial LP fill keeps dust available for the subsequent book step.
+    0x01 [R_KEEP_DUST] mstore
+    [LP_ID] mload [R_ID] mstore [LP_CONSUMED] mload [R_USED] mstore
+    [LP_ZFO] mload CURRENCY_IN() [R_CUR] mstore REDUCE_AND_REFUND()
+    0x00 [R_KEEP_DUST] mstore
+    [LP_OUT] mload [LP_ZFO] mload CURRENCY_OUT() [LP_OWNER] mload F_MINT()
+    paid jump
+    whole:
+    [LP_ID] mload BOOK_AT() BOOK_REMOVE()
+    [B_O] mload sload O_FEE() [LP_OWNER] mload [LP_ID] mload SETTLE_PRIORITY_FEE()
+    DELETE_ORDER()
+    [LP_OUT] mload [LP_OWNER] mload [LP_ZFO] mload CURRENCY_OUT() dup1 iszero F_TAKE_ANY()
+    paid:
+    [LP_SWAPPED] mload [MEM_LOG] mstore [LP_OUT] mload 0xb20 mstore
+    [LP_OWNER] mload [LP_ID] mload [E_PID] mload __EVENT_HASH(AsyncOrderLiquidityFilled) 0x40 [MEM_LOG] log4
+    RETURN_EMPTY()
+    not_met: __FUNC_SIG("LimitPriceNotMet()") 0xe0 shl REVERT_0()
+    bad_abi: 0x00 0x00 revert
+}
+
+#define fn POOL_BEATS_BOOK() = takes (0) returns (2) {
+    // [poolFirst,bookLimit]; quote orientation is already captured by zeroForOne and isBuy.
+    [M_INC] mload ORDER_AT() sload O_BUY() [M_INC_BUY] mstore
+    [M_INC_BUY] mload iszero dup1 [E_P] mload SIDE_TREE() BITMAP_BEST()
+    iszero none_1 jumpi [M_OPP] mstore
+    [E_PID] mload F_LIQUIDITY() iszero none jumpi
+    POOL_SLOT0() SLOT_TICK() [LP_BEFORE] mstore
+    [LP_BEFORE] mload
+    NUMERAIRE() 0xc0 mload eq ascending jumpi
+    0x0d89e8 sub 0x01 add key_ready jump
+    ascending: 0x0d89e9 add
+    key_ready: [M_INC_PRICE] mstore
+    [E_P] mload 0x1b add sload dup1 iszero no_window_1 jumpi
+    0x02 add number gt adjusted jumpi
+    [E_P] mload 0x1a add sload [LP_BEFORE] mload sub
+    [M_INC] mload ORDER_AT() sload O_ZFO() zfo jumpi
+    0x00 dup2 slt iszero no_window_1 jumpi apply jump
+    zfo: 0x00 dup2 sgt iszero no_window_1 jumpi
+    apply:
+    ABS() 0x01 shr
+    [M_INC_BUY] mload buy jumpi
+    [M_INC_PRICE] mload dup1 dup3 lt underflow jumpi
+    sub [M_INC_PRICE] mstore adjusted jump
+    underflow: pop pop 0x00 [M_INC_PRICE] mstore adjusted jump
+    buy: [M_INC_PRICE] mload add [M_INC_PRICE] mstore adjusted jump
+    no_window_1: pop
+    adjusted:
+    [M_INC_BUY] mload iszero sell_compare jumpi
+    [M_OPP] mload [M_INC_PRICE] mload lt iszero none jumpi
+    has_price jump
+    sell_compare: [M_OPP] mload [M_INC_PRICE] mload gt iszero none jumpi
+    has_price:
+    0x01 [M_OPP] mload sub
+    NUMERAIRE() 0xc0 mload eq level_ascending jumpi
+    0x0d89e8 sub level_ready jump
+    level_ascending: 0x0d89e8 swap1 sub
+    level_ready:
+    [M_INC] mload ORDER_AT() sload O_ZFO() iszero tick_ready jumpi
+    dup1 0x0d89e8 eq tick_ready jumpi 0x01 add
+    tick_ready: TICK_SQRT_PRICE()
+    [MIN_SQRT_PRICE_PLUS_ONE] dup2 lt iszero above_min jumpi
+    pop [MIN_SQRT_PRICE_PLUS_ONE]
+    above_min: [MAX_SQRT_PRICE_MINUS_ONE] dup2 gt iszero below_max jumpi
+    pop [MAX_SQRT_PRICE_MINUS_ONE]
+    below_max: 0x01 done jump
+    none_1: pop
+    none: 0x00 0x00
+    done:
+}
+
+#define fn SET_POOL_FEE() = takes (1) returns (0) { PM_UPDATE_DYNAMIC_FEE(0xa0) }

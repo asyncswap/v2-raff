@@ -1,0 +1,162 @@
+{
+  "solidityCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "settings": "solc 0.8.26, optimizer enabled, Cancun; only optimizer runs vary",
+  "results": [
+    {
+      "runs": 1,
+      "runtimeBytes": {
+        "AsyncSwap": 20182,
+        "Router": 20700,
+        "AsyncMatching": 20018,
+        "IncomingMatching": 18487,
+        "TickPrice": 4283,
+        "TickBitmap": 676
+      },
+      "fitsEip170": true,
+      "referenceTestsPassed": 11,
+      "meanReceiptGas": {
+        "buy_eight_distinct": 1099505.58,
+        "buy_eight_levels": 1325220.03,
+        "buy_eight_same": 1179410.02,
+        "buy_one_distinct": 395070.79,
+        "buy_one_same": 409536.66,
+        "sell_eight_distinct": 1126519.23,
+        "sell_eight_levels": 1338811.89,
+        "sell_eight_same": 1194081.58,
+        "sell_one_distinct": 407610.7,
+        "sell_one_same": 421978.14
+      },
+      "totalReceiptGas": 889774462
+    },
+    {
+      "runs": 200,
+      "runtimeBytes": {
+        "AsyncSwap": 20348,
+        "Router": 20784,
+        "AsyncMatching": 19911,
+        "IncomingMatching": 18632,
+        "TickPrice": 4344,
+        "TickBitmap": 678
+      },
+      "fitsEip170": true,
+      "referenceTestsPassed": 11,
+      "meanReceiptGas": {
+        "buy_eight_distinct": 1088598.54,
+        "buy_eight_levels": 1312661.2,
+        "buy_eight_same": 1166612.41,
+        "buy_one_distinct": 388188.04,
+        "buy_one_same": 402624.75,
+        "sell_eight_distinct": 1115723.23,
+        "sell_eight_levels": 1325601.5,
+        "sell_eight_same": 1180653.76,
+        "sell_one_distinct": 400557.49,
+        "sell_one_same": 414895.77
+      },
+      "totalReceiptGas": 879611669
+    },
+    {
+      "runs": 1000,
+      "runtimeBytes": {
+        "AsyncSwap": 21464,
+        "Router": 21989,
+        "AsyncMatching": 21073,
+        "IncomingMatching": 19264,
+        "TickPrice": 4468,
+        "TickBitmap": 696
+      },
+      "fitsEip170": true,
+      "referenceTestsPassed": 11,
+      "meanReceiptGas": {
+        "buy_eight_distinct": 1085652.8,
+        "buy_eight_levels": 1309165.2,
+        "buy_eight_same": 1162909.38,
+        "buy_one_distinct": 386608.1,
+        "buy_one_same": 401019.43,
+        "sell_eight_distinct": 1112423.23,
+        "sell_eight_levels": 1321776.86,
+        "sell_eight_same": 1176557.88,
+        "sell_one_distinct": 398741.91,
+        "sell_one_same": 413054.81
+      },
+      "totalReceiptGas": 876790960
+    },
+    {
+      "runs": 1337,
+      "runtimeBytes": {
+        "AsyncSwap": 21464,
+        "Router": 21989,
+        "AsyncMatching": 21188,
+        "IncomingMatching": 19283,
+        "TickPrice": 4507,
+        "TickBitmap": 696
+      },
+      "fitsEip170": true,
+      "referenceTestsPassed": 11,
+      "meanReceiptGas": {
+        "buy_eight_distinct": 1085399.54,
+        "buy_eight_levels": 1308867.09,
+        "buy_eight_same": 1162582.14,
+        "buy_one_distinct": 386346.88,
+        "buy_one_same": 400754.55,
+        "sell_eight_distinct": 1112170.93,
+        "sell_eight_levels": 1321495.24,
+        "sell_eight_same": 1176235.25,
+        "sell_one_distinct": 398480.75,
+        "sell_one_same": 412789.93
+      },
+      "totalReceiptGas": 876512230
+    },
+    {
+      "runs": 10000,
+      "runtimeBytes": {
+        "AsyncSwap": 23044,
+        "Router": 23061,
+        "AsyncMatching": 23033,
+        "IncomingMatching": 21060,
+        "TickPrice": 5204,
+        "TickBitmap": 696
+      },
+      "fitsEip170": true,
+      "referenceTestsPassed": 11,
+      "meanReceiptGas": {
+        "buy_eight_distinct": 1081974.16,
+        "buy_eight_levels": 1304861.28,
+        "buy_eight_same": 1157832.02,
+        "buy_one_distinct": 385321.06,
+        "buy_one_same": 399597.78,
+        "sell_eight_distinct": 1108755.62,
+        "sell_eight_levels": 1317668.1,
+        "sell_eight_same": 1171613.91,
+        "sell_one_distinct": 397455.17,
+        "sell_one_same": 411633.16
+      },
+      "totalReceiptGas": 873671226
+    },
+    {
+      "runs": 100000,
+      "runtimeBytes": {
+        "AsyncSwap": 24539,
+        "Router": 25661,
+        "AsyncMatching": 25382,
+        "IncomingMatching": 22850,
+        "TickPrice": 5204,
+        "TickBitmap": 696
+      },
+      "fitsEip170": false,
+      "referenceTestsPassed": 11,
+      "meanReceiptGas": {
+        "buy_eight_distinct": 1071977.23,
+        "buy_eight_levels": 1292026.0,
+        "buy_eight_same": 1145375.63,
+        "buy_one_distinct": 381580.68,
+        "buy_one_same": 395878.4,
+        "sell_eight_distinct": 1098582.11,
+        "sell_eight_levels": 1305923.84,
+        "sell_eight_same": 1159574.02,
+        "sell_one_distinct": 393714.79,
+        "sell_one_same": 407913.78
+      },
+      "totalReceiptGas": 865254648
+    }
+  ]
+}

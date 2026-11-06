@@ -1,6 +1,11 @@
+# Local validation exports and nested reference checkout
+.local/
+
 # Foundry build artifacts
 out/
 cache/
+out-current/
+cache-current/
 
 # Local environment and deployment secrets
 .env
@@ -23,3 +28,6 @@ dependencies/uniswap-v4-core-4/
 
 # Bun/npm dependencies for script/*.ts helpers
 node_modules/
+
+__pycache__/
+/benchmarks/optimizer-runs/results/*/benchmark.log

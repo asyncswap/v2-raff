@@ -1,0 +1,136 @@
+// SPDX-License-Identifier: MIT
+// Fixed-point tick conversion follows Uniswap v4 TickMath (MIT); constants and
+// rounding are kept identical so price levels agree at tick boundaries.
+#define macro MSB_256() = takes (1) returns (1) {
+    dup1 0x80 shr dup1 iszero low jumpi
+    MSB() 0x80 add swap1 pop done jump
+    low: pop MSB()
+    done:
+}
+
+/// @dev Seven Newton steps from a power-of-two seed suffice for any uint256 square root.
+#define fn INTEGER_SQRT() = takes (1) returns (1) {
+    dup1 iszero done jumpi
+    dup1 MSB_256() 0x01 shr 0x01 swap1 shl
+    SQRT_STEP() SQRT_STEP() SQRT_STEP() SQRT_STEP() SQRT_STEP() SQRT_STEP() SQRT_STEP()
+    dup1 dup3 div dup2 dup2 lt choose_quotient jumpi
+    pop swap1 pop done jump
+    choose_quotient: swap1 pop swap1 pop
+    done:
+}
+#define macro SQRT_STEP() = takes (2) returns (2) {
+    // [estimate, value]
+    dup1 dup3 div add 0x01 shr
+}
+
+#define fn TICK_SQRT_PRICE() = takes (1) returns (1) {
+    // [signedTick]; keep tick below absTick and ratio throughout the bit decomposition.
+    dup1 0xff sar dup1 dup3 add xor
+    0x01 0x80 shl
+    TICK_RATIO_BIT(0x1, 0xfffcb933bd6fad37aa2d162d1a594001)
+    TICK_RATIO_BIT(0x2, 0xfff97272373d413259a46990580e213a)
+    TICK_RATIO_BIT(0x4, 0xfff2e50f5f656932ef12357cf3c7fdcc)
+    TICK_RATIO_BIT(0x8, 0xffe5caca7e10e4e61c3624eaa0941cd0)
+    TICK_RATIO_BIT(0x10, 0xffcb9843d60f6159c9db58835c926644)
+    TICK_RATIO_BIT(0x20, 0xff973b41fa98c081472e6896dfb254c0)
+    TICK_RATIO_BIT(0x40, 0xff2ea16466c96a3843ec78b326b52861)
+    TICK_RATIO_BIT(0x80, 0xfe5dee046a99a2a811c461f1969c3053)
+    TICK_RATIO_BIT(0x100, 0xfcbe86c7900a88aedcffc83b479aa3a4)
+    TICK_RATIO_BIT(0x200, 0xf987a7253ac413176f2b074cf7815e54)
+    TICK_RATIO_BIT(0x400, 0xf3392b0822b70005940c7a398e4b70f3)
+    TICK_RATIO_BIT(0x800, 0xe7159475a2c29b7443b29c7fa6e889d9)
+    TICK_RATIO_BIT(0x1000, 0xd097f3bdfd2022b8845ad8f792aa5825)
+    TICK_RATIO_BIT(0x2000, 0xa9f746462d870fdf8a65dc1f90e061e5)
+    TICK_RATIO_BIT(0x4000, 0x70d869a156d2a1b890bb3df62baf32f7)
+    TICK_RATIO_BIT(0x8000, 0x31be135f97d08fd981231505542fcfa6)
+    TICK_RATIO_BIT(0x10000, 0x9aa508b5b7a84e1c677de54f3e99bc9)
+    TICK_RATIO_BIT(0x20000, 0x5d6af8dedb81196699c329225ee604)
+    TICK_RATIO_BIT(0x40000, 0x2216e584f5fa1ea926041bedfe98)
+    TICK_RATIO_BIT(0x80000, 0x48a170391f7dc42444e8fa2)
+    swap1 pop
+    0x00 dup3 sgt iszero negative jumpi
+    0x00 not div
+    negative:
+    0xffffffff add 0x20 shr swap1 pop
+}
+#define macro TICK_RATIO_BIT(bit, factor) = takes (2) returns (2) {
+    // [ratio, absTick]
+    dup2 <bit> and iszero skip jumpi
+    <factor> mul 0x80 shr
+    skip:
+}
+
+#define constant TP_SQRT = 0x920
+#define constant TP_LOG = 0x940
+#define constant TP_R = 0x960
+
+/// @dev Fourteen binary-log refinement bits bound the tick to two candidates;
+///      checking the high candidate preserves the exact floor at boundaries.
+#define fn SQRT_PRICE_TICK() = takes (1) returns (1) {
+    dup1 [TP_SQRT] mstore
+    0x20 shl dup1 MSB_256()
+    dup1 0x80 swap1 sub 0x40 shl [TP_LOG] mstore
+    0x80 dup2 lt small jumpi
+    0x7f swap1 sub shr normalized jump
+    small: 0x7f sub shl
+    normalized: [TP_R] mstore
+    TICK_LOG_BIT(0x3f)
+    TICK_LOG_BIT(0x3e)
+    TICK_LOG_BIT(0x3d)
+    TICK_LOG_BIT(0x3c)
+    TICK_LOG_BIT(0x3b)
+    TICK_LOG_BIT(0x3a)
+    TICK_LOG_BIT(0x39)
+    TICK_LOG_BIT(0x38)
+    TICK_LOG_BIT(0x37)
+    TICK_LOG_BIT(0x36)
+    TICK_LOG_BIT(0x35)
+    TICK_LOG_BIT(0x34)
+    TICK_LOG_BIT(0x33)
+    TICK_LOG_BIT(0x32)
+    [TP_LOG] mload 0x3627a301d71055774c85 mul
+    dup1 0x28f6481ab7f045a5af012a19d003aaa swap1 sub 0x80 sar
+    swap1 0xdb2df09e81959a81455e260799a0632f add 0x80 sar
+    dup1 dup3 eq high jumpi
+    dup1 TICK_SQRT_PRICE() [TP_SQRT] mload lt low jumpi
+    high: swap1 pop done jump
+    low: pop
+    done:
+}
+#define macro TICK_LOG_BIT(bit) = takes (0) returns (0) {
+    [TP_R] mload dup1 mul 0x7f shr
+    dup1 0x80 shr dup1 <bit> shl [TP_LOG] mload or [TP_LOG] mstore
+    shr [TP_R] mstore
+}
+
+#define fn FLOOR_TICK() = takes (2) returns (1) {
+    // [numerator, denominator]
+    dup2 dup2 div
+    0x01 0x40 shl dup2 lt small jumpi
+    0x01 0x80 shl swap1 lt iszero max_2 jumpi
+    0x01 0x80 shl swap1 MUL_DIV() INTEGER_SQRT() 0x20 shl
+    clamped jump
+    small:
+    pop 0x01 0xc0 shl swap1 MUL_DIV() INTEGER_SQRT()
+    clamped:
+    0x1000276a3 dup2 lt min_1 jumpi
+    0xfffd8963efd1fc6a506488495d951d5263988d26 dup2 lt iszero max_1 jumpi
+    SQRT_PRICE_TICK() done jump
+    max_2: pop
+    max_1: pop 0xd89e8 done jump
+    min_1: pop 0xd89e8 0x00 sub
+    done:
+}
+
+#define fn CURRENT_PRICE_KEY() = takes (4) returns (1) {
+    // [isBuy, zeroForOne, input, output]
+    dup2 xor 0x980 mstore
+    is_zfo jumpi
+    FLOOR_TICK() map jump
+    is_zfo: swap1 FLOOR_TICK()
+    map:
+    0x980 mload ascending jumpi
+    0xd89e8 sub 0x01 add done jump
+    ascending: 0xd89e9 add
+    done:
+}

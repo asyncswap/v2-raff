@@ -1,0 +1,1044 @@
+{
+  "repository": "https://github.com/asyncswap/contracts",
+  "commit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "sourceFiles": {
+    "src/AsyncSwap.sol": "2464f21c378835d92920ea0a460ec3f54a7649e8343fd8ad5e98c616f9e8fa9e",
+    "src/BaseHook.sol": "e910e8e809f50335b1bd0da2109e417ae87213b517c0d1d8720e3bf0a1259ab9",
+    "src/FeeVault.sol": "7f8ccecc58e131b4b0712ec0721ae7042400ed7073af4017cfad08f2aa9e4bda",
+    "src/ImmutableState.sol": "81780a696bbff93efda8c21052c04b2b98cc97fb0af5ca7c23d30a37adcbfb8e",
+    "src/MatchingEngine.sol": "e6e63450d77a1af80c075eb34d113604734e35d75985b94ab177d58f6d603ddd",
+    "src/NativeClaims.sol": "b02920e5ddb1d06c862a16cf1b4f740e37d23d14159f960e7a5196833e976d7d",
+    "src/Router.sol": "40f9ace55e00be6e9b79082466ee075e56435ffeef79db1676b0bec624cc8730",
+    "src/TokenClaims.sol": "7d087a18c541658df2ebfa2af9469dbc00c1e70b8c7d9c82e58a090a8b2a59fa",
+    "src/interfaces/ISignatureTransfer.sol": "fdd4edd4221ad8df5968da0d0f8aed1127e9bfe56bcb1c8cb77ea7e66875f54b",
+    "src/libraries/AsyncFiller.sol": "9015299b187cf70ece0840490aba0c9bef9109ebef72630b9864b33c31e1cf0a",
+    "src/libraries/AsyncMatching.sol": "28189f8b222b9d2202b3935a5a35a7d9b130e7d5433feed365958e2bf4626257",
+    "src/libraries/ClaimTransfers.sol": "7e6ed08d2c629a25890dfa1f9b86a41b62d142d3d0272864c374b356ef862bdc",
+    "src/libraries/CurrencySettler.sol": "35fa91cd314c39fa825192ab2ceae2561ce14ff6b57a9be09fe4b1c3d652340d",
+    "src/libraries/DynamicFeeOrdering.sol": "14ef4bbb9831bb4ee02f9e18af58a2f712b137380d477c8c01c81ec8286edaa7",
+    "src/libraries/EligiblePrice.sol": "30b2a388afefc5a68d24afec6d2262c7f4aa7ffd570faf13460971d0dc3cd5ca",
+    "src/libraries/IncomingMatching.sol": "3a3e9f52210b4b19cde4ca90a98acb55767f75b6a493fe0c0f55ca527c9fcda2",
+    "src/libraries/OrderSignatures.sol": "61c1e4ddbe0243123b1ef29636fc88d80dda9e8a941704c4e4bb8d5f2fdd0a2d",
+    "src/libraries/PriorityFeeUpdates.sol": "5d421e14f8dc28b40eab5c71172ff887808650531a9f5030dbc49b6a23b37987",
+    "src/libraries/RadixPriceTree.sol": "b2a672b6629caf28aa30df3a727b9026ddf3271ca422623a284f459db525dc53",
+    "src/libraries/TickBitmap.sol": "81e69010c0177a50b2496488727e98febd58884461716301fd28142549e8fe29",
+    "src/libraries/TickPrice.sol": "b4ec58fa775a17534379abf2480938531997069fa4da397ece40c1e8d2f7d220",
+    "src/types/AsyncOrder.sol": "1e18d34e727f7acb42131b56e65d4d56ff58c80d814fb60da37aad45493fe2bd",
+    "test/AsyncSwap.t.sol": "e38862a2073d4d28231e36114a54ccb6c30b1791ff67414dae3f6b0a7380f1a3",
+    "test/BackrunCapture.t.sol": "5c3289a4eea3d28eeb902705f7ddb799e4c7ae56a444ef261bfe895534f36c57",
+    "test/BaseHookDefaults.t.sol": "c8958dee9296591c0f3a722b1b96bddebb92b2649bc3c15986e89d377e7bbcc7",
+    "test/BestPriceRouting.t.sol": "4a66e62dec485712164dcb452455e7d79993b0afe079ba822de181aa713ebb1d",
+    "test/EligiblePrice.t.sol": "014d6ae6c286a6cbd15f0212c1a2bfa71f249f966c7b6dd397852f99cf7dc2e8",
+    "test/ExactPriorityInvariant.t.sol": "8e4df50fc715f0ea58820ae1c479b228bdb8726a0ffa43f7a1824d1b02d5110c",
+    "test/FeeEvents.t.sol": "89bfff0a5a38ed37161d1480f9c123647ff1a2bdff4784c4c0b0103999a1418f",
+    "test/IncomingLibraryDeployment.t.sol": "f935886f01fc382549dc38691aea5e4a7e030ba3071d035c9b590c42850991d5",
+    "test/IncomingMemoryFunding.t.sol": "60b51962815d33e1b342df0e8cabbc392c2a5fbcecee00205e0bdc13b331a3bc",
+    "test/IncomingMemoryReference.t.sol": "0667b4148da40efdb1518d580e3b35eab745e91603d105ea1c9fb09f66187b8d",
+    "test/IncomingMemoryTransitions.t.sol": "505c91ef4b0e33f675a0f74117070ec1afcb738f6402908d989da0a7205f06a7",
+    "test/IndexLibraryDeployment.t.sol": "f20fb7d75a1fff8e8a235c69e33a0c037392ebf6a54a7692a134d47bcb9de6ae",
+    "test/MatchingAdversarial.t.sol": "47d34f0d5d9e4ae5401bf0c5371dc39d71ba8aa10052c77230206d804cd1c7ea",
+    "test/MatchingEngine.t.sol": "44dcae8bb9600934278d4deec835962e8b39aaac41a211fe3c46eab7f10db28a",
+    "test/MatchingInvariant.t.sol": "1e3566f1e3950a57f22ad10cba0435ccdf89813953c1556a6e1dec7e47e5d518",
+    "test/MatchingReference.t.sol": "b1cc97cb74ab7ae9f8edf89302f0c890596e9a9a0b7b42b7f9d0546cdab8760c",
+    "test/NativeAsyncSwap.t.sol": "c62df0676523190e51f6aa719c5eeca330c2b1c5b5815f42e5dce8ab65ba67af",
+    "test/NativeClaims.t.sol": "35b09f5ddff04c27a84ef60b31f3d6e55e7640fa50208257760b47413a825b60",
+    "test/Numeraire.t.sol": "adcbd7e0ce6b90ffe65fc16e0cc9d763b2366e1acd4507fe1484aa804169b4cc",
+    "test/PoolLiquidityFill.t.sol": "9eb91d169dc2647862f083e913c0f0d50513ef3e51ffe5ce564dac4e3c650836",
+    "test/PriorityFeeTopUp.t.sol": "2ba4c1862a7f6bc36bd7db73dd9327b84e0cd9b97ed4dd7d3d544efa15b7576e",
+    "test/ProtocolFee.t.sol": "6e5529ea4ad3d72f55fd4fe41c7dfa56c4ce701abc29f154a9ee94d29e446452",
+    "test/RadixPriceTree.t.sol": "1f0d6aef9720ee0011ee7a37b579fb78ddf07238f399e620c3b238dd66da02ba",
+    "test/RouterClaims.t.sol": "fe991721ec51b3b9f5ea2b6a7418b51828925b0579391197c036f329df99a6b6",
+    "test/RouterMulticall.t.sol": "04dfec3678d63788243d48c5d92756f7e83409bd267c51b7dda32244684486f0",
+    "test/SetupHook.t.sol": "93682e3caadb796b50b36c7823b0ee8b233c9a6f3d1d2a368123bf82e1f0e59a",
+    "test/SignedOrders.t.sol": "8d9e319b7d7242a895f0d06ae4df591e54467ae52f8b0c0b699f037a594b961d",
+    "test/StressCompletion.t.sol": "62976613e84d2f4c30e1155e7f919846890b5e37579d5d80f85f5603b690597a",
+    "test/TickBitmap.t.sol": "c358f8dda46e59b499d7cff743ec5377ebd36470ef9628e2d72728da29bc63e7",
+    "test/TickPriceKey.t.sol": "de6accc8745ba8334c52124f675a588488879dee70d175be5f7c3ee85d750c42",
+    "test/TickPricePoolBeatsLevel.t.sol": "f4980666f2a38a6a6e647a2e00d1a68de29d0dd95c1eb7cbab413fe25d933f2f",
+    "test/TokenClaims.t.sol": "b3a64792b274e6dfc097fec5fec29eedaa074aef936bed94597cc9f801337db4",
+    "test/TradeFees.t.sol": "c71eb9431c44b63d646a3e6526d8b81614fe2145af7afb4228a833732eb506cd",
+    "test/UnichainFork.t.sol": "a00241fec037013763bcb2e0178d5437ce56b07f5003d95e8f5f6494febd5f61",
+    "test/fizz/Actor.sol": "18e1ae2aec3738a3f7941fcea37f3b7b80ff53191d1942c40285dfce0dadf141",
+    "test/fizz/Base.sol": "efad150e024d856704b46a30b7780a66e646c3657ff5706e0e1bc09c67138c80",
+    "test/fizz/FoundryTester.sol": "91734ba1012e573d1d7d3f1075c9ea1c64fdf4cdfc9c884f56e7803cca11b18a",
+    "test/fizz/FuzzTester.sol": "16c75da7aa8547919bb9bbe219f185313a9d0091792b2e8176c4fa6132dcd966",
+    "test/fizz/Properties.sol": "8dc370464abfb12a4e3c5d556692ad0c3de05b4b801e8ac469faf5936a683ab6",
+    "test/fizz/README.md": "357788b461cd325e85387578952a986224221136252f4913cc24b2a1eb76866d",
+    "test/fizz/Snapshots.sol": "c43eef2be2e1e3868cc450652799d8caef8ff11344049dfa1947f9a17fc8d50c",
+    "test/fizz/handlers/AsyncSwapHandler.sol": "d923d6b6b61b78d19dbad2e9b9202c848afcd20d104982c3e943050e65e59601",
+    "test/fizz/handlers/FeeVaultHandler.sol": "a0a6137f8a3166ce0f6ed9366b037cd925ec9b7c277d1e35cbcfeda352e970df",
+    "test/fizz/handlers/Handlers.sol": "c2769bdd29fe4197783cc8f66625c62264dce46e370796fd501ccd88958c21af",
+    "test/fizz/handlers/NativeClaimsHandler.sol": "9bb6a359818265e379b08b086c73f5b6fbc78bb870b5717eb26c10db6f5354d7",
+    "test/fizz/handlers/RouterHandler.sol": "1c2fc61e3c8aa1100022b187c47536566dd8c77c5486928d18ec47942b4dccd4",
+    "test/fizz/handlers/TokenClaimsHandler.sol": "a1a8ec17986e40323f66f25d78e3092f6bd17f809ddeee0c81ae76bacb8f8a81",
+    "test/fizz/utils/Clamp.sol": "cfd050e7377cfb4d30267b72e7ba87135ee7db462d2ca1906313d88c5580001f",
+    "test/fizz/utils/DecimalPrinter.sol": "5d0bc6fa0fff797e64f27544c2c874f4296d361fbf2bf75bb458ee57c19acf51",
+    "test/fizz/utils/Deployer.sol": "d27bb4f4ab3fa06309af169af75703823ea537ae12227ce6c191353764b4b827",
+    "test/fizz/utils/EnumerableSet.sol": "753089609e3995e6755c30029b1d696f98ba1bc127d155c2e268d29037554d53",
+    "test/fizz/utils/Hevm.sol": "0ade72fa520d556c8ccef1212ca45303ad6ec827c57a41d7789ac8bd173f1d70",
+    "test/fizz/utils/Logger.sol": "ae5406c39ce9cfee3fb4b1387939ec935a6d7e8ecbf5e920cd632302ac16b94d",
+    "test/fizz/utils/Math.sol": "9424ca128c8ca923abb2af2440d86b0130cfb2accff9a76f615092808e629e11",
+    "test/fizz/utils/MockERC20.sol": "950814cb9f5971770053d2c64d3e4d7928267e5aa129bde8ae120c9dad23df46",
+    "test/fizz/utils/PropertiesAsserts.sol": "4e125edbe57217df97ffd1596264239eabada0346d402fd15c8e2bd2a523a32f",
+    "test/fizz/utils/StringUtils.sol": "711704f3495ff078d529c3e6f3ab2f7098fb60ff726d0a373e8ad963f21c6b23",
+    "test/formal/AsyncFillerBookHarness.sol": "764701331d9180f78f2e7bca2882bef52c503be2261568bdff98c0844ceb74c4",
+    "test/formal/AsyncSwapAcceptOwnership.t.sol": "34101a58d16c067bcbe28f35dbc2fb5479d5daba104f1010cd0c94128e558bac",
+    "test/formal/AsyncSwapAddOrder.t.sol": "5f6ceeff7bcb12bd91c61bb15418c97d575884b02835268614b22c9d07f1651c",
+    "test/formal/AsyncSwapAfterAddLiquidity.t.sol": "4dce866079745f74fb27fd31b34cf84bcb379c0337703bad93cb5c6eba6e72ed",
+    "test/formal/AsyncSwapAfterDonate.t.sol": "1353a79281ad7eb715bcfae92f4362a87807d64d219b15aad42095a8b455cab7",
+    "test/formal/AsyncSwapAfterInitialize.t.sol": "f93ae0371dcb27cf3421390a38cb3223e9a8599637e684a78133e792adfae087",
+    "test/formal/AsyncSwapAfterRemoveLiquidity.t.sol": "b1a076e48c0c6836b3dff71b50539722945197c6ebf53c68b68befa419a9a64e",
+    "test/formal/AsyncSwapAfterSwap.t.sol": "c82d3ba10d49c42df16050a538358c5be64e5650b7d0d265c4a882331aa444fa",
+    "test/formal/AsyncSwapAsyncOrder.t.sol": "ce7b9045b2feb28df7a5573a435d8551d30f55a1464ca381d33da2ef3175f493",
+    "test/formal/AsyncSwapAsyncOrderInfo.t.sol": "3ea9d2ed5d1eeb3d8689d83f6f549145a48a3a7b0f185482bc5c681ada12d348",
+    "test/formal/AsyncSwapAsyncOrderPriorityFee.t.sol": "0ed1bb9bd85f622267f954a62eaff115c6078e50486ca9dc8dbe869e61b62ad1",
+    "test/formal/AsyncSwapBeforeAddLiquidity.t.sol": "a68f19db15ee298ba53f4cf3a4d38de36b8a46ec3b4fe9995c62e7cd535cad62",
+    "test/formal/AsyncSwapBeforeDonate.t.sol": "d4689f774491aca5afb4d0d6913cd2648bed7c7f57615197d400d61033c11db1",
+    "test/formal/AsyncSwapBeforeInitialize.t.sol": "083360c826696914a7f1cf00b1940f131eebeb74c3516a78b42c759bb156ed37",
+    "test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol": "14516c174c4af3f1bbd7b3e34780c020c035880097f69c873acf7bb5538c6469",
+    "test/formal/AsyncSwapBeforeSwap.t.sol": "23bffd866cf1ac38d52c0c2dcf087316a7757069d5fa34023e35e0e261f3fcec",
+    "test/formal/AsyncSwapBestOrder.t.sol": "9616bc5cfae858790179ec5c0f93bd489e6843c249a87afc10ba491ad3abe75e",
+    "test/formal/AsyncSwapBitSet.t.sol": "b71eecd266d23d4f3da9c931c4acbdcaf8c294020b1c15f92095b6fda2e839ac",
+    "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol": "40344baea330c84b7cbdfc39892e5a1743723dd5fb3e578e7e42a73bd62a6556",
+    "test/formal/AsyncSwapCalculateHookFee.t.sol": "7b27db89e6cc843c709faea234bddfca89b6e7b5b6f5c43cb6a7b5f331b7ed76",
+    "test/formal/AsyncSwapCalculatePoolFee.t.sol": "e39498fca5a1cddc7733d622540c7decba623f05b6bf0d4432ce46ebf5186968",
+    "test/formal/AsyncSwapCallOptionalReturn.t.sol": "08382aab8cff284edbbe033efd86be5cc17591a9583e0c90253b432b34ddfa99",
+    "test/formal/AsyncSwapCancelOrder.t.sol": "58f08efe67ba7cb4cb7d1e3000109d9e9858221006aaebfeb93d4097fa6719dc",
+    "test/formal/AsyncSwapConstructor.t.sol": "8dbdb0afc004a50fdfa54027e72637da66c3e2f941fcb4fc4d5e51f2ab6a3e64",
+    "test/formal/AsyncSwapCrosses.t.sol": "676b689ce66c4279a3d64006de711fa07493c7c42b4568913f814abfe2a0c919",
+    "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol": "b1ade1334fe9f3eca8adafdd772ffac4d4127415b6bf3ac4c2ec87d3c78a190d",
+    "test/formal/AsyncSwapExecuteOrder.t.sol": "f4dca65a539786dc12c2f466eb35f4e5951f11459a03d2aef5bee2ae3bcebb26",
+    "test/formal/AsyncSwapFillOrderFromPoolLiquidity.t.sol": "8b5fade39f78897680e9ed4811914ccd582fead6c5d8b377fe5ae84f7f80856e",
+    "test/formal/AsyncSwapFreeNode.t.sol": "b2833fd2efaf717c02659ab790057dd515c56161d984e2a480155cee611db2f1",
+    "test/formal/AsyncSwapFunctionCall.t.sol": "909cbbb8f16a74d25fd0b529d893f0c979bd4af39f121d95e72c0430c773bb99",
+    "test/formal/AsyncSwapFunctionCallWithValue.t.sol": "be33799f24f6a905c7e7de5de7b7019385b92e456163c46c8e25c572976edcb3",
+    "test/formal/AsyncSwapGetHookPermissions.t.sol": "9f920832285bd759315411cd425a241228e1095a9d77488b8de5816f43bb2431",
+    "test/formal/AsyncSwapHelpers.t.sol": "28655fea7831da7e1e54bfa834a46849f9a78f86521e36cdf15be9cc21f6ee76",
+    "test/formal/AsyncSwapInitAccess.t.sol": "632be4859f33ea14875b361beb78c0113161ffe0de47637027f55dbf87646846",
+    "test/formal/AsyncSwapInsert.t.sol": "be3525e20525e186104ef244ad5bb69b6e7864e78c2dd45817d7b8345a72d2f6",
+    "test/formal/AsyncSwapInvalidateNonce.t.sol": "61e4bb80c7c1995d0b0cd3dfc38c0cc792536322be53f977bcf3268c693804d9",
+    "test/formal/AsyncSwapLibHelpers.t.sol": "1380935f2c89e3307f6289faefd97f8d734b01c9087dc869af3b907d5c79d0c4",
+    "test/formal/AsyncSwapMatchAmounts.t.sol": "3dc05ac36479a838afedb3d40de18f0c0a5c7c571bc66b2937fe2ec45348ab5f",
+    "test/formal/AsyncSwapMatchBook.t.sol": "644681c0a67110ae06fc6f2fa2cfdc0bb4f57c9060a2b0b4b7c586dec2f80eb3",
+    "test/formal/AsyncSwapMatchNewOrder.t.sol": "f4ae61b6af01f4837ee12178d63bb46d440ef03e888fbe94e3dc0d5846553d12",
+    "test/formal/AsyncSwapMatchPair.t.sol": "0c5a1c7e6a8a155047ef45c8b14dbd2180de969b266e8bbcb4c3de69984badeb",
+    "test/formal/AsyncSwapMostSignificantBit.t.sol": "61e5521830f6789a3ac685ac97794823167b348a85aba219066c419aaaecdd17",
+    "test/formal/AsyncSwapMulDiv.t.sol": "9368edee3e6a633a59bc27425577310a91d546a498992397097e255d43dad036",
+    "test/formal/AsyncSwapNewNode.t.sol": "3401f875a0287108c32fedf039349dc89134aecbaafe946e6732220263a29b47",
+    "test/formal/AsyncSwapOnlyOwner.t.sol": "cc24c37012b87e0065ddc3b95b087238ff5fcf2bc3c0f29d66a6bf8bf5dc08ac",
+    "test/formal/AsyncSwapOrderBookLevel.t.sol": "d43a10bd18c30ad88a05111f51f8d79f9e8eb4cddccda2fa8fb272af75e71d13",
+    "test/formal/AsyncSwapOrderBookOrder.t.sol": "72b38b3292d9b72a16eaff79804677bf829f1588703c2f9588183c56b434bc1e",
+    "test/formal/AsyncSwapPriorityKey.t.sol": "c3c23496937daef5bf4f91f46867f88843e22f7dc17c542a0211c09cd6f6a181",
+    "test/formal/AsyncSwapReceive.t.sol": "cdda629bedc625bc11c37b44f1739e9b826c03d80f6944ae9f5b2c8ff1f7f3dc",
+    "test/formal/AsyncSwapReduceAfterMatch.t.sol": "4b006849fc476d20b7cca9705887241a1a0ca934f7c7ca0327660369afcae521",
+    "test/formal/AsyncSwapReduceMatchedOrders.t.sol": "498b7bc5959ee109b507b2c1bea6e7c46f15d67523a4771bc1d9981ef9e531d7",
+    "test/formal/AsyncSwapRemove.t.sol": "ba7eaec34f55f965891421f394a206b5cf146c23c15af55767e7d501897a39c7",
+    "test/formal/AsyncSwapRevert.t.sol": "78508a6ea9f30452427d1af82b01b82097094354879226c8221be35bc38c0851",
+    "test/formal/AsyncSwapSafeTransferFrom.t.sol": "1aff112163039545703791e4422dc7d06fa8168afc6818b3c8c2d9e03a3ffd3c",
+    "test/formal/AsyncSwapSetExecutorWithSig.t.sol": "415c6de4ed4d7a1d7f9661390df0d2dea7b364a9b7788659dba108886ab6e119",
+    "test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol": "e60838ae31b83cfbd4ec28e656d275c521be2cd58f8075542c0f9bab335cc5c5",
+    "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol": "4f89436c0ab4b1f4e58377c1022350b47bdf646806b5277d71aedd8cdcf00c37",
+    "test/formal/AsyncSwapSettleTransfers.t.sol": "13e19ca0d914867293fbf5c9c89ace3b9dd50ac50ffbf766e9314a80605d4dba",
+    "test/formal/AsyncSwapSwapAgainstPool.t.sol": "2cdd6b1cd9e796a0cb7c0072c43c6beb0c2924a15d9a45a473f6f4d320176f38",
+    "test/formal/AsyncSwapSweep.t.sol": "b77f48e74518a6d4bd24b9924edf5f96581523f4cb508f2e5de8de44dc0f8b8a",
+    "test/formal/AsyncSwapTransferEscrow.t.sol": "3b757a94a1a4ba031693bccc9424108c0851f189b9773c28feee7a90a0b08e46",
+    "test/formal/AsyncSwapTransferOwnership.t.sol": "91e88984509f18a19d78e48043c592dcb89f0ad19754a343dd6295178c971068",
+    "test/formal/AsyncSwapTryFillOrderFromPoolLiquidity.t.sol": "b48af7f8bcb457476777d5154c344c30249552441bc75663896b930c709db260",
+    "test/formal/AsyncSwapUpdatePrice.t.sol": "39feecbc46a35aa748cf3467411fdd4ba7b65e0d541a267f655e800f2e7e063a",
+    "test/formal/AsyncSwapUpdatePriceWithSig.t.sol": "04079d89bc7b0826fdcb5aa5e98ff0739860f5515bdba907b226915d135e96f1",
+    "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol": "7ef5332d249674328eaa6d3e4db1ec8ca48c3985d809af065ca9c6f0988cb87f",
+    "test/formal/Eip712ConstantsLog.t.sol": "93250b7221f0c2a08c02c99559b1561eed7542f357ccbe1ae5ba3562ef333880",
+    "test/formal/Eip712Domain.t.sol": "cfc36b902cc6ca5d269da036562854249676d05b727979e2c1b1dce5fa33d72b",
+    "test/formal/FeeVaultCollect.t.sol": "cf25c5c2198677a8da039281e8c621f27416e354f2f3cb7a173e58249a608de1",
+    "test/formal/FeeVaultUnlockCallback.t.sol": "a458d7fc4072ba26741e1a6a4e04702617c2c004cb9699c734a43931d762befc",
+    "test/formal/FormalBase.sol": "03dadebd98d501971929cbc98b8774b8b4c6dbd0b474a54a7244b4efe6d1a7bd",
+    "test/formal/FormalHarnessesA.sol": "3acc30aa06da22ec229b7661643f1080bfc006c3b7fe3994e9a5f31d6c3cb2ae",
+    "test/formal/FormalImmutablesC.sol": "2fc0b87d264208eb7a5f26d2a7c39a403c0e9f74426c7972d7f8771a5ef251e0",
+    "test/formal/FormalMatchD.sol": "ebb19dae230f42642d0b352b7054277ebefa92c977505d30faa2e137d025ad0b",
+    "test/formal/FormalOzE.sol": "b64ff87e8cabbeb6a93651f40d101bb48bcc13ce3c1306ee0578cdbfeb8168cf",
+    "test/formal/FormalProbesA.sol": "26aac3045f098a2fe0a62d611e24e47c1cd33cdeaab673524393de3121c38b0a",
+    "test/formal/FormalSlotsB.sol": "42c42f17815c9f34e766aa8e0fcb00eeb05c2e15d41ad425bc48c9cacc813d50",
+    "test/formal/HookHelpersB.sol": "09e804470e8d403e2735880e1cbe9e5ec4b31da20339ce9f94c5ef4355b34ec2",
+    "test/formal/HookUnlockBase.sol": "cc110f585bc79483398151f67f0af44c279f0b55adb0474e3bb19860fb5b8577",
+    "test/formal/LibHelpersB.sol": "7403f29951df85bfa7fc9097a893b8d61270020a417837c51ab7620e1c241a80",
+    "test/formal/NativeClaimsRedeem.t.sol": "732e5e2b332659d1cbc9fc897c0687a0e2ec31eb6cd6689832520c406b34af70",
+    "test/formal/NativeClaimsUnlockCallback.t.sol": "7f7085efbea817ed81f295c54c85158e62f9bc0eeacd6ba972c6b680a706881c",
+    "test/formal/README.md": "4f925b0ec95bbfad4d2d98eba2ee1f80f21464f87639ce65657a8c0e73edf308",
+    "test/formal/RefinementAsyncSwap.t.sol": "f6c066bf70e9df61c826e651b6ace18b634ca064d494cb96ac22009a3a9f0205",
+    "test/formal/RefinementRouter.t.sol": "f34dc3bbe19fb23994ba001efb971544b0cf97c1539b50942aa25c74fd17709b",
+    "test/formal/RouterCancelWithSig.t.sol": "a6169824c26129554385a4b744eae90eb9b2d0cde5cab553b3468a3c969f414c",
+    "test/formal/RouterConstructor.t.sol": "6e21cff67ea56ad91a96b53f90c9cf382e9666a21a49bf00bd1a93346a724ac9",
+    "test/formal/RouterDOMAIN_SEPARATOR.t.sol": "fa1da255f35e109a45e5c3f0ca3ff22ab5ae7000685a097374dc421d048f6ae3",
+    "test/formal/RouterFillFromPoolLiquidity.t.sol": "8ac1ae307d749a6cce695d4105e9f145c237f1d01a2a75f47366fbe67d913534",
+    "test/formal/RouterHelpers.t.sol": "a48295b79a203c5c72fd24dd301b164a30b51d8da8aa45d35d6343e8245f6f4f",
+    "test/formal/RouterLibHelpers.t.sol": "009dcde21ffec09868309d9b5c4fd55659046ff130b78573453e7dff0cf7b0b2",
+    "test/formal/RouterMatchBook.t.sol": "3a3a5fc6368c5614ea4f1bdcc243c8114b2e65f21281bebba86e7f6d7301318a",
+    "test/formal/RouterSwapWithSig.t.sol": "4c91ca83b1998c00b9d3bc3bd1e7a2cd67a046c07442e794471a8ea2407b44ff",
+    "test/formal/RoutingPoolImpact.t.sol": "dcc6bc743656c5b7fd4251abd6fa34838d73a12c5e8392f1b6dfbfae922e9b0d",
+    "test/formal/SpecBook.t.sol": "3a962e6bc3ef35ae3600856393af7aed1234709255f42795a3c775f68ba9e5bf",
+    "test/formal/SpecCore.t.sol": "3b2466a374faf63aee7716c3461467127b7cf4a372eab7e59ff686fcd2bcc878",
+    "test/formal/SpecEip712.t.sol": "3597e6775e678f4e4b0dd69be887891a2cb6b0ec684c9cbb3d661fbda35e2a4f",
+    "test/formal/SpecSig.t.sol": "84a750a4d64d4ffc61e6cfbb44327dff237cd9bfa61fcad891f92dfae8e9ffbe",
+    "test/nethermind_auditagent/NethermindAuditAgent.t.sol": "a6e9094c4b936b7533c940bebbab12b31017983f91c54ddba5c797ea8b2f237b",
+    "test/security/AssetPrecision.t.sol": "2737376ed532723f8f178e2b56b402463b1c53fc64bdfaaabf892d6c70f35405",
+    "test/security/ClaimTransfers.t.sol": "acfdec17dae618f617fbb28731bdf9e7b437fe6e0bc22d6e6cb6977158b695e8",
+    "test/security/CoarsePriceBlocking.t.sol": "68718f645f01cbb6d526897430f735696ebd0ed07ce0b14aab18d4bdf736aaf4",
+    "test/security/EligibleGas.t.sol": "093ff5d6e85a057ccbd49506be16fccc8685f80d3447d995570f36374ee54d85",
+    "test/security/EligiblePythonVectors.t.sol": "b0025a414ab25819fb75800dff3349a853fe6abbe4d7cbd734a2f2fad197b27f",
+    "test/security/EligibleRemainder.t.sol": "0d09a0c93a971e2a7dc42a306c4428c3e3c5a0aecbc00abf955800b4504c81df",
+    "test/security/ExecutorAuthorization.t.sol": "e3f689305ecb94fb77d38c9b4bbf14d927d58fbfc9af73928d6c49ceef46d027",
+    "test/security/ExecutorRevocation.t.sol": "2ec831f48feedd6dd2b7f61fd06d9107e85c17ee1b30e4dfad22cdef7237a33a",
+    "test/security/FeeClaims.t.sol": "82107cb6dc5edc47e0be72a90227dbf8e1a4452dd817827d24dbceacb4e78a7b",
+    "test/security/FeeCollect.t.sol": "bdc85364f6dd7fba4b159d9056b8a1e4e98133244dc82869ac440e29f149b14e",
+    "test/security/FillerMaxPrice.t.sol": "741b2002514cfb68d6bbf6d62d8d31b9d25ca1511ce6dd731100bd5fd039703d",
+    "test/security/HookBalanceIsolation.t.sol": "a5f121c86b2a3622ada8e3864cbc45cb15a1d10921d31cd0d4df4a47846d5829",
+    "test/security/MakerIdentity.t.sol": "d2aae6d85b4103347d638c7a144924761ca329dcb4ccf1ed312d62ead27490f4",
+    "test/security/MevTax.t.sol": "d2dc4490c7bda281797fdc2f730143c9d4bb2ae0a4fc1802ff8866b388c50296",
+    "test/security/MinimumOrder.t.sol": "11e6080d0ab744d72baaa160cd62d9ecc44b0f2c57d044d65f9fee503e6fa71b",
+    "test/security/NativeFillExactPayment.t.sol": "cc941569845c33d9c9f719f24299b0e7f14f48a060c3c6c028080bd9d4794c40",
+    "test/security/NativeInputMsgValue.t.sol": "fab4d8fa8161a08b3ce0746b712a3e52d95dddab6562f4be98e12adc58d03fe0",
+    "test/security/NativeOutputEscrow.t.sol": "5542ad3c997b7eae6b94139476e87f7a591326a17bfb6d96f4564994c124d10f",
+    "test/security/NativeSettlementReentrancy.t.sol": "80001cfa01ede1ad5915c01826d7de7b85e9c56b457cc4bbe4c76e8012fc7953",
+    "test/security/NoDollarMinimum.t.sol": "53fe5ebd121920362bea869cd4beafa7fcb043f281fe86921bc51a147c96cb00",
+    "test/security/NoReturnToken.t.sol": "8297252c211eb33681ab388fa5687dc7d99390f9c7eff1da6d62d6e84c542a8c",
+    "test/security/OrderSpoofing.t.sol": "44260201181476f8d6122ac7ae4d6cc7667419d947f517f4bc22516a7bf910a6",
+    "test/security/OwnerDirectCancel.t.sol": "2527158af4ebfad6d8e6c7b6a24276627c8a5289151d5a860b8f47d0e3ca8b1b",
+    "test/security/PashovFindings.t.sol": "93e1c540553eccd62f008218af697114dbdfa234a7b39cb42105988663274232",
+    "test/security/PoolFirstPartialFill.t.sol": "d932eb4a01e68e0a76223c57ab8d6ff412b54a3f8cf3445c77469d6f0c773bb6",
+    "test/security/PriceKeyCrossing.t.sol": "e7f58cf42ba547535108617a3435b21d5b85354f93688a952e2fe716ade1d0c5",
+    "test/security/PriorityFeeOnly.t.sol": "317d0f769d2b6eebb846bc314ce3a65e69b606eab76df3a6ebf4a5c8de2b177d",
+    "test/security/PriorityPythonHashes.t.sol": "304a6fc79d4e193077619625b6595a65467e16dbd80375d32d11a1c476e253ce",
+    "test/security/PriorityPythonVectors.t.sol": "1ce3510854b66b237487c894b77a4ffd4b7a796f243b17dcd220c7cb29aa0b83",
+    "test/security/RouterOrderWindow.t.sol": "751a197583be3a5b023064a4f7bee0c7a23a84aad395c0cdedb599055e5192ac",
+    "test/security/UseNonceScope.t.sol": "6d3816f97b9b8ed2863e63f8da7893ffaf98efd9b9ca4a3c80505559b770b92d",
+    "test/security/UserDataMatchesOrder.t.sol": "8f98754ff3249ebede20724611297070cd21bfd745b4f7d5076e9db6378b953f",
+    "test/security/poc/DustTradeFee.t.sol": "007eaf8dc7592ff71a97b7d04f2086ca1c092345c7156fc5377f4a74dc78077c",
+    "test/security/poc/GrantReplay.t.sol": "87374234ef18b825115631abfe94d857365b77b7076acccab3be95541ede5a46",
+    "test/security/poc/PocSignedBase.sol": "28374baf161c3e269cb369c1b3eada591ce8843bdd4971b53cd6338c1c3c2fe8",
+    "test/security/poc/PoolFirstFrontRun.t.sol": "e904e40a7df696ed8717ba27fefae4bf5cebebed737ea94ebf19972cd1870074",
+    "test/security/poc/PoolSquatAssetFloor.t.sol": "ebbd321a8f923a3be7a0de1decafb5516ba0f88ef44c299dc6fcd5e00ddb66cf",
+    "test/security/poc/SignedCancelGrief.t.sol": "becd0778077875717fead8ba09612a898fefc851496614bfe319dd9dc144ef8a",
+    "test/utils/MockERC20.sol": "0250532e0cd3eb13c61ac7fff4721d84fa128b6fa66c2f5cd876051bb435fe95",
+    "test/utils/NoReturnERC20.sol": "519085a48344b960131d72a57fa2509abafd5fa2d50d2c2c9f31f14f7401795a",
+    "test/utils/Permit2Bytecode.sol": "7304e3ec3be63f0f75b2d7d06dbb5f600a6678ede0a801be31eab72b60ae3b69",
+    "test/utils/TickIndexHarness.sol": "89148b2087fdbee74d8ec42980415a01f5101306a7963c7e9da929b319f36b98",
+    "test/utils/TopUpCallbackToken.sol": "69e84785332669acb3f364b373d2519a6041095e4ac8f12a33b92db30e3fffb7"
+  },
+  "huffAdapters": {
+    "test/AsyncSwap.t.sol": {
+      "sha256": "e38862a2073d4d28231e36114a54ccb6c30b1791ff67414dae3f6b0a7380f1a3",
+      "deploymentChanges": [],
+      "assertionsSha256": "66451d689a4b4802f5b879e905547df69adb688a425a29f2eddd2ccdb3676c74"
+    },
+    "test/BackrunCapture.t.sol": {
+      "sha256": "5c3289a4eea3d28eeb902705f7ddb799e4c7ae56a444ef261bfe895534f36c57",
+      "deploymentChanges": [],
+      "assertionsSha256": "cae5a0ffd39d1afde9c5851acb83106f6d840621ba690caecc71fe0a48ebd407"
+    },
+    "test/BestPriceRouting.t.sol": {
+      "sha256": "4a66e62dec485712164dcb452455e7d79993b0afe079ba822de181aa713ebb1d",
+      "deploymentChanges": [],
+      "assertionsSha256": "034fcdd322ad3f8be7ee45128d48321a9139139a39042737b4c9cffc95851da9"
+    },
+    "test/ExactPriorityInvariant.t.sol": {
+      "sha256": "8e4df50fc715f0ea58820ae1c479b228bdb8726a0ffa43f7a1824d1b02d5110c",
+      "deploymentChanges": [],
+      "assertionsSha256": "de006949e1b0fdeed8e241c2367bb6964788bdff7787800d2b21998afcecefe5"
+    },
+    "test/FeeEvents.t.sol": {
+      "sha256": "89bfff0a5a38ed37161d1480f9c123647ff1a2bdff4784c4c0b0103999a1418f",
+      "deploymentChanges": [],
+      "assertionsSha256": "8c0b4aa4f883614cee6531da02fda26e5a12ce1692439199a5e901681c723622"
+    },
+    "test/IncomingMemoryFunding.t.sol": {
+      "sha256": "8bee18bd23fd281491b2201a3cf7c91fddc443321037c9d83f2fd54c6345c0af",
+      "deploymentChanges": [],
+      "assertionsSha256": "1c3136475340e7e6492a2b394918c8ec5502bcba73e84651ed60218c51b16151"
+    },
+    "test/IncomingMemoryReference.t.sol": {
+      "sha256": "0667b4148da40efdb1518d580e3b35eab745e91603d105ea1c9fb09f66187b8d",
+      "deploymentChanges": [],
+      "assertionsSha256": "10ece9fb5200f48832f0a13b2aac4be7c6341720fed5f559e6644b520eeaa86b"
+    },
+    "test/IncomingMemoryTransitions.t.sol": {
+      "sha256": "0eef35e67e3ed61154f55f7437a41b66d44f804512b4dbfb250331fd431142dd",
+      "deploymentChanges": [
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "9a1a7b2a56fed6db2c681331e79e225673b7ef34c1a942275197ef146350fd89"
+    },
+    "test/MatchingAdversarial.t.sol": {
+      "sha256": "695efccd6c8d57206a0df52caf15f9a60109a47bb1595e295e67bc9b12313c98",
+      "deploymentChanges": [],
+      "assertionsSha256": "78d7570c816a0680290c6ce471bbfbbbc19442b3b2c58c1cd7b5a64c974a72d7"
+    },
+    "test/MatchingEngine.t.sol": {
+      "sha256": "e062ba8eadceffc33d234995ebaa2cb66bc38fd6bfdc2572a5d700bc9b7fb3b5",
+      "deploymentChanges": [
+        "deploy MatchingEngine as Huff"
+      ],
+      "assertionsSha256": "3b84a46d1e8841323b3a4734e6581b29ce469b36ec87d8fee8ad4118579e441a"
+    },
+    "test/MatchingInvariant.t.sol": {
+      "sha256": "9d271e3946415061d52467fd233daba5cf35ca01e4a81ac4eaf1698725d5daec",
+      "deploymentChanges": [
+        "deploy NativeClaims as Huff",
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "a2124c67f63dee6548ef1c47db7140db6d8157769e68379562e1090eb75685b3"
+    },
+    "test/MatchingReference.t.sol": {
+      "sha256": "b1cc97cb74ab7ae9f8edf89302f0c890596e9a9a0b7b42b7f9d0546cdab8760c",
+      "deploymentChanges": [],
+      "assertionsSha256": "17691bb1356fb466bf444bb08439a0a6443fdc20e84b5c2043a168bfff21b468"
+    },
+    "test/NativeAsyncSwap.t.sol": {
+      "sha256": "548adf82a912d218daa21b5ea6c1e7981f407ef18351bb9288af16066ca41032",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "e081e33c82d24523eda12e67f5f3c3cf852eabe8ccf95af37575529417368ed2"
+    },
+    "test/NativeClaims.t.sol": {
+      "sha256": "e482ad7eda3af7d89a86d184ce2636b0162d2fc6a3e36fd3ea9934f8e97a6b5a",
+      "deploymentChanges": [
+        "deploy NativeClaims as Huff"
+      ],
+      "assertionsSha256": "03336d99eb666e360a8e103d60c9b61355b612083a0a7f5402c8e6a54e86f576"
+    },
+    "test/Numeraire.t.sol": {
+      "sha256": "933c2421d337afefd62ff7291e215a6711fbe65351588aff2588ec0fd9809f24",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff",
+        "Run the Huff constructor at the fixture address, bypassing only hook-address mining like the upstream constructor subclass."
+      ],
+      "assertionsSha256": "bfbebb0d405d1fa8e0aa8ca481471e2c959513bcde1638edfadc547755cabd23"
+    },
+    "test/PoolLiquidityFill.t.sol": {
+      "sha256": "1ee964f8551032663b62395f09a89dc589c6bcf545a785868fa5c56cf63d4023",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "6678f802edf0b9997a535650f71c6b988ef18967a1fe7ab47b11ea21c373b4a5"
+    },
+    "test/PriorityFeeTopUp.t.sol": {
+      "sha256": "6228a81bbf50561fca134e90df592152e598ac7feaed935d6086a2689f59e3c6",
+      "deploymentChanges": [
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "34d828e948e9d4e558c30e428977bb2f5b37c415f6f10ed35d7e1d66b5263322"
+    },
+    "test/ProtocolFee.t.sol": {
+      "sha256": "dfdfa17749a5c0bbb950e1b320457c6e406a8f62f52ff0b05bc0a450049253bd",
+      "deploymentChanges": [],
+      "assertionsSha256": "6bf8a11ca5a346ddf41fd0b501290384758d7af3a7881db9a83e22b89a72c2b8"
+    },
+    "test/RadixPriceTree.t.sol": {
+      "sha256": "371a3ef9d5f248241dcb3bc189d522c23eeec2a05bde915a7878376dd839f963",
+      "deploymentChanges": [
+        "Install production Huff radix operations behind the unchanged harness ABI."
+      ],
+      "assertionsSha256": "8b3e290f586bb4d5edf956e6b4af8271f7982295bd07dcd14c32519653fdf7a2"
+    },
+    "test/RouterClaims.t.sol": {
+      "sha256": "50cdfaec4c271f5706a9656f45d36d383bb71222605d211071c4c93beacc4da3",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy Router as Huff"
+      ],
+      "assertionsSha256": "149a7509e94dd7b6bbe4237d21f918acf2e683a676cba6665da1857f94be4840"
+    },
+    "test/RouterMulticall.t.sol": {
+      "sha256": "04dfec3678d63788243d48c5d92756f7e83409bd267c51b7dda32244684486f0",
+      "deploymentChanges": [],
+      "assertionsSha256": "a51ce44737f5897fc2fe4e38e008cd4b87315dad1d3ff24a83729da23c2e94c0"
+    },
+    "test/SetupHook.t.sol": {
+      "sha256": "d88ffd32b5075ad7d515a8b50d4374837ceb26ae156ba4060153741ad27228f9",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/SignedOrders.t.sol": {
+      "sha256": "8d9e319b7d7242a895f0d06ae4df591e54467ae52f8b0c0b699f037a594b961d",
+      "deploymentChanges": [],
+      "assertionsSha256": "9065fdce181012c069c7cad445daede6689d2d08a14358135bdea0031b3ce327"
+    },
+    "test/StressCompletion.t.sol": {
+      "sha256": "23bb54fa5bd61e51b52b4a04bc8765c43c483be1768e83208fa824ec1fdddcc6",
+      "deploymentChanges": [],
+      "assertionsSha256": "d3f6dcef4337023cf8478351b92c4a578b08d04265c9e86531d82b7ed690005d"
+    },
+    "test/TickPriceKey.t.sol": {
+      "sha256": "d1ac3abb608b8ae1a84d7c1b4a05bbd89099f7a4503422db6334223bc829c0d8",
+      "deploymentChanges": [
+        "Bind TickPrice.key to the production Huff price-key kernel; assertions unchanged, pure tests become view."
+      ],
+      "assertionsSha256": "710c613feb72effad5284fff71ab416d420975c0010578ede2b6da47f3dbfe22"
+    },
+    "test/TokenClaims.t.sol": {
+      "sha256": "597b5391ad4d3c0a83b0768a14129d922ab13aa3476c924ad35b7c10acb9efbc",
+      "deploymentChanges": [
+        "deploy TokenClaims as Huff"
+      ],
+      "assertionsSha256": "ad3f66d5e55628cd413d9637d9e25fa5d21a36aa76692e79766d9d5faf1ed4a6"
+    },
+    "test/TradeFees.t.sol": {
+      "sha256": "c71eb9431c44b63d646a3e6526d8b81614fe2145af7afb4228a833732eb506cd",
+      "deploymentChanges": [],
+      "assertionsSha256": "a2d0983bf33693aeeab0f33ee2bd53e485833e6464c9fc8331d56cacc584c1f9"
+    },
+    "test/UnichainFork.t.sol": {
+      "sha256": "edcb8dd25efbccda35a9137abe7c841c56e07839a75c10bb740b92bea4a43c14",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "1026e9757a8731ab81a337ad52166be20cc79afdc59dcd2195fe3ff0b8f2d1d6"
+    },
+    "test/formal/AsyncSwapAcceptOwnership.t.sol": {
+      "sha256": "34101a58d16c067bcbe28f35dbc2fb5479d5daba104f1010cd0c94128e558bac",
+      "deploymentChanges": [],
+      "assertionsSha256": "505460c623983e5d5fff9a508c8805c5edee9814a34ff76c609b78741aa30c62"
+    },
+    "test/formal/AsyncSwapAfterAddLiquidity.t.sol": {
+      "sha256": "4dce866079745f74fb27fd31b34cf84bcb379c0337703bad93cb5c6eba6e72ed",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapAfterDonate.t.sol": {
+      "sha256": "1353a79281ad7eb715bcfae92f4362a87807d64d219b15aad42095a8b455cab7",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapAfterInitialize.t.sol": {
+      "sha256": "f93ae0371dcb27cf3421390a38cb3223e9a8599637e684a78133e792adfae087",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapAfterRemoveLiquidity.t.sol": {
+      "sha256": "b1a076e48c0c6836b3dff71b50539722945197c6ebf53c68b68befa419a9a64e",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapAfterSwap.t.sol": {
+      "sha256": "c82d3ba10d49c42df16050a538358c5be64e5650b7d0d265c4a882331aa444fa",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapAsyncOrderInfo.t.sol": {
+      "sha256": "3ea9d2ed5d1eeb3d8689d83f6f549145a48a3a7b0f185482bc5c681ada12d348",
+      "deploymentChanges": [],
+      "assertionsSha256": "6f5b82ae38e2f4f01cd28a4baf92ed07ec3a61c8a4fdff68444c7ff0676ce749"
+    },
+    "test/formal/AsyncSwapAsyncOrderPriorityFee.t.sol": {
+      "sha256": "0ed1bb9bd85f622267f954a62eaff115c6078e50486ca9dc8dbe869e61b62ad1",
+      "deploymentChanges": [],
+      "assertionsSha256": "eba76b5a74baf1ec1c30d44674eaafaa627a611f767f0cc0edadfd1171e67d0b"
+    },
+    "test/formal/AsyncSwapBeforeAddLiquidity.t.sol": {
+      "sha256": "a68f19db15ee298ba53f4cf3a4d38de36b8a46ec3b4fe9995c62e7cd535cad62",
+      "deploymentChanges": [],
+      "assertionsSha256": "9152fd3abbd150f909e9b2e2dd42898f77906966359b0fa6666db6fbf6c580ef"
+    },
+    "test/formal/AsyncSwapBeforeDonate.t.sol": {
+      "sha256": "d4689f774491aca5afb4d0d6913cd2648bed7c7f57615197d400d61033c11db1",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol": {
+      "sha256": "14516c174c4af3f1bbd7b3e34780c020c035880097f69c873acf7bb5538c6469",
+      "deploymentChanges": [],
+      "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapBeforeSwap.t.sol": {
+      "sha256": "23bffd866cf1ac38d52c0c2dcf087316a7757069d5fa34023e35e0e261f3fcec",
+      "deploymentChanges": [],
+      "assertionsSha256": "450c58b49a4379421b0dec63e08dadb406d7d44813343ce3b23ef0df01734593"
+    },
+    "test/formal/AsyncSwapBestOrder.t.sol": {
+      "sha256": "10f9ed80cfb78fe6f82ea34e1611ec02eaa8dfa02080df99ce96aafd08b4e22a",
+      "deploymentChanges": [
+        "Seed the Huff priority-key mapping relative to the normalized level-count slot."
+      ],
+      "assertionsSha256": "e8837697bcf6f1b6eb3af11b82c7868e53ba6b227e563ffb182af5ef3a9f46ff"
+    },
+    "test/formal/AsyncSwapBitSet.t.sol": {
+      "sha256": "b71eecd266d23d4f3da9c931c4acbdcaf8c294020b1c15f92095b6fda2e839ac",
+      "deploymentChanges": [],
+      "assertionsSha256": "bb33acac0d856a1b4bc84d851e91f77e8e0a5dcacaecf9bfe52a26fbd15f67a3"
+    },
+    "test/formal/AsyncSwapCalculateHookFee.t.sol": {
+      "sha256": "7b27db89e6cc843c709faea234bddfca89b6e7b5b6f5c43cb6a7b5f331b7ed76",
+      "deploymentChanges": [],
+      "assertionsSha256": "e87c8c38330d344de8fdb33448fb13524cc366f37ccd55fa123e51fce757fb0c"
+    },
+    "test/formal/AsyncSwapCalculatePoolFee.t.sol": {
+      "sha256": "e39498fca5a1cddc7733d622540c7decba623f05b6bf0d4432ce46ebf5186968",
+      "deploymentChanges": [],
+      "assertionsSha256": "6c39d9e40db2d9fb2d6fcadf5a002f17bca096324e9ab66afa4b066fd9362450"
+    },
+    "test/formal/AsyncSwapCancelOrder.t.sol": {
+      "sha256": "58f08efe67ba7cb4cb7d1e3000109d9e9858221006aaebfeb93d4097fa6719dc",
+      "deploymentChanges": [],
+      "assertionsSha256": "af1281e4452c9272ff148f991b1cd28098573188ac7a52fef306eaf51ed1258b"
+    },
+    "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol": {
+      "sha256": "b1ade1334fe9f3eca8adafdd772ffac4d4127415b6bf3ac4c2ec87d3c78a190d",
+      "deploymentChanges": [],
+      "assertionsSha256": "60c568f697b0132f55c7063cec6150853a7659f8002c8a6d485580a0f726f0fd"
+    },
+    "test/formal/AsyncSwapExecuteOrder.t.sol": {
+      "sha256": "f4dca65a539786dc12c2f466eb35f4e5951f11459a03d2aef5bee2ae3bcebb26",
+      "deploymentChanges": [],
+      "assertionsSha256": "ba81e54377d31856203e09ad91f4a07614b3bc4a281578e11c28de5234d4e6e2"
+    },
+    "test/formal/AsyncSwapFillOrderFromPoolLiquidity.t.sol": {
+      "sha256": "8b5fade39f78897680e9ed4811914ccd582fead6c5d8b377fe5ae84f7f80856e",
+      "deploymentChanges": [],
+      "assertionsSha256": "4dcca883aacdd4f91d48e16fab9cf904a64d824f90925711d6c465ecf9743221"
+    },
+    "test/formal/AsyncSwapFreeNode.t.sol": {
+      "sha256": "b2833fd2efaf717c02659ab790057dd515c56161d984e2a480155cee611db2f1",
+      "deploymentChanges": [],
+      "assertionsSha256": "3a6685ad6759f8dcb8e458ea21f3c304e0e437857d42d85193770eb70c0e4b16"
+    },
+    "test/formal/AsyncSwapGetHookPermissions.t.sol": {
+      "sha256": "9f920832285bd759315411cd425a241228e1095a9d77488b8de5816f43bb2431",
+      "deploymentChanges": [],
+      "assertionsSha256": "318b8c5aa290bc02fccab22a16b4fa9cba284d8d66af3c4002eac42b5cfa9b38"
+    },
+    "test/formal/AsyncSwapInitAccess.t.sol": {
+      "sha256": "632be4859f33ea14875b361beb78c0113161ffe0de47637027f55dbf87646846",
+      "deploymentChanges": [],
+      "assertionsSha256": "dfbd7ddb8b437ac79aa1fc3d973906e25657bba63183b98494fcca48476d749a"
+    },
+    "test/formal/AsyncSwapInsert.t.sol": {
+      "sha256": "be3525e20525e186104ef244ad5bb69b6e7864e78c2dd45817d7b8345a72d2f6",
+      "deploymentChanges": [],
+      "assertionsSha256": "05264bffe86893ba72cb338776533d3d32bfc8f5710ac5a12e375c485413fe7b"
+    },
+    "test/formal/AsyncSwapInvalidateNonce.t.sol": {
+      "sha256": "61e4bb80c7c1995d0b0cd3dfc38c0cc792536322be53f977bcf3268c693804d9",
+      "deploymentChanges": [],
+      "assertionsSha256": "936d68933065331e7519c762aeb2903c23df9df964c1aabbeb698496e94ff4c1"
+    },
+    "test/formal/AsyncSwapMatchAmounts.t.sol": {
+      "sha256": "70e00f8e532eda7c07544059afaab929721229dc4af99324a8261e5eb91112af",
+      "deploymentChanges": [
+        "Deploy the production Huff mulDiv/ceil ABI harness."
+      ],
+      "assertionsSha256": "51b944001c6e774082ddded3af69786b9bd831019023fc6c9c9cdeaf4b97cda8"
+    },
+    "test/formal/AsyncSwapMatchBook.t.sol": {
+      "sha256": "644681c0a67110ae06fc6f2fa2cfdc0bb4f57c9060a2b0b4b7c586dec2f80eb3",
+      "deploymentChanges": [],
+      "assertionsSha256": "6c893025f618f44097fcf7360e15f0fa6db49dbc174f96a0855908f83855e1ad"
+    },
+    "test/formal/AsyncSwapMatchNewOrder.t.sol": {
+      "sha256": "f4ae61b6af01f4837ee12178d63bb46d440ef03e888fbe94e3dc0d5846553d12",
+      "deploymentChanges": [],
+      "assertionsSha256": "4d1fb6d25839e7d9971640caa9c6ca10d3a47d2200317ed2cbee7235ed3144b6"
+    },
+    "test/formal/AsyncSwapMatchPair.t.sol": {
+      "sha256": "0c5a1c7e6a8a155047ef45c8b14dbd2180de969b266e8bbcb4c3de69984badeb",
+      "deploymentChanges": [],
+      "assertionsSha256": "593d858f19be4cdb4512f96ba8812c7c7670a7f05ecf705a783983431e7bc63e"
+    },
+    "test/formal/AsyncSwapMostSignificantBit.t.sol": {
+      "sha256": "61e5521830f6789a3ac685ac97794823167b348a85aba219066c419aaaecdd17",
+      "deploymentChanges": [],
+      "assertionsSha256": "26a5701a42a8d846fc7bb8492c3742f413eb4147d836fffcc0f1641a15613095"
+    },
+    "test/formal/AsyncSwapMulDiv.t.sol": {
+      "sha256": "9368edee3e6a633a59bc27425577310a91d546a498992397097e255d43dad036",
+      "deploymentChanges": [],
+      "assertionsSha256": "6cb61b7f6015418bcfe80985bcfcb324efe6b55057229b7e5deb1076c0d84e42"
+    },
+    "test/formal/AsyncSwapNewNode.t.sol": {
+      "sha256": "3401f875a0287108c32fedf039349dc89134aecbaafe946e6732220263a29b47",
+      "deploymentChanges": [],
+      "assertionsSha256": "3728b8bd082f640aa2fdd03655be1e3da02ccc4e120c7883ee823446092e1913"
+    },
+    "test/formal/AsyncSwapOnlyOwner.t.sol": {
+      "sha256": "cc24c37012b87e0065ddc3b95b087238ff5fcf2bc3c0f29d66a6bf8bf5dc08ac",
+      "deploymentChanges": [],
+      "assertionsSha256": "b110976b92ffae8da91eee165a09c1397c6b81ab0a7b6ef85340fe9673930507"
+    },
+    "test/formal/AsyncSwapOrderBookLevel.t.sol": {
+      "sha256": "15537af314a4a5b8083d89ee959e00187bab9ca5bc57ac1e2c3bf351612489d9",
+      "deploymentChanges": [
+        "Read packed Huff price and side fields in the observation helper."
+      ],
+      "assertionsSha256": "3d3b12fb0d74b887b608ee0f48762030b9b037c690821f1a9077f3dc5229c8e5"
+    },
+    "test/formal/AsyncSwapOrderBookOrder.t.sol": {
+      "sha256": "72b38b3292d9b72a16eaff79804677bf829f1588703c2f9588183c56b434bc1e",
+      "deploymentChanges": [],
+      "assertionsSha256": "30261cd113f35709fa06d5c2aa083fc27ace469e199c1b6ef8a88a6434bcee0c"
+    },
+    "test/formal/AsyncSwapReceive.t.sol": {
+      "sha256": "cdda629bedc625bc11c37b44f1739e9b826c03d80f6944ae9f5b2c8ff1f7f3dc",
+      "deploymentChanges": [],
+      "assertionsSha256": "83d82e279bd069f237d3be25020618a65ecc2b441dc0f5e38e3d5d478ff7bc29"
+    },
+    "test/formal/AsyncSwapReduceAfterMatch.t.sol": {
+      "sha256": "22261af77bb5dd47aaae1c0259580b1e7780d16d2c772fc546faf428ba8bada1",
+      "deploymentChanges": [
+        "Observe the rekeyed price at Huff order slot +1."
+      ],
+      "assertionsSha256": "8af367f09b9d7546c843da6929df445bb2f08ebab01fc9713665c83dbb3d382a"
+    },
+    "test/formal/AsyncSwapReduceMatchedOrders.t.sol": {
+      "sha256": "498b7bc5959ee109b507b2c1bea6e7c46f15d67523a4771bc1d9981ef9e531d7",
+      "deploymentChanges": [],
+      "assertionsSha256": "09c7a758460439709cefce9f00777d77c556131f5cdc02b0cbc70cd4af83305d"
+    },
+    "test/formal/AsyncSwapRemove.t.sol": {
+      "sha256": "ba7eaec34f55f965891421f394a206b5cf146c23c15af55767e7d501897a39c7",
+      "deploymentChanges": [],
+      "assertionsSha256": "5245044b0c4ba57f0fadebfe828cde7b9c6af54f646b035bde8dda0fcb9cb47f"
+    },
+    "test/formal/AsyncSwapSetExecutorWithSig.t.sol": {
+      "sha256": "42ac4fd1c63fee2dd814aada9d6cdc8383527c2606d720bd65d0f22b43f49f82",
+      "deploymentChanges": [
+        "Consume nonce using a valid grant, including the trusted Router (contracts c8d12dd fixture fix)."
+      ],
+      "assertionsSha256": "850f08a6c591c39c7d3aeb0416ba3183ccfd46ee74cbca702cded08bccb7476b"
+    },
+    "test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol": {
+      "sha256": "e60838ae31b83cfbd4ec28e656d275c521be2cd58f8075542c0f9bab335cc5c5",
+      "deploymentChanges": [],
+      "assertionsSha256": "893f90056e21fe03a4e25d84c4e11822fbcdb59fb553bc4b41056defb3eff5df"
+    },
+    "test/formal/AsyncSwapSettleTransfers.t.sol": {
+      "sha256": "13e19ca0d914867293fbf5c9c89ace3b9dd50ac50ffbf766e9314a80605d4dba",
+      "deploymentChanges": [],
+      "assertionsSha256": "77e2ba6536e9d3d207b07176a5a14dc7f71a8944cdf3b7b978fe121dc8d1fa79"
+    },
+    "test/formal/AsyncSwapSwapAgainstPool.t.sol": {
+      "sha256": "f40c512921a433e966f2a72301ba23fdeabad494a6d461e6d47d5c1a3da0e5c6",
+      "deploymentChanges": [
+        "Seed the input amount at Huff order slot +2."
+      ],
+      "assertionsSha256": "cee1d51a14b7a20cfd6dfd8e70306f7b0e60422d97745634d16939a34c0b786d"
+    },
+    "test/formal/AsyncSwapSweep.t.sol": {
+      "sha256": "b77f48e74518a6d4bd24b9924edf5f96581523f4cb508f2e5de8de44dc0f8b8a",
+      "deploymentChanges": [],
+      "assertionsSha256": "47a9e27e695a30c33c332e9edab2e6e2be7e823011150f8ad428a542f278e109"
+    },
+    "test/formal/AsyncSwapTransferEscrow.t.sol": {
+      "sha256": "3b757a94a1a4ba031693bccc9424108c0851f189b9773c28feee7a90a0b08e46",
+      "deploymentChanges": [],
+      "assertionsSha256": "b483b72bf21cbbd790ebf52877562068dc7953025964cd4a313cbf078e475e66"
+    },
+    "test/formal/AsyncSwapTransferOwnership.t.sol": {
+      "sha256": "91e88984509f18a19d78e48043c592dcb89f0ad19754a343dd6295178c971068",
+      "deploymentChanges": [],
+      "assertionsSha256": "6c6337eab962f97381e8c4fb883466d0cedb3de92eed7de0ad2216e7b8052512"
+    },
+    "test/formal/AsyncSwapTryFillOrderFromPoolLiquidity.t.sol": {
+      "sha256": "b48af7f8bcb457476777d5154c344c30249552441bc75663896b930c709db260",
+      "deploymentChanges": [],
+      "assertionsSha256": "e11285b35a226d24c580611daf1bee886bb91b6fa4add1f5b62c59f4e6b861ee"
+    },
+    "test/formal/AsyncSwapUpdatePrice.t.sol": {
+      "sha256": "a26ece99fd629deb2272987c3a3b16acd835e2009cc7c3a54cf0325a1f032d74",
+      "deploymentChanges": [
+        "Observe the actual manager immutable instead of a Solidity-only per-pool manager slot."
+      ],
+      "assertionsSha256": "07617347dbcd0e158ca1759e06fce01e0d7667e9026f0b1463e2cb8771ef437a"
+    },
+    "test/formal/AsyncSwapUpdatePriceWithSig.t.sol": {
+      "sha256": "04079d89bc7b0826fdcb5aa5e98ff0739860f5515bdba907b226915d135e96f1",
+      "deploymentChanges": [],
+      "assertionsSha256": "a92757a319421ad22c9788817a5f9fb868b703919199b6ed66d9cb5852625a31"
+    },
+    "test/formal/FeeVaultCollect.t.sol": {
+      "sha256": "cf25c5c2198677a8da039281e8c621f27416e354f2f3cb7a173e58249a608de1",
+      "deploymentChanges": [],
+      "assertionsSha256": "3bbafbb83839dd25b1971308c446bfc8165485b079f96bf54e5cb75d58a25dde"
+    },
+    "test/formal/FeeVaultUnlockCallback.t.sol": {
+      "sha256": "a458d7fc4072ba26741e1a6a4e04702617c2c004cb9699c734a43931d762befc",
+      "deploymentChanges": [],
+      "assertionsSha256": "0ac00da9ff1af85f9023cc6067fe3f5df45fe54c25d49f4593f13f7309435563"
+    },
+    "test/formal/FormalBase.sol": {
+      "sha256": "24b99da87e956a7a17ef0a382e8b487dec39c258c963fd7756877decebfaa234",
+      "deploymentChanges": [
+        "Deploy formal fixture through CurrentHuffDeploy; map named owner/nonce/pool storage seeds to Huff."
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/FormalHarnessesA.sol": {
+      "sha256": "472bcdd46ac55bbdfb9db5857c53f9436e04835cba6de00af9a78f5e26850fbf",
+      "deploymentChanges": [
+        "Return production Huff math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/FormalMatchD.sol": {
+      "sha256": "5fbdedf3dd537e44a8dbe24d349d22e95fc53090a5a263ba8ac234096ab89e63",
+      "deploymentChanges": [
+        "Map direct matching-fixture field writes to the Huff packed record."
+      ],
+      "assertionsSha256": "6d167ba5a4e02ef91d020dae289209777b02178aa7e79dd6bf27d9f5b3cbe95c"
+    },
+    "test/formal/FormalProbesA.sol": {
+      "sha256": "26aac3045f098a2fe0a62d611e24e47c1cd33cdeaab673524393de3121c38b0a",
+      "deploymentChanges": [],
+      "assertionsSha256": "55a4316fe0cba7e0d6eee24f7f1b9db3378f3c85bc41d94691f570e85cbefcdc"
+    },
+    "test/formal/FormalSlotsB.sol": {
+      "sha256": "51b5812265248f68daf0be75ab27227af665d3ab5bc77d5e19d5be765e4ae33a",
+      "deploymentChanges": [
+        "Pack arbitrary order fixtures and bitmap/level/radix slots using the Huff storage layout; original getter assertions unchanged."
+      ],
+      "assertionsSha256": "991acb5f533dfa72127a21de92cd7851ff3718d905f0b6bee73cf97aa1a6afb8"
+    },
+    "test/formal/HookUnlockBase.sol": {
+      "sha256": "e2ab3ac8a316b916e70608ca3e7acfaf952a53378d922088c54921ff5446ad25",
+      "deploymentChanges": [
+        "Normalize raw Huff order words and sequence location for upstream state-snapshot helpers."
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/NativeClaimsRedeem.t.sol": {
+      "sha256": "1e3ea975fc2d8ba22561efddb16b1c0d6f09cce1b7c49519d468f1307969530c",
+      "deploymentChanges": [
+        "deploy NativeClaims as Huff",
+        "Observe and seed the transient reentrancy flag; run each property in one transaction."
+      ],
+      "assertionsSha256": "85eb65703b59a5581355fa1ae1a83a84e6c169128214e5dd7902eebb9379e9fe"
+    },
+    "test/formal/NativeClaimsUnlockCallback.t.sol": {
+      "sha256": "549d195fe653dc0052a99b34cd1301c7efe1f98c7dbbcd055fa08edcc9f1e050",
+      "deploymentChanges": [
+        "deploy NativeClaims as Huff"
+      ],
+      "assertionsSha256": "ab5895af057a0f41a565a319df9ff0b9777f20be269735589bb6225eb9fdbbd6"
+    },
+    "test/formal/RefinementAsyncSwap.t.sol": {
+      "sha256": "f6c066bf70e9df61c826e651b6ace18b634ca064d494cb96ac22009a3a9f0205",
+      "deploymentChanges": [],
+      "assertionsSha256": "ec282f28f788bf72164eb8d778c588363d3cde1a5f0de0557c94073327f9d612"
+    },
+    "test/formal/RefinementRouter.t.sol": {
+      "sha256": "f34dc3bbe19fb23994ba001efb971544b0cf97c1539b50942aa25c74fd17709b",
+      "deploymentChanges": [],
+      "assertionsSha256": "8feda41c8de5ff4a95a367c5c564d9e0ec887d5e77c972f1651c410c2304a4f2"
+    },
+    "test/formal/RouterCancelWithSig.t.sol": {
+      "sha256": "a6169824c26129554385a4b744eae90eb9b2d0cde5cab553b3468a3c969f414c",
+      "deploymentChanges": [],
+      "assertionsSha256": "d80914b303ca5f8142387ae2d87c3f40a54d7662f0e0eb7332b0ac19642c9e9f"
+    },
+    "test/formal/RouterDOMAIN_SEPARATOR.t.sol": {
+      "sha256": "fa1da255f35e109a45e5c3f0ca3ff22ab5ae7000685a097374dc421d048f6ae3",
+      "deploymentChanges": [],
+      "assertionsSha256": "ad0970c3a0d18a74abd9492bdc607b91f2627f45a81a9836f9d40babf2f8dd81"
+    },
+    "test/formal/RouterFillFromPoolLiquidity.t.sol": {
+      "sha256": "8ac1ae307d749a6cce695d4105e9f145c237f1d01a2a75f47366fbe67d913534",
+      "deploymentChanges": [],
+      "assertionsSha256": "1073e4f6c387f8709cbbc77d57978a10665fa247fab82b956861e8268a4e8f7d"
+    },
+    "test/formal/RouterMatchBook.t.sol": {
+      "sha256": "3a3a5fc6368c5614ea4f1bdcc243c8114b2e65f21281bebba86e7f6d7301318a",
+      "deploymentChanges": [],
+      "assertionsSha256": "b6acd087b3ab3f4968428d521ea6161a15f34ca8ad7e5c791905170ad7a30956"
+    },
+    "test/formal/RouterSwapWithSig.t.sol": {
+      "sha256": "4c91ca83b1998c00b9d3bc3bd1e7a2cd67a046c07442e794471a8ea2407b44ff",
+      "deploymentChanges": [],
+      "assertionsSha256": "e536574929b5ee8c0b34a3daa4afdd32de7d03b33992ee278ef20666da81d4e7"
+    },
+    "test/formal/RoutingPoolImpact.t.sol": {
+      "sha256": "dcc6bc743656c5b7fd4251abd6fa34838d73a12c5e8392f1b6dfbfae922e9b0d",
+      "deploymentChanges": [],
+      "assertionsSha256": "edf01dc1e68e565e18368fd9f91e80eea6b0984d97e0656e611a68d52834f682"
+    },
+    "test/nethermind_auditagent/NethermindAuditAgent.t.sol": {
+      "sha256": "a6e9094c4b936b7533c940bebbab12b31017983f91c54ddba5c797ea8b2f237b",
+      "deploymentChanges": [],
+      "assertionsSha256": "aad934a7e8d0da7d860d60ae12529de5460bf26b0d1879b71c4b8843e16d7423"
+    },
+    "test/security/AssetPrecision.t.sol": {
+      "sha256": "2737376ed532723f8f178e2b56b402463b1c53fc64bdfaaabf892d6c70f35405",
+      "deploymentChanges": [],
+      "assertionsSha256": "f50c08d51622bc92e34358152b0cef45655ae4171d056dd923923951caef06fb"
+    },
+    "test/security/CoarsePriceBlocking.t.sol": {
+      "sha256": "f79da673daeb70b3ff6c948edffa297c2d086a97cc84c4a046a8d582228b981b",
+      "deploymentChanges": [],
+      "assertionsSha256": "04c8036089f2e42e88db23afda4a9b5ee9baea236a8e9de26cf8c1d84c4b863c"
+    },
+    "test/security/ExecutorAuthorization.t.sol": {
+      "sha256": "e3f689305ecb94fb77d38c9b4bbf14d927d58fbfc9af73928d6c49ceef46d027",
+      "deploymentChanges": [],
+      "assertionsSha256": "ac3f52e38b7808159833ed8b85b6f3f7750814de5b2522603f147c35bd5576d6"
+    },
+    "test/security/ExecutorRevocation.t.sol": {
+      "sha256": "2ec831f48feedd6dd2b7f61fd06d9107e85c17ee1b30e4dfad22cdef7237a33a",
+      "deploymentChanges": [],
+      "assertionsSha256": "06deb542551d04411a329839e5b52da26874c3eab46c04a24853395a2f483064"
+    },
+    "test/security/FeeCollect.t.sol": {
+      "sha256": "f9b216add59a55a12609fdababe11ea1baf041036897f94d171bd2f68bf463c4",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "3ddb07321172e6a93649e89be390825234877bea60a681e1419e4213dc639aeb"
+    },
+    "test/security/FillerMaxPrice.t.sol": {
+      "sha256": "741b2002514cfb68d6bbf6d62d8d31b9d25ca1511ce6dd731100bd5fd039703d",
+      "deploymentChanges": [],
+      "assertionsSha256": "ac3f52e38b7808159833ed8b85b6f3f7750814de5b2522603f147c35bd5576d6"
+    },
+    "test/security/HookBalanceIsolation.t.sol": {
+      "sha256": "6d9cf038e1d40a0d2acef4593629091ebc03ad1a0a96d36b6513bf36ce789eb0",
+      "deploymentChanges": [
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "9ec68524311cdf2ad2425120dc3425576b46aa6be57b1496a9e6b02c4e050d76"
+    },
+    "test/security/MakerIdentity.t.sol": {
+      "sha256": "d2aae6d85b4103347d638c7a144924761ca329dcb4ccf1ed312d62ead27490f4",
+      "deploymentChanges": [],
+      "assertionsSha256": "599ebb09d154da6273184354d919139f26fcdf7b2d24f61bae22f26b32c181e7"
+    },
+    "test/security/MevTax.t.sol": {
+      "sha256": "d2dc4490c7bda281797fdc2f730143c9d4bb2ae0a4fc1802ff8866b388c50296",
+      "deploymentChanges": [],
+      "assertionsSha256": "f7832ee904d718ba5d25b20faa9d06e7f9bdb0cb87b1169ed70372acb722c2b1"
+    },
+    "test/security/MinimumOrder.t.sol": {
+      "sha256": "62fe275c2a5e75d7802cc1bd448d73c4073aa89a6c45aeb857c0b624db18a968",
+      "deploymentChanges": [],
+      "assertionsSha256": "c9bcc53da1a16299f325cccbc9d2156de8f6b2f80a1a57dadba2c9b59d7e947d"
+    },
+    "test/security/NativeFillExactPayment.t.sol": {
+      "sha256": "42d010a82a4ca778accde52a6318b662aa827648cc08683030b50cc98f3cbd26",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "52c4a33ea51f5baa95cfa037888fe0e8f6e4c450d2996e0a8c0364bea5e6b7d1"
+    },
+    "test/security/NativeInputMsgValue.t.sol": {
+      "sha256": "86baf16a7daa2615781efdb8696fd3f25c47db8b99b9dcebfe2e2c8cf42416d6",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "ac3f52e38b7808159833ed8b85b6f3f7750814de5b2522603f147c35bd5576d6"
+    },
+    "test/security/NativeOutputEscrow.t.sol": {
+      "sha256": "4939cc2f95f11a2c9ace915c60c0ae7068576cb8c25d91b9b9c58188cc273d0c",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "ac3f52e38b7808159833ed8b85b6f3f7750814de5b2522603f147c35bd5576d6"
+    },
+    "test/security/NativeSettlementReentrancy.t.sol": {
+      "sha256": "b68cd3cca98b1c0adc7a74ab9f13e873ad5d83c5b045a3d363fa9ef4c1379e35",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "299e984900865d4b012877a55a7466d2d1fd4b38326c6da6cf69749f90e83bf6"
+    },
+    "test/security/NoDollarMinimum.t.sol": {
+      "sha256": "53fe5ebd121920362bea869cd4beafa7fcb043f281fe86921bc51a147c96cb00",
+      "deploymentChanges": [],
+      "assertionsSha256": "78faa2a0815af517712e56e23ea069397ac3093555b97f39072af441b3cc338a"
+    },
+    "test/security/NoReturnToken.t.sol": {
+      "sha256": "32a787ed47213c58ef441cb37df9efff319020cffc5899e895d5bf95705d51a8",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "c307aa6bdb145f41d5b85a47a471574b72ed0229137a71c60298f39328a52f05"
+    },
+    "test/security/OrderSpoofing.t.sol": {
+      "sha256": "44260201181476f8d6122ac7ae4d6cc7667419d947f517f4bc22516a7bf910a6",
+      "deploymentChanges": [],
+      "assertionsSha256": "9c94a5bf6cb1f39cfe01456b5c2eee6e767a6bec3946ba0598ec717a3d1b5215"
+    },
+    "test/security/OwnerDirectCancel.t.sol": {
+      "sha256": "2527158af4ebfad6d8e6c7b6a24276627c8a5289151d5a860b8f47d0e3ca8b1b",
+      "deploymentChanges": [],
+      "assertionsSha256": "6e0d7a61b39c0866fdf049cdf6bcc9501a422ce1ceee3e31b9e2cba43219f39f"
+    },
+    "test/security/PashovFindings.t.sol": {
+      "sha256": "93e1c540553eccd62f008218af697114dbdfa234a7b39cb42105988663274232",
+      "deploymentChanges": [],
+      "assertionsSha256": "4e05ea4ff121d5cc29e7279c2dad4f8ab2d19865148a57db3710bee97e4c96a8"
+    },
+    "test/security/PoolFirstPartialFill.t.sol": {
+      "sha256": "d932eb4a01e68e0a76223c57ab8d6ff412b54a3f8cf3445c77469d6f0c773bb6",
+      "deploymentChanges": [],
+      "assertionsSha256": "4d9e318a2afcaa6b502d5d3e56104d6671460bc3fb6890fb6bc6363fd72905c2"
+    },
+    "test/security/PriceKeyCrossing.t.sol": {
+      "sha256": "e7f58cf42ba547535108617a3435b21d5b85354f93688a952e2fe716ade1d0c5",
+      "deploymentChanges": [],
+      "assertionsSha256": "9b05e274c7978418bcab672ff442e93f716f656bfca6ed0c6b336addeda9ce5d"
+    },
+    "test/security/PriorityFeeOnly.t.sol": {
+      "sha256": "311fb8e34cf630ef02156ddee937464aab91686d068fce6eed44942d3176c6f3",
+      "deploymentChanges": [
+        "deploy AsyncSwap as Huff"
+      ],
+      "assertionsSha256": "cd69ab735b74ed3fc53f8ab84d633a3d2ff2a395209a51d848124c86b90325c0"
+    },
+    "test/security/RouterOrderWindow.t.sol": {
+      "sha256": "751a197583be3a5b023064a4f7bee0c7a23a84aad395c0cdedb599055e5192ac",
+      "deploymentChanges": [],
+      "assertionsSha256": "b49e2a3dc57afe972cf1c0a73ab0b98a60906d5a54f3bff0bd8878af98a8bb96"
+    },
+    "test/security/UseNonceScope.t.sol": {
+      "sha256": "6d3816f97b9b8ed2863e63f8da7893ffaf98efd9b9ca4a3c80505559b770b92d",
+      "deploymentChanges": [],
+      "assertionsSha256": "fb2003317388543afe79d3ca6a6c94c818a26039e729d56bce43e0d3121c0e4d"
+    },
+    "test/security/UserDataMatchesOrder.t.sol": {
+      "sha256": "8f98754ff3249ebede20724611297070cd21bfd745b4f7d5076e9db6378b953f",
+      "deploymentChanges": [],
+      "assertionsSha256": "ac3f52e38b7808159833ed8b85b6f3f7750814de5b2522603f147c35bd5576d6"
+    },
+    "test/security/poc/DustTradeFee.t.sol": {
+      "sha256": "007eaf8dc7592ff71a97b7d04f2086ca1c092345c7156fc5377f4a74dc78077c",
+      "deploymentChanges": [],
+      "assertionsSha256": "b9cd96b685dc54ef87123e7cac65d0e325582ec2db8a8465664d1b464f15d739"
+    },
+    "test/security/poc/GrantReplay.t.sol": {
+      "sha256": "87374234ef18b825115631abfe94d857365b77b7076acccab3be95541ede5a46",
+      "deploymentChanges": [],
+      "assertionsSha256": "4f326b7fdc34aecece590781e900dd2ad2e2113bf4a53d4c820c74d673d62829"
+    },
+    "test/security/poc/PocSignedBase.sol": {
+      "sha256": "28374baf161c3e269cb369c1b3eada591ce8843bdd4971b53cd6338c1c3c2fe8",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/security/poc/PoolFirstFrontRun.t.sol": {
+      "sha256": "e904e40a7df696ed8717ba27fefae4bf5cebebed737ea94ebf19972cd1870074",
+      "deploymentChanges": [],
+      "assertionsSha256": "702b1e4fca121cb8e18ca7ba3183dffe018a75438c8e69403c4c739e1a1f5ecb"
+    },
+    "test/security/poc/PoolSquatAssetFloor.t.sol": {
+      "sha256": "ebbd321a8f923a3be7a0de1decafb5516ba0f88ef44c299dc6fcd5e00ddb66cf",
+      "deploymentChanges": [],
+      "assertionsSha256": "d37d8c716dc7c3e8d106eb1e3ad9f23e370b6db94eaab0a79d1709ebbd6cfcf2"
+    },
+    "test/security/poc/SignedCancelGrief.t.sol": {
+      "sha256": "becd0778077875717fead8ba09612a898fefc851496614bfe319dd9dc144ef8a",
+      "deploymentChanges": [],
+      "assertionsSha256": "75800cb9b6f87f58bef30ca941d366a0b12d3c3a056c8cc216ba59cd563558ac"
+    },
+    "test/utils/MockERC20.sol": {
+      "sha256": "0250532e0cd3eb13c61ac7fff4721d84fa128b6fa66c2f5cd876051bb435fe95",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/utils/NoReturnERC20.sol": {
+      "sha256": "519085a48344b960131d72a57fa2509abafd5fa2d50d2c2c9f31f14f7401795a",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/utils/Permit2Bytecode.sol": {
+      "sha256": "7304e3ec3be63f0f75b2d7d06dbb5f600a6678ede0a801be31eab72b60ae3b69",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/utils/TickIndexHarness.sol": {
+      "sha256": "a06689f470b854142e7306bf8dfd65761675d1fe2029221880cd2a5373719d09",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/utils/TopUpCallbackToken.sol": {
+      "sha256": "69e84785332669acb3f364b373d2519a6041095e4ac8f12a33b92db30e3fffb7",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "referenceOnly": {
+    "test/BaseHookDefaults.t.sol": "Tests a Solidity BaseHook subclass, not a deployed protocol module.",
+    "test/EligiblePrice.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
+    "test/IncomingLibraryDeployment.t.sol": "Solidity linked-library deployment script.",
+    "test/IndexLibraryDeployment.t.sol": "Solidity linked-library deployment scripts.",
+    "test/TickBitmap.t.sol": "Direct Solidity library harness; needs an independent Huff harness.",
+    "test/TickPricePoolBeatsLevel.t.sol": "Direct Solidity library harness; needs an independent Huff harness.",
+    "test/fizz/Actor.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/Base.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/FoundryTester.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/FuzzTester.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/Properties.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/Snapshots.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/handlers/AsyncSwapHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/handlers/FeeVaultHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/handlers/Handlers.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/handlers/NativeClaimsHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/handlers/RouterHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/handlers/TokenClaimsHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/Clamp.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/DecimalPrinter.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/Deployer.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/EnumerableSet.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/Hevm.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/Logger.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/Math.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/MockERC20.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/PropertiesAsserts.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/fizz/utils/StringUtils.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncFillerBookHarness.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapAddOrder.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapAsyncOrder.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapBeforeInitialize.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapCallOptionalReturn.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapConstructor.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapCrosses.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapFunctionCall.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapFunctionCallWithValue.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapLibHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapPriorityKey.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapRevert.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapSafeTransferFrom.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/Eip712ConstantsLog.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/Eip712Domain.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/FormalImmutablesC.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/FormalOzE.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/HookHelpersB.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/LibHelpersB.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/RouterConstructor.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/RouterHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/RouterLibHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/SpecBook.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/SpecCore.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/SpecEip712.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/formal/SpecSig.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
+    "test/security/ClaimTransfers.t.sol": "Direct Solidity library harness.",
+    "test/security/EligibleGas.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
+    "test/security/EligiblePythonVectors.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
+    "test/security/EligibleRemainder.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
+    "test/security/FeeClaims.t.sol": "Overrides a Solidity hook method; needs a Huff surcharge adapter.",
+    "test/security/PriorityPythonHashes.t.sol": "Direct Solidity signature-library harness.",
+    "test/security/PriorityPythonVectors.t.sol": "Depends on Solidity internal/storage-layout harnesses."
+  }
+}

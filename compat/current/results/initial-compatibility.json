@@ -1,0 +1,809 @@
+{
+  "targetCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "command": "FOUNDRY_PROFILE=current FOUNDRY_INVARIANT_RUNS=1 FOUNDRY_INVARIANT_DEPTH=8 forge test --no-match-contract UnichainForkTest --fuzz-runs 1 --json",
+  "scope": "Initial local compatibility smoke run. Setup failures block most test bodies; this is not a successful parity campaign.",
+  "discoveredTestCount": 383,
+  "counts": {
+    "Failure": 73,
+    "Success": 13
+  },
+  "huffSourceSha256": {
+    "src/AsyncSwap.huff": "a48240fc475dcca3711a9cfd1b0608e2c906d4a3a31cf8ee5b8259abf0519ce0",
+    "src/FeeVault.huff": "b24083775dd1e4d5e484d057647e20fbae14fc4dbc896a496d6c9795df666ccd",
+    "src/MatchingEngine.huff": "68a0ef00744044c9b0c29ad556d70027fc10bdfc67cb0f9dc8e7b5630d6d6226",
+    "src/NativeClaims.huff": "08a9bf7c8e8bec926802fba4449911bb47ca033f2b45652a52dc81deaf3e51a5",
+    "src/Router.huff": "413f0fae19fdbc71f56ceeae4a516ae9461affb58942225af473e89c1599ff07",
+    "src/TokenClaims.huff": "631eb023a8f0abe253393927967ac9fe14f838739d88da3795270d319912c17e",
+    "src/experimental/IncomingMath.huff": "337ced5fa94fdb82e59bae5716678eacf26a77df61d87f2b28b64ed591029c0a",
+    "src/generated/FeeVaultCreation.huff": "ad503c08b5ec19e7bc902c7e81a880f8f6acc6c15759e935c54b88e5d0e1aa6b",
+    "src/lib/Book.huff": "b8ea53a4f7964ba8d411f8be2e534ffbd89658758f5bf5a11c394a898ac518cb",
+    "src/lib/Common.huff": "cfec0001a2432a12073d6ab6bcab86ceeef72e613e3cb378b404944a95e0b055",
+    "src/lib/Math.huff": "566b121336ceacae87f8d03cc7545e1790a9a6cd5ba2d68ac626a493fb4cf93e",
+    "src/lib/PoolManager.huff": "27308d1f125dcf83cbd60bee74d35484033fd26a3969ce23fd631a95cec9f8ad",
+    "src/lib/RadixPriceTree.huff": "87e600a92bffd59ed0a9601556389418257ee35fa98344787ad730eb473efc66",
+    "src/lib/Signatures.huff": "ba927e84c0012dde49037a7675238d99c8fa169294070f4396c16b26e2246278"
+  },
+  "results": {
+    "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/BackrunCapture.t.sol:BackrunCaptureTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/BestPriceRouting.t.sol:BestPriceRoutingTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/ExactPriorityInvariant.t.sol:ExactPriorityInvariantTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/FeeEvents.t.sol:FeeEventsTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testBestPricesAreOrderedByTheRadixTree()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 757783
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testCancelUnlinksMiddleOfPriceLevel()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 622961
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testCrossedRemainderCanBeClearedInBoundedChunks()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 1571845
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testFuzzBestAskMatchesMinimum(uint128[16])": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Fuzz": {
+          "first_case": {
+            "gas": 3143869,
+            "stipend": 24888
+          },
+          "runs": 1,
+          "mean_gas": 3118981,
+          "median_gas": 3118981,
+          "failed_corpus_replays": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testGas_100OrdersAtDistinctPrices()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 19417196
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testGas_OneCallMatchesEightDistinctLevels()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 2099282
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testIncomingAskFillsBestBidAtTheBidPrice()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 636816
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testMatchBookUsesTheOlderBidAsMaker()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 1511610
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testMatchBoundCannotBeRaisedByCaller()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 53997
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testPartiallyFilledOrderKeepsItsTimePriority()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 518220
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testPriceTimePriorityAndPartialFills()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 466598
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testRevertWhenAmountOrPriceIsZero()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 54858
+        }
+      }
+    },
+    "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest::testRevertWhenCancellingMissingOrAnotherOwnersOrder()": {
+      "status": "Success",
+      "reason": null,
+      "kind": {
+        "Unit": {
+          "gas": 255913
+        }
+      }
+    },
+    "compat/current/test/MatchingInvariant.t.sol:LpMatchingInvariantTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingInvariant.t.sol:MatchingInvariantTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/NativeClaims.t.sol:NativeClaimsTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/PriorityFeeTopUp.t.sol:NumeraireZeroTopUpTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/PriorityFeeTopUp.t.sol:TopUpNumeraireDecimalsTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/ProtocolFee.t.sol:ProtocolFeeTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/RouterClaims.t.sol:RouterClaimsTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/SignedOrders.t.sol:SignedOrdersTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/StressCompletion.t.sol:StressCompletionTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/TokenClaims.t.sol:TokenClaimsTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/TradeFees.t.sol:TradeFeesTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest::test_RevertWhen_SelfExecutorFillsFromHookBalance()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 9451186
+        }
+      }
+    },
+    "compat/current/test/security/MakerIdentity.t.sol:MakerIdentityTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/MevTax.t.sol:MevTaxSignedTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/MevTax.t.sol:MevTaxTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderBidFloorTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/NoReturnToken.t.sol:NoReturnTokenTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/OrderSpoofing.t.sol:OrderSpoofingTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:DustDynamicFeeTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:EmptyRangeTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:ExtremeLevelTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:FeeBaseTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:GrantFrontRunTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:PoolFirstOvershootTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:RemainderRoundingKnownIssueTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PashovFindings.t.sol:VenueDynamicFeeTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeCap18DecimalTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/UseNonceScope.t.sol:UseNonceScopeTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/poc/GrantReplay.t.sol:GrantReplayPoc::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    },
+    "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc::setUp()": {
+      "status": "Failure",
+      "reason": "InvalidNumeraire()",
+      "kind": {
+        "Unit": {
+          "gas": 0
+        }
+      }
+    }
+  }
+}

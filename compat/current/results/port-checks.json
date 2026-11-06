@@ -1,0 +1,30 @@
+{
+  "command": "FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test --json",
+  "forge": "1.8.6",
+  "counts": {
+    "Success": 3
+  },
+  "results": [
+    {
+      "suite": "compat/current/checks/PortSize.t.sol:CurrentPortSizeTest",
+      "test": "test_creationCodeFitsInitcodeLimit()",
+      "status": "Success"
+    },
+    {
+      "suite": "compat/current/checks/PortSize.t.sol:CurrentPortSizeTest",
+      "test": "test_deployedRuntimesIncludeImmutables()",
+      "status": "Success"
+    },
+    {
+      "suite": "compat/current/checks/SignatureMemory.t.sol:CurrentSignatureMemoryTest",
+      "test": "test_longContractSignatureCannotActivateIncomingCandidate()",
+      "status": "Success"
+    }
+  ],
+  "signatureGuardMutation": {
+    "change": "Temporarily omit MC_ACTIVE reset after signature verification",
+    "result": "Failure",
+    "reason": "ZeroAmount()",
+    "sourceRestored": true
+  }
+}

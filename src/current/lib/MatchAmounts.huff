@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: MIT
+// Cap affordability before mulDiv so a bounded fill cannot overflow its uncapped quotient.
+#define fn CURRENT_MATCH_AMOUNTS() = takes (5) returns (2) {
+    // [sellIn, sellMin, buyIn, buyMin, makerBuy]
+    dup5 buy_maker jumpi
+    [MA_REST_IN] mstore [MA_REST_MIN] mstore [MA_INC_IN] mstore [MA_INC_MIN] mstore
+    sized jump
+    buy_maker:
+    [MA_INC_IN] mstore [MA_INC_MIN] mstore [MA_REST_IN] mstore [MA_REST_MIN] mstore
+    sized:
+    // A zero denominator must still take mulDiv's revert path, including seeded invalid orders.
+    [MA_REST_MIN] mload iszero quotient jumpi
+    [MA_REST_MIN] mload [MA_INC_IN] mload lt iszero full_fill jumpi
+    quotient:
+    [MA_REST_MIN] mload [MA_REST_IN] mload [MA_INC_IN] mload MUL_DIV()
+    amount_ready jump
+    full_fill:
+    [MA_REST_IN] mload
+    amount_ready:
+    dup1 iszero none_1 jumpi
+    [MA_REST_IN] mload [MA_REST_MIN] mload dup3 MUL_DIV_UP()
+    dup1 [MA_INC_IN] mload lt none_2 jumpi
+    [MA_INC_IN] mload [MA_INC_MIN] mload dup3 MUL_DIV_UP()
+    dup3 lt none_2 jumpi
+    dup3 buyer_maker_done jumpi
+    swap1
+    buyer_maker_done:
+    done jump
+    none_1:
+    pop 0x00 0x00 done jump
+    none_2:
+    pop pop 0x00 0x00
+    done:
+    swap2 pop swap1
+}

@@ -1,0 +1,75 @@
+// SPDX-License-Identifier: MIT
+// A radix subtree stores the most permissive exact ratio; the summary certifies
+// whether a right (higher fee/older queue) child contains an eligible order.
+#define constant EX_CUR = 0x780
+#define constant EX_FORCE = 0x7a0
+#define constant EX_NEXT = 0x7c0
+#define constant EX_NODE = 0x7e0
+
+#define macro READ_RATIO() = takes (1) returns (2) {
+    dup1 0x01 add sload swap1 sload
+}
+#define macro BOUND_SLOT() = takes (1) returns (1) {
+    [B_L] mload 0x05 add swap1 HASH_2()
+}
+
+/// @dev Compare full-width fractions without division or overflowing cross products.
+#define fn RATIO_LE() = takes (4) returns (1) {
+    // [an, ad, bn, bd]
+    0x920 mstore 0x940 mstore 0x960 mstore 0x980 mstore
+    0x920 mload 0x980 mload FULL_PRODUCT() 0x9a0 mstore 0x9c0 mstore
+    0x960 mload 0x940 mload FULL_PRODUCT()
+    dup1 0x9a0 mload lt lower jumpi
+    0x9a0 mload eq iszero greater jumpi
+    0x9c0 mload gt iszero done jump
+    lower: pop pop 0x01 done jump
+    greater: pop 0x00
+    done:
+}
+#define macro FULL_PRODUCT() = takes (2) returns (2) {
+    // [a,b] -> [high,low], using the Chinese remainder reconstruction from FullMath.
+    dup2 dup2 mul
+    0x00 not dup4 dup4 mulmod
+    dup2 dup2 lt // [mm<low, mm, low, a,b]
+    swap1 dup3 swap1 sub sub // [high,low,a,b]
+    swap2 pop swap2 pop
+}
+
+#define fn EXACT_REFRESH() = takes (0) returns (0) {
+    IS_CANDIDATE() memory_order jumpi
+    [B_L] mload 0x03 add TREE_LOAD()
+    [B_O] mload 0x01 add O_LOAD() O_PK() LEAF_SLOT() sload
+    dup1 BOUND_SLOT() [EX_NEXT] mstore
+    [B_O] mload 0x03 add O_LOAD() [B_O] mload 0x02 add O_LOAD()
+    [B_BUY] mload buy jumpi
+    swap1
+    buy:
+    [EX_NEXT] mload sstore [EX_NEXT] mload 0x01 add sstore
+    NODE_SLOT() sload [UINT32_MASK] and [EX_CUR] mstore
+    0x01 [EX_FORCE] mstore EXACT_REPAIR()
+    memory_order:
+}
+#define fn EXACT_REPAIR() = takes (0) returns (0) {
+    loop:
+    [EX_CUR] mload iszero done jumpi
+    [EX_CUR] mload NODE_SLOT() sload dup1 [EX_NODE] mstore
+    dup1 RIGHT() BOUND_SLOT() READ_RATIO()
+    dup3 LEFT() BOUND_SLOT() READ_RATIO()
+    RATIO_LE() [B_BUY] mload eq right jumpi
+    LEFT() BOUND_SLOT() selected jump
+    right: RIGHT() BOUND_SLOT()
+    selected: [EX_NEXT] mstore
+    [EX_CUR] mload BOUND_SLOT()
+    [EX_FORCE] mload store jumpi
+    dup1 sload [EX_NEXT] mload sload eq
+    dup2 0x01 add sload [EX_NEXT] mload 0x01 add sload eq and
+    unchanged jumpi
+    store:
+    [EX_NEXT] mload sload dup2 sstore
+    [EX_NEXT] mload 0x01 add sload swap1 0x01 add sstore
+    0x00 [EX_FORCE] mstore
+    [EX_NODE] mload [UINT32_MASK] and [EX_CUR] mstore
+    loop jump
+    unchanged: pop
+    done:
+}

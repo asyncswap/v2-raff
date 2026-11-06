@@ -1,0 +1,6146 @@
+{
+  "solidityTargetCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "huffBaseCommit": "516d5443a28dfa0e9ef86899ca3607993c985cac",
+  "huffSourceSha256": {
+    "src/AsyncSwap.huff": "a48240fc475dcca3711a9cfd1b0608e2c906d4a3a31cf8ee5b8259abf0519ce0",
+    "src/FeeVault.huff": "b24083775dd1e4d5e484d057647e20fbae14fc4dbc896a496d6c9795df666ccd",
+    "src/MatchingEngine.huff": "68a0ef00744044c9b0c29ad556d70027fc10bdfc67cb0f9dc8e7b5630d6d6226",
+    "src/NativeClaims.huff": "08a9bf7c8e8bec926802fba4449911bb47ca033f2b45652a52dc81deaf3e51a5",
+    "src/Router.huff": "413f0fae19fdbc71f56ceeae4a516ae9461affb58942225af473e89c1599ff07",
+    "src/TokenClaims.huff": "631eb023a8f0abe253393927967ac9fe14f838739d88da3795270d319912c17e",
+    "src/current/AsyncSwap.huff": "d7042b6b2ebe5910130f467c7cae8f998d60b81fb582afb0f7e8dfefc7f1c6e8",
+    "src/current/Router.huff": "dd66ad3ae7ef51b7316eecce5ca9bab3f281e59e01a7aa36e1b47f4476a89a9f",
+    "src/current/lib/Book.huff": "d2be459aaf469b80e3f06b34deead8213cd342706f42a8bf64e00a24f762b5d9",
+    "src/current/lib/ClaimTransfers.huff": "cc80e7042ae92a83814a0d394109b501b7e7e474db2edde6b3ec5c40ab6064b2",
+    "src/current/lib/ExactPrice.huff": "c31ed5aaa7f1ae9568e43413f6811bc9c9d911365a1f91acacfc87e73766551f",
+    "src/current/lib/Incoming.huff": "b36bd5611d70cb1d783f518fa0ac6c0c4190f5702599a9f910d8813be45ad96e",
+    "src/current/lib/Liquidity.huff": "e57e6df3475770299df9fcdf83e01c691d445b757cd2c84972ac6c528c410000",
+    "src/current/lib/MatchAmounts.huff": "f89e4edd3f98711bf7a6e1ad15fed363e9fb0a48aeef743ed30aefce4e9d63c5",
+    "src/current/lib/TickBitmap.huff": "97a90b18677dfcbe82116f87b70da9beaf049513b20e490a8fc881ad53a198c7",
+    "src/current/lib/TickPrice.huff": "9e839310a4e9163524de48765804f0888cdb4943330f9c1ef7aa945ab472f967",
+    "src/experimental/ClaimTransfers.huff": "98dda3042cfbee0af939a57e72b86bd0045456232ba720d894e53d6be14e07e9",
+    "src/experimental/CurrentTick.huff": "204d37c07ed83195b9fba4c18f6397afa7a474ca7896b0965e3cf2cc3cfd75b4",
+    "src/experimental/IncomingMath.huff": "337ced5fa94fdb82e59bae5716678eacf26a77df61d87f2b28b64ed591029c0a",
+    "src/generated/FeeVaultCreation.huff": "ad503c08b5ec19e7bc902c7e81a880f8f6acc6c15759e935c54b88e5d0e1aa6b",
+    "src/lib/Book.huff": "b8ea53a4f7964ba8d411f8be2e534ffbd89658758f5bf5a11c394a898ac518cb",
+    "src/lib/Common.huff": "cfec0001a2432a12073d6ab6bcab86ceeef72e613e3cb378b404944a95e0b055",
+    "src/lib/Math.huff": "566b121336ceacae87f8d03cc7545e1790a9a6cd5ba2d68ac626a493fb4cf93e",
+    "src/lib/PoolManager.huff": "27308d1f125dcf83cbd60bee74d35484033fd26a3969ce23fd631a95cec9f8ad",
+    "src/lib/RadixPriceTree.huff": "87e600a92bffd59ed0a9601556389418257ee35fa98344787ad730eb473efc66",
+    "src/lib/Signatures.huff": "ba927e84c0012dde49037a7675238d99c8fa169294070f4396c16b26e2246278"
+  },
+  "creationBytecode": {
+    "src/current/AsyncSwap.huff": {
+      "creationBytes": 38996,
+      "constructorArgsBytes": 192,
+      "initcodeBytesWithArgs": 39188,
+      "creationSha256": "79a40e77fccc454cd9c72f22de06547e24cc2f265a07694c00ecb6b3e0d74dae"
+    },
+    "src/current/Router.huff": {
+      "creationBytes": 11253,
+      "constructorArgsBytes": 128,
+      "initcodeBytesWithArgs": 11381,
+      "creationSha256": "e60734189aa81b3e24dd75dd90962d0225593c215ead38424a279ab173e148f6"
+    }
+  },
+  "runtimeBytes": {
+    "hook": 24458,
+    "router": 10623
+  },
+  "toolchain": {
+    "forge": "1.8.6",
+    "hnc": "1.6.2",
+    "solc": "0.8.26"
+  },
+  "campaigns": {
+    "full-final": {
+      "command": "FOUNDRY_PROFILE=current FOUNDRY_INVARIANT_RUNS=64 FOUNDRY_INVARIANT_DEPTH=64 UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org UNICHAIN_FORK_BLOCK=61709000 forge test --json",
+      "counts": {
+        "Success": 373
+      },
+      "results": [
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_RevertWhen_ExactOutputSwap()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1770142
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_RevertWhen_RouterCallbackNotFromPoolManager()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 31799
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_cancel_makerReclaimsInput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 872512
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_cancel_revertsAfterFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 964210
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_cancel_revertsForNonOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 44193
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_crossingOrdersMatchAndTransferEscrowedTokens()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1512756
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_crossingOrdersPartiallyFillAndKeepResidualOnBook()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1303489
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_makerReceivesPricedOutput_fillerReceivesInput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1073331
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_reverseDirection_token1ForToken0()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 954522
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_revertsAfterCancel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 928686
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_revertsWhenOrderMissing()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 117025
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_usesUpdatedPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1283915
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_filledPriorityBidGoesToFeeVaultNotActiveLps()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2788446
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_lpLiquidityFillsOrderWhenMakerMinimumIsMet()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2700321
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_lpLiquidityFillsReverseDirection()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2617072
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_lpPriceFailureLeavesOrderOpenAndRetryCanFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3417446
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_matchBookContinuesAfterAutomaticMatchBound()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8927734
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_partialMatchAndCancelForfeitTheEntirePriorityBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1343962
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priceBookReturnsHighestNumeraireBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1081940
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priceBookSortsBidsAndPreservesFifoAtPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1707155
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priceBookUpdateAndCancelMaintainBestLevel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1675874
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priorityFeeBelowTenCentsReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 192195
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priorityFeeBreaksEqualPriceTiesAfterPricePriority()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2127795
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_setExecutor_emitsGrant()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 68018
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_setExecutor_emitsRevocation()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 93213
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_swap_createsOrderWithPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 690493
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_swap_duplicateParamsTriggerSaltWalk()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1205411
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_swap_twoOrdersSameMaker_distinctSalts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1204112
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_updatePrice_makerCanRaisePrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 985032
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_updatePrice_revertsForNonOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 697129
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/BackrunCapture.t.sol:BackrunCaptureTest",
+          "test": "test_backrunPaysAShareOfTheGap()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1474032
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/BackrunCapture.t.sol:BackrunCaptureTest",
+          "test": "test_noPremiumAfterTheWindow()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1482875
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/BackrunCapture.t.sol:BackrunCaptureTest",
+          "test": "test_splittingTheBackrunDoesNotPayLess()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 4950695
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/BestPriceRouting.t.sol:BestPriceRoutingTest",
+          "test": "test_buyFillsFromThePoolWhenItBeatsTheBestAsk()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1394726
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/BestPriceRouting.t.sol:BestPriceRoutingTest",
+          "test": "test_sellFillsFromThePoolWhenItBeatsTheBestBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1396219
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/ExactPriorityInvariant.t.sol:ExactPriorityInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/FeeEvents.t.sol:FeeEventsTest",
+          "test": "test_bookMatchLogsBothTradeFees()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1054407
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/FeeEvents.t.sol:FeeEventsTest",
+          "test": "test_dynamicFeeIsLogged()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3307696
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/FeeEvents.t.sol:FeeEventsTest",
+          "test": "test_fillerAndPoolFillFeesCarryThePoolId()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1175901
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest",
+          "test": "test_failedFundingRollsBackPendingAndAllowsRetry()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2697018
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest",
+          "test": "test_fundingCallbacksCannotMatchPendingOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2198677
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "testFuzz_referenceMixedOperations(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 157469306,
+              "median_gas": 156958331
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceBacklogClearsInBoundedCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 74828832
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceBacklogConsumesBudgetBeforeIncoming()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 29061178
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceBacklogContinuesAfterIncomingCloses()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 9543348
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceExactPriceFeeAndMakerAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8159728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceIncomingBidYieldsAfterPartialFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 9903410
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5090064
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest",
+          "test": "test_quoteZeroPartialMemoryFillThenTopUp()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2090371
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_cancelDuringFundingRechecksOppositeOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3306952
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_liquidityActivatedDuringFundingUsesBetterPool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3800280
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_repriceDuringFundingRechecksOppositeOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3525797
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_sequentialSwapsClearStageWithinOneOuterCall()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2519474
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_RevertWhen_NativeOutputForwardFails()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 636623
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 787118
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 907366
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 929751
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_rejectingBestBuyerReceivesClaimsWithoutBlocking()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1489384
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 599577
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 605110
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testBestPricesAreOrderedByTheRadixTree()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 757783
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testCancelUnlinksMiddleOfPriceLevel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 622961
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testCrossedRemainderCanBeClearedInBoundedChunks()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1571845
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testFuzzBestAskMatchesMinimum(uint128[16])",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 3122902,
+              "median_gas": 3127065
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testGas_100OrdersAtDistinctPrices()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 19417196
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testGas_OneCallMatchesEightDistinctLevels()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2099282
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testIncomingAskFillsBestBidAtTheBidPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 636816
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testMatchBookUsesTheOlderBidAsMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1511610
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testMatchBoundCannotBeRaisedByCaller()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 53997
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testPartiallyFilledOrderKeepsItsTimePriority()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 518220
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testPriceTimePriorityAndPartialFills()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 466598
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testRevertWhenAmountOrPriceIsZero()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 54858
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testRevertWhenCancellingMissingOrAnotherOwnersOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 255913
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingInvariant.t.sol:LpMatchingInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingInvariant.t.sol:LpMatchingInvariantTest",
+          "test": "test_campaignPricesReachThePool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2631257
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingInvariant.t.sol:MatchingInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "testFuzz_referenceMixedOperations(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 149580980,
+              "median_gas": 148588712
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceBacklogClearsInBoundedCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 74828832
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceClosesAndRefundsDust()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2909744
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceExactPriceFeeAndMakerAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8159728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5090064
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "testFuzz_referenceMixedOperations(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 158569684,
+              "median_gas": 158583436
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "test_referenceBacklogClearsInBoundedCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 74828832
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "test_referenceExactPriceFeeAndMakerAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8159728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5090064
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_RevertWhen_NativeOutputForwardFails()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 636591
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 787072
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 907328
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 929735
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 599551
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 605072
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_RevertWhen_NativeOutputForwardFails()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 636645
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 787075
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_cannotRedeemAnotherOwnerOrCallCallback()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2729700
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_failedRedemptionPreservesClaimsAndAllowance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2947847
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 907376
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 929738
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_nativeLpFillCreditsClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2495601
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_redeemPartialToChosenRecipientThenNoDoubleSpend()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2838742
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_reentrantRedemptionCannotUnlockAgain()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2963233
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 599554
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 605075
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_buyAssetWithUsdcAtMarket()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 635076
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_dustInputNeverFillsForZeroOutput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 583844
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_limitAboveSpotRestsOnBothSides()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1435755
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_sellAssetForUsdcAtMarket()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 669721
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "testFuzz_fillOrRestUntouched(uint256,uint256,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 2700075,
+              "median_gas": 2711145
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_bookMatchesFirstThenPoolFillsRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3736497
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_directSelfCallEntryIsRejected()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2786514
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_failedPoolFillKeepsPriorityBidEscrowed()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 751312
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_fillAccountingAndEvent()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2777582
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_limitFailureRestoresFeeAndPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2952689
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_lpCollectsFillFeeOnWithdraw()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2878842
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_noLiquidity_orderRestsAndEscrowIsIntact()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 806912
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_orderLargerThanRangeIsRejectedAtomically()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 25552144
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_outOfRangeLiquidityCountsAsNoLiquidity()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2594955
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryAfterFillReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2705838
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryAlwaysAuthorizedSinceRouterCannotBeRevoked()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 712605
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryFillsPartiallyMatchedRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3610407
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryUnknownOrderReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2043050
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:NumeraireZeroTopUpTest",
+          "test": "test_topUpsFundCurrencyZeroForBothDirections()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1714347
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "testFuzz_additiveFundingAndQueue(uint64,uint64)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 1011361,
+              "median_gas": 1011120
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_buyQueueAndInputEscrowStaySeparate()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1295544
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_exactPriceStillPrecedesFeeWithinOneTick()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1760542
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_failedMulticallRollsBackFundingAndQueue()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1046936
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_fundedTopUpPreservesOrderAndEmitsEvent()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 921171
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_missingAllowanceRollsBackQueueAndEscrow()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 881565
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_missingBalanceRollsBackFundingAndQueue()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 901175
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_noNativeMevTaxForFeeOnlyUpdate()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 812125
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_orderClosedDuringPaymentRollsBackEntireTopUp()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2820724
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_ownerOnlyEvenForRegisteredExecutorWithAllowance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 706587
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_partialFillUsesRemainingBidAndRestoresCurrentFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1471861
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_paymentCallbackCannotSeeUnfundedBidAndUsesLiveRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2693947
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_rekeyGoesBehindExistingEqualFeeThenWinsWithHigherFee()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1962012
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_shortPaymentCannotLeaveUnfundedPriority()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1019257
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_topUpDoesNotMatchButMulticallCan()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2083662
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_unknownWrongOwnerDirectionAndClosedOrderRejected()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 999239
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_zeroBidAdmissionAndSmallOrderFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 849285
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest",
+          "test": "test_zeroOverflowAndMaximumBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 921436
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/PriorityFeeTopUp.t.sol:TopUpNumeraireDecimalsTest",
+          "test": "test_topUpUsesConfiguredNumeraireDecimals()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1005393
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "testFuzz_noFillerSurcharge(uint24,uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 5651,
+              "median_gas": 5651
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "test_fillPaysMinimumAndChargesTradeFeeBothSides()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1464976
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "test_noFillerSurcharge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 16124
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "testFuzz_updatedRouterCancellationAuthorization(bool,bool,bool,uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 4818412,
+              "median_gas": 4795029
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "testFuzz_withdrawClaimsAmountAndAllowance(uint96,uint96)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 870562,
+              "median_gas": 861839
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_RevertWhen_NativeOutputForwardFails()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 636679
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_cancelAndWithdrawReturnsETHWithoutConsumingExistingClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1484448
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 787087
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_erc20CancellationReturnsTokensWithoutClaimApproval()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 745046
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 907423
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 929808
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_invalidWithdrawalBatchesRevert()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 79552
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_laterBatchFailureRollsBackEarlierWithdrawal()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 890629
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_missingClaimApprovalRollsBackCancellation()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 830105
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_nativeReceiverCannotReenterWithdraw()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1197899
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_otherWalletCannotCancelAndWithdraw()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 616707
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_partialFillCancelsAndWithdrawsOnlyLiveRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1281670
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_rejectedETHRollsBackClaimsAndAllowance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1048817
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 599583
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 605110
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_unlockCallbackRejectsCallsOutsidePoolManager()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 38848
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_updatedRouterCancelsExistingHookOrdersAfterExecutorGrant()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 4984142
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_withdrawBatchBoundsRejectMismatchedAndOversizedArrays()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 61910
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_withdrawClaimsToOwnerAndRejectDoubleSpend()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 949806
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterClaims.t.sol:RouterClaimsTest",
+          "test": "test_withdrawNativeAndERC20ClaimsInOneBatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1854431
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_RevertWhen_BatchIncludesAnotherMakersOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1419253
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_RevertWhen_MulticallSentEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 39302
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_RevertWhen_OneCallFails_wholeBatchRollsBack()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 896933
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_cancelAndWithdrawClaimsInOneTransaction()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1918159
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_cancelTwoOrdersInOneTransaction()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1500395
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_maxPriceDoesNotCarryAcrossCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1843232
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest",
+          "test": "test_swapThenFillInOneTransaction()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1404030
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_RevertWhen_setExecutorWithSig_revokesTrustedRouter()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 167989
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_RevertWhen_useNonceByNonExecutor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 35101
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsExpired()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 803097
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsReplayOnRecurringOrderId()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1577239
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsUnusedSignatureOnReplacement()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1615271
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsWrongSigner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 842145
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_returnsInputToMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 999409
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_revokedByInvalidateNonce()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 872725
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_sharesHookNonces()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 977955
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_invalidateNonce_revokesSignedUpdate()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 875773
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_setExecutorWithSig_emitsGrantForMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 156026
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_setExecutorWithSig_emitsRevocationForMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 168243
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_relayerCreatesOrder_andGrantsExecutor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 793022
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_replayReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1200112
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_revertsWhenRelayerAltersPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 662797
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_revertsWithoutExecutorGrant()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 105621
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_skipsGrantWhenAlreadyAuthorized()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1283044
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_thenFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1037835
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_topUpPreservesPendingSignedRepriceAndCancel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1568221
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_typeStrings()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 4900
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsExpired()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 824302
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsSignatureAfterDirectReprice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1173541
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsTamperedPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 853672
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsUnusedSignatureOnReplacement()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2040281
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsWrongSigner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 840037
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_relayerUpdates()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1197026
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "testFuzz_updatedRouterCancellationAuthorization(bool,bool,bool,uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 4818437,
+              "median_gas": 4795052
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "testFuzz_withdrawClaimsAmountAndAllowance(uint96,uint96)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 870779,
+              "median_gas": 864599
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_RevertWhen_NativeOutputForwardFails()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 636679
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_cancelAndWithdrawReturnsETHWithoutConsumingExistingClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1484448
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 787152
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_erc20CancellationReturnsTokensWithoutClaimApproval()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 745024
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 907423
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 929786
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_invalidWithdrawalBatchesRevert()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 79552
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_laterBatchFailureRollsBackEarlierWithdrawal()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 890607
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_missingClaimApprovalRollsBackCancellation()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 830171
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_nativeReceiverCannotReenterWithdraw()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1197877
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_otherWalletCannotCancelAndWithdraw()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 616751
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_partialFillCancelsAndWithdrawsOnlyLiveRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1281670
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_rejectedETHRollsBackClaimsAndAllowance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1048817
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_stress_nativePartialWithdrawalAndDoubleSpend()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 248813436
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 599627
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 605110
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_unlockCallbackRejectsCallsOutsidePoolManager()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 38826
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_updatedRouterCancelsExistingHookOrdersAfterExecutorGrant()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 4984120
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_withdrawBatchBoundsRejectMismatchedAndOversizedArrays()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 61888
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_withdrawClaimsToOwnerAndRejectDoubleSpend()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 949784
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest",
+          "test": "test_withdrawNativeAndERC20ClaimsInOneBatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1854431
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:StressCompletionTest",
+          "test": "test_stress_deepCrossingBookBoundedContinuation()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 204858611
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:StressCompletionTest",
+          "test": "test_stress_liquidityRetryAndAlternatingFills()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 476228001
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/StressCompletion.t.sol:StressCompletionTest",
+          "test": "test_stress_sustainedMatchingAndWithdrawals()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 610711306
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_RevertWhen_CallbackNotFromPoolManager()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1084899
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_RevertWhen_InvalidRedemption()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 57772
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_RevertWhen_RedeemingAnotherOwnersClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1103786
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_RevertWhen_RedeemingWithoutApproval()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1043825
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_failedTransferPreservesClaimsAndAllowance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2079173
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_redeemPartialToChosenRecipientThenNoDoubleSpend()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1292826
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_redeemsEachCurrencySeparately()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1181599
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TokenClaims.t.sol:TokenClaimsTest",
+          "test": "test_reentrantRedemptionIsBlocked()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2266070
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TradeFees.t.sol:TradeFeesTest",
+          "test": "test_bookMatchChargesBothSides()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1464822
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TradeFees.t.sol:TradeFeesTest",
+          "test": "test_cancelRefundsTheWholeDeposit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 896319
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TradeFees.t.sol:TradeFeesTest",
+          "test": "test_exactlyTouchingLimitsMatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1055216
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TradeFees.t.sol:TradeFeesTest",
+          "test": "test_fillerFillChargesMakerAndFiller()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1010750
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/TradeFees.t.sol:TradeFeesTest",
+          "test": "test_lpFillPaysLpsTwoBpsAndProtocolOneBp()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2766113
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/UnichainFork.t.sol:UnichainForkTest",
+          "test": "testFork_nativeUsdcMatchAndCancelResidual()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1289006
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/UnichainFork.t.sol:UnichainForkTest",
+          "test": "testFork_permissionlessContinuationAfterEightMatches()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 11004194
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/UnichainFork.t.sol:UnichainForkTest",
+          "test": "testFork_priorityBidNonRefundableWithoutActiveLp()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 815765
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_RevertWhen_BuyMinimumOutputBelowFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 116766
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_RevertWhen_BuyRepricedBelowFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 618048
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_RevertWhen_SellInputBelowFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 136650
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_buyAtFloorRests()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 587911
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_floorFollowsAssetDecimals()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2735047
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_floorIsFourDecimalsOfAnEighteenDecimalAsset()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 15639
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_nativeAssetUsesEighteenDecimals()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 138680
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_reportedDecimalsAreCappedAt36()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 682281
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_sellAtFloorRests()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 605266
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest",
+          "test": "test_tokenWithoutDecimalsGetsOneUnitFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 240837
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest",
+          "test": "test_higherBidOnCrossingOrderCanBypassBlocker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1790136
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest",
+          "test": "test_incomingSellSkipsHigherFeeNoncrossingBuy()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1776022
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest",
+          "test": "test_sameTickBestBidBeatsHigherFeeAndEarlierAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1805076
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest",
+          "test": "test_sameTickExactPriceBeatsHigherFeeAndEarlierAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1873999
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest",
+          "test": "test_twoDollarBlockerCannotStallTwentyThousandDollars()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 23931364
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest",
+          "test": "test_worsePriceCannotJumpAheadWithBidOrAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2619880
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest",
+          "test": "test_RevertWhen_UnauthorizedExecutorCreatesOrFills()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2524927
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest",
+          "test": "test_RevertWhen_MakerRevokesTrustedRouter()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 733244
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest",
+          "test": "test_RevertWhen_NonOwnerCancelsThroughRouter()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 729332
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest",
+          "test": "test_RevertWhen_RevokedOtherExecutorCancels()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 823958
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest",
+          "test": "test_eoaCancelsThroughRouter()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 894205
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest",
+          "test": "test_fillerWithoutAnyGrantCanFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1079388
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_customExecutor_underpayingFee_ERC20Output_reverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3156920
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_customExecutor_underpayingFee_nativeOutput_reverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2805187
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_info_collectRevertsIfClaimsExceedInt128()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2318681
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_ownerCannotReachEscrow_onlyFees()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1706596
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_reentrantMaker_cannotSpendHookFeeCredit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2758520
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_thirdParty_cannotTransferOrBurnVaultClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1432518
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest",
+          "test": "test_RevertWhen_LivePriceExceedsFillerMax()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1051892
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest",
+          "test": "test_RevertWhen_SelfExecutorFillsFromHookBalance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 10841489
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MakerIdentity.t.sol:MakerIdentityTest",
+          "test": "test_mismatchedOwnerRevertsBeforeTransfer()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 128102
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MakerIdentity.t.sol:MakerIdentityTest",
+          "test": "test_mismatchedUserDataRevertsBeforeTransfer()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 128225
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxSignedTest",
+          "test": "test_relayerPaysTheTax()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 816649
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_cancelIsNotTaxed()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 825434
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_fillOrderPaysTheTax()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 942028
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_multicallTaxedActionNeedsNoPriority()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 647916
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_noPriorityPaysNothing()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 622226
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_poolRetryPaysTheTax()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2917236
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_swapPaysTheTaxToTheVault()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 710723
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MevTax.t.sol:MevTaxTest",
+          "test": "test_taxIsPriorityTimesTaxGas()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 22313
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderBidFloorTest",
+          "test": "test_RevertWhen_updatePrice_raisesSellBidFloor_withMinimum()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 744700
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_RevertWhen_BuyBelowMinimum()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 120806
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_RevertWhen_SellAsksBelowMinimum()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 147302
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_RevertWhen_UpdatePriceBelowMinimum()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 738350
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_buyAtMinimum_rests()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 634497
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_minimumIsFixedAtDeployment()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5573
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_newPoolsTakeTheHookMinimum()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 330048
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_partialMatchBuyRemainderBelowMinimum_refunded()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1167782
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_partialMatchRemainderBelowMinimum_refunded()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1145764
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_sellAtMinimum_rests()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 709962
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_sellAtMinimum_rests_numeraireIsCurrency0()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1025467
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_sellJudgedByMinimumOutputNotInput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 709988
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_sellJudgedByMinimumOutputNotInput_numeraireIsCurrency0()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1003839
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest",
+          "test": "test_strangerOpensPoolAtExtremePrice_minimumStillHolds()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1043773
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest",
+          "test": "test_RevertWhen_priorityFee_smallOrderBelowTenBps()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 125115
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest",
+          "test": "test_priorityFee_smallOrderPaysTenBps()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 634289
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest",
+          "test": "test_updatePrice_buyUnaffectedBySellBidFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 962087
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest",
+          "test": "test_updatePrice_partiallyFilledSellKeepsProRatedBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1523500
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest",
+          "test": "test_updatePrice_withinSellBidFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1252916
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest",
+          "test": "test_updatePrice_zeroBidRemainsOptional()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 976692
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "testFuzz_overpaymentReverts(uint96)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 700222,
+              "median_gas": 700217
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_control_fairFill_noStranding()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 881869
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_exactLivePrice_succeedsWithStaleStruct()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1248190
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_inflatedStructPrice_rejectsOverpayment()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 701698
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_livePriceAboveMax_revertsAtomically()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 690179
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_loweredPrice_rejectsStaleDeposit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1007473
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_nativeInput_rejectsMismatchedOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 55502
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_ownerSweep_recoversDonationsWithoutTouchingOpenOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 967497
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_underpayment_cannotConsumeDonatedEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 702004
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest",
+          "test": "test_RevertWhen_NativeInputMsgValueMismatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 44036
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest",
+          "test": "test_RevertWhen_FillerDoesNotDepositNativeOutput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 646040
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest",
+          "test": "test_control_eoaFill_succeeds()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1002193
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest",
+          "test": "test_reentrancyOnCancel_blocked()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2707828
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest",
+          "test": "test_reentrancyOnFill_blocked()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2774112
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest",
+          "test": "testFuzz_remaindersNeverStallTheBook(uint256,uint256,uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 2459400,
+              "median_gas": 2332996
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest",
+          "test": "test_belowTheFloorReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 434511
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest",
+          "test": "test_floorIsTheOnlyMinimum()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1039369
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest",
+          "test": "test_sellAskingNothingLeavesTheBookWorking()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1137688
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NoReturnToken.t.sol:NoReturnTokenTest",
+          "test": "test_noReturnTokenAsFillerOutput_fill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 862728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/NoReturnToken.t.sol:NoReturnTokenTest",
+          "test": "test_noReturnTokenAsMakerInput_createAndCancel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 796865
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/OrderSpoofing.t.sol:OrderSpoofingTest",
+          "test": "test_RevertWhen_NonExecutorOpensOrderForMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1312527
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest",
+          "test": "test_owner_can_cancel_directly()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2148170
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:DustDynamicFeeTest",
+          "test": "test_oneWeiFeeGoesWhollyToTheVault()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1316686
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:EmptyRangeTest",
+          "test": "test_poolFillCannotParkThePriceInAnEmptyRange()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2463536
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:ExtremeLevelTest",
+          "test": "test_dustAskAtTheEndKeyDoesNotBlockPoolBuys()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1245949
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:ExtremeLevelTest",
+          "test": "test_dustBidAtTheEndKeyDoesNotBlockPoolSells()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1254208
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:FeeBaseTest",
+          "test": "test_feeIsChargedOnlyOnTheOutputThatClosesTheGap()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1347603
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:GrantFrontRunTest",
+          "test": "test_frontRunGrantDoesNotRevertTheRelayedOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 797508
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:PoolFirstOvershootTest",
+          "test": "test_poolFirstSellDoesNotTradeBelowTheBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1487344
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:RemainderRoundingKnownIssueTest",
+          "test": "test_knownIssue_partlyMatchedOrderFallsBehindAnEqualOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1826641
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PashovFindings.t.sol:VenueDynamicFeeTest",
+          "test": "test_orderMovingBackTowardTheReferenceMatchesTheBookFirst()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2090501
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest",
+          "test": "test_dustRemainderIsRefunded()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1964584
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest",
+          "test": "test_dustRemainderStillMatchesTheBook()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2058859
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest",
+          "test": "test_poolFillsToTheBookLevelThenTheBookTakesTheRest()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2184188
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest",
+          "test": "test_remainderRestsAtTheMakersLimit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1908056
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest",
+          "test": "test_poolFillsToTheBookLevelThenTheBookTakesTheRest()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2184188
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest",
+          "test": "test_remainderRestsAtTheMakersLimit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1908034
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest",
+          "test": "test_equalKeyNonCrossingPairDoesNotBlockMatching()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1799314
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest",
+          "test": "test_exactTieExecutes()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1089696
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest",
+          "test": "test_matchBookMakesNoFalseMatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1390884
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeCap18DecimalTest",
+          "test": "test_18DecimalNumeraireUsesScaledOptionalBidFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 841634
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_RevertWhen_ExecutorSkipsTheBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3852144
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_RevertWhen_UntrustedExecutorOpensOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1117655
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_customExecutor_canRestOrderWhenBidIsPaid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3937501
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_equalBids_keepSubmissionOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1297970
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_newPoolOrderCanHaveNoBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 655462
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_newPool_equalPricesQueueByBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1298018
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_setOrderingModeIsGone()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 35437
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest",
+          "test": "test_zeroBidsKeepTimePriorityAndAllowRepricing()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1567472
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest",
+          "test": "test_RevertWhen_OrderChangesDuringFillPayment()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 782192
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest",
+          "test": "test_pendingOrder_notMatchableBeforeInputSettled()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2369531
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/UseNonceScope.t.sol:UseNonceScopeTest",
+          "test": "test_executorOnThisPoolCannotBurnTheMakersNonce()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 90745
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/UseNonceScope.t.sol:UseNonceScopeTest",
+          "test": "test_otherExecutorCannotBurnTheMakersNonce()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 88682
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest",
+          "test": "test_RevertWhen_UserDataDivergesFromOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 95084
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc",
+          "test": "test_control_normalMatchFee()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1040655
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc",
+          "test": "test_poc_buyerPaysQuoteReceivesZeroAsset()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1019906
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc",
+          "test": "test_poc_effectiveFeeRateOnSmallAssetLegs()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1042149
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc",
+          "test": "test_control_smallestLegalMatchFee()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1040623
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc",
+          "test": "test_poc_dustOrdersRejectedUnderProductionKnobs()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 242255
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc",
+          "test": "test_poc_dustSellRemainderClosesAndRefunds()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1000071
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/GrantReplay.t.sol:GrantReplayPoc",
+          "test": "test_RevertWhen_SignedRevocationOfTrustedRouter()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 102320
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/GrantReplay.t.sol:GrantReplayPoc",
+          "test": "test_grantSpentEvenWhenRouterAlreadyExecutor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 885514
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/GrantReplay.t.sol:GrantReplayPoc",
+          "test": "test_grantSpentWhenRouterNotYetExecutor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 851984
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc",
+          "test": "test_control_buyFillsFromPool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 639281
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc",
+          "test": "test_frontRunAskNoLongerForcesWorseBookMatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2882097
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc",
+          "test": "test_cannotSquatPoolBeforeTokenIsDeployed()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1062294
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc",
+          "test": "test_control_poolAfterDeployHasFloor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1585390
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc",
+          "test": "test_control_cancelSucceedsWithoutInterference()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1002070
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc",
+          "test": "test_dustMatchNoLongerBreaksRelayedCancel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1460026
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc",
+          "test": "test_dustMatchNoLongerBreaksRelayedReprice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1599427
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc",
+          "test": "test_repriceRejectsSignedSizeBelowTheOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 850054
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc",
+          "test": "test_staleRepriceCannotUndoALaterOne()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1248807
+            }
+          }
+        }
+      ]
+    },
+    "extended": {
+      "command": "FOUNDRY_PROFILE=current forge test --match-contract 'IncomingMemory.*Test|MatchingReferenceTest|DustMatchingReferenceTest' --fuzz-runs 2048 --json",
+      "counts": {
+        "Success": 23
+      },
+      "results": [
+        {
+          "suite": "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest",
+          "test": "test_failedFundingRollsBackPendingAndAllowsRetry()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2697018
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest",
+          "test": "test_fundingCallbacksCannotMatchPendingOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2198677
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "testFuzz_referenceMixedOperations(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 2048,
+              "mean_gas": 157558661,
+              "median_gas": 157055546
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceBacklogClearsInBoundedCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 74828832
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceBacklogConsumesBudgetBeforeIncoming()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 29061178
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceBacklogContinuesAfterIncomingCloses()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 9543348
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceExactPriceFeeAndMakerAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8159728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceIncomingBidYieldsAfterPartialFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 9903410
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest",
+          "test": "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5090064
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest",
+          "test": "test_quoteZeroPartialMemoryFillThenTopUp()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2090371
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_cancelDuringFundingRechecksOppositeOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3306952
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_liquidityActivatedDuringFundingUsesBetterPool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3800280
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_repriceDuringFundingRechecksOppositeOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3525797
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest",
+          "test": "test_sequentialSwapsClearStageWithinOneOuterCall()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2519474
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "testFuzz_referenceMixedOperations(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 2048,
+              "mean_gas": 149639584,
+              "median_gas": 148811934
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceBacklogClearsInBoundedCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 74828832
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceClosesAndRefundsDust()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2909744
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceExactPriceFeeAndMakerAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8159728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest",
+          "test": "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5090064
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "testFuzz_referenceMixedOperations(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 2048,
+              "mean_gas": 157349022,
+              "median_gas": 157237218
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "test_referenceBacklogClearsInBoundedCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 74828832
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "test_referenceExactPriceFeeAndMakerAge()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 8159728
+            }
+          }
+        },
+        {
+          "suite": "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest",
+          "test": "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5090064
+            }
+          }
+        }
+      ]
+    },
+    "legacy": {
+      "command": "FOUNDRY_INVARIANT_RUNS=64 FOUNDRY_INVARIANT_DEPTH=64 forge test --no-match-contract UnichainForkTest --json",
+      "counts": {
+        "Success": 192
+      },
+      "results": [
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_cancel_makerReclaimsInput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 645359
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_cancel_revertsAfterFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 763467
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_cancel_revertsForNonOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 44054
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_crossingOrdersMatchAndTransferEscrowedTokens()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1083565
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_crossingOrdersPartiallyFillAndKeepResidualOnBook()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1236154
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_makerReceivesPricedOutput_fillerReceivesInput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 836369
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_reverseDirection_token1ForToken0()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 792525
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_revertsAfterCancel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 719164
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_revertsWhenOrderMissing()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 131189
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_fill_usesUpdatedPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 936735
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_filledPriorityBidIsDonatedToActiveLpsInsideFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2805253
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_lpLiquidityFillsOrderWhenMakerMinimumIsMet()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2419625
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_lpLiquidityFillsReverseDirection()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2391227
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_lpPriceFailureLeavesOrderOpenAndRetryCanFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2874062
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_matchBookContinuesAfterAutomaticMatchBound()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 6609317
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_partialMatchAndCancelForfeitTheEntirePriorityBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1814482
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priceBookReturnsHighestNumeraireBid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 868860
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priceBookSortsBidsAndPreservesFifoAtPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1181559
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priceBookUpdateAndCancelMaintainBestLevel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1243417
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priorityFeeBelowTenCentsReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 253794
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_priorityFeeBreaksEqualPriceTiesAfterPricePriority()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2251720
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_setExecutor_emitsGrant()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 67847
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_setExecutor_emitsRevocation()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 46843
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_swap_createsOrderWithPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 501911
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_swap_duplicateParamsTriggerSaltWalk()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 803895
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_swap_twoOrdersSameMaker_distinctSalts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 802721
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_updatePrice_makerCanRaisePrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 651705
+            }
+          }
+        },
+        {
+          "suite": "test/AsyncSwap.t.sol:AsyncSwapTest",
+          "test": "test_updatePrice_revertsForNonOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 509355
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 559807
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 731720
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 714597
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_rejectingBestBuyerReceivesClaimsWithoutBlocking()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1406826
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 410908
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingAdversarial.t.sol:MatchingAdversarialTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 487430
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testBestPricesAreOrderedByTheRadixTree()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 758189
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testCancelUnlinksMiddleOfPriceLevel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 623543
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testCrossedRemainderCanBeClearedInBoundedChunks()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1572869
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testFuzzBestAskMatchesMinimum(uint128[16])",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 3114841,
+              "median_gas": 3124519
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testGas_100OrdersAtDistinctPrices()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 19428234
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testGas_OneCallMatchesEightDistinctLevels()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2100032
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testMatchBoundCannotBeRaisedByCaller()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 54075
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testPartiallyFilledOrderKeepsItsTimePriority()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 518748
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingEngine.t.sol:MatchingEngineTest",
+          "test": "testPriceTimePriorityAndPartialFills()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 467177
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingInvariant.t.sol:LpMatchingInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingInvariant.t.sol:LpMatchingInvariantTest",
+          "test": "test_campaignPricesReachThePool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1882172
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingInvariant.t.sol:MatchingInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 559807
+            }
+          }
+        },
+        {
+          "suite": "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 731685
+            }
+          }
+        },
+        {
+          "suite": "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 714562
+            }
+          }
+        },
+        {
+          "suite": "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 410908
+            }
+          }
+        },
+        {
+          "suite": "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 487395
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_cancel_nativeInput_makerReclaimsEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 559828
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_cannotRedeemAnotherOwnerOrCallCallback()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2394451
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_failedRedemptionPreservesClaimsAndAllowance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2612932
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_fill_nativeInput_fillerSendsEth_receivesErc20()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 731858
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_fill_nativeOutput_fillerSendsErc20_receivesEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 714712
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_nativeLpFillCreditsClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2266505
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_redeemPartialToChosenRecipientThenNoDoubleSpend()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2503803
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_reentrantRedemptionCannotUnlockAgain()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2615929
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_swap_nativeInput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 410949
+            }
+          }
+        },
+        {
+          "suite": "test/NativeClaims.t.sol:NativeClaimsTest",
+          "test": "test_swap_nativeOutput_create()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 487459
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "testFuzz_rejectPairsWithoutNumeraire(address,address)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 43222,
+              "median_gas": 43360
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_acceptNativeUsdcPool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 88595
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_acceptNumeraireOnEitherSortedSide()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 169162
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_buyAssetWithSixDecimalUsdc()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1052253
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_numeraireIsConfiguredToken()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 7782
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_ownerIsExplicitArgumentNotDeployer()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 5914503
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_rejectNativeNonUsdcPool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 42227
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_rejectNonContractNumeraire()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2168821
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_rejectTokenWithUsdcSymbolButWrongAddress()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 536519
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_rejectZeroNumeraire()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2142048
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_rejectZeroOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2146642
+            }
+          }
+        },
+        {
+          "suite": "test/Numeraire.t.sol:NumeraireTest",
+          "test": "test_sellAssetForSixDecimalUsdc()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1052265
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_buyAssetWithUsdcAtMarket()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 438031
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_dustInputNeverFillsForZeroOutput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 485134
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_limitAboveSpotRestsOnBothSides()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 960589
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest",
+          "test": "test_sellAssetForUsdcAtMarket()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 438366
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "testFuzz_fillOrRestUntouched(uint256,uint256,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 2434480,
+              "median_gas": 2429993
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_bookMatchesFirstThenPoolFillsRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3167871
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_directSelfCallEntryIsRejected()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2471920
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_failedPoolFillKeepsPriorityBidEscrowed()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 787412
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_fillAccountingAndEvent()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2468427
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_limitFailureRestoresFeeAndPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2577342
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_lpCollectsFillFeeOnWithdraw()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2567814
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_noLiquidity_orderRestsAndEscrowIsIntact()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 607734
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_orderLargerThanRangeIsRejectedAtomically()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 25238455
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_outOfRangeLiquidityCountsAsNoLiquidity()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2319841
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryAfterFillReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2423921
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryFillsPartiallyMatchedRemainder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3173184
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryRequiresMakerAuthorizedExecutor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2428338
+            }
+          }
+        },
+        {
+          "suite": "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest",
+          "test": "test_retryUnknownOrderReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1960564
+            }
+          }
+        },
+        {
+          "suite": "test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "testFuzz_feeCannotOverflow(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 6154,
+              "median_gas": 6154
+            }
+          }
+        },
+        {
+          "suite": "test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "testFuzz_feeIsPointThreePercentOfGross(uint128)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 6116,
+              "median_gas": 6116
+            }
+          }
+        },
+        {
+          "suite": "test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "test_feeIsPointThreePercent()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 10936
+            }
+          }
+        },
+        {
+          "suite": "test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "test_feeRoundsDownAtSmallestUnit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 16353
+            }
+          }
+        },
+        {
+          "suite": "test/ProtocolFee.t.sol:ProtocolFeeTest",
+          "test": "test_fillSplitsHundredUsdcAndPaysFullInput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1158562
+            }
+          }
+        },
+        {
+          "suite": "test/RadixPriceTree.t.sol:RadixPriceTreeTest",
+          "test": "test_counterTracksPeakNotHistory()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 73528142
+            }
+          }
+        },
+        {
+          "suite": "test/RadixPriceTree.t.sol:RadixPriceTreeTest",
+          "test": "test_recycledIdsKeepBestCorrect(uint128[12],uint8)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 1538431,
+              "median_gas": 1522743
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsExpired()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 601194
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsReplayOnRecurringOrderId()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1196577
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_rejectsWrongSigner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 637507
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_cancelWithSig_returnsInputToMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 754832
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_invalidateNonce_revokesSignedUpdate()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 660906
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_setExecutorWithSig_emitsGrantForMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 154018
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_setExecutorWithSig_emitsRevocationForMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 171046
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_relayerCreatesOrder_andGrantsExecutor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 602297
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_replayReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 820878
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_revertsWhenRelayerAltersPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 512411
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_revertsWithoutExecutorGrant()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 105383
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_skipsGrantWhenAlreadyAuthorized()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 989403
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_swapWithSig_thenFill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 848146
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_typeStrings()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 4854
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsExpired()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 610381
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsTamperedPrice()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 639640
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_rejectsWrongSigner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 637460
+            }
+          }
+        },
+        {
+          "suite": "test/SignedOrders.t.sol:SignedOrdersTest",
+          "test": "test_updatePriceWithSig_relayerUpdates()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 832070
+            }
+          }
+        },
+        {
+          "suite": "test/UnpaidBidInvariant.t.sol:UnpaidBidInvariantTest",
+          "test": "invariant_assetsConserved()",
+          "status": "Success",
+          "kind": {
+            "Invariant": {
+              "runs": 64,
+              "calls": 4096,
+              "reverts": 0
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "testFuzz_duplicateCurrencyAndRecipient(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 2153559,
+              "median_gas": 2150979
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_accumulationOverflowRevertsBeforeTransfers()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 89182
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_capacityThirtyFourCreditsAndZeroAmounts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2210528
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_failedFlushRollsBackEarlierTransfers()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 260055
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_selfTransfersDoNotAggregateOrOverflow()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 215529
+            }
+          }
+        },
+        {
+          "suite": "test/huff/CodeSize.t.sol:CodeSizeTest",
+          "test": "test_huffRuntimesFitEip170()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 14889665
+            }
+          }
+        },
+        {
+          "suite": "test/huff/CurrentTickParity.t.sol:CurrentTickParityTest",
+          "test": "testFuzz_fullWidthKey(bool,bool,uint256,uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 15415,
+              "median_gas": 16493
+            }
+          }
+        },
+        {
+          "suite": "test/huff/CurrentTickParity.t.sol:CurrentTickParityTest",
+          "test": "testFuzz_tickBoundaries(int24)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 201744,
+              "median_gas": 201485
+            }
+          }
+        },
+        {
+          "suite": "test/huff/CurrentTickParity.t.sol:CurrentTickParityTest",
+          "test": "test_extremesAndUnity()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 146495
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "testFuzz_matchBoundedIndependent(uint128,uint128,uint128,uint128,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 20181,
+              "median_gas": 21651
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "testFuzz_matchFullUint256(uint256,uint256,uint256,uint256,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 19924,
+              "median_gas": 19894
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "testFuzz_mulDivPrimitive(uint256,uint256,uint256,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 18224,
+              "median_gas": 18195
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "testFuzz_reduceFullUint256(uint256,uint256,uint64,uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 19286,
+              "median_gas": 19141
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "test_fullAffordabilityAvoidsIntermediateOverflow()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 45839
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "test_gasKernelCalls()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 148268
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "test_invalidDomainsRevert()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 133488
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "test_mulDivExpectedReverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 86755
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "test_remainderPreservesOriginalLimit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 37644
+            }
+          }
+        },
+        {
+          "suite": "test/huff/IncomingMath.t.sol:IncomingMathTest",
+          "test": "test_uint256BoundaryGrid()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 24832290
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "testFuzz_callbackEncoding(bytes,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 81406,
+              "median_gas": 63012
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "testFuzz_malformedStaticHead(bytes32,bytes32,uint256,uint8)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 64489,
+              "median_gas": 60678
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "testFuzz_partialAndFullRedemption(uint128,uint128)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 528451,
+              "median_gas": 529561
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "test_callbackNoncanonicalOffsetsAndBounds()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 649462
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "test_invalidAndUnapprovedRedemptions()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 764284
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "test_nativeCurrency()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 428542
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "test_reentryBlockedAndLockCleared()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 953979
+            }
+          }
+        },
+        {
+          "suite": "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest",
+          "test": "test_rejectedTransferRollsBackAllowanceAndClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 694103
+            }
+          }
+        },
+        {
+          "suite": "test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest",
+          "test": "test_RevertWhen_UnauthorizedExecutorCreatesOrFills()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2014777
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "testFuzz_cancelNeverChargesFees(uint96,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 717912,
+              "median_gas": 717703
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "testFuzz_fillConservesInput(uint96,bool)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 886315,
+              "median_gas": 886116
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_callbackCannotBeCalledDirectly()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 769338
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_cancelReverseDirection_refundsFullDeposit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 706098
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_collectBeforeFill_cannotTakeEscrow()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 946793
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_collectionAuthorizationFollowsOwnership()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 980461
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_emptyAndRepeatedCollection()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 891120
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_failedFillDoesNotEarnFees()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 742013
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_failedNativeRecipient_preservesClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1005286
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_feeUsesStoredOutput_andCollectionPreservesOtherOrders()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1465640
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_nativeCancellation_refundsFullDeposit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 754790
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeClaims.t.sol:FeeClaimsTest",
+          "test": "test_zeroRecipientRejected()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 37817
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_customExecutor_underpayingFee_ERC20Output_reverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2675026
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_customExecutor_underpayingFee_nativeOutput_reverts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2489885
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_info_collectRevertsIfClaimsExceedInt128()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2030591
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_ownerCannotReachEscrow_onlyFees()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1413706
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_reentrantMaker_cannotSpendHookFeeCredit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2314851
+            }
+          }
+        },
+        {
+          "suite": "test/security/FeeCollect.t.sol:FeeCollectTest",
+          "test": "test_thirdParty_cannotTransferOrBurnVaultClaims()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1225439
+            }
+          }
+        },
+        {
+          "suite": "test/security/FifoRepriceLinks.t.sol:FifoRepriceLinksTest",
+          "test": "test_repriceKeepsLevelListsWellFormed()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2719373
+            }
+          }
+        },
+        {
+          "suite": "test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest",
+          "test": "test_RevertWhen_LivePriceExceedsFillerMax()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 735779
+            }
+          }
+        },
+        {
+          "suite": "test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest",
+          "test": "test_RevertWhen_SelfExecutorFillsFromHookBalance()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 9358269
+            }
+          }
+        },
+        {
+          "suite": "test/security/MakerIdentity.t.sol:MakerIdentityTest",
+          "test": "test_mismatchedOwnerRevertsBeforeTransfer()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 127121
+            }
+          }
+        },
+        {
+          "suite": "test/security/MakerIdentity.t.sol:MakerIdentityTest",
+          "test": "test_mismatchedUserDataRevertsBeforeTransfer()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 127244
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "testFuzz_overpaymentReverts(uint96)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 256,
+              "mean_gas": 560501,
+              "median_gas": 560496
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_control_fairFill_noStranding()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 705830
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_exactLivePrice_succeedsWithStaleStruct()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 902359
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_inflatedStructPrice_rejectsOverpayment()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 561971
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_livePriceAboveMax_revertsAtomically()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 564884
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_loweredPrice_rejectsStaleDeposit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 725906
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_nativeInput_rejectsMismatchedOwner()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 55468
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_ownerSweep_recoversDonationsWithoutTouchingOpenOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 790312
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest",
+          "test": "test_underpayment_cannotConsumeDonatedEth()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 562405
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest",
+          "test": "test_RevertWhen_NativeInputMsgValueMismatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 43999
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest",
+          "test": "test_RevertWhen_FillerDoesNotDepositNativeOutput()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 508226
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest",
+          "test": "test_control_eoaFill_succeeds()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 806907
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest",
+          "test": "test_reentrancyOnCancel_blocked()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2033766
+            }
+          }
+        },
+        {
+          "suite": "test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest",
+          "test": "test_reentrancyOnFill_blocked()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2234042
+            }
+          }
+        },
+        {
+          "suite": "test/security/NoReturnToken.t.sol:NoReturnTokenTest",
+          "test": "test_noReturnTokenAsFillerOutput_fill()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 653739
+            }
+          }
+        },
+        {
+          "suite": "test/security/NoReturnToken.t.sol:NoReturnTokenTest",
+          "test": "test_noReturnTokenAsMakerInput_createAndCancel()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 570666
+            }
+          }
+        },
+        {
+          "suite": "test/security/OrderSpoofing.t.sol:OrderSpoofingTest",
+          "test": "test_RevertWhen_NonExecutorOpensOrderForMaker()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1152705
+            }
+          }
+        },
+        {
+          "suite": "test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest",
+          "test": "test_owner_can_cancel_directly_after_revoking_executor()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1752736
+            }
+          }
+        },
+        {
+          "suite": "test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest",
+          "test": "test_equalKeyNonCrossingPairDoesNotBlockMatching()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1612709
+            }
+          }
+        },
+        {
+          "suite": "test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest",
+          "test": "test_exactTieExecutes()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1089346
+            }
+          }
+        },
+        {
+          "suite": "test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest",
+          "test": "test_matchBookMakesNoFalseMatch()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1097167
+            }
+          }
+        },
+        {
+          "suite": "test/security/UnpaidPriorityBid.t.sol:UnpaidPriorityBidTest",
+          "test": "test_unpaidPriorityBid_cannotBlockThePool()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2577419
+            }
+          }
+        },
+        {
+          "suite": "test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest",
+          "test": "test_RevertWhen_UserDataDivergesFromOrder()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 95053
+            }
+          }
+        }
+      ]
+    },
+    "parity": {
+      "command": "forge test --match-contract ClaimTransfersParityTest --fuzz-runs 2048 --json",
+      "counts": {
+        "Success": 5
+      },
+      "results": [
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "testFuzz_duplicateCurrencyAndRecipient(uint256)",
+          "status": "Success",
+          "kind": {
+            "Fuzz": {
+              "runs": 2048,
+              "mean_gas": 2149666,
+              "median_gas": 2151604
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_accumulationOverflowRevertsBeforeTransfers()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 89182
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_capacityThirtyFourCreditsAndZeroAmounts()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 2210528
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_failedFlushRollsBackEarlierTransfers()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 260055
+            }
+          }
+        },
+        {
+          "suite": "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest",
+          "test": "test_selfTransfersDoNotAggregateOrOverflow()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 215529
+            }
+          }
+        }
+      ]
+    },
+    "checks": {
+      "command": "FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test --json",
+      "counts": {
+        "Success": 3
+      },
+      "results": [
+        {
+          "suite": "compat/current/checks/PortSize.t.sol:CurrentPortSizeTest",
+          "test": "test_creationCodeFitsInitcodeLimit()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 3544837
+            }
+          }
+        },
+        {
+          "suite": "compat/current/checks/PortSize.t.sol:CurrentPortSizeTest",
+          "test": "test_deployedRuntimesIncludeImmutables()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 25558
+            }
+          }
+        },
+        {
+          "suite": "compat/current/checks/SignatureMemory.t.sol:CurrentSignatureMemoryTest",
+          "test": "test_longContractSignatureCannotActivateIncomingCandidate()",
+          "status": "Success",
+          "kind": {
+            "Unit": {
+              "gas": 1407704
+            }
+          }
+        }
+      ]
+    }
+  },
+  "coverage": "Historical run: 373 grouped Forge entries, corresponding to 383 tests/predicates. The ten-entry difference is invariant grouping, not excluded finding tests. 136 reference-only files were not Huff coverage. Extended/parity campaigns overlap other suites."
+}

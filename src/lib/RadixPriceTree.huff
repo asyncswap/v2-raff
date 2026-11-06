@@ -191,10 +191,10 @@
     done:
 }
 
-/// @dev `_freeNode`: reset the node and push its id onto the free list.
+/// @dev `_freeNode`: recycle the id; insertion overwrites the retained node word.
 #define fn TREE_FREE_NODE() = takes (1) returns (0) {
     // [id]
-    0x00 dup2 NODE_SLOT() sstore                // [id]
+    // Recycled nodes are fully overwritten on reuse; retain their old word like the Solidity free list.
     [T_SLOT] mload sload                        // [hdr, id]
     dup1 0x40 shr [UINT32_MASK] and             // [free, hdr, id]
     [T_BASE] mload add                          // [itemSlot, hdr, id]

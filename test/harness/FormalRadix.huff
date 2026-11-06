@@ -1,0 +1,63 @@
+// Test-only ABI exposes production radix operations and direct storage fixture setters.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/RadixPriceTree.huff"
+#define constant TREE = 0x01
+#define macro BASE() = takes (0) returns (1) { [TREE] 0x00 mstore 0x20 0x00 sha3 }
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("insert(uint128)") eq insert jumpi
+    dup1 __FUNC_SIG("remove(uint128)") eq remove jumpi
+    dup1 __FUNC_SIG("best(bool)") eq best jumpi
+    dup1 __FUNC_SIG("root()") eq root jumpi
+    dup1 __FUNC_SIG("nextNodeId()") eq next_id jumpi
+    dup1 __FUNC_SIG("freeCount()") eq free_count jumpi
+    dup1 __FUNC_SIG("sentinel()") eq sentinel jumpi
+    dup1 __FUNC_SIG("freeIds()") eq free_ids jumpi
+    dup1 __FUNC_SIG("node(uint32)") eq node jumpi
+    dup1 __FUNC_SIG("leaf(uint128)") eq leaf jumpi
+    dup1 __FUNC_SIG("setRoot(uint32)") eq set_root jumpi
+    dup1 __FUNC_SIG("setNextNodeId(uint32)") eq set_next jumpi
+    dup1 __FUNC_SIG("setFreeIds(uint32[])") eq set_free jumpi
+    dup1 __FUNC_SIG("setNode(uint32,(uint32,uint32,uint32,uint128,uint8,bool))") eq set_node jumpi
+    dup1 __FUNC_SIG("setLeaf(uint128,uint32)") eq set_leaf jumpi
+    0x00 0x00 revert
+    insert: 0x04 calldataload [TREE] TREE_INSERT() RETURN_1()
+    remove: 0x04 calldataload [TREE] TREE_REMOVE() RETURN_EMPTY()
+    best: 0x04 calldataload [TREE] TREE_BEST() RETURN_2()
+    root: [TREE] sload [UINT32_MASK] and RETURN_1()
+    next_id: [TREE] sload 0x20 shr [UINT32_MASK] and RETURN_1()
+    free_count: [TREE] sload 0x40 shr [UINT32_MASK] and RETURN_1()
+    sentinel: 0x00 sload RETURN_1()
+    leaf: BASE() [TREE_LEAF_OFFSET] add 0x04 calldataload add sload RETURN_1()
+    set_root: [TREE] sload [UINT32_MASK] not and 0x04 calldataload or [TREE] sstore RETURN_EMPTY()
+    set_next: [TREE] sload [UINT32_MASK] 0x20 shl not and 0x04 calldataload 0x20 shl or [TREE] sstore RETURN_EMPTY()
+    set_leaf: 0x24 calldataload BASE() [TREE_LEAF_OFFSET] add 0x04 calldataload add sstore RETURN_EMPTY()
+    node:
+        BASE() [TREE_NODE_OFFSET] add 0x04 calldataload add sload
+        dup1 [UINT32_MASK] and 0x00 mstore
+        dup1 LEFT() 0x20 mstore dup1 RIGHT() 0x40 mstore
+        dup1 NODE_PRICE() 0x60 mstore dup1 NODE_BIT() 0x80 mstore IS_LEAF() 0xa0 mstore
+        0xc0 0x00 return
+    set_node:
+        0x24 calldataload 0x44 calldataload 0x20 shl or 0x64 calldataload 0x40 shl or
+        0x84 calldataload 0x60 shl or 0xa4 calldataload 0xe0 shl or 0xc4 calldataload 0xe8 shl or
+        BASE() [TREE_NODE_OFFSET] add 0x04 calldataload add sstore RETURN_EMPTY()
+    free_ids:
+        [TREE] sload 0x40 shr [UINT32_MASK] and 0x20 mstore 0x20 0x00 mstore
+        0x00
+        free_loop:
+        0x20 mload dup2 eq free_done jumpi
+        dup1 BASE() add sload dup2 0x20 mul 0x40 add mstore
+        0x01 add free_loop jump
+        free_done: 0x20 0x00 mstore 0x20 mul 0x40 add 0x00 return
+    set_free:
+        BASE() 0x100 mstore
+        0x24 calldataload [TREE] sload [UINT32_MASK] 0x40 shl not and swap1 0x40 shl or [TREE] sstore
+        0x00
+        set_free_loop:
+        0x24 calldataload dup2 eq set_free_done jumpi
+        dup1 0x20 mul 0x44 add calldataload dup2 0x100 mload add sstore
+        0x01 add set_free_loop jump
+        set_free_done: pop RETURN_EMPTY()
+}

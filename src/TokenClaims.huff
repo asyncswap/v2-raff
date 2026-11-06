@@ -1,0 +1,112 @@
+/// @title TokenClaims
+/// @notice Redeem the caller's PoolManager claims in any currency to a chosen recipient.
+/// @dev Port of contracts@3f4a5f1 TokenClaims.sol. Constructor: (IPoolManager manager).
+///      A transient lock covers the external payout; failed transfers restore claims and allowance.
+
+#include "./lib/Common.huff"
+#include "./lib/PoolManager.huff"
+
+#define error OnlyPoolManager()
+#define error InvalidRedemption()
+#define error ReentrantRedemption()
+#define event ClaimsRedeemed(address indexed, address indexed, address indexed, uint256)
+#define constant IMMUTABLES = __codesize(RUNTIME)
+#define constant REDEEMING_SLOT = 0x00
+#define constant DATA = 0xa0
+#define constant DATA_LENGTH = 0xc0
+#define macro MANAGER() = takes (0) returns (1) { 0x40 mload }
+
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    NON_PAYABLE()
+    [IMMUTABLES] __codesize(CONSTRUCTOR) 0x100 codecopy
+    0x20 0x20 codesize sub [IMMUTABLES] 0x100 add codecopy
+    [IMMUTABLES] 0x100 add mload 0xa0 shr iszero valid jumpi
+    0x00 0x00 revert
+    valid:
+    [IMMUTABLES] 0x20 add 0x100 return
+}
+
+/// @dev Require the complete static head before reading any argument; EVM calldata reads zero-pad.
+#define macro REQUIRE_LENGTH(n) = takes (0) returns (0) {
+    <n> calldatasize lt iszero valid jumpi
+    0x00 0x00 revert
+    valid:
+}
+
+#define macro REDEEM() = takes (0) returns (0) {
+    REQUIRE_LENGTH(0x64)
+    LOAD_ADDRESS(0x04) pop
+    LOAD_ADDRESS(0x24) pop
+    [REDEEMING_SLOT] tload iszero entered jumpi
+    __ERROR(ReentrantRedemption) REVERT_0()
+    entered:
+    0x01 [REDEEMING_SLOT] tstore
+    0x24 calldataload iszero bad jumpi
+    0x44 calldataload iszero bad jumpi
+    caller [CALL_44] mstore
+    0x04 calldataload [CALL_64] mstore
+    0x24 calldataload [CALL_84] mstore
+    0x44 calldataload [CALL_A4] mstore
+    // Solidity's high-level call rejects an address with no manager code.
+    MANAGER() extcodesize iszero missing_manager jumpi
+    0x80 PM_UNLOCK()
+    0x00 [REDEEMING_SLOT] tstore
+    RETURN_EMPTY()
+    bad: __ERROR(InvalidRedemption) REVERT_0()
+    missing_manager: 0x00 0x00 revert
+}
+
+/// @dev Decode the dynamic bytes argument, including noncanonical but valid ABI offsets.
+///      Bound offsets and lengths before addition so malformed input cannot wrap into the head.
+#define macro DECODE_CALLBACK() = takes (0) returns (0) {
+    REQUIRE_LENGTH(0x24)
+    0x04 calldataload dup1 0x40 shr bad jumpi
+    0x04 add dup1 0x20 add calldatasize lt bad jumpi
+    dup1 calldataload dup1 0x40 shr bad jumpi
+    dup2 0x20 add add calldatasize lt bad jumpi
+    dup1 calldataload [DATA_LENGTH] mstore
+    0x20 add [DATA] mstore
+    done jump
+    bad: 0x00 0x00 revert
+    done:
+}
+
+#define macro UNLOCK_CALLBACK() = takes (0) returns (0) {
+    // Decode the outer bytes before the body, as Solidity's ABI dispatcher does.
+    DECODE_CALLBACK()
+    MANAGER() caller eq authorized jumpi
+    __ERROR(OnlyPoolManager) REVERT_0()
+    authorized:
+    // The body's abi.decode occurs after authorization; preserve that revert ordering.
+    [DATA_LENGTH] mload 0x80 gt bad_inner jumpi
+    [DATA] mload calldataload 0xa0 shr bad_inner jumpi
+    [DATA] mload 0x20 add calldataload 0xa0 shr bad_inner jumpi
+    [DATA] mload 0x40 add calldataload 0xa0 shr bad_inner jumpi
+    [DATA] mload 0x60 add calldataload
+    [DATA] mload 0x20 add calldataload
+    [DATA] mload calldataload PM_BURN()
+    [DATA] mload 0x60 add calldataload
+    [DATA] mload 0x40 add calldataload
+    [DATA] mload 0x20 add calldataload PM_TAKE()
+    [DATA] mload 0x60 add calldataload [MEM_LOG] mstore
+    [DATA] mload 0x20 add calldataload
+    [DATA] mload 0x40 add calldataload
+    [DATA] mload calldataload
+    __EVENT_HASH(ClaimsRedeemed) 0x20 [MEM_LOG] log4
+    0x00 [MEM_LOG] RETURN_BYTES()
+    bad_inner: 0x00 0x00 revert
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    NON_PAYABLE()
+    REQUIRE_LENGTH(0x04)
+    0x20 [IMMUTABLES] 0x40 codecopy
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("redeem(address,address,uint256)") eq redeem jumpi
+    dup1 __FUNC_SIG("unlockCallback(bytes)") eq callback jumpi
+    dup1 __FUNC_SIG("poolManager()") eq manager jumpi
+    0x00 0x00 revert
+    redeem: REDEEM()
+    callback: UNLOCK_CALLBACK()
+    manager: MANAGER() RETURN_1()
+}
