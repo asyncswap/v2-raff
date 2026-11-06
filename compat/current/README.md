@@ -67,12 +67,38 @@ Solidity imports remain for ABI types, mocks and independent reference calculati
 
 Campaigns overlap and must not be added together. Validation uses Forge 1.8.6, hnc 1.6.2 and solc 0.8.26. [Behavioral validation and source hashes](results/behavioral-validation.json) record the campaigns. Earlier records preserve previous port stages. CI checks generated copies, runs acceptance/legacy tests, repeats the extended campaign and enforces size/memory checks.
 
+Run from the Huff repository root with Forge **1.8.6** and hnc **1.6.2** on your PATH. solc **0.8.26** is configured in `foundry.toml`. Use readable output for the full acceptance suite:
+
+```sh
+FOUNDRY_PROFILE=current \
+FOUNDRY_INVARIANT_RUNS=64 \
+FOUNDRY_INVARIANT_DEPTH=64 \
+UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org \
+UNICHAIN_FORK_BLOCK=61709000 \
+forge test -j 4 -vvv
+```
+
+The saved acceptance result combines 1,014 tests/predicates from the full run with two default-callback tests added and run afterward. The command above now includes all 1,016. Assertions are unchanged; the profile excludes the documented `_finding_` test, and reference-only checks are not counted as Huff passes.
+
+Check the generated adapters and run the additional size/memory/parity checks separately:
+
 ```sh
 python3 script/sync-current-tests.py /path/to/pinned/contracts --check
-FOUNDRY_PROFILE=current UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org \
-  UNICHAIN_FORK_BLOCK=61709000 forge test
-FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test --fuzz-runs 4096
+FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test --fuzz-runs 4096 -vvv
 ```
+
+### Profiles and saved invariant failures
+
+| Profile | Suite | `fail_on_revert` |
+| --- | --- | --- |
+| `current` | `compat/current/test/` | `true` |
+| `default` | `test/` (legacy) | `false` |
+
+The profiles use separate compilation caches but currently share `cache/invariant` for saved invariant failures. A warning that adds `test/…:MatchingHandler`, removes `compat/current/test/…:MatchingHandler`, and changes `fail_on_revert` from `true` to `false` means the legacy run encountered a saved current-profile case.
+
+Foundry skips that incompatible replay because the target contracts, selectors or settings differ. The warning is not a new invariant failure and does not establish that the saved failure was fixed. Keep the saved cases and use their original profile to investigate them.
+
+### Machine-readable coverage inventory
 
 To regenerate the inventory, build the pinned Solidity source and save `forge test --no-match-test '^$' --list --json` from each repository and the current profile's `forge test --json` result. Pass them to `script/report-current-coverage.py --source-list … --huff-list … --results … --source-artifacts /path/to/pinned/contracts/out`. It requires a passing execution result for every adapted test, including each grouped invariant predicate.
 

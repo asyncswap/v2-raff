@@ -4,11 +4,23 @@ The current port in `src/current/` targets [Solidity PR #81](https://github.com/
 
 The [Router benchmark](benchmarks/crossing/README.md) measures 1,000 transactions and 5,200 pairs. Huff uses **7.3–24.5% less gas** on single fills and **17.2–18.3% less** on eight-level sweeps, but **11.1–12.9% more** on other eight-fill workloads. Hook/Router runtimes are **24,321 / 10,952 bytes**. The [optimizer sweep](benchmarks/optimizer-runs/README.md) supports retaining 10,000 runs for Solidity among the six tested settings.
 
+Run from the repository root with Forge **1.8.6** and hnc **1.6.2** on your PATH (solc **0.8.26** is configured in `foundry.toml`). This runs the current acceptance suite with readable output and the pinned fork tests:
+
 ```sh
-FOUNDRY_PROFILE=current forge test
-FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test
+FOUNDRY_PROFILE=current \
+FOUNDRY_INVARIANT_RUNS=64 \
+FOUNDRY_INVARIANT_DEPTH=64 \
+UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org \
+UNICHAIN_FORK_BLOCK=61709000 \
+forge test -j 4 -vvv
+```
+
+```sh
+FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test --fuzz-runs 4096 -vvv
 python3 benchmarks/crossing/run.py
 ```
+
+The `current` profile keeps `fail_on_revert = true`. The default profile runs the legacy suite. Both currently share saved invariant failures under `cache/invariant`; switching profiles can produce “failure was ignored because invariant test settings have changed” warnings. See the [profile and cache explanation](compat/current/README.md#profiles-and-saved-invariant-failures).
 
 The current hook takes `(poolManager, numeraire, owner, router, minOrderUsd, assetPrecision)`; its Router takes `(poolManager, hook, permit2, mevTaxGas)`. See the acceptance guide for toolchain, fork configuration and exact coverage. The port has not been independently audited or deployed publicly.
 
