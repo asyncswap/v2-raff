@@ -1,5 +1,9 @@
 # v2-raff
 
+**PR #81 port:** the [current-protocol acceptance suite](compat/current/README.md) copies the pinned Solidity tests and deploys actual Huff bytecode from the unfinished `src/current/` hook/router port. It discovers 383 tests; the current smoke run has 59 passing results and 311 failures. Passing the legacy suite below does not establish current-protocol parity.
+
+**Current compatibility:** the full hook below is a historical port. The [incoming-memory arithmetic experiment](docs/INCOMING_MEMORY_EXPERIMENT.md) records its gaps against current Solidity, a new isolated kernel, and fresh differential-test results. It does not make the full Huff hook current-protocol compatible.
+
 Async Swap v2 in [Huff](https://www.huff-neo.rs), compiled with [huff-neo](https://github.com/cakevm/huff-neo)
 (`hnc`): a port of [`asyncswap/contracts`](https://github.com/asyncswap/contracts) (`main` @ `6fa977a`) with the
 same ABI, events, errors, revert strings and behaviour. The acceptance test is `asyncswap/contracts`' own suite,

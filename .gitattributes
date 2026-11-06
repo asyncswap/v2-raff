@@ -1,0 +1,6 @@
+# Keep the pinned upstream snapshot byte-for-byte, including its original whitespace.
+reference/contracts/** linguist-vendored=true -whitespace
+# These are reproduced and checked by script/sync-current-tests.py.
+compat/current/test/** linguist-generated=true
+compat/current/manifest.json linguist-generated=true
+compat/current/results/** linguist-generated=true

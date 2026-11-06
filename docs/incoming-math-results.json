@@ -1,0 +1,62 @@
+{
+  "v2RaffBaseCommit": "be294742cf76ab60f2c5c82ec46b7a96508c987b",
+  "soliditySemanticsCommit": "94400ce97b3260140d5449cbd26a3e7cdd832821",
+  "hnc": "1.6.2 (8278e5c9)",
+  "forge": "1.9.0 (6056c5845d34205a83cf7108042adb137325c9df)",
+  "solc": "0.8.26",
+  "optimizerRuns": 10000,
+  "baseline": {
+    "passed": 166,
+    "failed": 0,
+    "skipped": 1,
+    "invariantRuns": 64,
+    "invariantDepth": 64
+  },
+  "combined": {
+    "passed": 176,
+    "failed": 0,
+    "skipped": 1,
+    "invariantRuns": 64,
+    "invariantDepth": 64
+  },
+  "kernel": {
+    "passed": 10,
+    "failed": 0,
+    "fuzzTests": 4,
+    "runsEach": 2048,
+    "boundaryMatches": 1024,
+    "boundaryReductions": 192
+  },
+  "calleeGas": [
+    {
+      "case": "match-small",
+      "huff": 1545,
+      "soliditySpec": 2048
+    },
+    {
+      "case": "match-wide",
+      "huff": 2430,
+      "soliditySpec": 2960
+    },
+    {
+      "case": "reduce-small",
+      "huff": 1000,
+      "soliditySpec": 1370
+    },
+    {
+      "case": "reduce-wide",
+      "huff": 1590,
+      "soliditySpec": 2054
+    }
+  ],
+  "runtimeBytes": {
+    "huff": 1183,
+    "soliditySpec": 1560
+  },
+  "limitations": [
+    "Arithmetic kernel only; no full-hook equivalence",
+    "Legacy Unichain fork suite skipped without RPC",
+    "Callee execution gas, not complete transaction receipts",
+    "Solidity comparator is standalone specification, not production inlined code"
+  ]
+}

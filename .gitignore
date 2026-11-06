@@ -1,6 +1,8 @@
 # Foundry build artifacts
 out/
 cache/
+out-current/
+cache-current/
 
 # Local environment and deployment secrets
 .env

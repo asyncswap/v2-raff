@@ -1,0 +1,643 @@
+{
+  "compat/current/test/AsyncSwap.t.sol": {
+    "AsyncSwapTest": [
+      "test_RevertWhen_ExactOutputSwap",
+      "test_RevertWhen_RouterCallbackNotFromPoolManager",
+      "test_cancel_makerReclaimsInput",
+      "test_cancel_revertsAfterFill",
+      "test_cancel_revertsForNonOwner",
+      "test_crossingOrdersMatchAndTransferEscrowedTokens",
+      "test_crossingOrdersPartiallyFillAndKeepResidualOnBook",
+      "test_fill_makerReceivesPricedOutput_fillerReceivesInput",
+      "test_fill_reverseDirection_token1ForToken0",
+      "test_fill_revertsAfterCancel",
+      "test_fill_revertsWhenOrderMissing",
+      "test_fill_usesUpdatedPrice",
+      "test_filledPriorityBidGoesToFeeVaultNotActiveLps",
+      "test_lpLiquidityFillsOrderWhenMakerMinimumIsMet",
+      "test_lpLiquidityFillsReverseDirection",
+      "test_lpPriceFailureLeavesOrderOpenAndRetryCanFill",
+      "test_matchBookContinuesAfterAutomaticMatchBound",
+      "test_partialMatchAndCancelForfeitTheEntirePriorityBid",
+      "test_priceBookReturnsHighestNumeraireBid",
+      "test_priceBookSortsBidsAndPreservesFifoAtPrice",
+      "test_priceBookUpdateAndCancelMaintainBestLevel",
+      "test_priorityFeeBelowTenCentsReverts",
+      "test_priorityFeeBreaksEqualPriceTiesAfterPricePriority",
+      "test_setExecutor_emitsGrant",
+      "test_setExecutor_emitsRevocation",
+      "test_swap_createsOrderWithPrice",
+      "test_swap_duplicateParamsTriggerSaltWalk",
+      "test_swap_twoOrdersSameMaker_distinctSalts",
+      "test_updatePrice_makerCanRaisePrice",
+      "test_updatePrice_revertsForNonOwner"
+    ]
+  },
+  "compat/current/test/BackrunCapture.t.sol": {
+    "BackrunCaptureTest": [
+      "test_backrunPaysAShareOfTheGap",
+      "test_noPremiumAfterTheWindow",
+      "test_splittingTheBackrunDoesNotPayLess"
+    ]
+  },
+  "compat/current/test/BestPriceRouting.t.sol": {
+    "BestPriceRoutingTest": [
+      "test_buyFillsFromThePoolWhenItBeatsTheBestAsk",
+      "test_sellFillsFromThePoolWhenItBeatsTheBestBid"
+    ]
+  },
+  "compat/current/test/ExactPriorityInvariant.t.sol": {
+    "ExactPriorityInvariantTest": [
+      "invariant_assetsConserved",
+      "invariant_bestOrderIsExactThenBidThenAge",
+      "invariant_bestPricesAgreeWithLinearScan",
+      "invariant_escrowEqualsOutstandingObligations"
+    ]
+  },
+  "compat/current/test/FeeEvents.t.sol": {
+    "FeeEventsTest": [
+      "test_bookMatchLogsBothTradeFees",
+      "test_dynamicFeeIsLogged",
+      "test_fillerAndPoolFillFeesCarryThePoolId"
+    ]
+  },
+  "compat/current/test/IncomingMemoryFunding.t.sol": {
+    "IncomingMemoryFundingTest": [
+      "test_failedFundingRollsBackPendingAndAllowsRetry",
+      "test_fundingCallbacksCannotMatchPendingOrder"
+    ]
+  },
+  "compat/current/test/IncomingMemoryReference.t.sol": {
+    "IncomingMemoryReferenceTest": [
+      "testFuzz_referenceMixedOperations",
+      "test_referenceBacklogClearsInBoundedCalls",
+      "test_referenceBacklogConsumesBudgetBeforeIncoming",
+      "test_referenceBacklogContinuesAfterIncomingCloses",
+      "test_referenceExactPriceFeeAndMakerAge",
+      "test_referenceIncomingBidYieldsAfterPartialFill",
+      "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid"
+    ]
+  },
+  "compat/current/test/IncomingMemoryTransitions.t.sol": {
+    "IncomingMemoryQuoteZeroTest": [
+      "test_quoteZeroPartialMemoryFillThenTopUp"
+    ],
+    "IncomingMemoryTransitionsTest": [
+      "test_cancelDuringFundingRechecksOppositeOrder",
+      "test_liquidityActivatedDuringFundingUsesBetterPool",
+      "test_repriceDuringFundingRechecksOppositeOrder",
+      "test_sequentialSwapsClearStageWithinOneOuterCall"
+    ]
+  },
+  "compat/current/test/MatchingAdversarial.t.sol": {
+    "MatchingAdversarialTest": [
+      "test_RevertWhen_NativeOutputForwardFails",
+      "test_cancel_nativeInput_makerReclaimsEth",
+      "test_fill_nativeInput_fillerSendsEth_receivesErc20",
+      "test_fill_nativeOutput_fillerSendsErc20_receivesEth",
+      "test_rejectingBestBuyerReceivesClaimsWithoutBlocking",
+      "test_swap_nativeInput_create",
+      "test_swap_nativeOutput_create"
+    ]
+  },
+  "compat/current/test/MatchingEngine.t.sol": {
+    "MatchingEngineTest": [
+      "testBestPricesAreOrderedByTheRadixTree",
+      "testCancelUnlinksMiddleOfPriceLevel",
+      "testCrossedRemainderCanBeClearedInBoundedChunks",
+      "testFuzzBestAskMatchesMinimum",
+      "testGas_100OrdersAtDistinctPrices",
+      "testGas_OneCallMatchesEightDistinctLevels",
+      "testIncomingAskFillsBestBidAtTheBidPrice",
+      "testMatchBookUsesTheOlderBidAsMaker",
+      "testMatchBoundCannotBeRaisedByCaller",
+      "testPartiallyFilledOrderKeepsItsTimePriority",
+      "testPriceTimePriorityAndPartialFills",
+      "testRevertWhenAmountOrPriceIsZero",
+      "testRevertWhenCancellingMissingOrAnotherOwnersOrder"
+    ]
+  },
+  "compat/current/test/MatchingInvariant.t.sol": {
+    "LpMatchingInvariantTest": [
+      "invariant_assetsConserved",
+      "invariant_bestPricesAgreeWithLinearScan",
+      "invariant_escrowEqualsOutstandingObligations",
+      "invariant_hookHoldsNoUsdcBeyondEscrow",
+      "test_campaignPricesReachThePool"
+    ],
+    "MatchingInvariantTest": [
+      "invariant_assetsConserved",
+      "invariant_bestPricesAgreeWithLinearScan",
+      "invariant_escrowEqualsOutstandingObligations"
+    ],
+    "PriorityMatchingInvariantTest": [
+      "invariant_assetsConserved",
+      "invariant_bestPricesAgreeWithLinearScan",
+      "invariant_escrowEqualsOutstandingObligations"
+    ]
+  },
+  "compat/current/test/MatchingReference.t.sol": {
+    "DustMatchingReferenceTest": [
+      "testFuzz_referenceMixedOperations",
+      "test_referenceBacklogClearsInBoundedCalls",
+      "test_referenceClosesAndRefundsDust",
+      "test_referenceExactPriceFeeAndMakerAge",
+      "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid"
+    ],
+    "MatchingReferenceTest": [
+      "testFuzz_referenceMixedOperations",
+      "test_referenceBacklogClearsInBoundedCalls",
+      "test_referenceExactPriceFeeAndMakerAge",
+      "test_referenceTopUpsPreserveMakerAgeAndSettleNewBid"
+    ]
+  },
+  "compat/current/test/NativeAsyncSwap.t.sol": {
+    "NativeAsyncSwapTest": [
+      "test_RevertWhen_NativeOutputForwardFails",
+      "test_cancel_nativeInput_makerReclaimsEth",
+      "test_fill_nativeInput_fillerSendsEth_receivesErc20",
+      "test_fill_nativeOutput_fillerSendsErc20_receivesEth",
+      "test_swap_nativeInput_create",
+      "test_swap_nativeOutput_create"
+    ]
+  },
+  "compat/current/test/NativeClaims.t.sol": {
+    "NativeClaimsTest": [
+      "test_RevertWhen_NativeOutputForwardFails",
+      "test_cancel_nativeInput_makerReclaimsEth",
+      "test_cannotRedeemAnotherOwnerOrCallCallback",
+      "test_failedRedemptionPreservesClaimsAndAllowance",
+      "test_fill_nativeInput_fillerSendsEth_receivesErc20",
+      "test_fill_nativeOutput_fillerSendsErc20_receivesEth",
+      "test_nativeLpFillCreditsClaims",
+      "test_redeemPartialToChosenRecipientThenNoDoubleSpend",
+      "test_reentrantRedemptionCannotUnlockAgain",
+      "test_swap_nativeInput_create",
+      "test_swap_nativeOutput_create"
+    ]
+  },
+  "compat/current/test/PoolLiquidityFill.t.sol": {
+    "PoolLiquidityFillSixDecimalTest": [
+      "test_buyAssetWithUsdcAtMarket",
+      "test_dustInputNeverFillsForZeroOutput",
+      "test_limitAboveSpotRestsOnBothSides",
+      "test_sellAssetForUsdcAtMarket"
+    ],
+    "PoolLiquidityFillTest": [
+      "testFuzz_fillOrRestUntouched",
+      "test_bookMatchesFirstThenPoolFillsRemainder",
+      "test_directSelfCallEntryIsRejected",
+      "test_failedPoolFillKeepsPriorityBidEscrowed",
+      "test_fillAccountingAndEvent",
+      "test_limitFailureRestoresFeeAndPrice",
+      "test_lpCollectsFillFeeOnWithdraw",
+      "test_noLiquidity_orderRestsAndEscrowIsIntact",
+      "test_orderLargerThanRangeIsRejectedAtomically",
+      "test_outOfRangeLiquidityCountsAsNoLiquidity",
+      "test_retryAfterFillReverts",
+      "test_retryAlwaysAuthorizedSinceRouterCannotBeRevoked",
+      "test_retryFillsPartiallyMatchedRemainder",
+      "test_retryUnknownOrderReverts"
+    ]
+  },
+  "compat/current/test/PriorityFeeTopUp.t.sol": {
+    "NumeraireZeroTopUpTest": [
+      "test_topUpsFundCurrencyZeroForBothDirections"
+    ],
+    "PriorityFeeTopUpTest": [
+      "testFuzz_additiveFundingAndQueue",
+      "test_buyQueueAndInputEscrowStaySeparate",
+      "test_exactPriceStillPrecedesFeeWithinOneTick",
+      "test_failedMulticallRollsBackFundingAndQueue",
+      "test_fundedTopUpPreservesOrderAndEmitsEvent",
+      "test_missingAllowanceRollsBackQueueAndEscrow",
+      "test_missingBalanceRollsBackFundingAndQueue",
+      "test_noNativeMevTaxForFeeOnlyUpdate",
+      "test_orderClosedDuringPaymentRollsBackEntireTopUp",
+      "test_ownerOnlyEvenForRegisteredExecutorWithAllowance",
+      "test_partialFillUsesRemainingBidAndRestoresCurrentFloor",
+      "test_paymentCallbackCannotSeeUnfundedBidAndUsesLiveRemainder",
+      "test_rekeyGoesBehindExistingEqualFeeThenWinsWithHigherFee",
+      "test_shortPaymentCannotLeaveUnfundedPriority",
+      "test_topUpDoesNotMatchButMulticallCan",
+      "test_unknownWrongOwnerDirectionAndClosedOrderRejected",
+      "test_zeroBidAdmissionAndSmallOrderFloor",
+      "test_zeroOverflowAndMaximumBid"
+    ],
+    "TopUpNumeraireDecimalsTest": [
+      "test_topUpUsesConfiguredNumeraireDecimals"
+    ]
+  },
+  "compat/current/test/ProtocolFee.t.sol": {
+    "ProtocolFeeTest": [
+      "testFuzz_noFillerSurcharge",
+      "test_fillPaysMinimumAndChargesTradeFeeBothSides",
+      "test_noFillerSurcharge"
+    ]
+  },
+  "compat/current/test/RouterClaims.t.sol": {
+    "RouterClaimsTest": [
+      "testFuzz_updatedRouterCancellationAuthorization",
+      "testFuzz_withdrawClaimsAmountAndAllowance",
+      "test_RevertWhen_NativeOutputForwardFails",
+      "test_cancelAndWithdrawReturnsETHWithoutConsumingExistingClaims",
+      "test_cancel_nativeInput_makerReclaimsEth",
+      "test_erc20CancellationReturnsTokensWithoutClaimApproval",
+      "test_fill_nativeInput_fillerSendsEth_receivesErc20",
+      "test_fill_nativeOutput_fillerSendsErc20_receivesEth",
+      "test_invalidWithdrawalBatchesRevert",
+      "test_laterBatchFailureRollsBackEarlierWithdrawal",
+      "test_missingClaimApprovalRollsBackCancellation",
+      "test_nativeReceiverCannotReenterWithdraw",
+      "test_otherWalletCannotCancelAndWithdraw",
+      "test_partialFillCancelsAndWithdrawsOnlyLiveRemainder",
+      "test_rejectedETHRollsBackClaimsAndAllowance",
+      "test_swap_nativeInput_create",
+      "test_swap_nativeOutput_create",
+      "test_unlockCallbackRejectsCallsOutsidePoolManager",
+      "test_updatedRouterCancelsExistingHookOrdersAfterExecutorGrant",
+      "test_withdrawBatchBoundsRejectMismatchedAndOversizedArrays",
+      "test_withdrawClaimsToOwnerAndRejectDoubleSpend",
+      "test_withdrawNativeAndERC20ClaimsInOneBatch"
+    ]
+  },
+  "compat/current/test/RouterMulticall.t.sol": {
+    "RouterMulticallTest": [
+      "test_RevertWhen_BatchIncludesAnotherMakersOrder",
+      "test_RevertWhen_MulticallSentEth",
+      "test_RevertWhen_OneCallFails_wholeBatchRollsBack",
+      "test_cancelAndWithdrawClaimsInOneTransaction",
+      "test_cancelTwoOrdersInOneTransaction",
+      "test_maxPriceDoesNotCarryAcrossCalls",
+      "test_swapThenFillInOneTransaction"
+    ]
+  },
+  "compat/current/test/SignedOrders.t.sol": {
+    "SignedOrdersTest": [
+      "test_RevertWhen_setExecutorWithSig_revokesTrustedRouter",
+      "test_RevertWhen_useNonceByNonExecutor",
+      "test_cancelWithSig_rejectsExpired",
+      "test_cancelWithSig_rejectsReplayOnRecurringOrderId",
+      "test_cancelWithSig_rejectsUnusedSignatureOnReplacement",
+      "test_cancelWithSig_rejectsWrongSigner",
+      "test_cancelWithSig_returnsInputToMaker",
+      "test_cancelWithSig_revokedByInvalidateNonce",
+      "test_cancelWithSig_sharesHookNonces",
+      "test_invalidateNonce_revokesSignedUpdate",
+      "test_setExecutorWithSig_emitsGrantForMaker",
+      "test_setExecutorWithSig_emitsRevocationForMaker",
+      "test_swapWithSig_relayerCreatesOrder_andGrantsExecutor",
+      "test_swapWithSig_replayReverts",
+      "test_swapWithSig_revertsWhenRelayerAltersPrice",
+      "test_swapWithSig_revertsWithoutExecutorGrant",
+      "test_swapWithSig_skipsGrantWhenAlreadyAuthorized",
+      "test_swapWithSig_thenFill",
+      "test_topUpPreservesPendingSignedRepriceAndCancel",
+      "test_typeStrings",
+      "test_updatePriceWithSig_rejectsExpired",
+      "test_updatePriceWithSig_rejectsSignatureAfterDirectReprice",
+      "test_updatePriceWithSig_rejectsTamperedPrice",
+      "test_updatePriceWithSig_rejectsUnusedSignatureOnReplacement",
+      "test_updatePriceWithSig_rejectsWrongSigner",
+      "test_updatePriceWithSig_relayerUpdates"
+    ]
+  },
+  "compat/current/test/StressCompletion.t.sol": {
+    "NativeWithdrawalStressTest": [
+      "testFuzz_updatedRouterCancellationAuthorization",
+      "testFuzz_withdrawClaimsAmountAndAllowance",
+      "test_RevertWhen_NativeOutputForwardFails",
+      "test_cancelAndWithdrawReturnsETHWithoutConsumingExistingClaims",
+      "test_cancel_nativeInput_makerReclaimsEth",
+      "test_erc20CancellationReturnsTokensWithoutClaimApproval",
+      "test_fill_nativeInput_fillerSendsEth_receivesErc20",
+      "test_fill_nativeOutput_fillerSendsErc20_receivesEth",
+      "test_invalidWithdrawalBatchesRevert",
+      "test_laterBatchFailureRollsBackEarlierWithdrawal",
+      "test_missingClaimApprovalRollsBackCancellation",
+      "test_nativeReceiverCannotReenterWithdraw",
+      "test_otherWalletCannotCancelAndWithdraw",
+      "test_partialFillCancelsAndWithdrawsOnlyLiveRemainder",
+      "test_rejectedETHRollsBackClaimsAndAllowance",
+      "test_stress_nativePartialWithdrawalAndDoubleSpend",
+      "test_swap_nativeInput_create",
+      "test_swap_nativeOutput_create",
+      "test_unlockCallbackRejectsCallsOutsidePoolManager",
+      "test_updatedRouterCancelsExistingHookOrdersAfterExecutorGrant",
+      "test_withdrawBatchBoundsRejectMismatchedAndOversizedArrays",
+      "test_withdrawClaimsToOwnerAndRejectDoubleSpend",
+      "test_withdrawNativeAndERC20ClaimsInOneBatch"
+    ],
+    "StressCompletionTest": [
+      "test_stress_deepCrossingBookBoundedContinuation",
+      "test_stress_liquidityRetryAndAlternatingFills",
+      "test_stress_sustainedMatchingAndWithdrawals"
+    ]
+  },
+  "compat/current/test/TokenClaims.t.sol": {
+    "TokenClaimsTest": [
+      "test_RevertWhen_CallbackNotFromPoolManager",
+      "test_RevertWhen_InvalidRedemption",
+      "test_RevertWhen_RedeemingAnotherOwnersClaims",
+      "test_RevertWhen_RedeemingWithoutApproval",
+      "test_failedTransferPreservesClaimsAndAllowance",
+      "test_redeemPartialToChosenRecipientThenNoDoubleSpend",
+      "test_redeemsEachCurrencySeparately",
+      "test_reentrantRedemptionIsBlocked"
+    ]
+  },
+  "compat/current/test/TradeFees.t.sol": {
+    "TradeFeesTest": [
+      "test_bookMatchChargesBothSides",
+      "test_cancelRefundsTheWholeDeposit",
+      "test_exactlyTouchingLimitsMatch",
+      "test_fillerFillChargesMakerAndFiller",
+      "test_lpFillPaysLpsTwoBpsAndProtocolOneBp"
+    ]
+  },
+  "compat/current/test/UnichainFork.t.sol": {
+    "UnichainForkTest": [
+      "testFork_nativeUsdcMatchAndCancelResidual",
+      "testFork_permissionlessContinuationAfterEightMatches",
+      "testFork_priorityBidNonRefundableWithoutActiveLp"
+    ]
+  },
+  "compat/current/test/security/AssetPrecision.t.sol": {
+    "AssetPrecisionTest": [
+      "test_RevertWhen_BuyMinimumOutputBelowFloor",
+      "test_RevertWhen_BuyRepricedBelowFloor",
+      "test_RevertWhen_SellInputBelowFloor",
+      "test_buyAtFloorRests",
+      "test_floorFollowsAssetDecimals",
+      "test_floorIsFourDecimalsOfAnEighteenDecimalAsset",
+      "test_nativeAssetUsesEighteenDecimals",
+      "test_reportedDecimalsAreCappedAt36",
+      "test_sellAtFloorRests",
+      "test_tokenWithoutDecimalsGetsOneUnitFloor"
+    ]
+  },
+  "compat/current/test/security/CoarsePriceBlocking.t.sol": {
+    "CoarsePriceBlockingTest": [
+      "test_higherBidOnCrossingOrderCanBypassBlocker",
+      "test_incomingSellSkipsHigherFeeNoncrossingBuy",
+      "test_sameTickBestBidBeatsHigherFeeAndEarlierAge",
+      "test_sameTickExactPriceBeatsHigherFeeAndEarlierAge",
+      "test_twoDollarBlockerCannotStallTwentyThousandDollars",
+      "test_worsePriceCannotJumpAheadWithBidOrAge"
+    ]
+  },
+  "compat/current/test/security/ExecutorAuthorization.t.sol": {
+    "ExecutorAuthorizationTest": [
+      "test_RevertWhen_UnauthorizedExecutorCreatesOrFills"
+    ]
+  },
+  "compat/current/test/security/ExecutorRevocation.t.sol": {
+    "ExecutorRevocationTest": [
+      "test_RevertWhen_MakerRevokesTrustedRouter",
+      "test_RevertWhen_NonOwnerCancelsThroughRouter",
+      "test_RevertWhen_RevokedOtherExecutorCancels",
+      "test_eoaCancelsThroughRouter",
+      "test_fillerWithoutAnyGrantCanFill"
+    ]
+  },
+  "compat/current/test/security/FeeCollect.t.sol": {
+    "FeeCollectTest": [
+      "test_customExecutor_underpayingFee_ERC20Output_reverts",
+      "test_customExecutor_underpayingFee_nativeOutput_reverts",
+      "test_info_collectRevertsIfClaimsExceedInt128",
+      "test_ownerCannotReachEscrow_onlyFees",
+      "test_reentrantMaker_cannotSpendHookFeeCredit",
+      "test_thirdParty_cannotTransferOrBurnVaultClaims"
+    ]
+  },
+  "compat/current/test/security/FillerMaxPrice.t.sol": {
+    "FillerMaxPriceTest": [
+      "test_RevertWhen_LivePriceExceedsFillerMax"
+    ]
+  },
+  "compat/current/test/security/HookBalanceIsolation.t.sol": {
+    "HookBalanceIsolationTest": [
+      "test_RevertWhen_SelfExecutorFillsFromHookBalance"
+    ]
+  },
+  "compat/current/test/security/MakerIdentity.t.sol": {
+    "MakerIdentityTest": [
+      "test_mismatchedOwnerRevertsBeforeTransfer",
+      "test_mismatchedUserDataRevertsBeforeTransfer"
+    ]
+  },
+  "compat/current/test/security/MevTax.t.sol": {
+    "MevTaxSignedTest": [
+      "test_relayerPaysTheTax"
+    ],
+    "MevTaxTest": [
+      "test_cancelIsNotTaxed",
+      "test_fillOrderPaysTheTax",
+      "test_multicallTaxedActionNeedsNoPriority",
+      "test_noPriorityPaysNothing",
+      "test_poolRetryPaysTheTax",
+      "test_swapPaysTheTaxToTheVault",
+      "test_taxIsPriorityTimesTaxGas"
+    ]
+  },
+  "compat/current/test/security/MinimumOrder.t.sol": {
+    "MinimumOrderBidFloorTest": [
+      "test_RevertWhen_updatePrice_raisesSellBidFloor_withMinimum"
+    ],
+    "MinimumOrderTest": [
+      "test_RevertWhen_BuyBelowMinimum",
+      "test_RevertWhen_SellAsksBelowMinimum",
+      "test_RevertWhen_UpdatePriceBelowMinimum",
+      "test_buyAtMinimum_rests",
+      "test_minimumIsFixedAtDeployment",
+      "test_newPoolsTakeTheHookMinimum",
+      "test_partialMatchBuyRemainderBelowMinimum_refunded",
+      "test_partialMatchRemainderBelowMinimum_refunded",
+      "test_sellAtMinimum_rests",
+      "test_sellAtMinimum_rests_numeraireIsCurrency0",
+      "test_sellJudgedByMinimumOutputNotInput",
+      "test_sellJudgedByMinimumOutputNotInput_numeraireIsCurrency0",
+      "test_strangerOpensPoolAtExtremePrice_minimumStillHolds"
+    ],
+    "MinimumOrderTieredBidTest": [
+      "test_RevertWhen_priorityFee_smallOrderBelowTenBps",
+      "test_priorityFee_smallOrderPaysTenBps",
+      "test_updatePrice_buyUnaffectedBySellBidFloor",
+      "test_updatePrice_partiallyFilledSellKeepsProRatedBid",
+      "test_updatePrice_withinSellBidFloor",
+      "test_updatePrice_zeroBidRemainsOptional"
+    ]
+  },
+  "compat/current/test/security/NativeFillExactPayment.t.sol": {
+    "NativeFillExactPaymentTest": [
+      "testFuzz_overpaymentReverts",
+      "test_control_fairFill_noStranding",
+      "test_exactLivePrice_succeedsWithStaleStruct",
+      "test_inflatedStructPrice_rejectsOverpayment",
+      "test_livePriceAboveMax_revertsAtomically",
+      "test_loweredPrice_rejectsStaleDeposit",
+      "test_nativeInput_rejectsMismatchedOwner",
+      "test_ownerSweep_recoversDonationsWithoutTouchingOpenOrder",
+      "test_underpayment_cannotConsumeDonatedEth"
+    ]
+  },
+  "compat/current/test/security/NativeInputMsgValue.t.sol": {
+    "NativeInputMsgValueTest": [
+      "test_RevertWhen_NativeInputMsgValueMismatch"
+    ]
+  },
+  "compat/current/test/security/NativeOutputEscrow.t.sol": {
+    "NativeOutputEscrowTest": [
+      "test_RevertWhen_FillerDoesNotDepositNativeOutput"
+    ]
+  },
+  "compat/current/test/security/NativeSettlementReentrancy.t.sol": {
+    "NativeSettlementReentrancyTest": [
+      "test_control_eoaFill_succeeds",
+      "test_reentrancyOnCancel_blocked",
+      "test_reentrancyOnFill_blocked"
+    ]
+  },
+  "compat/current/test/security/NoDollarMinimum.t.sol": {
+    "NoDollarMinimumTest": [
+      "testFuzz_remaindersNeverStallTheBook",
+      "test_belowTheFloorReverts",
+      "test_floorIsTheOnlyMinimum",
+      "test_sellAskingNothingLeavesTheBookWorking"
+    ]
+  },
+  "compat/current/test/security/NoReturnToken.t.sol": {
+    "NoReturnTokenTest": [
+      "test_noReturnTokenAsFillerOutput_fill",
+      "test_noReturnTokenAsMakerInput_createAndCancel"
+    ]
+  },
+  "compat/current/test/security/OrderSpoofing.t.sol": {
+    "OrderSpoofingTest": [
+      "test_RevertWhen_NonExecutorOpensOrderForMaker"
+    ]
+  },
+  "compat/current/test/security/OwnerDirectCancel.t.sol": {
+    "OwnerDirectCancelTest": [
+      "test_owner_can_cancel_directly"
+    ]
+  },
+  "compat/current/test/security/PashovFindings.t.sol": {
+    "DustDynamicFeeTest": [
+      "test_oneWeiFeeGoesWhollyToTheVault"
+    ],
+    "EmptyRangeTest": [
+      "test_poolFillCannotParkThePriceInAnEmptyRange"
+    ],
+    "ExtremeLevelTest": [
+      "test_dustAskAtTheEndKeyDoesNotBlockPoolBuys",
+      "test_dustBidAtTheEndKeyDoesNotBlockPoolSells"
+    ],
+    "FeeBaseTest": [
+      "test_feeIsChargedOnlyOnTheOutputThatClosesTheGap"
+    ],
+    "GrantFrontRunTest": [
+      "test_frontRunGrantDoesNotRevertTheRelayedOrder"
+    ],
+    "PoolFirstOvershootTest": [
+      "test_poolFirstSellDoesNotTradeBelowTheBid"
+    ],
+    "RemainderRoundingKnownIssueTest": [
+      "test_knownIssue_partlyMatchedOrderFallsBehindAnEqualOrder"
+    ],
+    "VenueDynamicFeeTest": [
+      "test_orderMovingBackTowardTheReferenceMatchesTheBookFirst"
+    ]
+  },
+  "compat/current/test/security/PoolFirstPartialFill.t.sol": {
+    "PoolFirstPartialFillMinimumTest": [
+      "test_dustRemainderIsRefunded",
+      "test_dustRemainderStillMatchesTheBook",
+      "test_poolFillsToTheBookLevelThenTheBookTakesTheRest",
+      "test_remainderRestsAtTheMakersLimit"
+    ],
+    "PoolFirstPartialFillTest": [
+      "test_poolFillsToTheBookLevelThenTheBookTakesTheRest",
+      "test_remainderRestsAtTheMakersLimit"
+    ]
+  },
+  "compat/current/test/security/PriceKeyCrossing.t.sol": {
+    "PriceKeyCrossingTest": [
+      "test_equalKeyNonCrossingPairDoesNotBlockMatching",
+      "test_exactTieExecutes",
+      "test_matchBookMakesNoFalseMatch"
+    ]
+  },
+  "compat/current/test/security/PriorityFeeOnly.t.sol": {
+    "PriorityFeeCap18DecimalTest": [
+      "test_18DecimalNumeraireUsesScaledOptionalBidFloor"
+    ],
+    "PriorityFeeOnlyTest": [
+      "test_RevertWhen_ExecutorSkipsTheBid",
+      "test_RevertWhen_UntrustedExecutorOpensOrder",
+      "test_customExecutor_canRestOrderWhenBidIsPaid",
+      "test_equalBids_keepSubmissionOrder",
+      "test_newPoolOrderCanHaveNoBid",
+      "test_newPool_equalPricesQueueByBid",
+      "test_setOrderingModeIsGone",
+      "test_zeroBidsKeepTimePriorityAndAllowRepricing"
+    ]
+  },
+  "compat/current/test/security/RouterOrderWindow.t.sol": {
+    "RouterOrderWindowTest": [
+      "test_RevertWhen_OrderChangesDuringFillPayment",
+      "test_pendingOrder_notMatchableBeforeInputSettled"
+    ]
+  },
+  "compat/current/test/security/UseNonceScope.t.sol": {
+    "UseNonceScopeTest": [
+      "test_executorOnThisPoolCannotBurnTheMakersNonce",
+      "test_otherExecutorCannotBurnTheMakersNonce"
+    ]
+  },
+  "compat/current/test/security/UserDataMatchesOrder.t.sol": {
+    "UserDataMatchesOrderTest": [
+      "test_RevertWhen_UserDataDivergesFromOrder"
+    ]
+  },
+  "compat/current/test/security/poc/DustTradeFee.t.sol": {
+    "DustTradeFeeNoMinimumPoc": [
+      "test_control_normalMatchFee",
+      "test_poc_buyerPaysQuoteReceivesZeroAsset",
+      "test_poc_effectiveFeeRateOnSmallAssetLegs"
+    ],
+    "DustTradeFeeProductionPoc": [
+      "test_control_smallestLegalMatchFee",
+      "test_poc_dustOrdersRejectedUnderProductionKnobs",
+      "test_poc_dustSellRemainderClosesAndRefunds"
+    ]
+  },
+  "compat/current/test/security/poc/GrantReplay.t.sol": {
+    "GrantReplayPoc": [
+      "test_RevertWhen_SignedRevocationOfTrustedRouter",
+      "test_grantSpentEvenWhenRouterAlreadyExecutor",
+      "test_grantSpentWhenRouterNotYetExecutor"
+    ]
+  },
+  "compat/current/test/security/poc/PoolFirstFrontRun.t.sol": {
+    "PoolFirstFrontRunPoc": [
+      "test_control_buyFillsFromPool",
+      "test_frontRunAskNoLongerForcesWorseBookMatch"
+    ]
+  },
+  "compat/current/test/security/poc/PoolSquatAssetFloor.t.sol": {
+    "PoolSquatAssetFloorPoc": [
+      "test_cannotSquatPoolBeforeTokenIsDeployed",
+      "test_control_poolAfterDeployHasFloor"
+    ]
+  },
+  "compat/current/test/security/poc/SignedCancelGrief.t.sol": {
+    "SignedCancelGriefPoc": [
+      "test_control_cancelSucceedsWithoutInterference",
+      "test_dustMatchNoLongerBreaksRelayedCancel",
+      "test_dustMatchNoLongerBreaksRelayedReprice",
+      "test_repriceRejectsSignedSizeBelowTheOrder",
+      "test_staleRepriceCannotUndoALaterOne"
+    ]
+  }
+}

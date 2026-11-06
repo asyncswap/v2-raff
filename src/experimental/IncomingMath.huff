@@ -1,0 +1,82 @@
+// SPDX-License-Identifier: MIT
+/// @notice Experimental arithmetic only, aligned with contracts@94400ce. Not a replacement hook.
+#include "../lib/Common.huff"
+#include "../lib/Math.huff"
+
+#define error InvalidInput()
+
+/// @dev Check full affordability before mulDiv: the uncapped quotient may overflow even when the
+///      capped fill fits. This is the current Solidity rule, unlike the old port's multiply-then-cap.
+#define fn CURRENT_MATCH_AMOUNTS() = takes (5) returns (2) {
+    // [sellIn, sellMin, buyIn, buyMin, makerBuy]
+    dup5 buy_maker jumpi
+    [MA_REST_IN] mstore [MA_REST_MIN] mstore [MA_INC_IN] mstore [MA_INC_MIN] mstore
+    sized jump
+    buy_maker:
+    [MA_INC_IN] mstore [MA_INC_MIN] mstore [MA_REST_IN] mstore [MA_REST_MIN] mstore
+    sized:
+    [MA_REST_MIN] mload [MA_INC_IN] mload lt iszero full_fill jumpi
+    [MA_REST_MIN] mload [MA_REST_IN] mload [MA_INC_IN] mload MUL_DIV()
+    amount_ready jump
+    full_fill:
+    [MA_REST_IN] mload
+    amount_ready:
+    dup1 iszero none_1 jumpi
+    [MA_REST_IN] mload [MA_REST_MIN] mload dup3 MUL_DIV_UP()
+    dup1 [MA_INC_IN] mload lt none_2 jumpi
+    [MA_INC_IN] mload [MA_INC_MIN] mload dup3 MUL_DIV_UP()
+    dup3 lt none_2 jumpi
+    dup3 buyer_maker_done jumpi
+    swap1
+    buyer_maker_done:
+    done jump
+    none_1:
+    pop 0x00 0x00 done jump
+    none_2:
+    pop pop 0x00 0x00
+    done:
+    swap2 pop swap1
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("matchAmounts(uint256,uint256,uint256,uint256,bool)") eq match_amounts jumpi
+    dup1 __FUNC_SIG("reduce(uint256,uint256,uint256,uint256)") eq reduce_order jumpi
+    __FUNC_SIG("mulDiv(uint256,uint256,uint256,bool)") eq mul_div jumpi
+    0x00 0x00 revert
+
+    match_amounts:
+    0xa4 calldatasize lt bad jumpi
+    0x04 calldataload iszero bad jumpi
+    0x24 calldataload iszero bad jumpi
+    0x44 calldataload iszero bad jumpi
+    0x64 calldataload iszero bad jumpi
+    0x01 0x84 calldataload gt bad jumpi
+    0x84 calldataload 0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload
+    CURRENT_MATCH_AMOUNTS() RETURN_2()
+
+    reduce_order:
+    0x84 calldatasize lt bad jumpi
+    0x04 calldataload iszero bad jumpi
+    0x24 calldataload iszero bad jumpi
+    [UINT64_MASK] 0x44 calldataload gt bad jumpi
+    0x04 calldataload 0x64 calldataload gt bad jumpi
+    0x64 calldataload 0x04 calldataload sub 0x00 mstore
+    // Preserve the maker's original rational limit on the remaining input, rounding up.
+    // Realized price improvement must not lower the minimum on a later fill.
+    0x04 calldataload 0x24 calldataload 0x00 mload MUL_DIV_UP() 0x20 mstore
+    0x04 calldataload 0x44 calldataload 0x64 calldataload MUL_DIV()
+    dup1 0x40 mstore 0x44 calldataload sub 0x60 mstore
+    0x80 0x00 return
+
+    mul_div:
+    0x84 calldatasize lt bad jumpi
+    0x01 0x64 calldataload gt bad jumpi
+    0x64 calldataload rounded jumpi
+    0x44 calldataload 0x24 calldataload 0x04 calldataload MUL_DIV() RETURN_1()
+    rounded:
+    0x44 calldataload 0x24 calldataload 0x04 calldataload MUL_DIV_UP() RETURN_1()
+
+    bad:
+    __ERROR(InvalidInput) REVERT_0()
+}
