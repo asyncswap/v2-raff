@@ -235,10 +235,28 @@
       "deploymentChanges": [],
       "assertionsSha256": "cae5a0ffd39d1afde9c5851acb83106f6d840621ba690caecc71fe0a48ebd407"
     },
+    "test/BaseHookDefaults.t.sol": {
+      "sha256": "82cca595cbc28a6e9491e48dec31c380a9db27520d451e3109d3eb9bc9400068",
+      "deploymentChanges": [
+        "Expose the production manager guard and default-callback revert with the upstream fixture's manager."
+      ],
+      "assertionsSha256": "f28be5d6964798e3d018e10c297e5a77eb12e99c86a64210363b884c0883ec69"
+    },
     "test/BestPriceRouting.t.sol": {
       "sha256": "4a66e62dec485712164dcb452455e7d79993b0afe079ba822de181aa713ebb1d",
       "deploymentChanges": [],
       "assertionsSha256": "034fcdd322ad3f8be7ee45128d48321a9139139a39042737b4c9cffc95851da9"
+    },
+    "test/EligiblePrice.t.sol": {
+      "sha256": "16ba8a3bc0a71990e0cc8c7e5747229b1c77e4065b39f52d6214b59a4eb02976",
+      "deploymentChanges": [
+        "Run full-width ratio assertions against production Huff; retain physical tree assertions as references.",
+        "Reference-only testFuzz_mutationsAndEligibility: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only test_full128BranchPathAndIdReuse: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only test_recycledSummaryMustPropagateToNewAncestors: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only test_recycledBuySummaryMustPropagateToNewAncestors: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "71513df11076732af486725195e13db06c644492e7c5b25921e098747a0d5eda"
     },
     "test/ExactPriorityInvariant.t.sol": {
       "sha256": "8e4df50fc715f0ea58820ae1c479b228bdb8726a0ffa43f7a1824d1b02d5110c",
@@ -375,12 +393,24 @@
       "deploymentChanges": [],
       "assertionsSha256": "d3f6dcef4337023cf8478351b92c4a578b08d04265c9e86531d82b7ed690005d"
     },
+    "test/TickBitmap.t.sol": {
+      "sha256": "c358f8dda46e59b499d7cff743ec5377ebd36470ef9628e2d72728da29bc63e7",
+      "deploymentChanges": [],
+      "assertionsSha256": "a33f20cd2bc2ef2ece52ef11e6eb2eac9d3e7ea73e6358c93c6b5ee7affb972d"
+    },
     "test/TickPriceKey.t.sol": {
       "sha256": "d1ac3abb608b8ae1a84d7c1b4a05bbd89099f7a4503422db6334223bc829c0d8",
       "deploymentChanges": [
         "Bind TickPrice.key to the production Huff price-key kernel; assertions unchanged, pure tests become view."
       ],
       "assertionsSha256": "710c613feb72effad5284fff71ab416d420975c0010578ede2b6da47f3dbfe22"
+    },
+    "test/TickPricePoolBeatsLevel.t.sol": {
+      "sha256": "a2fa4234454e85e8e2fb603dde27007256daa7c90f6d85233fabaa0df54a731b",
+      "deploymentChanges": [
+        "Bind price selection to the shared production Huff kernel and v4 state reads; assertions unchanged."
+      ],
+      "assertionsSha256": "2a703dbe48c51c09a7d8e840191a863fb6e5d2e37fbb81839aed16ffeccfe475"
     },
     "test/TokenClaims.t.sol": {
       "sha256": "597b5391ad4d3c0a83b0768a14129d922ab13aa3476c924ad35b7c10acb9efbc",
@@ -402,10 +432,152 @@
       ],
       "assertionsSha256": "1026e9757a8731ab81a337ad52166be20cc79afdc59dcd2195fe3ff0b8f2d1d6"
     },
+    "test/fizz/Actor.sol": {
+      "sha256": "18e1ae2aec3738a3f7941fcea37f3b7b80ff53191d1942c40285dfce0dadf141",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/Base.sol": {
+      "sha256": "a9770f9ad8608a26afe291689170b336263da965af1a52740efb7cf3377a3117",
+      "deploymentChanges": [
+        "deploy Router as Huff",
+        "deploy NativeClaims as Huff",
+        "deploy TokenClaims as Huff",
+        "Deploy real Huff hook, Router and claim modules in the shared handler fixture."
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/FoundryTester.sol": {
+      "sha256": "91734ba1012e573d1d7d3f1075c9ea1c64fdf4cdfc9c884f56e7803cca11b18a",
+      "deploymentChanges": [],
+      "assertionsSha256": "7e7fa2fd409cd9139aabbaa823758bbca3523f8cd34a1247e4e3240ff842196f"
+    },
+    "test/fizz/FuzzTester.sol": {
+      "sha256": "16c75da7aa8547919bb9bbe219f185313a9d0091792b2e8176c4fa6132dcd966",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/Properties.sol": {
+      "sha256": "8dc370464abfb12a4e3c5d556692ad0c3de05b4b801e8ac469faf5936a683ab6",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/Snapshots.sol": {
+      "sha256": "c43eef2be2e1e3868cc450652799d8caef8ff11344049dfa1947f9a17fc8d50c",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/handlers/AsyncSwapHandler.sol": {
+      "sha256": "b163a3d79bf86668cfd8a9edfcf2f81bb0c305ad8303c04b63f985630fbeb4e5",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/handlers/FeeVaultHandler.sol": {
+      "sha256": "a0a6137f8a3166ce0f6ed9366b037cd925ec9b7c277d1e35cbcfeda352e970df",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/handlers/Handlers.sol": {
+      "sha256": "c2769bdd29fe4197783cc8f66625c62264dce46e370796fd501ccd88958c21af",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/handlers/NativeClaimsHandler.sol": {
+      "sha256": "9bb6a359818265e379b08b086c73f5b6fbc78bb870b5717eb26c10db6f5354d7",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/handlers/RouterHandler.sol": {
+      "sha256": "1c2fc61e3c8aa1100022b187c47536566dd8c77c5486928d18ec47942b4dccd4",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/handlers/TokenClaimsHandler.sol": {
+      "sha256": "a1a8ec17986e40323f66f25d78e3092f6bd17f809ddeee0c81ae76bacb8f8a81",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/Clamp.sol": {
+      "sha256": "cfd050e7377cfb4d30267b72e7ba87135ee7db462d2ca1906313d88c5580001f",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/DecimalPrinter.sol": {
+      "sha256": "5d0bc6fa0fff797e64f27544c2c874f4296d361fbf2bf75bb458ee57c19acf51",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/Deployer.sol": {
+      "sha256": "d27bb4f4ab3fa06309af169af75703823ea537ae12227ce6c191353764b4b827",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/EnumerableSet.sol": {
+      "sha256": "753089609e3995e6755c30029b1d696f98ba1bc127d155c2e268d29037554d53",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/Hevm.sol": {
+      "sha256": "0ade72fa520d556c8ccef1212ca45303ad6ec827c57a41d7789ac8bd173f1d70",
+      "deploymentChanges": [],
+      "assertionsSha256": "34ab7182afe729948eba3ceabcc7c9542efdca2c02980648431e270fb77e956c"
+    },
+    "test/fizz/utils/Logger.sol": {
+      "sha256": "ae5406c39ce9cfee3fb4b1387939ec935a6d7e8ecbf5e920cd632302ac16b94d",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/Math.sol": {
+      "sha256": "9424ca128c8ca923abb2af2440d86b0130cfb2accff9a76f615092808e629e11",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/MockERC20.sol": {
+      "sha256": "5b4c1914b38df26d5e514bf751692481d86bbea1a23dd7c923d7e2170c5af841",
+      "deploymentChanges": [
+        "Normalize comment indentation; no executable changes."
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/PropertiesAsserts.sol": {
+      "sha256": "4e125edbe57217df97ffd1596264239eabada0346d402fd15c8e2bd2a523a32f",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/fizz/utils/StringUtils.sol": {
+      "sha256": "711704f3495ff078d529c3e6f3ab2f7098fb60ff726d0a373e8ad963f21c6b23",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/AsyncFillerBookHarness.sol": {
+      "sha256": "a8814a9f6fa2af9387e5d1d6d04fd3c3672424fd1676f9357ad26bc6e50c03cd",
+      "deploymentChanges": [
+        "Install the production Huff book-add routine with ABI-only setters and record decoding."
+      ],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
     "test/formal/AsyncSwapAcceptOwnership.t.sol": {
       "sha256": "34101a58d16c067bcbe28f35dbc2fb5479d5daba104f1010cd0c94128e558bac",
       "deploymentChanges": [],
       "assertionsSha256": "505460c623983e5d5fff9a508c8805c5edee9814a34ff76c609b78741aa30c62"
+    },
+    "test/formal/AsyncSwapAddOrder.t.sol": {
+      "sha256": "43b6ac03ac96898b2fad25528684023b5484ff1d3ff83f67a27376def8f2905a",
+      "deploymentChanges": [
+        "Reference-only test_addOrder_tickDirectionZeroBoundary: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only test_addOrder_tickExtremeRatioClamps: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addOrder_run: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addOrder_ok: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addState_order: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addState_book: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addState_other_order: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addState_other_pool: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_addState_frame: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_matching_addOrder_eq: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_matching_addOrder_run: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_matching_addOrder_ok: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "611cfa2d649cfcd857044e2c45f07e1f1cc1fab40daca04423fd562e69ef7da4"
     },
     "test/formal/AsyncSwapAfterAddLiquidity.t.sol": {
       "sha256": "4dce866079745f74fb27fd31b34cf84bcb379c0337703bad93cb5c6eba6e72ed",
@@ -432,6 +604,13 @@
       "deploymentChanges": [],
       "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
     },
+    "test/formal/AsyncSwapAsyncOrder.t.sol": {
+      "sha256": "1a6e3b985000f75c702486751c4a28c00b44e41885663eddbcc7fb0db0ebee71",
+      "deploymentChanges": [
+        "Reference-only testFuzz_asyncOrder_ok_iff: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "7f503ad50b8c2adde5734819b3684834637183c7570e931d3270c4d674feb556"
+    },
     "test/formal/AsyncSwapAsyncOrderInfo.t.sol": {
       "sha256": "3ea9d2ed5d1eeb3d8689d83f6f549145a48a3a7b0f185482bc5c681ada12d348",
       "deploymentChanges": [],
@@ -451,6 +630,17 @@
       "sha256": "d4689f774491aca5afb4d0d6913cd2648bed7c7f57615197d400d61033c11db1",
       "deploymentChanges": [],
       "assertionsSha256": "52797a0739ae55c320bc4bdcb9a9897591fb890e06fc515ffaf077761d81bc32"
+    },
+    "test/formal/AsyncSwapBeforeInitialize.t.sol": {
+      "sha256": "3fcd7194643a0b603037f077080d48c8eed7835a83a75e7517be13343c91e6d6",
+      "deploymentChanges": [
+        "Reference-only testFuzz_beforeInitialize_run_ok: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_beforeInitialize_ok: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_beforeInitialize_ok_inv: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_beforeInitialize_frame: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only test_beforeInitialize_run_ok_viaPoolManager: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "0d023ab0ac3cd3c0b3e5816c9f6f2ef2f70bb70fccf9e0c37f01c88155048a02"
     },
     "test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol": {
       "sha256": "14516c174c4af3f1bbd7b3e34780c020c035880097f69c873acf7bb5538c6469",
@@ -474,6 +664,11 @@
       "deploymentChanges": [],
       "assertionsSha256": "bb33acac0d856a1b4bc84d851e91f77e8e0a5dcacaecf9bfe52a26fbd15f67a3"
     },
+    "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol": {
+      "sha256": "40344baea330c84b7cbdfc39892e5a1743723dd5fb3e578e7e42a73bd62a6556",
+      "deploymentChanges": [],
+      "assertionsSha256": "e0a7ba18d047a9fa1809e373feb8dd7c4b2c229a96c9eb1685753bf41a2da269"
+    },
     "test/formal/AsyncSwapCalculateHookFee.t.sol": {
       "sha256": "7b27db89e6cc843c709faea234bddfca89b6e7b5b6f5c43cb6a7b5f331b7ed76",
       "deploymentChanges": [],
@@ -484,10 +679,29 @@
       "deploymentChanges": [],
       "assertionsSha256": "6c39d9e40db2d9fb2d6fcadf5a002f17bca096324e9ab66afa4b066fd9362450"
     },
+    "test/formal/AsyncSwapCallOptionalReturn.t.sol": {
+      "sha256": "08382aab8cff284edbbe033efd86be5cc17591a9583e0c90253b432b34ddfa99",
+      "deploymentChanges": [],
+      "assertionsSha256": "ba36c32ceef343c5b879247a8d847118a4a202a00a1776dc300f3b35ab3f2c09"
+    },
     "test/formal/AsyncSwapCancelOrder.t.sol": {
       "sha256": "58f08efe67ba7cb4cb7d1e3000109d9e9858221006aaebfeb93d4097fa6719dc",
       "deploymentChanges": [],
       "assertionsSha256": "af1281e4452c9272ff148f991b1cd28098573188ac7a52fef306eaf51ed1258b"
+    },
+    "test/formal/AsyncSwapConstructor.t.sol": {
+      "sha256": "0794cb61763994caecfb0151b2653b286b11ee18fd586fbf67ea78654054464c",
+      "deploymentChanges": [
+        "Execute the Huff constructor at the fixture address; probe the same domain helper through its public endpoint and map named ownership slots.",
+        "Reference-only testFuzz_ctor_ok_iff: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_ctor_fresh_state: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "8d687a663dcc353f241da2d6ba3742002dc263b6609fd222247eaf9a20762783"
+    },
+    "test/formal/AsyncSwapCrosses.t.sol": {
+      "sha256": "676b689ce66c4279a3d64006de711fa07493c7c42b4568913f814abfe2a0c919",
+      "deploymentChanges": [],
+      "assertionsSha256": "a755fc18818e9f841f13cc5628e1247200c1d026ee559a8ec0aab2898f7e414d"
     },
     "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol": {
       "sha256": "b1ade1334fe9f3eca8adafdd772ffac4d4127415b6bf3ac4c2ec87d3c78a190d",
@@ -509,10 +723,25 @@
       "deploymentChanges": [],
       "assertionsSha256": "3a6685ad6759f8dcb8e458ea21f3c304e0e437857d42d85193770eb70c0e4b16"
     },
+    "test/formal/AsyncSwapFunctionCall.t.sol": {
+      "sha256": "909cbbb8f16a74d25fd0b529d893f0c979bd4af39f121d95e72c0430c773bb99",
+      "deploymentChanges": [],
+      "assertionsSha256": "09dc4dbae1c74fc248ffe3ebf927df2fcfb24f9c8f4d5401cc60bc51e742afea"
+    },
+    "test/formal/AsyncSwapFunctionCallWithValue.t.sol": {
+      "sha256": "be33799f24f6a905c7e7de5de7b7019385b92e456163c46c8e25c572976edcb3",
+      "deploymentChanges": [],
+      "assertionsSha256": "af3b9196b6963f72c0c0bb787d28538226180d18a53a96c6a820fe6a0165162b"
+    },
     "test/formal/AsyncSwapGetHookPermissions.t.sol": {
       "sha256": "9f920832285bd759315411cd425a241228e1095a9d77488b8de5816f43bb2431",
       "deploymentChanges": [],
       "assertionsSha256": "318b8c5aa290bc02fccab22a16b4fa9cba284d8d66af3c4002eac42b5cfa9b38"
+    },
+    "test/formal/AsyncSwapHelpers.t.sol": {
+      "sha256": "28655fea7831da7e1e54bfa834a46849f9a78f86521e36cdf15be9cc21f6ee76",
+      "deploymentChanges": [],
+      "assertionsSha256": "7f564ed77a4285f29ded7c5b70ae76ebe1ae1d718bbd5feb1579eda7302b5e04"
     },
     "test/formal/AsyncSwapInitAccess.t.sol": {
       "sha256": "632be4859f33ea14875b361beb78c0113161ffe0de47637027f55dbf87646846",
@@ -528,6 +757,11 @@
       "sha256": "61e4bb80c7c1995d0b0cd3dfc38c0cc792536322be53f977bcf3268c693804d9",
       "deploymentChanges": [],
       "assertionsSha256": "936d68933065331e7519c762aeb2903c23df9df964c1aabbeb698496e94ff4c1"
+    },
+    "test/formal/AsyncSwapLibHelpers.t.sol": {
+      "sha256": "1380935f2c89e3307f6289faefd97f8d734b01c9087dc869af3b907d5c79d0c4",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/formal/AsyncSwapMatchAmounts.t.sol": {
       "sha256": "70e00f8e532eda7c07544059afaab929721229dc4af99324a8261e5eb91112af",
@@ -583,6 +817,11 @@
       "deploymentChanges": [],
       "assertionsSha256": "30261cd113f35709fa06d5c2aa083fc27ace469e199c1b6ef8a88a6434bcee0c"
     },
+    "test/formal/AsyncSwapPriorityKey.t.sol": {
+      "sha256": "c3c23496937daef5bf4f91f46867f88843e22f7dc17c542a0211c09cd6f6a181",
+      "deploymentChanges": [],
+      "assertionsSha256": "83df861857cfcff5027d6b7cf2e085faff1cf78957549b225ca175e6486c4365"
+    },
     "test/formal/AsyncSwapReceive.t.sol": {
       "sha256": "cdda629bedc625bc11c37b44f1739e9b826c03d80f6944ae9f5b2c8ff1f7f3dc",
       "deploymentChanges": [],
@@ -605,6 +844,16 @@
       "deploymentChanges": [],
       "assertionsSha256": "5245044b0c4ba57f0fadebfe828cde7b9c6af54f646b035bde8dda0fcb9cb47f"
     },
+    "test/formal/AsyncSwapRevert.t.sol": {
+      "sha256": "78508a6ea9f30452427d1af82b01b82097094354879226c8221be35bc38c0851",
+      "deploymentChanges": [],
+      "assertionsSha256": "bdb9a11203c5516ddfd0ab2ef5cfcb2a6abe894e46c79c9d6c3cd84a180a36cf"
+    },
+    "test/formal/AsyncSwapSafeTransferFrom.t.sol": {
+      "sha256": "1aff112163039545703791e4422dc7d06fa8168afc6818b3c8c2d9e03a3ffd3c",
+      "deploymentChanges": [],
+      "assertionsSha256": "ba86dd38778c3614a0afad9307466d957a17250cdf13f9c0bbd4387a9fa82c22"
+    },
     "test/formal/AsyncSwapSetExecutorWithSig.t.sol": {
       "sha256": "42ac4fd1c63fee2dd814aada9d6cdc8383527c2606d720bd65d0f22b43f49f82",
       "deploymentChanges": [
@@ -616,6 +865,13 @@
       "sha256": "e60838ae31b83cfbd4ec28e656d275c521be2cd58f8075542c0f9bab335cc5c5",
       "deploymentChanges": [],
       "assertionsSha256": "893f90056e21fe03a4e25d84c4e11822fbcdb59fb553bc4b41056defb3eff5df"
+    },
+    "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol": {
+      "sha256": "872156aafd9534627fa71aef3014fff02f8bde13466ce9cb19a97175cbf0cef2",
+      "deploymentChanges": [
+        "Expose the production Huff bid settlement and order-field decoders with the original constructor fixture state."
+      ],
+      "assertionsSha256": "ded5f541491c89d3ad046505140c1565e605cd535210932da29724d239f0d11d"
     },
     "test/formal/AsyncSwapSettleTransfers.t.sol": {
       "sha256": "13e19ca0d914867293fbf5c9c89ace3b9dd50ac50ffbf766e9314a80605d4dba",
@@ -661,6 +917,18 @@
       "deploymentChanges": [],
       "assertionsSha256": "a92757a319421ad22c9788817a5f9fb868b703919199b6ed66d9cb5852625a31"
     },
+    "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol": {
+      "sha256": "7ef5332d249674328eaa6d3e4db1ec8ca48c3985d809af065ca9c6f0988cb87f",
+      "deploymentChanges": [],
+      "assertionsSha256": "404428e21c3def5aea626bd729d77ad681697897d4a35a556bccdd3951eef50f"
+    },
+    "test/formal/Eip712Domain.t.sol": {
+      "sha256": "7162a2c2b88efda8ae5946558d778c2aa7b189f117ae5e8a28a209be5e234492",
+      "deploymentChanges": [
+        "Expose production Huff domain encoding and separator routines through metadata-only harness ABIs."
+      ],
+      "assertionsSha256": "2f1811af45c6dfe3bc00b5d192194c9aedc5f09dbb66775162f83a689ac525e1"
+    },
     "test/formal/FeeVaultCollect.t.sol": {
       "sha256": "cf25c5c2198677a8da039281e8c621f27416e354f2f3cb7a173e58249a608de1",
       "deploymentChanges": [],
@@ -679,11 +947,16 @@
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/formal/FormalHarnessesA.sol": {
-      "sha256": "472bcdd46ac55bbdfb9db5857c53f9436e04835cba6de00af9a78f5e26850fbf",
+      "sha256": "f0a1257b9c991673d3944301ed144db253a28dc3c7a1a3f35b68521d734bef87",
       "deploymentChanges": [
-        "Return production Huff math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
+        "Return production Huff book/math/radix harness runtime from fixture constructors; Solidity method bodies are ABI declarations only."
       ],
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/FormalImmutablesC.sol": {
+      "sha256": "2fc0b87d264208eb7a5f26d2a7c39a403c0e9f74426c7972d7f8771a5ef251e0",
+      "deploymentChanges": [],
+      "assertionsSha256": "a7594a68bf5aedf358ae6701834ddfbe0700eda402afe0c00254c9865af01691"
     },
     "test/formal/FormalMatchD.sol": {
       "sha256": "5fbdedf3dd537e44a8dbe24d349d22e95fc53090a5a263ba8ac234096ab89e63",
@@ -691,6 +964,13 @@
         "Map direct matching-fixture field writes to the Huff packed record."
       ],
       "assertionsSha256": "6d167ba5a4e02ef91d020dae289209777b02178aa7e79dd6bf27d9f5b3cbe95c"
+    },
+    "test/formal/FormalOzE.sol": {
+      "sha256": "940c3ab1ba4e751e13f2c5d21450f1f27f9115641a9a9053febc1e0ceb65570f",
+      "deploymentChanges": [
+        "Deploy Huff wrappers around production external-call, token-return and wrapped-revert routines."
+      ],
+      "assertionsSha256": "7e8be958ac6823dfbde7776d1d9f8bf7e0cb5b5e8a61013405cd4326fec9d735"
     },
     "test/formal/FormalProbesA.sol": {
       "sha256": "26aac3045f098a2fe0a62d611e24e47c1cd33cdeaab673524393de3121c38b0a",
@@ -704,12 +984,26 @@
       ],
       "assertionsSha256": "991acb5f533dfa72127a21de92cd7851ff3718d905f0b6bee73cf97aa1a6afb8"
     },
+    "test/formal/HookHelpersB.sol": {
+      "sha256": "dbba9d122fd4c95838c71880ea9f5429b351a852375017737ff28b1a9b035f74",
+      "deploymentChanges": [
+        "Read the priority key from its actual Huff packed field."
+      ],
+      "assertionsSha256": "cd8b4ea9317d33cdc0340e2bcfbbbf348552bf64ebbb68121031fd9c88c16b24"
+    },
     "test/formal/HookUnlockBase.sol": {
       "sha256": "e2ab3ac8a316b916e70608ca3e7acfaf952a53378d922088c54921ff5446ad25",
       "deploymentChanges": [
         "Normalize raw Huff order words and sequence location for upstream state-snapshot helpers."
       ],
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/LibHelpersB.sol": {
+      "sha256": "966c59ca0dc3c33dce329bd7c6899d6ee02b56dd1fdb9e7082378218db722e26",
+      "deploymentChanges": [
+        "Install Huff call/math/radix/ShortString helpers and Huff reads of fixture-provided arbitrary domain strings."
+      ],
+      "assertionsSha256": "b33b5d8dc94ea28a8536b6ee5a613727930d0b3b7261e0e80b1452c3f0ab29c9"
     },
     "test/formal/NativeClaimsRedeem.t.sol": {
       "sha256": "1e3ea975fc2d8ba22561efddb16b1c0d6f09cce1b7c49519d468f1307969530c",
@@ -741,6 +1035,17 @@
       "deploymentChanges": [],
       "assertionsSha256": "d80914b303ca5f8142387ae2d87c3f40a54d7662f0e0eb7332b0ac19642c9e9f"
     },
+    "test/formal/RouterConstructor.t.sol": {
+      "sha256": "8979d729822d5512c9b68f00ac6289c67ed47df2f1b4771267c9628b3796b727",
+      "deploymentChanges": [
+        "Execute the actual Huff Router constructor; use the public domain endpoint for the private-helper probe.",
+        "Reference-only testFuzz_CtorSpec: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CtorSpec_name_word: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CtorSpec_version_word: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_ctor_deployed: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "412de10adda4bc8dc9a7d9923088179f5adaebf86569298d9753420b519fd887"
+    },
     "test/formal/RouterDOMAIN_SEPARATOR.t.sol": {
       "sha256": "fa1da255f35e109a45e5c3f0ca3ff22ab5ae7000685a097374dc421d048f6ae3",
       "deploymentChanges": [],
@@ -750,6 +1055,16 @@
       "sha256": "8ac1ae307d749a6cce695d4105e9f145c237f1d01a2a75f47366fbe67d913534",
       "deploymentChanges": [],
       "assertionsSha256": "1073e4f6c387f8709cbbc77d57978a10665fa247fab82b956861e8268a4e8f7d"
+    },
+    "test/formal/RouterHelpers.t.sol": {
+      "sha256": "a48295b79a203c5c72fd24dd301b164a30b51d8da8aa45d35d6343e8245f6f4f",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test/formal/RouterLibHelpers.t.sol": {
+      "sha256": "009dcde21ffec09868309d9b5c4fd55659046ff130b78573453e7dff0cf7b0b2",
+      "deploymentChanges": [],
+      "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/formal/RouterMatchBook.t.sol": {
       "sha256": "3a3a5fc6368c5614ea4f1bdcc243c8114b2e65f21281bebba86e7f6d7301318a",
@@ -766,6 +1081,40 @@
       "deploymentChanges": [],
       "assertionsSha256": "edf01dc1e68e565e18368fd9f91e80eea6b0984d97e0656e611a68d52834f682"
     },
+    "test/formal/SpecCore.t.sol": {
+      "sha256": "7fb2e7aab052a4c58b23cad73203a61c2db969a318fcb6f84c6dfce74e4d67ed",
+      "deploymentChanges": [
+        "Expose production Huff currency transfers and PoolManager state reads.",
+        "Reference-only test_note_beforeSwap_frame_hcreate_false: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CreateOrderSpec_run: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_createBody_frame: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_beforeSwap_frame_of_spec: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CreateOrderSpec_run_repeat: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CreateOrderSpec_run_addOrderGuards: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "4f4994c1bfad15f4220dacad6d47fb63900332ceb687844106d4d9c0d86c64e5"
+    },
+    "test/formal/SpecEip712.t.sol": {
+      "sha256": "2cb49da0a5e477e7c31e9680c81681de831820b7d349a4f95a05bc092b0402da",
+      "deploymentChanges": [
+        "Run packed strings and fallback storage through the Huff codecs; retain cached Solidity immutable assertions as references.",
+        "Reference-only testFuzz_toString_name: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_toString_version: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_name_ne_sentinel: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_version_ne_sentinel: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CtorSpec: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CtorSpec_name_word: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+        "Reference-only testFuzz_CtorSpec_version_word: Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+      ],
+      "assertionsSha256": "601576f6ec7049103e7f342b23f994f9e7570ab343c03f95d39ae3e312caa660"
+    },
+    "test/formal/SpecSig.t.sol": {
+      "sha256": "5f64b3c1271b958f7a7d0aff9249af8c23388592dcac2cce23e4a99d5e5c2b52",
+      "deploymentChanges": [
+        "Install the production Huff hashing/ERC-1271 harness; hook/Router endpoint assertions remain unchanged."
+      ],
+      "assertionsSha256": "419230dc0edff739527bcbf9b838dd74902073f34a966dcdbe5bfe7dfbd02cfb"
+    },
     "test/nethermind_auditagent/NethermindAuditAgent.t.sol": {
       "sha256": "a6e9094c4b936b7533c940bebbab12b31017983f91c54ddba5c797ea8b2f237b",
       "deploymentChanges": [],
@@ -776,10 +1125,32 @@
       "deploymentChanges": [],
       "assertionsSha256": "f50c08d51622bc92e34358152b0cef45655ae4171d056dd923923951caef06fb"
     },
+    "test/security/ClaimTransfers.t.sol": {
+      "sha256": "1978de438760e2cecc88a5addf81d4eaa2a519f4a202de0210a3db84eaf16547",
+      "deploymentChanges": [
+        "Serialize batches through a delegatecall fixture so production Huff performs every credit and flush."
+      ],
+      "assertionsSha256": "0d4ddddc576d0b230e3a532072d8e2832d7b2735fc9742402e53aec79fe18546"
+    },
     "test/security/CoarsePriceBlocking.t.sol": {
       "sha256": "f79da673daeb70b3ff6c948edffa297c2d086a97cc84c4a046a8d582228b981b",
       "deploymentChanges": [],
       "assertionsSha256": "04c8036089f2e42e88db23afda4a9b5ee9baea236a8e9de26cf8c1d84c4b863c"
+    },
+    "test/security/EligibleGas.t.sol": {
+      "sha256": "093ff5d6e85a057ccbd49506be16fccc8685f80d3447d995570f36374ee54d85",
+      "deploymentChanges": [],
+      "assertionsSha256": "dc5ca5c418d4c379d56d397e450fa0448ecf12df40c8ffda881307c74fd698c3"
+    },
+    "test/security/EligiblePythonVectors.t.sol": {
+      "sha256": "b0025a414ab25819fb75800dff3349a853fe6abbe4d7cbd734a2f2fad197b27f",
+      "deploymentChanges": [],
+      "assertionsSha256": "bd649b4975779e783169ab32e1528acb53195fa127fa8027425c90ba742b8bb9"
+    },
+    "test/security/EligibleRemainder.t.sol": {
+      "sha256": "0d09a0c93a971e2a7dc42a306c4428c3e3c5a0aecbc00abf955800b4504c81df",
+      "deploymentChanges": [],
+      "assertionsSha256": "3feb9e4d83dbfa641273ef7a7e11150bbd33444f59d6add7a39f3c613f1e5a72"
     },
     "test/security/ExecutorAuthorization.t.sol": {
       "sha256": "e3f689305ecb94fb77d38c9b4bbf14d927d58fbfc9af73928d6c49ceef46d027",
@@ -790,6 +1161,13 @@
       "sha256": "2ec831f48feedd6dd2b7f61fd06d9107e85c17ee1b30e4dfad22cdef7237a33a",
       "deploymentChanges": [],
       "assertionsSha256": "06deb542551d04411a329839e5b52da26874c3eab46c04a24853395a2f483064"
+    },
+    "test/security/FeeClaims.t.sol": {
+      "sha256": "1e60fb73ec051e45ca451a90dec6fe7d3dcd47207f5d77fda270a0681f663250",
+      "deploymentChanges": [
+        "Run the production Huff hook with the upstream fixture's 1% surcharge override."
+      ],
+      "assertionsSha256": "52597af7752ec9825ee6edc6763102e53deec2f23c9dd88f95d47e583789b650"
     },
     "test/security/FeeCollect.t.sol": {
       "sha256": "f9b216add59a55a12609fdababe11ea1baf041036897f94d171bd2f68bf463c4",
@@ -903,6 +1281,18 @@
       ],
       "assertionsSha256": "cd69ab735b74ed3fc53f8ab84d633a3d2ff2a395209a51d848124c86b90325c0"
     },
+    "test/security/PriorityPythonHashes.t.sol": {
+      "sha256": "0b7c1612a4619a2bdb6b0588491d1f674b9c2cac45dda43bfde23d8ab3d91320",
+      "deploymentChanges": [
+        "Execute the shared production signature preimages against the fixed Python vectors."
+      ],
+      "assertionsSha256": "6ffa78b5443739e1a1dc69e407ab1e439a8156ad0e4ca0174d5dbd56cd925ad7"
+    },
+    "test/security/PriorityPythonVectors.t.sol": {
+      "sha256": "1ce3510854b66b237487c894b77a4ffd4b7a796f243b17dcd220c7cb29aa0b83",
+      "deploymentChanges": [],
+      "assertionsSha256": "c0dc820694248f1fdeb85ad379dbe37cfee7da30b0327ea7b1314efd86555711"
+    },
     "test/security/RouterOrderWindow.t.sol": {
       "sha256": "751a197583be3a5b023064a4f7bee0c7a23a84aad395c0cdedb599055e5192ac",
       "deploymentChanges": [],
@@ -964,8 +1354,10 @@
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/utils/TickIndexHarness.sol": {
-      "sha256": "a06689f470b854142e7306bf8dfd65761675d1fe2029221880cd2a5373719d09",
-      "deploymentChanges": [],
+      "sha256": "3f4120ad5121227750035e814e2a97c4d70196ce35612dc24cb80454b6cbbab5",
+      "deploymentChanges": [
+        "Install production Huff bitmap/radix runtime for the unchanged index harness ABI."
+      ],
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/utils/TopUpCallbackToken.sol": {
@@ -975,70 +1367,74 @@
     }
   },
   "referenceOnly": {
-    "test/BaseHookDefaults.t.sol": "Tests a Solidity BaseHook subclass, not a deployed protocol module.",
-    "test/EligiblePrice.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
     "test/IncomingLibraryDeployment.t.sol": "Solidity linked-library deployment script.",
     "test/IndexLibraryDeployment.t.sol": "Solidity linked-library deployment scripts.",
-    "test/TickBitmap.t.sol": "Direct Solidity library harness; needs an independent Huff harness.",
-    "test/TickPricePoolBeatsLevel.t.sol": "Direct Solidity library harness; needs an independent Huff harness.",
-    "test/fizz/Actor.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/Base.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/FoundryTester.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/FuzzTester.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/Properties.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/Snapshots.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/handlers/AsyncSwapHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/handlers/FeeVaultHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/handlers/Handlers.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/handlers/NativeClaimsHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/handlers/RouterHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/handlers/TokenClaimsHandler.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/Clamp.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/DecimalPrinter.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/Deployer.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/EnumerableSet.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/Hevm.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/Logger.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/Math.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/MockERC20.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/PropertiesAsserts.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/fizz/utils/StringUtils.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncFillerBookHarness.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapAddOrder.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapAsyncOrder.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapBeforeInitialize.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapCallOptionalReturn.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapConstructor.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapCrosses.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapFunctionCall.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapFunctionCallWithValue.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapLibHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapPriorityKey.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapRevert.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapSafeTransferFrom.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
     "test/formal/Eip712ConstantsLog.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/Eip712Domain.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/FormalImmutablesC.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/FormalOzE.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/HookHelpersB.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/LibHelpersB.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/RouterConstructor.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/RouterHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/RouterLibHelpers.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/SpecBook.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/SpecCore.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/SpecEip712.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/formal/SpecSig.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference.",
-    "test/security/ClaimTransfers.t.sol": "Direct Solidity library harness.",
-    "test/security/EligibleGas.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
-    "test/security/EligiblePythonVectors.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
-    "test/security/EligibleRemainder.t.sol": "Depends on Solidity internal/storage-layout harnesses.",
-    "test/security/FeeClaims.t.sol": "Overrides a Solidity hook method; needs a Huff surcharge adapter.",
-    "test/security/PriorityPythonHashes.t.sol": "Direct Solidity signature-library harness.",
-    "test/security/PriorityPythonVectors.t.sol": "Depends on Solidity internal/storage-layout harnesses."
+    "test/formal/SpecBook.t.sol": "Specialized Solidity/internal harness; retained verbatim as reference."
+  },
+  "referenceOnlyArchitecture": {
+    "test/formal/SpecBook.t.sol": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference.",
+    "test/IndexLibraryDeployment.t.sol": "Deploys Solidity linked libraries, which are inlined in Huff.",
+    "test/IncomingLibraryDeployment.t.sol": "Deploys a Solidity linked library, which is inlined in Huff.",
+    "test/formal/Eip712ConstantsLog.t.sol": "Diagnostic constant logger with no behavioral assertions."
+  },
+  "referenceOnlyTests": {
+    "test/EligiblePrice.t.sol": {
+      "testFuzz_mutationsAndEligibility": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "test_full128BranchPathAndIdReuse": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "test_recycledSummaryMustPropagateToNewAncestors": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "test_recycledBuySummaryMustPropagateToNewAncestors": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/AsyncSwapAddOrder.t.sol": {
+      "test_addOrder_tickDirectionZeroBoundary": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "test_addOrder_tickExtremeRatioClamps": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addOrder_run": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addOrder_ok": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addState_order": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addState_book": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addState_other_order": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addState_other_pool": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_addState_frame": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_matching_addOrder_eq": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_matching_addOrder_run": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_matching_addOrder_ok": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/SpecCore.t.sol": {
+      "test_note_beforeSwap_frame_hcreate_false": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CreateOrderSpec_run": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_createBody_frame": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_beforeSwap_frame_of_spec": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CreateOrderSpec_run_repeat": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CreateOrderSpec_run_addOrderGuards": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/AsyncSwapBeforeInitialize.t.sol": {
+      "testFuzz_beforeInitialize_run_ok": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_beforeInitialize_ok": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_beforeInitialize_ok_inv": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_beforeInitialize_frame": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "test_beforeInitialize_run_ok_viaPoolManager": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/AsyncSwapAsyncOrder.t.sol": {
+      "testFuzz_asyncOrder_ok_iff": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/AsyncSwapConstructor.t.sol": {
+      "testFuzz_ctor_ok_iff": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_ctor_fresh_state": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/RouterConstructor.t.sol": {
+      "testFuzz_CtorSpec": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CtorSpec_name_word": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CtorSpec_version_word": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_ctor_deployed": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    },
+    "test/formal/SpecEip712.t.sol": {
+      "testFuzz_toString_name": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_toString_version": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_name_ne_sentinel": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_version_ne_sentinel": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CtorSpec": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CtorSpec_name_word": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only.",
+      "testFuzz_CtorSpec_version_word": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
+    }
   }
 }

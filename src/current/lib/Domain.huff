@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: MIT
+#include "ShortStrings.huff"
+// ERC-5267 encoding is shared by production endpoints and direct name/version probes.
+#define macro ENCODE_EIP712_DOMAIN() = takes (0) returns (0) {
+    0x0f 0xf8 shl 0x00 mstore
+    0xe0 0x20 mstore
+    0x120 0x40 mstore
+    chainid 0x60 mstore
+    address 0x80 mstore
+    0x00 0xa0 mstore
+    0x160 0xc0 mstore
+    [DOMAIN_NAME_WORD] [DOMAIN_NAME_LENGTH] or SHORT_STRING_LENGTH() 0xe0 mstore
+    [DOMAIN_NAME_WORD] 0x100 mstore
+    0x01 0x120 mstore
+    __RIGHTPAD(0x31) 0x140 mstore
+    0x00 0x160 mstore
+}
+
+#define macro EIP712_DOMAIN() = takes (0) returns (0) { ENCODE_EIP712_DOMAIN() 0x180 0x00 return }

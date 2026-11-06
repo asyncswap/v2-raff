@@ -1,0 +1,35 @@
+// Test ABI only: hashing and ERC-1271 execution use the same routines as the hook/Router.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Signatures.huff"
+#include "../../src/current/lib/OrderHashes.huff"
+#define macro LOAD_HASH_ORDER_ID() = takes (0) returns (1) { 0x184 calldataload }
+#define macro LOAD_HASH_CREATED_SEQUENCE() = takes (0) returns (1) { 0x1a4 calldataload }
+#define macro HASH_UPDATE_TOKENS() = takes (0) returns (0) { ORDER_INPUT(0x04) 0x1100 mstore ORDER_OUTPUT(0x04) 0x1120 mstore }
+#define macro HASH_UPDATE_SEQUENCE_REPRICES() = takes (0) returns (0) { 0x1e4 calldataload 0x11a0 mstore 0x204 calldataload 0x11c0 mstore }
+#define constant EIP712_NAME_HASH = 0x00
+#define constant EIP712_VERSION_HASH = 0x00
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("isValidERC1271SignatureNow(address,bytes32,bytes)") eq verify jumpi
+    dup1 __FUNC_SIG("toTypedDataHash(bytes32,bytes32)") eq typed jumpi
+    dup1 __FUNC_SIG("hashPoolKey((address,address,uint24,int24,address))") eq key jumpi
+    dup1 __FUNC_SIG("hashSetExecutor((address,address,uint24,int24,address),address,address,bool,uint256,uint256)") eq executor jumpi
+    dup1 __FUNC_SIG("poolKeyTypehash()") eq key_type jumpi
+    dup1 __FUNC_SIG("setExecutorTypehash()") eq executor_type jumpi
+    dup1 __FUNC_SIG("hashOrder(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32))") eq order jumpi
+    dup1 __FUNC_SIG("hashCancel(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),bytes32,uint64,uint256,uint256)") eq cancel jumpi
+    dup1 __FUNC_SIG("hashUpdatePrice(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),bytes32,uint256,uint256,uint64,uint32,uint256,uint256)") eq update jumpi
+    0x00 0x00 revert
+    verify:
+        0x44 calldataload 0x04 add 0x24 calldataload LOAD_ADDRESS(0x04)
+        IS_VALID_ERC1271_SIGNATURE() RETURN_1()
+    typed: 0x24 calldataload 0x04 calldataload TYPED_DATA_HASH() RETURN_1()
+    key: 0xa0 0x04 [E_KEY] calldatacopy HASH_POOL_KEY() RETURN_1()
+    executor: 0xa0 0x04 [E_KEY] calldatacopy HASH_SET_EXECUTOR() RETURN_1()
+    order: 0xa0 0x04 [E_KEY] calldatacopy ORDER_INPUT(0x04) HASH_POOL_KEY()
+        HASH_ORDER_WITNESS(0x04, 0xa4, 0xe4, 0x104, 0x124) RETURN_1()
+    cancel: HASH_CANCEL_ORDER(0x1c4, 0x1e4) RETURN_1()
+    update: HASH_UPDATE_ORDER(0x1a4, 0x1c4, 0x224, 0x244) RETURN_1()
+    key_type: [POOL_KEY_TYPEHASH] RETURN_1()
+    executor_type: [SIG_SET_EXECUTOR_TYPEHASH] RETURN_1()
+}

@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: MIT
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/PoolManager.huff"
+#include "../../src/current/lib/ClaimTransfers.huff"
+#define macro MANAGER() = takes (0) returns (1) { 0x20 calldataload }
+#define macro MAIN() = takes (0) returns (0) {
+    // Deserialize the fixed ABI batch into the production matching loop's memory arena.
+    0xcc0 0xa0 [CB_START] calldatacopy
+    0xd60 calldataload 0x60 mul [CB_START] add [CB_END] mstore
+    0x01 [CB_ACTIVE] mstore
+    0x00 calldataload 0x02 eq flush jumpi
+    0x80 calldataload 0x60 calldataload 0x40 calldataload TRANSFER_CLAIMS()
+    finish jump
+    flush: FLUSH_CLAIMS()
+    finish:
+    0x60 [CB_START] [CB_END] mload sub div [CB_START] 0xcc0 add mstore
+    0xce0 [CB_START] return
+}

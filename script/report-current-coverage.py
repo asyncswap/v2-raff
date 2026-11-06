@@ -25,6 +25,12 @@ p.add_argument(
     required=True,
     help="Current-profile forge test --json result",
 )
+p.add_argument(
+    "--source-artifacts",
+    type=Path,
+    required=True,
+    help="Pinned Solidity build artifacts; empty creation bytecode identifies abstract templates",
+)
 a = p.parse_args()
 
 
@@ -39,8 +45,18 @@ def identities(path):
 
 
 source = identities(a.source_list)
-huff = identities(a.huff_list)
-assert huff <= source, "An adapter introduces tests absent from the pinned source"
+discovered_huff = identities(a.huff_list)
+abstract = set()
+for f, c, t in source:
+    artifact = a.source_artifacts / Path(f).name / (c + ".json")
+    data = json.loads(artifact.read_text())
+    if data["bytecode"]["object"] in ("", "0x"):
+        abstract.add((f, c, t))
+findings = {identity for identity in source if "_finding_" in identity[2]}
+huff = discovered_huff - abstract - findings
+assert discovered_huff <= source, (
+    "An adapter introduces tests absent from the pinned source"
+)
 results = json.loads(a.results.read_text())
 executed = {}
 for suite, data in results.items():
@@ -60,19 +76,39 @@ manifest = json.loads((ROOT / "compat/current/manifest.json").read_text())
 rows = []
 for f, c, t in sorted(source):
     adapted = (f, c, t) in huff
+    architecture_reason = manifest["referenceOnlyArchitecture"].get(f) or manifest[
+        "referenceOnlyTests"
+    ].get(f, {}).get(t)
+    status = (
+        "abstract-test-template"
+        if (f, c, t) in abstract
+        else "excluded-finding"
+        if (f, c, t) in findings
+        else "passed-huff"
+        if adapted
+        else "reference-only-architecture"
+        if architecture_reason
+        else "unported-behavioral"
+    )
+    assert not (adapted and architecture_reason), (
+        "Reference-only test counted as Huff coverage"
+    )
     rows.append(
         {
             "file": f,
             "contract": c,
             "test": t,
-            "status": "passed-huff"
-            if adapted
-            else "excluded-finding"
-            if "_finding_" in t
-            else "reference-only",
-            "reason": None
-            if adapted
-            else manifest["referenceOnly"].get(f, "Not adapted"),
+            "status": status,
+            "reason": (
+                "Abstract test template: no deployable Solidity creation bytecode."
+                if (f, c, t) in abstract
+                else "Upstream counterexample is intentionally excluded from normal runs."
+                if (f, c, t) in findings
+                else None
+                if adapted
+                else architecture_reason
+                or manifest["referenceOnly"].get(f, "Not adapted")
+            ),
         }
     )
 report = {
@@ -81,7 +117,12 @@ report = {
     "upstreamFindingTests": sum("_finding_" in t for f, c, t in source),
     "passedHuffTestsAndPredicates": len(executed),
     "forgeResultEntries": sum(len(d["test_results"]) for d in results.values()),
-    "unportedRunnableTests": sum(r["status"] == "reference-only" for r in rows),
+    "runnableSourceTestsExcludingFindings": len(source - abstract - findings),
+    "abstractTestTemplates": len(abstract),
+    "referenceOnlyArchitectureTests": sum(
+        r["status"] == "reference-only-architecture" for r in rows
+    ),
+    "unportedBehavioralTests": sum(r["status"] == "unported-behavioral" for r in rows),
     "note": "Foundry groups invariant predicates into one result per suite. All individual predicate statuses are checked. Discovery and imported Solidity-only helpers are not counted as execution.",
     "tests": rows,
 }

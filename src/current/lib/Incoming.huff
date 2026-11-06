@@ -1,35 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Seven packed words bridge funding transiently. Once funded they live in memory;
-// only a residual order is written to persistent storage and indexed.
-#define constant MC_ACTIVE = 0x2000
-#define constant MC_SLOT = 0x2020
-#define constant MC_ID = 0x2040
-#define constant MC_DATA = 0x2100
-#define constant STAGE_ID = 0x7e50101
-#define constant STAGE_POOL = 0x7e50102
-#define constant STAGE_WORDS = 0x7e50200
-
-#define fn O_LOAD() = takes (1) returns (1) {
-    // Only the active candidate's seven slots are redirected; all other state remains persistent.
-    [MC_ACTIVE] mload iszero stored jumpi
-    [MC_SLOT] mload dup2 sub 0x07 dup2 lt iszero other jumpi
-    0x20 mul [MC_DATA] add mload swap1 pop done jump
-    other: pop
-    stored: sload
-    done:
-}
-#define fn O_STORE() = takes (2) returns (0) {
-    // [slot,value]
-    [MC_ACTIVE] mload iszero stored jumpi
-    [MC_SLOT] mload dup2 sub 0x07 dup2 lt iszero other jumpi
-    0x20 mul [MC_DATA] add swap1 pop mstore done jump
-    other: pop
-    stored: sstore
-    done:
-}
-#define macro IS_CANDIDATE() = takes (0) returns (1) {
-    [MC_ACTIVE] mload [B_ID] mload [MC_ID] mload eq and
-}
+#include "OrderStorage.huff"
 
 #define fn CAN_STAGE() = takes (0) returns (1) {
     [E_PID] mload F_LIQUIDITY() iszero no_liquidity jumpi

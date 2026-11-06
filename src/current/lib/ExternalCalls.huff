@@ -1,0 +1,77 @@
+// SPDX-License-Identifier: MIT
+// Keep Address/SafeERC20's error precedence: call failure, empty-code check, then optional bool decoding.
+#define macro FAILED_INNER_CALL() = takes (0) returns (0) {
+    __FUNC_SIG("FailedInnerCall()") 0xe0 shl REVERT_0()
+}
+#define macro BUBBLE_OR_FAILED() = takes (0) returns (0) {
+    returndatasize data jumpi
+    FAILED_INNER_CALL()
+    data: BUBBLE()
+}
+#define fn CHECK_CALL_TARGET() = takes (2) returns (0) {
+    // [target, returnSize]. Empty successful returns require deployed code.
+    swap1 present jumpi
+    dup1 extcodesize present jumpi
+    __FUNC_SIG("AddressEmptyCode(address)") 0xe0 shl REVERT_1()
+    present: pop
+}
+#define fn CALL_WITH_VALUE() = takes (4) returns (1) {
+    // [target, value, inputPointer, inputSize] -> returnSize; retain only the first return word in CALL_0.
+    dup2 selfbalance lt insufficient jumpi
+    0x20 [CALL_0] dup6 dup6 dup6 dup6 gas call
+    called jumpi
+    BUBBLE_OR_FAILED()
+    called:
+    returndatasize dup1 dup3 CHECK_CALL_TARGET()
+    swap4 pop pop pop pop done jump
+    insufficient: address __FUNC_SIG("AddressInsufficientBalance(address)") 0xe0 shl REVERT_1()
+    done:
+}
+#define fn CHECK_OPTIONAL_RETURN() = takes (2) returns (0) {
+    // [returnSize, token]. Solidity's bool decoder rejects short data and values above one.
+    dup1 iszero empty jumpi
+    0x20 swap1 lt bad jumpi
+    [CALL_0] mload dup1 0x01 lt bad jumpi
+    valid jumpi
+    __FUNC_SIG("SafeERC20FailedOperation(address)") 0xe0 shl REVERT_1()
+    empty: pop
+    valid: pop done jump
+    bad: 0x00 0x00 revert
+    done:
+}
+// Keep the zero-value Router hot path inline; the general Address helper also supports ETH.
+#define fn SAFE_TRANSFER_FROM() = takes (4) returns (0) {
+    // [token, from, to, amount]
+    __FUNC_SIG("transferFrom(address,address,uint256)") CALL_SELECTOR()
+    swap1 [CALL_4] mstore
+    swap1 [CALL_24] mstore
+    swap1 [CALL_44] mstore                      // [token]
+    0x20 [CALL_0] 0x64 [CALL_0] 0x00 dup6 gas call
+    called jumpi
+    returndatasize bubble jumpi
+    __FUNC_SIG("FailedInnerCall()") 0xe0 shl REVERT_0()
+    bubble:
+    BUBBLE()
+    called:                                     // [token]
+    returndatasize has_data jumpi
+    dup1 extcodesize done jumpi
+    __FUNC_SIG("AddressEmptyCode(address)") 0xe0 shl REVERT_1()
+    has_data:
+    0x20 returndatasize lt bad jumpi
+    [CALL_0] mload dup1 0x01 lt bad jumpi
+    done_true jumpi
+    __FUNC_SIG("SafeERC20FailedOperation(address)") 0xe0 shl REVERT_1()
+    done_true:
+    done:
+    pop done_all jump
+    bad:
+    0x00 0x00 revert
+    done_all:
+}
+#define fn SAFE_TRANSFER() = takes (3) returns (0) {
+    // Same optional-return primitive, with transfer's two-word ABI head.
+    __FUNC_SIG("transfer(address,uint256)") CALL_SELECTOR()
+    swap1 [CALL_4] mstore swap1 [CALL_24] mstore
+    0x44 [CALL_0] 0x00 dup4 CALL_WITH_VALUE()
+    CHECK_OPTIONAL_RETURN()
+}

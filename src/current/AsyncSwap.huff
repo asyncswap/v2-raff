@@ -21,6 +21,7 @@
 #include "./lib/TickPrice.huff"
 #include "./lib/TickBitmap.huff"
 #include "./lib/Book.huff"
+#include "./lib/BookFunding.huff"
 #include "./lib/ExactPrice.huff"
 #include "./lib/MatchAmounts.huff"
 #include "./lib/Liquidity.huff"
@@ -28,6 +29,13 @@
 #include "./lib/ClaimTransfers.huff"
 #include "../lib/PoolManager.huff"
 #include "../lib/Signatures.huff"
+#include "lib/OrderHashes.huff"
+#define macro LOAD_HASH_ORDER_ID() = takes (0) returns (1) { [E_ID] mload }
+#define macro HASH_UPDATE_TOKENS() = takes (0) returns (0) { LOAD_BOOL(0xc4) dup1 CURRENCY_IN() 0x1100 mstore CURRENCY_OUT() 0x1120 mstore }
+#define macro HASH_UPDATE_SEQUENCE_REPRICES() = takes (0) returns (0) {
+    [E_ID] mload ORDER_AT() dup1 0x04 add O_LOAD() 0x11a0 mstore
+    0x05 add O_LOAD() 0x11c0 mstore
+}
 #include "../generated/FeeVaultCreation.huff"
 
 //.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
@@ -128,10 +136,8 @@
 #define constant PENDING_MATCH_ID_SLOT = 0x247d5e35be7fbfd4d95fd66ea940bfb4ee942bef70db6afae46dc83ce0f89eb2
 #define constant PENDING_MATCH_EXECUTOR_SLOT = 0x9583e36f799bab8c4d06dc676d85ba05b4dfbde5934d5684d8e431d0fd3948da
 
-#define constant EIP712_NAME_HASH = 0x72bb025359d2292b4e59f168b9de8e3967bb96d5053211bfa4d833b6867bdb86    // "AsyncSwap"
-#define constant EIP712_VERSION_HASH = 0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 // "1"
+#include "lib/HookDomain.huff"
 #define constant SET_EXECUTOR_TYPEHASH = 0xe4479d9c4dc3f7c35677efc85aaca516cb63a3977aae04f893f8c6b86986c965
-#define constant UPDATE_PRICE_TYPEHASH = 0xbf3e15ce0c174628742ea625534b25016ffbece7eb098e021d1a4f66af1a7c30
 
 #define constant HOOK_FLAGS = 0x2888    // BEFORE_INITIALIZE | BEFORE_ADD_LIQUIDITY | BEFORE_SWAP | BEFORE_SWAP_RETURNS_DELTA
 #define constant ALL_HOOK_MASK = 0x3fff
@@ -280,11 +286,8 @@
 //..:::::..:::.......:::........:::....::..::::::::....::........::..:::::..::
 //
 // Shared guard: one revert body reduces runtime size across entry points.
-#define fn ONLY_POOL_MANAGER() = takes (0) returns (0) {
-    MANAGER() caller eq ok jumpi
-    __FUNC_SIG("NotPoolManager()") 0xe0 shl REVERT_0()
-    ok:
-}
+#include "lib/HookAccess.huff"
+#define fn ONLY_POOL_MANAGER() = takes (0) returns (0) { CHECK_POOL_MANAGER() }
 
 // Shared guard: one revert body reduces runtime size across entry points.
 #define fn ONLY_OWNER() = takes (0) returns (0) {
@@ -377,18 +380,7 @@
     dup1 iszero F_TAKE_ANY()
 }
 
-/// @notice `AsyncFiller.settlePriorityFee(key, id, maker, amount)`: donate a bid to active LPs, or forfeit it
-///         to the FeeVault when the pool has none; the hook's numeraire claim is burned either way.
-#define fn SETTLE_PRIORITY_FEE() = takes (3) returns (0) {
-    // [id, maker, amount]; priority bids always fund the vault, independently of LP liquidity.
-    dup3 iszero skip jumpi
-    dup3 FEE_VAULT() NUMERAIRE() TRANSFER_CLAIMS()
-    dup3 [MEM_LOG] mstore
-    [E_PID] mload __EVENT_HASH(PriorityFeeForfeited) 0x20 [MEM_LOG] log4
-    pop done jump
-    skip: pop pop pop
-    done:
-}
+#include "lib/PriorityFees.huff"
 #define macro TRADE_FEE() = takes (1) returns (1) {
     // ceil(amount / 5000), without addition overflow.
     0x1388 dup2 mod iszero iszero swap1 0x1388 swap1 div add
@@ -593,28 +585,10 @@
     [E_X] mload [E_ID] mload [E_PID] mload __EVENT_HASH(AsyncOrderCreated) 0x80 [MEM_LOG] log4
 }
 
-#define macro NOT_IMPLEMENTED() = takes (0) returns (0) {
-    ONLY_POOL_MANAGER()
-    __FUNC_SIG("HookNotImplemented()") 0xe0 shl REVERT_0()
-}
+
 
 // Matching
-/// @notice `_crosses(buyKey, sellKey, buy, sell)`: strictly ordered keys decide; equal keys are decided by
-///         the full-precision cross-multiply `floor(buyIn·sellIn / sellOut) ≥ buyOut`.
-#define fn CROSSES() = takes (2) returns (1) {
-    ORDER_AT() swap1 ORDER_AT() // sell,buy
-    // Tick keys decide unequal levels. Only equal levels need the full-width ratio comparison.
-    // This also preserves Solidity's directional rounding at a tick boundary.
-    dup1 0x01 add O_LOAD() O_PRICE()
-    dup3 0x01 add O_LOAD() O_PRICE() // buyKey,sellKey,sell,buy
-    dup2 dup2 eq exact jumpi
-    gt swap2 pop pop done jump
-    exact: pop pop
-    dup1 0x02 add O_LOAD() swap1 0x03 add O_LOAD() // sellMin,sellIn,buy
-    dup3 0x03 add O_LOAD() dup4 0x02 add O_LOAD() // buyIn,buyMin,sellMin,sellIn,buy
-    swap2 swap1 swap3 swap1 RATIO_LE() swap1 pop
-    done:
-}
+#include "lib/Crossing.huff"
 
 /// @notice `matchIncoming`: match M_INC against the best opposite orders while they cross, at most 8 times.
 #define fn MATCH_INCOMING() = takes (0) returns (1) {
@@ -1027,16 +1001,7 @@
 /// @notice `updatePriceWithSig(order, newAmountOutMin, nonce, deadline, signature)`.
 #define macro UPDATE_PRICE_WITH_SIG() = takes (0) returns (0) {
     0x04 LOAD_KEY_AT() CALLDATA_ORDER_ID() [E_ID] mstore
-    [UPDATE_PRICE_TYPEHASH] [S_STRUCT] mstore
-    LOAD_ADDRESS(0xa4) 0x10e0 mstore
-    LOAD_BOOL(0xc4) dup1 CURRENCY_IN() 0x1100 mstore CURRENCY_OUT() 0x1120 mstore
-    0x184 calldataload 0x1140 mstore
-    0x1a4 calldataload 0x1160 mstore
-    [E_ID] mload 0x1180 mstore
-    [E_ID] mload ORDER_AT() dup1 0x04 add O_LOAD() 0x11a0 mstore
-    0x05 add O_LOAD() 0x11c0 mstore
-    0x1c4 calldataload 0x11e0 mstore 0x1e4 calldataload 0x1200 mstore
-    0x160 [S_STRUCT] sha3 HASH_TYPED_DATA()
+    HASH_UPDATE_ORDER(0x184, 0x1a4, 0x1c4, 0x1e4) HASH_TYPED_DATA()
     0x204 calldataload 0x04 add swap1
     0x1e4 calldataload 0x1c4 calldataload LOAD_ADDRESS(0xa4) VERIFY()
     [E_ID] mload ORDER_AT() 0x02 add O_LOAD()
@@ -1081,15 +1046,7 @@
 /// @notice `setExecutorWithSig(key, maker, executor, allow, nonce, deadline, signature)`.
 #define macro SET_EXECUTOR_WITH_SIG() = takes (0) returns (0) {
     0x04 LOAD_KEY_AT()
-    HASH_POOL_KEY()                             // [poolHash]
-    [SET_EXECUTOR_TYPEHASH] [S_STRUCT] mstore
-    LOAD_ADDRESS(0xa4) 0x10e0 mstore
-    LOAD_ADDRESS(0xc4) 0x1100 mstore
-    LOAD_BOOL(0xe4) 0x1120 mstore
-    0x1140 mstore
-    0x104 calldataload 0x1160 mstore
-    0x124 calldataload 0x1180 mstore
-    0xe0 [S_STRUCT] sha3 HASH_TYPED_DATA()
+    HASH_SET_EXECUTOR() HASH_TYPED_DATA()
     0x144 calldataload 0x04 add swap1
     0x124 calldataload 0x104 calldataload 0xa4 calldataload VERIFY()
     0xe4 calldataload 0xc4 calldataload dup2 dup2 CHECK_TRUSTED_GRANT() dup2 dup2 0xa4 calldataload [E_P] mload EXECUTOR_SLOT() sstore
@@ -1181,46 +1138,9 @@
     RETURN_EMPTY()
 }
 
-/// @dev v4 `CustomRevert.bubbleUpAndRevertWith(target, fnSelector, context)`.
-#define macro WRAPPED_REVERT() = takes (3) returns (0) {
-    // [target, fnSelector, contextSelector]   (selectors left-aligned)
-    __FUNC_SIG("WrappedError(address,bytes4,bytes,bytes)") 0xe0 shl [CALL_0] mstore
-    [CALL_4] mstore
-    [CALL_24] mstore
-    0x80 [CALL_44] mstore
-    returndatasize 0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and   // [enc, ctx]
-    dup1 0xa0 add [CALL_64] mstore
-    returndatasize [CALL_84] mstore
-    returndatasize 0x00 [CALL_A4] returndatacopy
-    0x04 dup2 [CALL_A4] add mstore
-    swap1 dup2 [CALL_C4] add mstore
-    0xe4 add [CALL_0] revert
-}
+#include "lib/WrappedRevert.huff"
 
-/// @dev v4 `Currency.transfer(currency, to, amount)`.
-#define macro TRANSFER_CURRENCY() = takes (3) returns (0) {
-    // [currency, to, amount]
-    dup1 erc20 jumpi
-    pop
-    0x00 0x00 0x00 0x00 dup6 dup6 gas call
-    sent jumpi
-    __FUNC_SIG("NativeTransferFailed()") 0xe0 shl 0x00 dup3 WRAPPED_REVERT()
-    sent:
-    pop pop
-    done jump
-    erc20:
-    __FUNC_SIG("transfer(address,uint256)") CALL_SELECTOR()
-    swap1 [CALL_4] mstore
-    swap1 [CALL_24] mstore
-    0x20 0x00 0x44 [CALL_0] 0x00 dup6 gas call
-    0x1f returndatasize gt 0x00 mload 0x01 eq and
-    returndatasize iszero or and
-    transferred jumpi
-    __FUNC_SIG("ERC20TransferFailed()") 0xe0 shl __FUNC_SIG("transfer(address,uint256)") 0xe0 shl dup3 WRAPPED_REVERT()
-    transferred:
-    pop
-    done:
-}
+#include "lib/CurrencyTransfer.huff"
 
 #define macro TRANSFER_OWNERSHIP() = takes (0) returns (0) {
     LOAD_ADDRESS(0x04)
@@ -1345,21 +1265,7 @@
 }
 
 /// @notice ERC-5267 `eip712Domain()`: (0x0f, "AsyncSwap", "1", chainid, this, 0, []).
-#define macro EIP712_DOMAIN() = takes (0) returns (0) {
-    0x0f 0xf8 shl 0x00 mstore
-    0xe0 0x20 mstore
-    0x120 0x40 mstore
-    chainid 0x60 mstore
-    address 0x80 mstore
-    0x00 0xa0 mstore
-    0x160 0xc0 mstore
-    0x09 0xe0 mstore
-    __RIGHTPAD(0x4173796e6353776170) 0x100 mstore
-    0x01 0x120 mstore
-    __RIGHTPAD(0x31) 0x140 mstore
-    0x00 0x160 mstore
-    0x180 0x00 return
-}
+#include "lib/Domain.huff"
 
 // Main
 //'########:'##::: ##:'########:'########::'##:::'##:

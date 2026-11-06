@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: MIT
+// The ABI fixture calls the production three-level bitmap without duplicating its algorithm.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/current/lib/TickPrice.huff"
+#include "../../src/current/lib/TickBitmap.huff"
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("insert(uint128)") eq insert jumpi
+    dup1 __FUNC_SIG("remove(uint128)") eq remove jumpi
+    dup1 __FUNC_SIG("best(bool)") eq best jumpi
+    0x00 0x00 revert
+    insert: 0x04 calldataload 0x01 BITMAP_INSERT() RETURN_1()
+    remove: 0x04 calldataload 0x01 BITMAP_REMOVE() RETURN_EMPTY()
+    best: 0x04 calldataload 0x01 BITMAP_BEST() RETURN_2()
+}

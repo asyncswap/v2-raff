@@ -1,0 +1,7 @@
+// SPDX-License-Identifier: MIT
+// The upstream DefaultHook intentionally implements none of its advertised callbacks.
+#include "../../src/lib/Common.huff"
+#include "../../src/current/lib/HookAccess.huff"
+#define macro MANAGER() = takes (0) returns (1) { 0x00 sload }
+#define fn ONLY_POOL_MANAGER() = takes (0) returns (0) { CHECK_POOL_MANAGER() }
+#define macro MAIN() = takes (0) returns (0) { NON_PAYABLE() NOT_IMPLEMENTED() }

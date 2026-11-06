@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: MIT
+/// @notice `AsyncFiller.settlePriorityFee(key, id, maker, amount)`: donate a bid to active LPs, or forfeit it
+///         to the FeeVault when the pool has none; the hook's numeraire claim is burned either way.
+#define fn SETTLE_PRIORITY_FEE() = takes (3) returns (0) {
+    // [id, maker, amount]; priority bids always fund the vault, independently of LP liquidity.
+    dup3 iszero skip jumpi
+    dup3 FEE_VAULT() NUMERAIRE() TRANSFER_CLAIMS()
+    dup3 [MEM_LOG] mstore
+    [E_PID] mload __EVENT_HASH(PriorityFeeForfeited) 0x20 [MEM_LOG] log4
+    pop done jump
+    skip: pop pop pop
+    done:
+}

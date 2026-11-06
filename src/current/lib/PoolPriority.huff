@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: MIT
+// Shared pool-versus-book comparison. The caller loads liquidity and the current pool tick.
+// Fee-window adjustment worsens the pool key; the limit stops at the opposite level's tick.
+#define constant PB_TICK = 0x1440
+#define constant PB_QUOTE = 0x1460
+#define constant PB_BUY = 0x1480
+#define constant PB_LEVEL = 0x14a0
+#define constant PB_REF = 0x14c0
+#define constant PB_BLOCK = 0x14e0
+#define constant PB_PRICE = 0x1500
+#define fn POOL_BEATS_LEVEL() = takes (6) returns (2) {
+    // [tick, quote1, isBuy, levelKey, refTick, refBlock] -> [beats, sqrtLimit]
+    [PB_TICK] mstore [PB_QUOTE] mstore [PB_BUY] mstore
+    [PB_LEVEL] mstore [PB_REF] mstore [PB_BLOCK] mstore
+    [PB_TICK] mload
+    [PB_QUOTE] mload ascending jumpi
+    0x0d89e8 sub 0x01 add key_ready jump
+    ascending: 0x0d89e9 add
+    key_ready: [PB_PRICE] mstore
+    [PB_BLOCK] mload dup1 iszero no_window_1 jumpi
+    0x02 add number gt adjusted jumpi
+    [PB_REF] mload [PB_TICK] mload sub
+    [PB_QUOTE] mload [PB_BUY] mload eq iszero zfo jumpi
+    0x00 dup2 slt iszero no_window_1 jumpi apply jump
+    zfo: 0x00 dup2 sgt iszero no_window_1 jumpi
+    apply:
+    ABS() 0x01 shr
+    [PB_BUY] mload buy jumpi
+    // Saturate only when feeTicks exceeds poolKey; a smaller fee leaves a positive key.
+    [PB_PRICE] mload dup1 dup3 gt underflow jumpi
+    sub [PB_PRICE] mstore adjusted jump
+    underflow: pop pop 0x00 [PB_PRICE] mstore adjusted jump
+    buy: [PB_PRICE] mload add [PB_PRICE] mstore adjusted jump
+    no_window_1: pop
+    adjusted:
+    [PB_BUY] mload iszero sell_compare jumpi
+    [PB_LEVEL] mload [PB_PRICE] mload lt iszero none jumpi
+    has_price jump
+    sell_compare: [PB_LEVEL] mload [PB_PRICE] mload gt iszero none jumpi
+    has_price:
+    0x01 [PB_LEVEL] mload sub
+    [PB_QUOTE] mload level_ascending jumpi
+    0x0d89e8 sub level_ready jump
+    level_ascending: 0x0d89e8 swap1 sub
+    level_ready:
+    [PB_QUOTE] mload [PB_BUY] mload eq iszero iszero tick_ready jumpi
+    dup1 0x0d89e8 eq tick_ready jumpi 0x01 add
+    tick_ready: TICK_SQRT_PRICE()
+    [MIN_SQRT_PRICE_PLUS_ONE] dup2 lt iszero above_min jumpi
+    pop [MIN_SQRT_PRICE_PLUS_ONE]
+    above_min: [MAX_SQRT_PRICE_MINUS_ONE] dup2 gt iszero below_max jumpi
+    pop [MAX_SQRT_PRICE_MINUS_ONE]
+    below_max: 0x01 done jump
+    none: 0x00 0x00
+    done:
+}
+
+#define macro ABS() = takes (1) returns (1) { dup1 0xff sar dup1 dup3 add xor swap1 pop }

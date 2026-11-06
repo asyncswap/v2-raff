@@ -2,9 +2,12 @@
   "solidityCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
   "sourceTestsIncludingFindings": 1088,
   "upstreamFindingTests": 1,
-  "passedHuffTestsAndPredicates": 762,
-  "forgeResultEntries": 752,
-  "unportedRunnableTests": 325,
+  "passedHuffTestsAndPredicates": 1016,
+  "forgeResultEntries": 1006,
+  "runnableSourceTestsExcludingFindings": 1075,
+  "abstractTestTemplates": 12,
+  "referenceOnlyArchitectureTests": 59,
+  "unportedBehavioralTests": 0,
   "note": "Foundry groups invariant predicates into one result per suite. All individual predicate statuses are checked. Discovery and imported Solidity-only helpers are not counted as execution.",
   "tests": [
     {
@@ -242,15 +245,15 @@
       "file": "test/BaseHookDefaults.t.sol",
       "contract": "BaseHookDefaultsTest",
       "test": "test_RevertWhen_CalledByAnyoneButThePoolManager",
-      "status": "reference-only",
-      "reason": "Tests a Solidity BaseHook subclass, not a deployed protocol module."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/BaseHookDefaults.t.sol",
       "contract": "BaseHookDefaultsTest",
       "test": "test_unimplementedCallbacksRevert",
-      "status": "reference-only",
-      "reason": "Tests a Solidity BaseHook subclass, not a deployed protocol module."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/BestPriceRouting.t.sol",
@@ -270,43 +273,43 @@
       "file": "test/EligiblePrice.t.sol",
       "contract": "EligiblePriceTest",
       "test": "testFuzz_fullWidthComparison",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/EligiblePrice.t.sol",
       "contract": "EligiblePriceTest",
       "test": "testFuzz_mutationsAndEligibility",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/EligiblePrice.t.sol",
       "contract": "EligiblePriceTest",
       "test": "test_full128BranchPathAndIdReuse",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/EligiblePrice.t.sol",
       "contract": "EligiblePriceTest",
       "test": "test_fullWidthRatioComparison",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/EligiblePrice.t.sol",
       "contract": "EligiblePriceTest",
       "test": "test_recycledBuySummaryMustPropagateToNewAncestors",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/EligiblePrice.t.sol",
       "contract": "EligiblePriceTest",
       "test": "test_recycledSummaryMustPropagateToNewAncestors",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/ExactPriorityInvariant.t.sol",
@@ -361,8 +364,8 @@
       "file": "test/IncomingLibraryDeployment.t.sol",
       "contract": "IncomingLibraryDeploymentTest",
       "test": "test_deterministicDeploymentAndIdempotentRerun",
-      "status": "reference-only",
-      "reason": "Solidity linked-library deployment script."
+      "status": "reference-only-architecture",
+      "reason": "Deploys a Solidity linked library, which is inlined in Huff."
     },
     {
       "file": "test/IncomingMemoryFunding.t.sol",
@@ -466,29 +469,29 @@
       "file": "test/IndexLibraryDeployment.t.sol",
       "contract": "IndexLibraryDeploymentTest",
       "test": "test_bitmapPredictionAndIdempotentDryRun",
-      "status": "reference-only",
-      "reason": "Solidity linked-library deployment scripts."
+      "status": "reference-only-architecture",
+      "reason": "Deploys Solidity linked libraries, which are inlined in Huff."
     },
     {
       "file": "test/IndexLibraryDeployment.t.sol",
       "contract": "IndexLibraryDeploymentTest",
       "test": "test_eligiblePredictionAndIdempotentDryRun",
-      "status": "reference-only",
-      "reason": "Solidity linked-library deployment scripts."
+      "status": "reference-only-architecture",
+      "reason": "Deploys Solidity linked libraries, which are inlined in Huff."
     },
     {
       "file": "test/IndexLibraryDeployment.t.sol",
       "contract": "IndexLibraryDeploymentTest",
       "test": "test_missingFactoryRejected",
-      "status": "reference-only",
-      "reason": "Solidity linked-library deployment scripts."
+      "status": "reference-only-architecture",
+      "reason": "Deploys Solidity linked libraries, which are inlined in Huff."
     },
     {
       "file": "test/IndexLibraryDeployment.t.sol",
       "contract": "IndexLibraryDeploymentTest",
       "test": "test_topUpPredictionAndIdempotentDryRun",
-      "status": "reference-only",
-      "reason": "Solidity linked-library deployment scripts."
+      "status": "reference-only-architecture",
+      "reason": "Deploys Solidity linked libraries, which are inlined in Huff."
     },
     {
       "file": "test/MatchingAdversarial.t.sol",
@@ -1866,22 +1869,22 @@
       "file": "test/TickBitmap.t.sol",
       "contract": "TickBitmapTest",
       "test": "testFuzz_sparseDomainChurn",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickBitmap.t.sol",
       "contract": "TickBitmapTest",
       "test": "test_boundariesDuplicatesAndMissingKeys",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickBitmap.t.sol",
       "contract": "TickBitmapTest",
       "test": "test_everyGroupCanBeEmptiedAndReused",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPriceKey.t.sol",
@@ -1901,57 +1904,57 @@
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "testFuzz_limitIsAValidSwapLimit",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_priceJustBelowTwoTo128IsTheEndKey",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote0Buy_limitIsOneTickAboveTheAsk",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote0Sell_limitIsTheBidTick",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote0_levelBetterThanThePoolGoesToTheBook",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote1Buy_awayFromTheReferencePaysNoFee",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote1Buy_feeWindowSendsTheOrderToTheBook",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TickPricePoolBeatsLevel.t.sol",
       "contract": "TickPricePoolBeatsLevelTest",
       "test": "test_quote1Buy_outsideTheWindowPaysNoFee",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness; needs an independent Huff harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/TokenClaims.t.sol",
@@ -2069,15 +2072,15 @@
       "file": "test/fizz/FoundryTester.sol",
       "contract": "FoundryTester",
       "test": "test_handlerPaths",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/fizz/FoundryTester.sol",
       "contract": "FoundryTester",
       "test": "test_sequence",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAcceptOwnership.t.sol",
@@ -2118,134 +2121,134 @@
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addOrder_feeTooLarge",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addOrder_feeTooSmall",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addOrder_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addOrder_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addOrder_seqOverflow",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addState_book",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addState_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addState_order",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addState_other_order",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_addState_other_pool",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_matching_addOrder_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_matching_addOrder_feeTooLarge",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_matching_addOrder_feeTooSmall",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_matching_addOrder_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_matching_addOrder_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_matching_addOrder_seqOverflow",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "testFuzz_priorityKey_bidAndSequence",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "test_addOrder_tickDirectionZeroBoundary",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAddOrder.t.sol",
       "contract": "AsyncSwapAddOrderFormalTest",
       "test": "test_addOrder_tickExtremeRatioClamps",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAfterAddLiquidity.t.sol",
@@ -2391,29 +2394,29 @@
       "file": "test/formal/AsyncSwapAsyncOrder.t.sol",
       "contract": "AsyncSwapAsyncOrderFormalTest",
       "test": "testFuzz_asyncOrder_never_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAsyncOrder.t.sol",
       "contract": "AsyncSwapAsyncOrderFormalTest",
       "test": "testFuzz_asyncOrder_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapAsyncOrder.t.sol",
       "contract": "AsyncSwapAsyncOrderFormalTest",
       "test": "testFuzz_asyncOrder_reads_only_asyncOrders",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAsyncOrder.t.sol",
       "contract": "AsyncSwapAsyncOrderFormalTest",
       "test": "testFuzz_asyncOrder_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapAsyncOrderInfo.t.sol",
@@ -2545,85 +2548,85 @@
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_anySender",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_dynamicFeeRequired",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_notPoolManager",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_numeraireRequired",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_ok_inv",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_rejectsCodelessAsset",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_run_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "testFuzz_beforeInitialize_succeeds_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "test_beforeInitialize_dynamicFeeRequired_viaPoolManager",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBeforeInitialize.t.sol",
       "contract": "AsyncSwapBeforeInitializeFormalTest",
       "test": "test_beforeInitialize_run_ok_viaPoolManager",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol",
@@ -2818,29 +2821,29 @@
       "file": "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol",
       "contract": "AsyncSwapBubbleUpAndRevertWithFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_indep",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol",
       "contract": "AsyncSwapBubbleUpAndRevertWithFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_never_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol",
       "contract": "AsyncSwapBubbleUpAndRevertWithFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol",
       "contract": "AsyncSwapBubbleUpAndRevertWithFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_reverts_",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCalculateHookFee.t.sol",
@@ -2902,29 +2905,29 @@
       "file": "test/formal/AsyncSwapCallOptionalReturn.t.sol",
       "contract": "AsyncSwapCallOptionalReturnFormalTest",
       "test": "testFuzz_callOptionalReturn_after",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCallOptionalReturn.t.sol",
       "contract": "AsyncSwapCallOptionalReturnFormalTest",
       "test": "testFuzz_callOptionalReturn_call_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCallOptionalReturn.t.sol",
       "contract": "AsyncSwapCallOptionalReturnFormalTest",
       "test": "testFuzz_callOptionalReturn_false_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCallOptionalReturn.t.sol",
       "contract": "AsyncSwapCallOptionalReturnFormalTest",
       "test": "testFuzz_callOptionalReturn_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCancelOrder.t.sol",
@@ -2979,113 +2982,113 @@
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_DOMAIN_SEPARATOR_eq_built",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_ctor_deployed",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_ctor_fresh_state",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_ctor_invalidNumeraire",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_ctor_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_ctor_reverts_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_ctor_zeroOwner",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_domainSeparatorV4_eq_built",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_owner_nonzero_acceptOwnership",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapConstructor.t.sol",
       "contract": "AsyncSwapConstructorFormalTest",
       "test": "testFuzz_owner_nonzero_transferOwnership",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_ne_any",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_reverts_div0",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_reverts_overflow",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "testFuzz_crosses_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapCrosses.t.sol",
       "contract": "AsyncSwapCrossesFormalTest",
       "test": "test_crosses_reverts_div0_counterexample",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol",
@@ -3273,43 +3276,43 @@
       "file": "test/formal/AsyncSwapFunctionCall.t.sol",
       "contract": "AsyncSwapFunctionCallFormalTest",
       "test": "testFuzz_functionCall_eq_withValue",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapFunctionCall.t.sol",
       "contract": "AsyncSwapFunctionCallFormalTest",
       "test": "testFuzz_functionCall_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapFunctionCall.t.sol",
       "contract": "AsyncSwapFunctionCallFormalTest",
       "test": "testFuzz_functionCall_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapFunctionCallWithValue.t.sol",
       "contract": "AsyncSwapFunctionCallWithValueFormalTest",
       "test": "testFuzz_functionCallWithValue_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapFunctionCallWithValue.t.sol",
       "contract": "AsyncSwapFunctionCallWithValueFormalTest",
       "test": "testFuzz_functionCallWithValue_reverts_insufficient",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapFunctionCallWithValue.t.sol",
       "contract": "AsyncSwapFunctionCallWithValueFormalTest",
       "test": "testFuzz_functionCallWithValue_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapGetHookPermissions.t.sol",
@@ -3343,183 +3346,183 @@
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_address_revert_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_bitSet_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_byteLength_le",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_byteLength_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_callOptionalReturn_after",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_callOptionalReturn_call_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_crosses_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_crosses_ne",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_eip712Name_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_eip712Version_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_freeNode_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_functionCallWithValue_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_functionCallWithValue_insufficient",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_functionCall_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_mulDiv_rounding_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_priceKey_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_priceKey_range",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_priorityKey_lt_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_priorityKey_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_safeTransferFrom_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_unsignedRoundsUp_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_verifyCallResult_fail",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "testFuzz_verifyCallResult_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "test_priceKey_eq_formerHighClamp",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapHelpers.t.sol",
       "contract": "AsyncSwapHelpersFormalTest",
       "test": "test_priceKey_eq_formerLowClamp",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapInitAccess.t.sol",
@@ -3637,106 +3640,106 @@
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_EIP712Name_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_EIP712Version_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_byteLength_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_byteLength_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_callOptionalReturn_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_functionCallWithValue_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_functionCall_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_priorityKey_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_revert_never_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_revert_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_safeTransferFrom_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_safeTransferFrom_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_verify_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapLibHelpers.t.sol",
       "contract": "AsyncSwapLibHelpersFormalTest",
       "test": "testFuzz_verify_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapMatchAmounts.t.sol",
@@ -4127,22 +4130,22 @@
       "file": "test/formal/AsyncSwapPriorityKey.t.sol",
       "contract": "AsyncSwapPriorityKeyFormalTest",
       "test": "testFuzz_priorityKey_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapPriorityKey.t.sol",
       "contract": "AsyncSwapPriorityKeyFormalTest",
       "test": "testFuzz_priorityKey_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapPriorityKey.t.sol",
       "contract": "AsyncSwapPriorityKeyFormalTest",
       "test": "testFuzz_priorityKey_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapReceive.t.sol",
@@ -4260,43 +4263,43 @@
       "file": "test/formal/AsyncSwapRevert.t.sol",
       "contract": "AsyncSwapRevertFormalTest",
       "test": "testFuzz_revert_never_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapRevert.t.sol",
       "contract": "AsyncSwapRevertFormalTest",
       "test": "testFuzz_revert_nonempty",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapRevert.t.sol",
       "contract": "AsyncSwapRevertFormalTest",
       "test": "testFuzz_revert_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapRevert.t.sol",
       "contract": "AsyncSwapRevertFormalTest",
       "test": "test_revert_empty",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapSafeTransferFrom.t.sol",
       "contract": "AsyncSwapSafeTransferFromFormalTest",
       "test": "testFuzz_safeTransferFrom_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapSafeTransferFrom.t.sol",
       "contract": "AsyncSwapSafeTransferFromFormalTest",
       "test": "testFuzz_safeTransferFrom_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapSetExecutorWithSig.t.sol",
@@ -4386,22 +4389,22 @@
       "file": "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol",
       "contract": "AsyncSwapSettleOrderPriorityFeeFormalTest",
       "test": "testFuzz_settleOrderPriorityFee_escrowed",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol",
       "contract": "AsyncSwapSettleOrderPriorityFeeFormalTest",
       "test": "testFuzz_settleOrderPriorityFee_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol",
       "contract": "AsyncSwapSettleOrderPriorityFeeFormalTest",
       "test": "testFuzz_settleOrderPriorityFee_zero_fee",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapSettleTransfers.t.sol",
@@ -4813,176 +4816,176 @@
       "file": "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol",
       "contract": "AsyncSwapVerifyCallResultFromTargetFormalTest",
       "test": "testFuzz_verify_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol",
       "contract": "AsyncSwapVerifyCallResultFromTargetFormalTest",
       "test": "testFuzz_verify_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol",
       "contract": "AsyncSwapVerifyCallResultFromTargetFormalTest",
       "test": "testFuzz_verify_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712ConstantsLog.t.sol",
       "contract": "Eip712ConstantsLog",
       "test": "test_log",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Diagnostic constant logger with no behavioral assertions."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_EIP712Name_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_EIP712Version_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_matches_DOMAIN_SEPARATOR",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_never_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "AsyncSwapEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_EIP712Name_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_EIP712Version_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_eip712Domain_matches_DOMAIN_SEPARATOR",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_eip712Domain_never_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_eip712Domain_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_eip712Domain_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "Eip712DomainChecks",
       "test": "testFuzz_eip712Domain_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_EIP712Name_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_EIP712Version_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_matches_DOMAIN_SEPARATOR",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_never_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/Eip712Domain.t.sol",
       "contract": "RouterEip712DomainFormalTest",
       "test": "testFuzz_eip712Domain_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/FeeVaultCollect.t.sol",
@@ -5373,71 +5376,71 @@
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_CtorSpec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_CtorSpec_name_word",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_CtorSpec_version_word",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_DOMAIN_SEPARATOR_deployed",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_DOMAIN_SEPARATOR_eq_built",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_ctor_deployed",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_ctor_never_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_ctor_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "testFuzz_domainSeparatorV4_eq_built",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterConstructor.t.sol",
       "contract": "RouterConstructorFormalTest",
       "test": "test_typeHash_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterDOMAIN_SEPARATOR.t.sol",
@@ -5492,197 +5495,197 @@
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_address_revert_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_byteLength_le",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_byteLength_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_callOptionalReturn_after",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_callOptionalReturn_call_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_eip712Name_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_eip712Version_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_functionCallWithValue_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_functionCallWithValue_insufficient",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_functionCall_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_safeTransferFrom_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_verifyCallResult_fail",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterHelpers.t.sol",
       "contract": "RouterHelpersFormalTest",
       "test": "testFuzz_verifyCallResult_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_EIP712Name_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_EIP712Version_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_bubbleUpAndRevertWith_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_byteLength_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_byteLength_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_callOptionalReturn_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_functionCallWithValue_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_functionCall_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_revert_never_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_revert_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_safeTransferFrom_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_safeTransferFrom_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_verify_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterLibHelpers.t.sol",
       "contract": "RouterLibHelpersFormalTest",
       "test": "testFuzz_verify_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/RouterMatchBook.t.sol",
@@ -5786,617 +5789,617 @@
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_AppendSpec_post",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_AppendSpec_post_guards",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_AppendSpec_progress",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_BestAtPriceSpec_priority",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_LevelSpec_priority",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_RemoveSpec_post",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_RemoveSpec_progress",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecBook.t.sol",
       "contract": "SpecBookFormalTest",
       "test": "testFuzz_RemoveSpec_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity tree/level slots and write footprints; retained as a layout reference."
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_CreateOrderSpec_notAuthorised",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_CreateOrderSpec_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_CreateOrderSpec_run_addOrderGuards",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_CreateOrderSpec_run_repeat",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_CreateOrderSpec_zeroAmount",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_PoolStateSlotSpec_pure_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_PoolStateSlotSpec_value",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_Router_TransferSpec_erc20",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_Router_TransferSpec_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_Router_TransferSpec_native",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_Router_TransferSpec_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_TransferSpec_erc20",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_TransferSpec_erc20_noCode",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_TransferSpec_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_TransferSpec_native",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_TransferSpec_ok_iff",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_TransferSpec_viaSweep",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_beforeSwap_frame_of_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_createBody_frame",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_getLiquidity_of_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_getLiquidity_zero_of_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "testFuzz_getSlot0_of_spec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecCore.t.sol",
       "contract": "SpecCoreFormalTest",
       "test": "test_note_beforeSwap_frame_hcreate_false",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_asyncSwapRouter_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_asyncSwap_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_decode_asyncSwap",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_decode_asyncSwapRouter",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_decode_one",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_deployed_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_fallbackStore_none",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_hash_constants",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AssumptionsFormalTest",
       "test": "test_one_short",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapCtorSpecFormalTest",
       "test": "testFuzz_CtorSpec",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapCtorSpecFormalTest",
       "test": "testFuzz_CtorSpec_name_word",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapCtorSpecFormalTest",
       "test": "testFuzz_CtorSpec_version_word",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapCtorSpecFormalTest",
       "test": "testFuzz_DOMAIN_SEPARATOR_deployed",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapSpecEip712FormalTest",
       "test": "testFuzz_Eip712DomainSpec_body",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapSpecEip712FormalTest",
       "test": "testFuzz_name_ne_sentinel",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapSpecEip712FormalTest",
       "test": "testFuzz_toString_name",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapSpecEip712FormalTest",
       "test": "testFuzz_toString_version",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "AsyncSwapSpecEip712FormalTest",
       "test": "testFuzz_version_ne_sentinel",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "RouterSpecEip712FormalTest",
       "test": "testFuzz_Eip712DomainSpec_body",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "RouterSpecEip712FormalTest",
       "test": "testFuzz_name_ne_sentinel",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "RouterSpecEip712FormalTest",
       "test": "testFuzz_toString_name",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "RouterSpecEip712FormalTest",
       "test": "testFuzz_toString_version",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "RouterSpecEip712FormalTest",
       "test": "testFuzz_version_ne_sentinel",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "reference-only-architecture",
+      "reason": "Asserts Solidity storage layout, write footprint, or cached immutable bytecode; retained unchanged as reference-only."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712DomainChecks",
       "test": "testFuzz_Eip712DomainSpec_body",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712DomainChecks",
       "test": "testFuzz_name_ne_sentinel",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712DomainChecks",
       "test": "testFuzz_toString_name",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712DomainChecks",
       "test": "testFuzz_toString_version",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712DomainChecks",
       "test": "testFuzz_version_ne_sentinel",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "abstract-test-template",
+      "reason": "Abstract test template: no deployable Solidity creation bytecode."
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "testFuzz_ShortStringsSpec_toString_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "testFuzz_ShortStringsSpec_toString_reverts",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "testFuzz_ShortStringsSpec_withFallback",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "testFuzz_byteLength_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "testFuzz_toString_eq",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "testFuzz_toString_reverts_iff_byteLength",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecEip712.t.sol",
       "contract": "SpecEip712ShortStringsFormalTest",
       "test": "test_finding_ShortStringSpec_toString_every_word",
       "status": "excluded-finding",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "reason": "Upstream counterexample is intentionally excluded from normal runs."
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_onHook",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_onRouter",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_result_calldata",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_result_noCode_precompile",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_ERC1271Spec_total",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashPoolKeySpec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashPoolKeySpec_total_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashSetExecutorSpec_onHook",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashSetExecutorSpec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_HashSetExecutorSpec_total_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_TypedDataHashSpec_readOnly",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_TypedDataHashSpec_result",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_TypedDataHashSpec_total",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_hashTypedDataV4_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_hashTypedDataV4_run_router",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_isValidSignatureNow_run",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_isValidSignatureNow_run_router",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_tryRecover_5888_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "testFuzz_tryRecover_9821_ok",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/formal/SpecSig.t.sol",
       "contract": "SpecSigFormalTest",
       "test": "test_SpecSig_typehash_words",
-      "status": "reference-only",
-      "reason": "Specialized Solidity/internal harness; retained verbatim as reference."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/nethermind_auditagent/NethermindAuditAgent.t.sol",
@@ -6556,22 +6559,22 @@
       "file": "test/security/ClaimTransfers.t.sol",
       "contract": "ClaimTransfersTest",
       "test": "test_aggregatesByRecipientAndCurrencyInFirstCreditOrder",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/ClaimTransfers.t.sol",
       "contract": "ClaimTransfersTest",
       "test": "test_capacityCoversThirtyThreeDistinctCredits",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/ClaimTransfers.t.sol",
       "contract": "ClaimTransfersTest",
       "test": "test_selfCreditsDoNotAggregateOrOverflow",
-      "status": "reference-only",
-      "reason": "Direct Solidity library harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/CoarsePriceBlocking.t.sol",
@@ -6619,99 +6622,99 @@
       "file": "test/security/EligibleGas.t.sol",
       "contract": "EligibleGasTest",
       "test": "test_gas128Blockers",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligibleGas.t.sol",
       "contract": "EligibleGasTest",
       "test": "test_gas128BlockersDistinctOwners",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligibleGas.t.sol",
       "contract": "EligibleGasTest",
       "test": "test_gasNoBlockers",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligibleGas.t.sol",
       "contract": "EligibleGasTest",
       "test": "test_gasOneBlocker",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligibleGas.t.sol",
       "contract": "EligibleGasTest",
       "test": "test_gasSixteenBlockers",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython0Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython1Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython2Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython3Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython4Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython5Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython6Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligiblePythonVectors.t.sol",
       "contract": "EligiblePython7Test",
       "test": "test_pythonStatefulTrace",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/EligibleRemainder.t.sol",
       "contract": "EligibleRemainderTest",
       "test": "test_refreshWhenPriceKeyAndFeeAreUnchanged",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/ExecutorAuthorization.t.sol",
@@ -6759,85 +6762,85 @@
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "testFuzz_cancelNeverChargesFees",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "testFuzz_fillConservesInput",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_callbackCannotBeCalledDirectly",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_cancelReverseDirection_refundsFullDeposit",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_collectBeforeFill_cannotTakeEscrow",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_collectionAuthorizationFollowsOwnership",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_emptyAndRepeatedCollection",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_failedFillDoesNotEarnFees",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_failedNativeRecipient_preservesClaims",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_feeUsesStoredOutput_andCollectionPreservesOtherOrders",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_nativeCancellation_refundsFullDeposit",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeClaims.t.sol",
       "contract": "FeeClaimsTest",
       "test": "test_zeroRecipientRejected",
-      "status": "reference-only",
-      "reason": "Overrides a Solidity hook method; needs a Huff surcharge adapter."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/FeeCollect.t.sol",
@@ -7452,15 +7455,15 @@
       "file": "test/security/PriorityPythonHashes.t.sol",
       "contract": "PriorityPythonHashesTest",
       "test": "test_pythonHashesMatchSolidityLibrary",
-      "status": "reference-only",
-      "reason": "Direct Solidity signature-library harness."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/PriorityPythonVectors.t.sol",
       "contract": "PriorityPythonVectorsTest",
       "test": "test_oneHundredPythonVectors",
-      "status": "reference-only",
-      "reason": "Depends on Solidity internal/storage-layout harnesses."
+      "status": "passed-huff",
+      "reason": null
     },
     {
       "file": "test/security/RouterOrderWindow.t.sol",

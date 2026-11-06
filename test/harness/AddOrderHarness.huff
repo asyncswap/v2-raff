@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: MIT
+// Direct library fixture: setters seed storage; mutations execute production BOOK_ADD.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/lib/PoolManager.huff"
+#include "../../src/lib/RadixPriceTree.huff"
+#include "../../src/current/lib/TickPrice.huff"
+#include "../../src/current/lib/TickBitmap.huff"
+#include "../../src/current/lib/Book.huff"
+#include "../../src/current/lib/BookFunding.huff"
+#include "../../src/current/lib/ExactPrice.huff"
+#include "../../src/current/lib/OrderStorage.huff"
+#define macro MANAGER() = takes (0) returns (1) { 0xb00c }
+#define macro NUMERAIRE() = takes (0) returns (1) { [B_P] mload 0x30 add sload }
+#define fn F_MINT() = takes (3) returns (0) { PM_MINT() }
+#define macro MAIN() = takes (0) returns (0) {
+    0x01 0x04 calldataload HASH_2() [B_P] mstore
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("addOrder(bytes32,(bytes32,address,uint256,uint256,bool,bool,uint256,bytes32))") eq add_order jumpi
+    dup1 __FUNC_SIG("matchingAddOrder(bytes32,(bytes32,address,uint256,uint256,bool,bool,uint256,bytes32))") eq add_order jumpi
+    dup1 __FUNC_SIG("setNextSequence(bytes32,uint64)") eq sequence jumpi
+    dup1 __FUNC_SIG("setPoolFields(bytes32,address,address,address)") eq fields jumpi
+    dup1 __FUNC_SIG("setExecutor(bytes32,address,address,bool)") eq executor jumpi
+    dup1 __FUNC_SIG("bookSlot(bytes32)") eq book_slot jumpi
+    dup1 __FUNC_SIG("priceKey(bool,bool,uint256,uint256)") eq price jumpi
+    dup1 __FUNC_SIG("order(bytes32,bytes32)") eq info jumpi
+    0x00 0x00 revert
+    book_slot: [B_P] mload RETURN_1()
+    sequence:
+        [B_P] mload dup1 sload [UINT64_MASK] not and 0x24 calldataload or swap1 sstore RETURN_EMPTY()
+    fields: 0x44 calldataload [B_P] mload 0x30 add sstore 0x64 calldataload [B_P] mload 0x31 add sstore RETURN_EMPTY()
+    executor:
+        [B_P] mload 0x04 add 0x24 calldataload HASH_2() 0x44 calldataload HASH_2()
+        0x64 calldataload swap1 sstore RETURN_EMPTY()
+    price: 0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload CURRENT_PRICE_KEY() RETURN_1()
+    add_order:
+        0x24 calldataload [B_ID] mstore 0x44 calldataload [B_OWNER] mstore
+        0x64 calldataload [B_IN] mstore 0x84 calldataload [B_MIN] mstore
+        0xa4 calldataload [B_BUY] mstore 0xc4 calldataload [B_ZFO] mstore
+        0xe4 calldataload [B_FEE] mstore BOOK_ADD() RETURN_EMPTY()
+    info:
+        0x24 calldataload [B_P] mload ORDER_SLOT()
+        dup1 sload dup1 O_OWNER() 0x00 mstore
+        dup1 O_BUY() 0x80 mstore dup1 O_ZFO() 0xa0 mstore O_FEE() 0x100 mstore
+        dup1 0x01 add sload dup1 O_PRICE() 0x60 mstore O_PK() 0x120 mstore
+        dup1 0x02 add sload 0x20 mstore dup1 0x03 add sload 0x40 mstore
+        dup1 0x04 add sload 0x140 mstore dup1 0x05 add sload 0xe0 mstore
+        0x06 add sload 0xc0 mstore 0x160 0x00 return
+}

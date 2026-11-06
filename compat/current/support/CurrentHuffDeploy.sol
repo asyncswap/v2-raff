@@ -35,6 +35,20 @@ library CurrentHuffDeploy {
         installConstructor(code, target);
     }
 
+    /// Test-only equivalent of the upstream FeeTestHook's 1% pool-fee override.
+    function feeHookTo(bytes memory args, address target) internal {
+        bytes memory code = HuffNeoDeployer.config()
+            .with_constant("POOL_FEE_MODE", "0x01")
+            .with_args(args)
+            .creation_code_with_args("src/current/AsyncSwap.huff");
+        installConstructor(code, target);
+    }
+
+    function routerConstructorTo(bytes memory args, address target) internal {
+        bytes memory code = HuffNeoDeployer.config().with_args(args).creation_code_with_args("src/current/Router.huff");
+        installConstructor(code, target);
+    }
+
     function installConstructor(bytes memory code, address target) private {
         // Match forge-std's deployCodeTo: run the constructor at the final hook permission address.
         vm.etch(target, code);

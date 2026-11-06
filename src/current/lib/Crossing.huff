@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: MIT
+/// @notice `_crosses(buyKey, sellKey, buy, sell)`: strictly ordered keys decide; equal keys are decided by
+///         the full-precision cross-multiply `floor(buyIn·sellIn / sellOut) ≥ buyOut`.
+#define fn CROSSES() = takes (2) returns (1) {
+    ORDER_AT() swap1 ORDER_AT() // sell,buy
+    // Tick keys decide unequal levels. Only equal levels need the full-width ratio comparison.
+    // This also preserves Solidity's directional rounding at a tick boundary.
+    dup1 0x01 add O_LOAD() O_PRICE()
+    dup3 0x01 add O_LOAD() O_PRICE() // buyKey,sellKey,sell,buy
+    dup2 dup2 eq exact jumpi
+    gt swap2 pop pop done jump
+    exact: pop pop // sell,buy
+    // Keep mulDiv's zero-denominator and overflow reverts for arbitrary stored records.
+    dup1 0x03 add O_LOAD()
+    dup2 0x02 add O_LOAD()
+    dup4 0x02 add O_LOAD()
+    MUL_DIV()
+    dup3 0x03 add O_LOAD() gt iszero
+    swap2 pop pop
+    done:
+}
