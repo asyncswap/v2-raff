@@ -1,8 +1,20 @@
-# v2-raff
+# Async Swap in Huff
 
-**PR #81 port:** the [current-protocol acceptance suite](compat/current/README.md) copies the pinned Solidity tests and deploys actual Huff bytecode from the unfinished `src/current/` hook/router port. It discovers 383 tests; the current smoke run has 59 passing results and 311 failures. Passing the legacy suite below does not establish current-protocol parity.
+The current port in `src/current/` targets [Solidity PR #81](https://github.com/asyncswap/contracts/pull/81), including incoming-memory matching, fee top-ups and LP routing. Its [copied acceptance suite](compat/current/README.md) passes **373 tests** with unchanged assertions, including three pinned fork tests. The 23-test extended reference campaign also passes; 136 Solidity-specific files remain reference-only and ten upstream finding tests are excluded by the profile.
 
-**Current compatibility:** the full hook below is a historical port. The [incoming-memory arithmetic experiment](docs/INCOMING_MEMORY_EXPERIMENT.md) records its gaps against current Solidity, a new isolated kernel, and fresh differential-test results. It does not make the full Huff hook current-protocol compatible.
+The [current Router benchmark](benchmarks/crossing/README.md) compares 1,000 transactions and 5,200 matched pairs per implementation. Huff saves **7.5–24.3%** for single fills and **7.9–8.9%** for eight-level sweeps, but uses **21.3–22.4% more gas** on the other eight-fill workloads. Deployed hook/Router sizes are **24,204 / 10,623 bytes**, including immutables.
+
+```sh
+FOUNDRY_PROFILE=current forge test
+FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test
+python3 benchmarks/crossing/run.py
+```
+
+The current hook takes `(poolManager, numeraire, owner, router, minOrderUsd, assetPrecision)`; its Router takes `(poolManager, hook, permit2, mevTaxGas)`. See the acceptance guide for toolchain, fork configuration and exact coverage. The port has not been independently audited or deployed publicly.
+
+## Legacy implementation
+
+The remaining sections describe the historical root `src/` implementation. Its constructors, behavior and gas numbers are separate from the current port above. The [arithmetic experiment](docs/INCOMING_MEMORY_EXPERIMENT.md) is retained as historical context.
 
 Async Swap v2 in [Huff](https://www.huff-neo.rs), compiled with [huff-neo](https://github.com/cakevm/huff-neo)
 (`hnc`): a port of [`asyncswap/contracts`](https://github.com/asyncswap/contracts) (`main` @ `6fa977a`) with the
@@ -53,7 +65,7 @@ Behaviour is the same; these are not observable through the ABI.
 - Test-only builds: `-c POOL_FEE_MODE=1` (`calculatePoolFee = amount / 100`, for `test/security/FeeClaims.t.sol`)
   and `-c SKIP_HOOK_ADDRESS_CHECK=1` (for the constructor tests in `test/Numeraire.t.sol`).
 
-## Gas
+## Historical gas (legacy implementation)
 
 Same tests, Solidity (`optimizer_runs = 1000`) against Huff:
 

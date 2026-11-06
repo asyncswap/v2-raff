@@ -25,6 +25,8 @@ jobs:
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.8.6
 
       - name: Install Huff Neo
         run: |
@@ -59,4 +61,30 @@ jobs:
           # The Unichain fork tests run against live mainnet state at a pinned block.
           UNICHAIN_FORK_RPC_URL: https://mainnet.unichain.org
           UNICHAIN_FORK_BLOCK: "61709000"
+        run: forge test -vvv
+
+      - name: Checkout pinned Solidity acceptance source
+        uses: actions/checkout@v5
+        with:
+          repository: asyncswap/contracts
+          ref: 3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89
+          path: .local/contracts-reference
+          persist-credentials: false
+
+      - name: Check copied tests and adapters are unchanged
+        run: python3 script/sync-current-tests.py .local/contracts-reference --check
+
+      - name: Run current Huff acceptance tests
+        env:
+          FOUNDRY_PROFILE: current
+          FOUNDRY_INVARIANT_RUNS: "64"
+          FOUNDRY_INVARIANT_DEPTH: "64"
+          UNICHAIN_FORK_RPC_URL: https://mainnet.unichain.org
+          UNICHAIN_FORK_BLOCK: "61709000"
+        run: forge test -vvv
+
+      - name: Check current sizes and signature memory isolation
+        env:
+          FOUNDRY_PROFILE: current
+          FOUNDRY_TEST: compat/current/checks
         run: forge test -vvv

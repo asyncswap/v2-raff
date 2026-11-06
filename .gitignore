@@ -1,3 +1,6 @@
+# Local validation exports and nested reference checkout
+.local/
+
 # Foundry build artifacts
 out/
 cache/
@@ -25,3 +28,5 @@ dependencies/uniswap-v4-core-4/
 
 # Bun/npm dependencies for script/*.ts helpers
 node_modules/
+
+__pycache__/

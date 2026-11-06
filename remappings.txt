@@ -6,3 +6,4 @@ foundry-huff-neo/=lib/foundry-huff-neo/src/
 solmate-6.8.0/=dependencies/solmate-6.8.0/
 uniswap-v4-core-4/=dependencies/uniswap-v4-core-4/
 v4-core/=dependencies/v4-core/src
+reference/contracts/:@async-swap/=reference/contracts/src/

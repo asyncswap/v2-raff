@@ -41,14 +41,28 @@ python3 script/sync-current-tests.py /path/to/contracts --check
 
 Use `--forge /path/to/forge-v1.8.6` to select the pinned formatter. The check compares every original source and generated adapter byte and rejects unexpected files. Modify the adapter script rather than editing generated tests to accommodate a port failure.
 
-## Initial results and remaining work
+## Validation results
 
-The first current-profile smoke run compiled successfully. **13 MatchingEngine tests passed; 73 suite setups failed with `InvalidNumeraire()`.** The old Huff hook expected three constructor arguments; PR #81 requires six. That initial baseline is preserved in `results/initial-compatibility.json`.
+The current handwritten Huff hook/Router pass **373 tests, zero failures**, including three Unichain fork tests at block 61709000. Fuzz tests use 256 cases and invariants run 64 × 64. The profile discovers 383 tests; ten upstream `_finding_` tests are excluded by the inherited profile rule. This is coverage of the adapted public API, not all Solidity internal harnesses or a proof of complete equivalence.
 
-The current-port hook and Router now accept the six- and four-argument constructors, and the hook reads the quote decimals and binds its trusted Router. The next smoke run reaches **59 passing results and 311 failures**, recorded in `results/current-compatibility.json`. Most failures are now the legacy book's rejection of funded bids in its default FIFO mode; other failures expose missing getters, queue semantics, fee behavior and endpoints. These are real acceptance failures, not tests disabled to make the port pass. Some setup failures still prevent their test bodies from running. The 383 discovered tests are not 383 executed/passing tests.
+An extended matching/reference/funding campaign passes **23 tests**, with 2,048 cases per fuzz test. It overlaps the full suite. The separate legacy/kernel/claims/tick suite passes **187 tests**, excluding legacy fork tests, at 64 × 64 invariant depth. TickPrice parity also passed 2,048 cases per fuzz test. Machine-readable records are in [results](results/).
 
-Both compatibility smoke runs use one fuzz case and reduced invariant depth to identify blockers; full campaigns remain required after the port works. The separate legacy/kernel/claims regression passes **184 tests** at 64 × 64 invariant depth; it does not validate the current hook/router. See `results/legacy-regression.json` and `results/test-list.json`.
+The hook implements exact-price selection, maker age, global matching, funded fee top-ups, transient staging and memory admission, LP/dynamic fee routing, claims, MEV tax, and signed endpoints. Technique comments explain bitmap lookup, full-width ratio comparison, subtree repair, integer square root, matching rounding and candidate storage redirection.
 
-The new `src/TokenClaims.huff` passes eight standalone differential tests against pinned `TokenClaims.sol`, including three fuzz tests with 2,048 cases each. Tests cover real PoolManager balances/allowances, ERC-20 and native payout, events, failed-transfer rollback, reentrancy, and malformed ABI input. Implementation addresses are normalized only for the emitting contract and PoolManager's transfer-operator field. Results are recorded in `results/token-claims-parity.json`.
+Deployed runtimes including immutable tails are **24,204 bytes** (hook) and **10,623 bytes** (Router). `checks/PortSize.t.sol` enforces EIP-170 and the 49,152-byte initcode limit; the hook has 372 bytes of headroom. Run the separate check with:
 
-The hook/router port still needs complete constructor/authorization validation, exact-price indexing, maker age and global matching, fee top-ups, memory admission, current LP/dynamic fee routing, and updated claim/MEV-tax/signature endpoints. `src/current/` is unfinished and must not be deployed. The copied acceptance suite is the gate for that work; legacy passes or the isolated arithmetic kernel cannot substitute for it.
+```sh
+FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test
+```
+
+The three separate port checks pass. The long ERC-1271 signature regression covers overlap with the incoming-candidate scratch area; removing the flag reset makes it fail with `ZeroAmount()`. See `results/port-checks.json`.
+
+The [Router receipt benchmark](../../benchmarks/crossing/README.md) records both savings and regressions against the pinned Solidity implementation. This port has not been independently audited or deployed publicly.
+
+## Historical baseline and scope
+
+The initial smoke run passed 13 MatchingEngine tests and failed 73 suite setups with `InvalidNumeraire()`, before constructor adaptation. That baseline remains in `results/initial-compatibility.json`. A subsequent 59-pass/311-failure smoke run exposed missing current-protocol behavior; the final full campaign replaces that intermediate result in `results/current-compatibility.json`.
+
+The standalone `src/TokenClaims.huff` also passed eight differential tests against pinned `TokenClaims.sol`, including three fuzz tests with 2,048 cases each. These cover PoolManager balances/allowances, ERC-20 and native payout, events, failed-transfer rollback, reentrancy and malformed ABI input. Only emitting-contract and PoolManager transfer-operator addresses are normalized. See `results/token-claims-parity.json`.
+
+The 136 reference-only files still require explicit Huff-specific adapters before they count as coverage. No copied assertion or expected value was weakened to fix a port failure.

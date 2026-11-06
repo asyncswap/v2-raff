@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: MIT
+// Occupancy summaries jump directly to a live word; empty ticks are never scanned.
+#define constant BM_T = 0x800
+#define constant BM_WORD = 0x820
+#define constant BM_GROUP = 0x840
+#define constant BM_BIT = 0x860
+
+#define macro BITMAP_LOAD() = takes (2) returns (0) {
+    // [tree, key]
+    [BM_T] mstore
+    dup1 0xff and 0x01 swap1 shl [BM_BIT] mstore
+    0x08 shr dup1 [BM_WORD] mstore 0x08 shr [BM_GROUP] mstore
+}
+#define macro BITMAP_LEAF() = takes (0) returns (1) {
+    [BM_T] mload 0x02 add [BM_WORD] mload HASH_2()
+}
+#define macro BITMAP_MIDDLE() = takes (0) returns (1) {
+    [BM_T] mload 0x01 add [BM_GROUP] mload HASH_2()
+}
+#define fn BITMAP_INSERT() = takes (2) returns (0) {
+    BITMAP_LOAD()
+    BITMAP_LEAF() dup1 sload
+    dup1 [BM_BIT] mload or dup3 sstore
+    swap1 pop done jumpi
+    BITMAP_MIDDLE() dup1 sload
+    0x01 [BM_WORD] mload 0xff and shl dup2 or dup3 sstore
+    swap1 pop done jumpi
+    [BM_T] mload dup1 sload 0x01 [BM_GROUP] mload shl or swap1 sstore
+    done:
+}
+#define fn BITMAP_REMOVE() = takes (2) returns (0) {
+    BITMAP_LOAD()
+    BITMAP_LEAF() dup1 sload [BM_BIT] mload not and dup1 dup3 sstore
+    swap1 pop done jumpi
+    BITMAP_MIDDLE() dup1 sload 0x01 [BM_WORD] mload 0xff and shl not and dup1 dup3 sstore
+    swap1 pop done jumpi
+    [BM_T] mload dup1 sload 0x01 [BM_GROUP] mload shl not and swap1 sstore
+    done:
+}
+#define macro BITMAP_BIT() = takes (2) returns (1) {
+    // [bits, highest]
+    swap1 high jumpi
+    // x & -x isolates the least-significant set bit, then the same MSB scan locates it.
+    dup1 0x00 sub and
+    high: MSB_256()
+}
+#define fn BITMAP_BEST() = takes (2) returns (2) {
+    // [tree, highest]
+    dup1 sload dup1 iszero empty jumpi
+    dup3 swap1 BITMAP_BIT() // [group, tree, highest]
+    dup2 0x01 add dup2 HASH_2() sload dup4 swap1 BITMAP_BIT()
+    swap1 0x08 shl or // [word, tree, highest]
+    dup2 0x02 add dup2 HASH_2() sload dup4 swap1 BITMAP_BIT()
+    swap1 0x08 shl or swap2 pop pop 0x01 done jump
+    empty: pop pop pop 0x00 0x00
+    done:
+}

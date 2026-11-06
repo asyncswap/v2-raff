@@ -1,0 +1,7 @@
+#include "../lib/Common.huff"
+#include "../lib/Math.huff"
+#include "../current/lib/TickPrice.huff"
+#define macro MAIN() = takes (0) returns (0) {
+    0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload
+    CURRENT_PRICE_KEY() RETURN_1()
+}
