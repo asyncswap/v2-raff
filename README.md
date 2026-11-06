@@ -2,7 +2,7 @@
 
 The current port in `src/current/` targets [Solidity PR #81](https://github.com/asyncswap/contracts/pull/81), including incoming-memory matching, fee top-ups and LP routing. Its [copied acceptance suite](compat/current/README.md) passes **373 tests** with unchanged assertions, including three pinned fork tests. The 23-test extended reference campaign also passes; 136 Solidity-specific files remain reference-only and ten upstream finding tests are excluded by the profile.
 
-The [current Router benchmark](benchmarks/crossing/README.md) compares 1,000 transactions and 5,200 matched pairs per implementation. Huff saves **7.5–24.3%** for single fills and **7.9–8.9%** for eight-level sweeps, but uses **21.3–22.4% more gas** on the other eight-fill workloads. Deployed hook/Router sizes are **24,204 / 10,623 bytes**, including immutables.
+The [current Router benchmark](benchmarks/crossing/README.md) compares 1,000 transactions and 5,200 matched pairs per implementation. Batched Huff saves **8.9–25.7%** for single fills and **15.6–16.7%** for eight-level sweeps versus Solidity, but uses **12.2–13.8% more gas** on the other eight-fill workloads. Batching lowers eight-fill gas by **7.1–8.6%** versus the previous Huff port. Deployed hook/Router sizes are **24,458 / 10,623 bytes**, including immutables.
 
 ```sh
 FOUNDRY_PROFILE=current forge test

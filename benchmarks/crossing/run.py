@@ -30,7 +30,7 @@ p.add_argument(
 p.add_argument("--workload", help="Run one named workload instead of all ten")
 p.add_argument(
     "--output-dir",
-    default="benchmarks/crossing/results",
+    default="benchmarks/crossing/batched-results",
     help="Separate result directory for prototype comparisons",
 )
 a = p.parse_args()

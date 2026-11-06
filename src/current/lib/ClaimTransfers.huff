@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: MIT
+// Coalesce credits by (currency, recipient) over one bounded matching loop.
+// Eight pairs have at most 16 makers plus the vault, each receiving two currencies.
+#define constant CB_ACTIVE = 0x2200
+#define constant CB_END = 0x2220
+#define constant CB_START = 0x2240
+
+#define fn TRANSFER_CLAIMS() = takes (3) returns (0) {
+    // [currency, recipient, amount]. Self-transfers stay immediate: combining them
+    // could exceed the available balance even though each transfer is net zero.
+    [CB_ACTIVE] mload iszero immediate jumpi
+    dup3 iszero skip jumpi
+    dup2 address eq immediate jumpi
+    [CB_START]
+    loop: // [entry, currency, recipient, amount]
+    [CB_END] mload dup2 eq append jumpi
+    dup1 mload dup3 eq
+    dup2 0x20 add mload dup5 eq and found jumpi
+    0x60 add loop jump
+    found:
+    dup1 0x40 add dup1 mload dup6 CHECKED_ADD() swap1 mstore
+    pop skip jump
+    append:
+    dup2 dup2 mstore
+    dup3 dup2 0x20 add mstore
+    dup4 dup2 0x40 add mstore
+    0x60 add [CB_END] mstore
+    skip: pop pop pop done jump
+    immediate: TRANSFER_CLAIMS_NOW()
+    done:
+}
+
+#define fn FLUSH_CLAIMS() = takes (0) returns (0) {
+    // Disable first, so every queued item uses the immediate ERC-6909 path.
+    0x00 [CB_ACTIVE] mstore
+    [CB_START]
+    loop:
+    [CB_END] mload dup2 eq done jumpi
+    dup1 0x40 add mload dup2 0x20 add mload dup3 mload TRANSFER_CLAIMS_NOW()
+    0x60 add loop jump
+    done: pop
+}
+
+#define fn TRANSFER_CLAIMS_NOW() = takes (3) returns (0) {
+    // [currency, recipient, amount]: ERC-6909 transfer changes ownership without transient debt.
+    __FUNC_SIG("transfer(address,uint256,uint256)") CALL_SELECTOR()
+    [CALL_24] mstore [CALL_4] mstore [CALL_44] mstore
+    0x64 PM_CALL()
+}

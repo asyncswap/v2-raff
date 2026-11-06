@@ -25,6 +25,7 @@
 #include "./lib/MatchAmounts.huff"
 #include "./lib/Liquidity.huff"
 #include "./lib/Incoming.huff"
+#include "./lib/ClaimTransfers.huff"
 #include "../lib/PoolManager.huff"
 #include "../lib/Signatures.huff"
 #include "../generated/FeeVaultCreation.huff"
@@ -385,12 +386,6 @@
     skip: pop pop pop
     done:
 }
-#define fn TRANSFER_CLAIMS() = takes (3) returns (0) {
-    // [currency, recipient, amount]: ERC-6909 transfer changes ownership without transient debt.
-    __FUNC_SIG("transfer(address,uint256,uint256)") CALL_SELECTOR()
-    [CALL_24] mstore [CALL_4] mstore [CALL_44] mstore
-    0x64 PM_CALL()
-}
 #define macro TRADE_FEE() = takes (1) returns (1) {
     // ceil(amount / 5000), without addition overflow.
     0x1388 dup2 mod iszero iszero swap1 0x1388 swap1 div add
@@ -425,6 +420,7 @@
     valid:
     // ERC-1271 signature calldata uses a variable buffer; discard any overlapping candidate flag.
     0x00 [MC_ACTIVE] mstore
+    0x00 [CB_ACTIVE] mstore
 }
 
 //'##::::'##::'#######:::'#######::'##:::'##::'######::
@@ -614,6 +610,7 @@
     [MAX_MATCHES_PER_CALL] [M_MAX] mstore MATCH_GLOBAL()
 }
 #define fn MATCH_GLOBAL() = takes (0) returns (1) {
+    0x01 [CB_ACTIVE] mstore [CB_START] [CB_END] mstore
     0x00 [M_COUNT] mstore
     loop:
     [M_MAX] mload [M_COUNT] mload lt iszero done jumpi
@@ -622,7 +619,7 @@
     [M_SELL] mload [M_BUY] mload 0x00 0x00 CROSSES() iszero done jumpi
     [M_SELL] mload [M_BUY] mload MATCH_PAIR() iszero done jumpi
     [M_COUNT] mload 0x01 add [M_COUNT] mstore loop jump
-    done: [M_COUNT] mload
+    done: FLUSH_CLAIMS() [M_COUNT] mload
 }
 
 /// @notice `_matchPair(first, second)`: the older order's price sizes the trade; transfer the escrows,

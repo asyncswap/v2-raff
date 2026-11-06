@@ -45,17 +45,19 @@ Use `--forge /path/to/forge-v1.8.6` to select the pinned formatter. The check co
 
 The current handwritten Huff hook/Router pass **373 tests, zero failures**, including three Unichain fork tests at block 61709000. Fuzz tests use 256 cases and invariants run 64 × 64. The profile discovers 383 tests; ten upstream `_finding_` tests are excluded by the inherited profile rule. This is coverage of the adapted public API, not all Solidity internal harnesses or a proof of complete equivalence.
 
-An extended matching/reference/funding campaign passes **23 tests**, with 2,048 cases per fuzz test. It overlaps the full suite. The separate legacy/kernel/claims/tick suite passes **187 tests**, excluding legacy fork tests, at 64 × 64 invariant depth. TickPrice parity also passed 2,048 cases per fuzz test. Machine-readable records are in [results](results/).
+An extended matching/reference/funding campaign passes **23 tests**, with 2,048 cases per fuzz test. It overlaps the full suite. The separate legacy/kernel/claims/tick suite passes **192 tests**, excluding legacy fork tests, at 64 × 64 invariant depth. TickPrice parity also passed 2,048 cases per fuzz test. The latest campaigns and source hashes are in [batched-validation.json](results/batched-validation.json); other records in `results/` preserve the earlier port validation.
 
 The hook implements exact-price selection, maker age, global matching, funded fee top-ups, transient staging and memory admission, LP/dynamic fee routing, claims, MEV tax, and signed endpoints. Technique comments explain bitmap lookup, full-width ratio comparison, subtree repair, integer square root, matching rounding and candidate storage redirection.
 
-Deployed runtimes including immutable tails are **24,204 bytes** (hook) and **10,623 bytes** (Router). `checks/PortSize.t.sol` enforces EIP-170 and the 49,152-byte initcode limit; the hook has 372 bytes of headroom. Run the separate check with:
+Deployed runtimes including immutable tails are **24,458 bytes** (hook) and **10,623 bytes** (Router). `checks/PortSize.t.sol` enforces EIP-170 and the 49,152-byte initcode limit; the hook has 118 bytes of headroom. Run the separate check with:
 
 ```sh
 FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test
 ```
 
 The three separate port checks pass. The long ERC-1271 signature regression covers overlap with the incoming-candidate scratch area; removing the flag reset makes it fail with `ZeroAmount()`. See `results/port-checks.json`.
+
+The batch helper adds five differential tests against pinned Solidity `ClaimTransfers`, including 2,048 fuzz cases. Repeated credits, 34-key capacity, zero credits, first-credit ordering, self-transfers, accumulation overflow and flush rollback all pass. These tests are additional coverage; the copied adapters remain unchanged.
 
 The [Router receipt benchmark](../../benchmarks/crossing/README.md) records both savings and regressions against the pinned Solidity implementation. This port has not been independently audited or deployed publicly.
 
