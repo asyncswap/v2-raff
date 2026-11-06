@@ -108,11 +108,13 @@
     [LP_ZFO] mload iszero ordered jumpi swap1
     ordered:
     0x00 sub [LP_SWAPPED] mstore // -inputDelta, outputDelta
-    dup1 0x00 swap1 sgt iszero not_met jumpi [LP_OUT] mstore
+    [LP_OUT] mstore
     [LP_LIMIT] mload partial_allowed jumpi
     [LP_SWAPIN] mload [LP_SWAPPED] mload eq partial_allowed jumpi
     __FUNC_SIG("PartialLiquidityFill()") 0xe0 shl REVERT_0()
     partial_allowed:
+    // Match Solidity revert precedence: reject an incomplete input before invalid output.
+    [LP_OUT] mload 0x00 swap1 sgt iszero not_met jumpi
     [LP_SWAPIN] mload [LP_SWAPPED] mload eq all_swapped jumpi
     [LP_SWAPPED] mload [LP_SWAPIN] mload sub [LP_ZFO] mload CURRENCY_IN() address F_MINT()
     [LP_SWAPIN] mload [LP_SWAPPED] mload [LP_FEE] mload MUL_DIV_UP() [LP_FEE] mstore
@@ -128,7 +130,7 @@
     // A partial LP fill keeps dust available for the subsequent book step.
     0x01 [R_KEEP_DUST] mstore
     [LP_ID] mload [R_ID] mstore [LP_CONSUMED] mload [R_USED] mstore
-    [LP_ZFO] mload CURRENCY_IN() [R_CUR] mstore REDUCE_AFTER_MATCH()
+    [LP_ZFO] mload CURRENCY_IN() [R_CUR] mstore REDUCE_AND_REFUND()
     0x00 [R_KEEP_DUST] mstore
     [LP_OUT] mload [LP_ZFO] mload CURRENCY_OUT() [LP_OWNER] mload F_MINT()
     paid jump

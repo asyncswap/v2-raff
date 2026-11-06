@@ -8,7 +8,10 @@
     buy_maker:
     [MA_INC_IN] mstore [MA_INC_MIN] mstore [MA_REST_IN] mstore [MA_REST_MIN] mstore
     sized:
+    // A zero denominator must still take mulDiv's revert path, including seeded invalid orders.
+    [MA_REST_MIN] mload iszero quotient jumpi
     [MA_REST_MIN] mload [MA_INC_IN] mload lt iszero full_fill jumpi
+    quotient:
     [MA_REST_MIN] mload [MA_REST_IN] mload [MA_INC_IN] mload MUL_DIV()
     amount_ready jump
     full_fill:

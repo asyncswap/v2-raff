@@ -23,6 +23,19 @@ library CurrentHuffDeploy {
     function hookTo(bytes memory args, address target) internal {
         bytes memory code =
             HuffNeoDeployer.config().with_args(args).creation_code_with_args("src/current/AsyncSwap.huff");
+        installConstructor(code, target);
+    }
+
+    /// Test-only equivalent of overriding validateHookAddress in a Solidity constructor harness.
+    function constructorTo(bytes memory args, address target) internal {
+        bytes memory code = HuffNeoDeployer.config()
+            .with_constant("SKIP_HOOK_ADDRESS_CHECK", "0x01")
+            .with_args(args)
+            .creation_code_with_args("src/current/AsyncSwap.huff");
+        installConstructor(code, target);
+    }
+
+    function installConstructor(bytes memory code, address target) private {
         // Match forge-std's deployCodeTo: run the constructor at the final hook permission address.
         vm.etch(target, code);
         (bool ok, bytes memory runtime) = target.call("");

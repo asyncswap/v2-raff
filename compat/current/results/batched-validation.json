@@ -6142,5 +6142,5 @@
       ]
     }
   },
-  "coverage": "373 executed current public-API tests include three pinned fork tests; ten upstream finding tests excluded. 136 reference-only files are not Huff coverage. Extended/parity campaigns overlap other suites."
+  "coverage": "Historical run: 373 grouped Forge entries, corresponding to 383 tests/predicates. The ten-entry difference is invariant grouping, not excluded finding tests. 136 reference-only files were not Huff coverage. Extended/parity campaigns overlap other suites."
 }

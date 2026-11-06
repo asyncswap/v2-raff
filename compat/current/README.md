@@ -1,70 +1,60 @@
 # PR #81 acceptance tests for the Huff port
 
-The target is `asyncswap/contracts` commit **3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89** (PR #81), including incoming-memory matching, priority-fee top-ups and current LP routing.
+The target is Solidity commit **3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89**, including incoming-memory matching, fee top-ups and LP routing. Actual Huff bytecode now passes **762 upstream tests and invariant predicates**, up from 383. Assertions, expected values and fuzz assumptions remain unchanged.
 
-## What was copied
+| Coverage | Count |
+| --- | ---: |
+| Pinned upstream tests, including one finding | 1,088 |
+| Passing Huff tests and invariant predicates | **762** |
+| Forge result entries (invariants grouped) | 752 |
+| Runnable upstream tests still unported | **325** |
+| Upstream finding excluded from normal runs | 1 |
+| Verbatim source/test files retained | 221 |
+| Generated Huff test/support adapters | 132 |
+| Reference-only test/support files | 65 |
 
-`reference/contracts/` contains 221 verbatim, commit-pinned source and test files, including all 197 Solidity test/support files. `manifest.json` records their SHA-256 hashes. Files come from `git show` at the pinned commit, not an uncommitted working tree.
+The [per-test inventory](results/coverage.json) lists every upstream test by file, contract and name. This is partial coverage, not complete behavioral equivalence. Remaining work includes Solidity internal-library harnesses, raw storage/write-footprint checks, inherited constructor/domain helpers, and specialized book/fuzz harnesses. Copying those files or running their Solidity implementations would not establish Huff coverage.
 
-`compat/current/test/` contains 61 generated adapters: 55 test files and six shared fixtures/utilities, discovering **383 tests across 75 contracts**. The adapters preserve the original assertions and expected values. Changes are limited to imports, fixture artifact paths, formatting, and replacing protocol deployments with `CurrentHuffDeploy`. That helper compiles `.huff` sources; imported Solidity contracts supply ABI types and reference helpers, not replacement protocol deployments.
+**Counting correction:** older reports described the difference between 373 Forge entries and 383 discovered tests as ten excluded findings. It was ten additional invariant predicates grouped into four suite results. All passed. The pinned upstream source has one excluded finding, in an unported ShortString specification test.
 
-The 136 Solidity-specific files remain available verbatim in the reference snapshot. They are excluded from the Huff acceptance profile with per-file reasons in the manifest: internal-library harnesses, direct storage-layout manipulation, Solidity subclasses/constructor overrides, and specialized invariant harnesses need explicit Huff adapters. Their presence does not count as Huff coverage. The independent matching reference uses Solidity TickPrice only for the documented tick/queue-age rule, as in the upstream suite.
+## What the expansion found
 
-## Run
+The additional 379 tests exposed and now cover these fixes:
 
-Requires the repository dependencies, huff-neo `hnc`, and Foundry (validation uses v1.8.6).
+- Match reductions and claim credits follow Solidity order: bids, both net proceeds, both trade fees, then refunds; per-order fee events follow settlement.
+- Tick keys decide unequal price levels; equal keys use full-width ratio arithmetic. Zero maker minimums preserve the expected division failure.
+- Freed radix nodes retain their word until reuse, matching the free-list behavior; corrupt bitmap paths reject empty occupied children.
+- Uninitialized pool admission and empty pending orders reject invalid calls. LP partial-fill errors precede invalid-output errors.
+- FeeVault and NativeClaims decode dynamic callback arguments and malformed address words with Solidity-compatible authorization/revert ordering.
+
+Shared authorization, order-ID hashing and bitmap scans reduce runtime duplication. The hook is **24,073 bytes**, 385 bytes smaller than the previous 24,458-byte port and 503 bytes below EIP-170. The Router remains **10,623 bytes**, including immutables. Initcode checks also pass.
+
+## Fixtures and unchanged assertions
+
+`reference/contracts/` is copied verbatim using `git show` at the pinned commit. `manifest.json` records source, adapter and assertion hashes. The generator rejects changes to `assert*`, `expectRevert`, `expectEmit`, `expectCall` and `assume` expressions.
+
+Protocol deployments compile `.huff` sources through `CurrentHuffDeploy`. Explicit fixture adapters translate order/bitmap/radix storage locations, read actual immutable bytes, and inspect actual transient reentrancy storage. They do not substitute expected results for observations. Math, radix and price-key harnesses execute the production Huff routines. Constructor fixtures bypass only hook-address mining, as their upstream subclasses did. The nonce replay fixture includes the previously accepted trusted-Router grant fix from contracts commit `c8d12dd`.
+
+Solidity imports remain for ABI types, mocks and independent reference calculations. Such helpers are not counted as Huff implementations. Generated files must be changed through `script/current_adapters.py` or the sync script, never by weakening a failing test.
+
+## Validation
+
+| Campaign | Passing tests/predicates | Configuration |
+| --- | ---: | --- |
+| Current acceptance | 762 | 256 cases per fuzz test; invariants 64 × 64; three Unichain fork tests at block 61709000 |
+| Extended matching/reference/formal | 85 | 2,048 cases per fuzz test; saved counterexample seed |
+| Legacy and differential | 208 | 195 grouped entries; includes three pinned fork tests |
+| Size and signature-memory checks | 3 | Runtime/immutable tails, initcode, long ERC-1271 signature |
+
+Campaigns overlap and must not be added together. Validation uses Forge 1.8.6, hnc 1.6.2 and solc 0.8.26. [Expanded results and source hashes](results/expanded-validation.json) record the campaigns. Earlier records preserve previous port stages. CI checks generated copies, runs acceptance/legacy tests, repeats the extended campaign and enforces size/memory checks.
 
 ```sh
-# List and run copied public-API tests against actual Huff deployments.
-FOUNDRY_PROFILE=current forge test --list
-FOUNDRY_PROFILE=current forge test --no-match-contract UnichainForkTest
-
-# Matching reference, incoming funding/callback behavior, and fee top-ups.
-FOUNDRY_PROFILE=current forge test --match-contract '.*(Reference|Funding|Transitions|TopUp).*' --fuzz-runs 2048
-
-# Read-only pinned fork; no public transaction is broadcast.
+python3 script/sync-current-tests.py /path/to/pinned/contracts --check
 FOUNDRY_PROFILE=current UNICHAIN_FORK_RPC_URL=https://mainnet.unichain.org \
-  forge test --match-contract UnichainForkTest
-
-# New standalone claims port, compared with the real pinned Solidity implementation.
-FOUNDRY_OPTIMIZER_RUNS=10000 forge test --match-contract TokenClaimsParityTest --fuzz-runs 2048
-```
-
-The original `forge test` profile remains the legacy Huff suite. Passing it does not establish PR #81 compatibility. `profile.current` deploys the hook and Router from `src/current/`, has independent build/cache directories and uses the current 64 × 64 invariant configuration. The reference snapshot is outside both test roots, preventing accidental Solidity-only passes from inflating Huff results.
-
-## Reproduce the copy and detect drift
-
-```sh
-python3 script/sync-current-tests.py /path/to/contracts
-python3 script/sync-current-tests.py /path/to/contracts --check
-```
-
-Use `--forge /path/to/forge-v1.8.6` to select the pinned formatter. The check compares every original source and generated adapter byte and rejects unexpected files. Modify the adapter script rather than editing generated tests to accommodate a port failure.
-
-## Validation results
-
-The current handwritten Huff hook/Router pass **373 tests, zero failures**, including three Unichain fork tests at block 61709000. Fuzz tests use 256 cases and invariants run 64 × 64. The profile discovers 383 tests; ten upstream `_finding_` tests are excluded by the inherited profile rule. This is coverage of the adapted public API, not all Solidity internal harnesses or a proof of complete equivalence.
-
-An extended matching/reference/funding campaign passes **23 tests**, with 2,048 cases per fuzz test. It overlaps the full suite. The separate legacy/kernel/claims/tick suite passes **192 tests**, excluding legacy fork tests, at 64 × 64 invariant depth. TickPrice parity also passed 2,048 cases per fuzz test. The latest campaigns and source hashes are in [batched-validation.json](results/batched-validation.json); other records in `results/` preserve the earlier port validation.
-
-The hook implements exact-price selection, maker age, global matching, funded fee top-ups, transient staging and memory admission, LP/dynamic fee routing, claims, MEV tax, and signed endpoints. Technique comments explain bitmap lookup, full-width ratio comparison, subtree repair, integer square root, matching rounding and candidate storage redirection.
-
-Deployed runtimes including immutable tails are **24,458 bytes** (hook) and **10,623 bytes** (Router). `checks/PortSize.t.sol` enforces EIP-170 and the 49,152-byte initcode limit; the hook has 118 bytes of headroom. Run the separate check with:
-
-```sh
+  UNICHAIN_FORK_BLOCK=61709000 forge test
 FOUNDRY_PROFILE=current FOUNDRY_TEST=compat/current/checks forge test
 ```
 
-The three separate port checks pass. The long ERC-1271 signature regression covers overlap with the incoming-candidate scratch area; removing the flag reset makes it fail with `ZeroAmount()`. See `results/port-checks.json`.
+To regenerate the inventory, save `forge test --no-match-test '^$' --list --json` from each repository and the current profile's `forge test --json` result. Pass them to `script/report-current-coverage.py --source-list … --huff-list … --results …`. It requires a passing execution result for every adapted test, including each grouped invariant predicate.
 
-The batch helper adds five differential tests against pinned Solidity `ClaimTransfers`, including 2,048 fuzz cases. Repeated credits, 34-key capacity, zero credits, first-credit ordering, self-transfers, accumulation overflow and flush rollback all pass. These tests are additional coverage; the copied adapters remain unchanged.
-
-The [Router receipt benchmark](../../benchmarks/crossing/README.md) records both savings and regressions against the pinned Solidity implementation. This port has not been independently audited or deployed publicly.
-
-## Historical baseline and scope
-
-The initial smoke run passed 13 MatchingEngine tests and failed 73 suite setups with `InvalidNumeraire()`, before constructor adaptation. That baseline remains in `results/initial-compatibility.json`. A subsequent 59-pass/311-failure smoke run exposed missing current-protocol behavior; the final full campaign replaces that intermediate result in `results/current-compatibility.json`.
-
-The standalone `src/TokenClaims.huff` also passed eight differential tests against pinned `TokenClaims.sol`, including three fuzz tests with 2,048 cases each. These cover PoolManager balances/allowances, ERC-20 and native payout, events, failed-transfer rollback, reentrancy and malformed ABI input. Only emitting-contract and PoolManager transfer-operator addresses are normalized. See `results/token-claims-parity.json`.
-
-The 136 reference-only files still require explicit Huff-specific adapters before they count as coverage. No copied assertion or expected value was weakened to fix a port failure.
+See the [Router receipt benchmark](../../benchmarks/crossing/README.md) and [optimizer sweep](../../benchmarks/optimizer-runs/README.md). This port has not been independently audited or deployed publicly.

@@ -30,3 +30,4 @@ dependencies/uniswap-v4-core-4/
 node_modules/
 
 __pycache__/
+/benchmarks/optimizer-runs/results/*/benchmark.log

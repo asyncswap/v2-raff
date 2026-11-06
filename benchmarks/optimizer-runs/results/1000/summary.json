@@ -1,0 +1,579 @@
+{
+  "blockGasLimit": 30000000,
+  "chainId": 31337,
+  "hardfork": "cancun",
+  "compiler": "solc 0.8.26",
+  "optimizerRuns": 1000,
+  "forge": "forge Version: 1.9.0\nCommit SHA: 6056c5845d34205a83cf7108042adb137325c9df\nBuild Timestamp: 2026-11-02T20:16:54.701302000Z (1793650614)\nBuild Profile: dist",
+  "anvil": "anvil Version: 1.9.0\nCommit SHA: 6056c5845d34205a83cf7108042adb137325c9df\nBuild Timestamp: 2026-11-02T20:16:54.701302000Z (1793650614)\nBuild Profile: dist",
+  "sourceCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "sourceSha256": {
+    "src/AsyncSwap.sol": "2464f21c378835d92920ea0a460ec3f54a7649e8343fd8ad5e98c616f9e8fa9e",
+    "src/BaseHook.sol": "e910e8e809f50335b1bd0da2109e417ae87213b517c0d1d8720e3bf0a1259ab9",
+    "src/FeeVault.sol": "7f8ccecc58e131b4b0712ec0721ae7042400ed7073af4017cfad08f2aa9e4bda",
+    "src/ImmutableState.sol": "81780a696bbff93efda8c21052c04b2b98cc97fb0af5ca7c23d30a37adcbfb8e",
+    "src/MatchingEngine.sol": "e6e63450d77a1af80c075eb34d113604734e35d75985b94ab177d58f6d603ddd",
+    "src/NativeClaims.sol": "b02920e5ddb1d06c862a16cf1b4f740e37d23d14159f960e7a5196833e976d7d",
+    "src/Router.sol": "40f9ace55e00be6e9b79082466ee075e56435ffeef79db1676b0bec624cc8730",
+    "src/TokenClaims.sol": "7d087a18c541658df2ebfa2af9469dbc00c1e70b8c7d9c82e58a090a8b2a59fa",
+    "src/interfaces/ISignatureTransfer.sol": "fdd4edd4221ad8df5968da0d0f8aed1127e9bfe56bcb1c8cb77ea7e66875f54b",
+    "src/libraries/AsyncFiller.sol": "9015299b187cf70ece0840490aba0c9bef9109ebef72630b9864b33c31e1cf0a",
+    "src/libraries/AsyncMatching.sol": "28189f8b222b9d2202b3935a5a35a7d9b130e7d5433feed365958e2bf4626257",
+    "src/libraries/ClaimTransfers.sol": "7e6ed08d2c629a25890dfa1f9b86a41b62d142d3d0272864c374b356ef862bdc",
+    "src/libraries/CurrencySettler.sol": "35fa91cd314c39fa825192ab2ceae2561ce14ff6b57a9be09fe4b1c3d652340d",
+    "src/libraries/DynamicFeeOrdering.sol": "14ef4bbb9831bb4ee02f9e18af58a2f712b137380d477c8c01c81ec8286edaa7",
+    "src/libraries/EligiblePrice.sol": "30b2a388afefc5a68d24afec6d2262c7f4aa7ffd570faf13460971d0dc3cd5ca",
+    "src/libraries/IncomingMatching.sol": "3a3e9f52210b4b19cde4ca90a98acb55767f75b6a493fe0c0f55ca527c9fcda2",
+    "src/libraries/OrderSignatures.sol": "61c1e4ddbe0243123b1ef29636fc88d80dda9e8a941704c4e4bb8d5f2fdd0a2d",
+    "src/libraries/PriorityFeeUpdates.sol": "5d421e14f8dc28b40eab5c71172ff887808650531a9f5030dbc49b6a23b37987",
+    "src/libraries/RadixPriceTree.sol": "b2a672b6629caf28aa30df3a727b9026ddf3271ca422623a284f459db525dc53",
+    "src/libraries/TickBitmap.sol": "81e69010c0177a50b2496488727e98febd58884461716301fd28142549e8fe29",
+    "src/libraries/TickPrice.sol": "b4ec58fa775a17534379abf2480938531997069fa4da397ece40c1e8d2f7d220",
+    "src/types/AsyncOrder.sol": "1e18d34e727f7acb42131b56e65d4d56ff58c80d814fb60da37aad45493fe2bd"
+  },
+  "gasLimitPolicy": "120% of the first transaction estimate, rounded up to 1000; fixed per workload. Block admission also requires remaining gas to cover this limit.",
+  "scope": "Isolated local Anvil, controlled 18/6-decimal ERC20 fixtures, no LP liquidity, no live fork or public network writes. Setup excluded; receipts include intrinsic gas and refunds. Packing is measured for the stated gas-limit policy, not a universal maximum or wall-clock TPS.",
+  "measurements": [
+    {
+      "workload": "buy_eight_distinct",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 8,
+      "matchedPairs": 800,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 800,
+      "initialGasEstimate": 1472045,
+      "transactionGasLimit": 1767000,
+      "totalReceiptGas": 108565280,
+      "minReceiptGas": 1079847,
+      "maxReceiptGas": 1117200,
+      "meanReceiptGas": 1085652.8,
+      "fits100InOneBlock": false,
+      "blockCount": 4,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0xf01d1b520531f839982962c3740299132d2aaf077d58f34f7937549b9898b271",
+          "transactions": 26,
+          "gasUsed": 28249782,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0xdd8b20e6c987bebdb6c8d9ffa552ba02da7431eef15e6a5412939c241d805dce",
+          "transactions": 27,
+          "gasUsed": 29312077,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 3,
+          "hash": "0xdd0be474580d1de55db4f15a50e0f6b9fb4ca662844717161dfd672284d3f0be",
+          "transactions": 27,
+          "gasUsed": 29293847,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 4,
+          "hash": "0x36649f656bcd24474d251756f783ee066b12cbdb355562f0048c52a1c6971c07",
+          "transactions": 20,
+          "gasUsed": 21709574,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "86e5eb4ac0809f3ba047b89b586d86179d46c3d45b2007cc22b38983947a9327"
+    },
+    {
+      "workload": "buy_eight_levels",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 8,
+      "matchedPairs": 800,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 800,
+      "initialGasEstimate": 1748593,
+      "transactionGasLimit": 2099000,
+      "totalReceiptGas": 130916520,
+      "minReceiptGas": 1297941,
+      "maxReceiptGas": 1343264,
+      "meanReceiptGas": 1309165.2,
+      "fits100InOneBlock": false,
+      "blockCount": 5,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0xfb3cb3a41be491e9860bfc170a957fdea5ab52e06aa2101bf4db3c86c241adc3",
+          "transactions": 22,
+          "gasUsed": 28838921,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0x1f1bdb820c37f88b54b31c4fc0ca28efce83d7483c207ede9cff2f3baab3d809",
+          "transactions": 22,
+          "gasUsed": 28780851,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 3,
+          "hash": "0xb93e2126e751b620112c5fafb9130ae310bd8a41cc6e5cfb24180c551dd74514",
+          "transactions": 22,
+          "gasUsed": 28807383,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 4,
+          "hash": "0x153946b766d15c6d9e5c1e0a8e267dc66ac657eba770766cdcec08b3859ff7bd",
+          "transactions": 22,
+          "gasUsed": 28783642,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 5,
+          "hash": "0x957001c3f32eb94eeb010bcae0829d3c50e67806f8b8623108827937104b5c75",
+          "transactions": 12,
+          "gasUsed": 15705723,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "3265ea2b182a2caee958d478e410775dc6ccd3dc8adb05b2af06722a141dff05"
+    },
+    {
+      "workload": "buy_eight_same",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 8,
+      "matchedPairs": 800,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 800,
+      "initialGasEstimate": 1618243,
+      "transactionGasLimit": 1942000,
+      "totalReceiptGas": 116290938,
+      "minReceiptGas": 1076567,
+      "maxReceiptGas": 1259272,
+      "meanReceiptGas": 1162909.38,
+      "fits100InOneBlock": false,
+      "blockCount": 5,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x13f59f1505a75027208ec98f0f4a207f25810f16f1a00217a98f701b300c20ea",
+          "transactions": 24,
+          "gasUsed": 28370191,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0xa6bfdde915748e0bd137895d1f76453e18debb8b1c2a29497e44db2c5774632c",
+          "transactions": 25,
+          "gasUsed": 29125185,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 3,
+          "hash": "0xb6447f5139aff7552a6cb7cc8e51459078fe039280f9577d70e166e0261c5572",
+          "transactions": 25,
+          "gasUsed": 28982430,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 4,
+          "hash": "0x37bbcc554523a2489d5c824918728e34ee87a5076d32afc8c1732b5dfd23a488",
+          "transactions": 25,
+          "gasUsed": 28736565,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 5,
+          "hash": "0xd10a02f1ee09f8883aa7ebb5949f1aaf00e08edbf4105f40b903408cd63fd1e4",
+          "transactions": 1,
+          "gasUsed": 1076567,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "c648459ee25f480c63ccdff548a65b98718e4861a2de0d0cc7595f51af0b2f2a"
+    },
+    {
+      "workload": "buy_one_distinct",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 1,
+      "matchedPairs": 100,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 100,
+      "initialGasEstimate": 479857,
+      "transactionGasLimit": 576000,
+      "totalReceiptGas": 38660810,
+      "minReceiptGas": 352152,
+      "maxReceiptGas": 420784,
+      "meanReceiptGas": 386608.1,
+      "fits100InOneBlock": false,
+      "blockCount": 2,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x550a4497fa512b61c75d3162ecdabd6c342e7adf622d00022a9e41473da7bf80",
+          "transactions": 77,
+          "gasUsed": 29803159,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0x8f8f05b999cfbe40578308bbd9e6396c47a357562dcd7dccd4827258ebccc21e",
+          "transactions": 23,
+          "gasUsed": 8857651,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "3e324aba292c91465c7b9d024fad4188618f4643a93f01185384968ed16c0ef3"
+    },
+    {
+      "workload": "buy_one_same",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 1,
+      "matchedPairs": 100,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 100,
+      "initialGasEstimate": 543426,
+      "transactionGasLimit": 653000,
+      "totalReceiptGas": 40101943,
+      "minReceiptGas": 318824,
+      "maxReceiptGas": 485272,
+      "meanReceiptGas": 401019.43,
+      "fits100InOneBlock": false,
+      "blockCount": 2,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x0e8ff4b5a61d09278912b022651388d4bf8515bbe53986e012d3379e84d9b018",
+          "transactions": 73,
+          "gasUsed": 29568964,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0xb5c7ed7c2471bd58413e9db0ef9d07debb4a0c184f284ebed218b16c61780591",
+          "transactions": 27,
+          "gasUsed": 10532979,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "859c95cfd5e38bd9a2448837c8ab491ceafa55de2f53e8e82b72248ecc7b9e9c"
+    },
+    {
+      "workload": "sell_eight_distinct",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 8,
+      "matchedPairs": 800,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 800,
+      "initialGasEstimate": 1516997,
+      "transactionGasLimit": 1821000,
+      "totalReceiptGas": 111242323,
+      "minReceiptGas": 1106580,
+      "maxReceiptGas": 1147716,
+      "meanReceiptGas": 1112423.23,
+      "fits100InOneBlock": false,
+      "blockCount": 4,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x8f96e5c5a357531ba8ec7a9fff8e26a726d15493b8394c89ad2e4b98fe5fb385",
+          "transactions": 26,
+          "gasUsed": 28944324,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0x019f54ffb4867863855c30f50e0c9a7a74aa8cfa6328a88ebe52998962120585",
+          "transactions": 26,
+          "gasUsed": 28903618,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 3,
+          "hash": "0xb16275584531b8d2a45f884261e05a96a733976b02d936ee9b2f0693d8c2630e",
+          "transactions": 26,
+          "gasUsed": 28921538,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 4,
+          "hash": "0x350e1760468c28c7a38c80236e0b9f3e4b44df13893cfc949e194071cfb38971",
+          "transactions": 22,
+          "gasUsed": 24472843,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "eec097a01c73bfbf70c46b620fb09192e7ac2d17c7560820ef8790a64024f5d5"
+    },
+    {
+      "workload": "sell_eight_levels",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 8,
+      "matchedPairs": 800,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 800,
+      "initialGasEstimate": 1799910,
+      "transactionGasLimit": 2160000,
+      "totalReceiptGas": 132177686,
+      "minReceiptGas": 1315113,
+      "maxReceiptGas": 1373213,
+      "meanReceiptGas": 1321776.86,
+      "fits100InOneBlock": false,
+      "blockCount": 5,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x98f86dac5313ae0f648c72977c8daf1a0b375f974e09c8a90fe9688099d677b2",
+          "transactions": 22,
+          "gasUsed": 29114279,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0xa7b6a4d28757050107c2f82f04a145d8b5977e4bf45fe27e44e4116168d906a8",
+          "transactions": 22,
+          "gasUsed": 29074135,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 3,
+          "hash": "0x462a720c7f56b53c32530ff17ced3a8647855e8cee96781b5293ea2f2f85df4b",
+          "transactions": 22,
+          "gasUsed": 29072977,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 4,
+          "hash": "0xffb3bb66f170d273296de46d4f7e60f2d1714ebe4d97b2bc74f414b03a663be9",
+          "transactions": 22,
+          "gasUsed": 29045773,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 5,
+          "hash": "0x715b267122395690dd462b0a94850dfe6d6ad1904c532b3a9a938ba22c2d5fa1",
+          "transactions": 12,
+          "gasUsed": 15870522,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "cd5d7f39f2f23be3a124f4c76df8b2a875d93a3a54722d86fcfbf569221f7cee"
+    },
+    {
+      "workload": "sell_eight_same",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 8,
+      "matchedPairs": 800,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 800,
+      "initialGasEstimate": 1669643,
+      "transactionGasLimit": 2004000,
+      "totalReceiptGas": 117655788,
+      "minReceiptGas": 1103300,
+      "maxReceiptGas": 1289296,
+      "meanReceiptGas": 1176557.88,
+      "fits100InOneBlock": false,
+      "blockCount": 5,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x3b36d8a2c0244ae11c72c8baba9a8641bffbf875d693fb2075358e24d73fc3f6",
+          "transactions": 24,
+          "gasUsed": 28701801,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0x63bc7f0d2844497959c29c626eba700ecf8a1fe498d79342b3d8a54a459a7f1e",
+          "transactions": 24,
+          "gasUsed": 28265809,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 3,
+          "hash": "0x5e42d83144f17aa0bb9891207223fd97224fa3a75b049c0169e83c3ec498de18",
+          "transactions": 24,
+          "gasUsed": 28136472,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 4,
+          "hash": "0xbb7345fd44391efbfbfc9b4bd72c50dc94449a707d66ef7f4bf734674c92fe56",
+          "transactions": 24,
+          "gasUsed": 27997352,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 5,
+          "hash": "0xb33f0e6530ae6b3e254ae7d5f3beeba2d2c34e27b29818aa5a47c250b6f32b57",
+          "transactions": 4,
+          "gasUsed": 4554354,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "0c12abaa660586e3fddd94782110d61bc961c101011441e670a64e04ecb3e164"
+    },
+    {
+      "workload": "sell_one_distinct",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 1,
+      "matchedPairs": 100,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 100,
+      "initialGasEstimate": 529325,
+      "transactionGasLimit": 636000,
+      "totalReceiptGas": 39874191,
+      "minReceiptGas": 368816,
+      "maxReceiptGas": 448968,
+      "meanReceiptGas": 398741.91,
+      "fits100InOneBlock": false,
+      "blockCount": 2,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0xb8748e2152a8df5f6dc5b3ec44bcff0504ee91e42b31c79f2ac819da9ad236cc",
+          "transactions": 74,
+          "gasUsed": 29541416,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0x4a71e39e2a349b5fd08eb195eafd608371338f0764f2ce70afbde61e49dcc92b",
+          "transactions": 26,
+          "gasUsed": 10332775,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "362fece23ac0199491821a57a87d69a67abef1d808f2d861e4ff165d5a8ef8b8"
+    },
+    {
+      "workload": "sell_one_same",
+      "incomingTransactions": 100,
+      "matchesPerTransaction": 1,
+      "matchedPairs": 100,
+      "distinctIncomingOwners": 100,
+      "restingOrders": 100,
+      "initialGasEstimate": 593592,
+      "transactionGasLimit": 713000,
+      "totalReceiptGas": 41305481,
+      "minReceiptGas": 335481,
+      "maxReceiptGas": 514137,
+      "meanReceiptGas": 413054.81,
+      "fits100InOneBlock": false,
+      "blockCount": 2,
+      "blocks": [
+        {
+          "number": 1,
+          "hash": "0x0cd4b883aadf932247217bb4bb4923dbe949f1b5d817933a66e579c00afea213",
+          "transactions": 71,
+          "gasUsed": 29606283,
+          "gasLimit": 30000000
+        },
+        {
+          "number": 2,
+          "hash": "0xf4583cab589b9f41a7d4fe6efd206dfb701ee69ec67a049bea58232106d58dde",
+          "transactions": 29,
+          "gasUsed": 11699198,
+          "gasLimit": 30000000
+        }
+      ],
+      "assertions": {
+        "priceAndFifo": true,
+        "exactMatchAmounts": true,
+        "allOrdersClosed": true,
+        "makerAndTakerNetClaims": true,
+        "exactProtocolFeesAndBids": true,
+        "zeroHookEscrow": true,
+        "emptyBook": true
+      },
+      "fixtureSha256": "f72667ab32b35cd19fd1160d05bc0b984b77d6a93fd2f9c74a276e3053135689"
+    }
+  ],
+  "verifiedRuntimeBytes": {
+    "AsyncSwap": 21464,
+    "Router": 21989,
+    "AsyncMatching": 21073,
+    "IncomingMatching": 19264,
+    "TickPrice": 4468,
+    "TickBitmap": 696
+  },
+  "benchmarkRunnerSha256": "d8b8d95777094f0252b50dd72ba136b2f80ae1ea7d1c52e33c758fc208ed5e28"
+}

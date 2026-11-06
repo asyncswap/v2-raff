@@ -83,6 +83,16 @@ jobs:
           UNICHAIN_FORK_BLOCK: "61709000"
         run: forge test -vvv
 
+      - name: Run extended matching and formal parity tests
+        env:
+          FOUNDRY_PROFILE: current
+        run: >-
+          forge test
+          --match-contract '.*(Reference|Funding|Transitions|TopUp|MatchAmountsFormal|MatchPairFormal|ReduceAfterMatchFormal|ReduceMatchedOrdersFormal|SettleMatchedPriorityFeeFormal|FreeNodeFormal|RemoveFormal|BestOrderFormal).*'
+          --fuzz-runs 2048
+          --fuzz-seed 0x3fc1525e14690ecb57279377f4de44dc8ff0715e96573f69331aaab403047456
+          -vvv
+
       - name: Check current sizes and signature memory isolation
         env:
           FOUNDRY_PROFILE: current

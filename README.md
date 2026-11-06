@@ -1,8 +1,8 @@
 # Async Swap in Huff
 
-The current port in `src/current/` targets [Solidity PR #81](https://github.com/asyncswap/contracts/pull/81), including incoming-memory matching, fee top-ups and LP routing. Its [copied acceptance suite](compat/current/README.md) passes **373 tests** with unchanged assertions, including three pinned fork tests. The 23-test extended reference campaign also passes; 136 Solidity-specific files remain reference-only and ten upstream finding tests are excluded by the profile.
+The current port in `src/current/` targets [Solidity PR #81](https://github.com/asyncswap/contracts/pull/81), including incoming-memory matching, fee top-ups and LP routing. Its [copied acceptance suite](compat/current/README.md) passes **762 upstream tests and invariant predicates**, with unchanged assertions. The extended 85-test campaign passes at 2,048 fuzz cases. **325 runnable upstream tests remain unported**; the [per-test inventory](compat/current/results/coverage.json) records the boundary.
 
-The [current Router benchmark](benchmarks/crossing/README.md) compares 1,000 transactions and 5,200 matched pairs per implementation. Batched Huff saves **8.9–25.7%** for single fills and **15.6–16.7%** for eight-level sweeps versus Solidity, but uses **12.2–13.8% more gas** on the other eight-fill workloads. Batching lowers eight-fill gas by **7.1–8.6%** versus the previous Huff port. Deployed hook/Router sizes are **24,458 / 10,623 bytes**, including immutables.
+The [Router benchmark](benchmarks/crossing/README.md) measures 1,000 transactions and 5,200 pairs. Huff uses **7.3–24.5% less gas** on single fills and **17.2–18.3% less** on eight-level sweeps, but **11.1–13.0% more** on other eight-fill workloads. Hook/Router runtimes are **24,073 / 10,623 bytes**. The [optimizer sweep](benchmarks/optimizer-runs/README.md) supports retaining 10,000 runs for Solidity among the six tested settings.
 
 ```sh
 FOUNDRY_PROFILE=current forge test

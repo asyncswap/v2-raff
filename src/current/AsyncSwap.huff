@@ -279,13 +279,15 @@
 // ##:::: ##:. #######:: ########::'####: ##:::::::'####: ########: ##:::. ##:
 //..:::::..:::.......:::........:::....::..::::::::....::........::..:::::..::
 //
-#define macro ONLY_POOL_MANAGER() = takes (0) returns (0) {
+// Shared guard: one revert body reduces runtime size across entry points.
+#define fn ONLY_POOL_MANAGER() = takes (0) returns (0) {
     MANAGER() caller eq ok jumpi
     __FUNC_SIG("NotPoolManager()") 0xe0 shl REVERT_0()
     ok:
 }
 
-#define macro ONLY_OWNER() = takes (0) returns (0) {
+// Shared guard: one revert body reduces runtime size across entry points.
+#define fn ONLY_OWNER() = takes (0) returns (0) {
     [OWNER_SLOT] sload caller eq ok jumpi
     __FUNC_SIG("NotOwner()") 0xe0 shl REVERT_0()
     ok:
@@ -334,7 +336,8 @@
 
 /// @dev `AsyncOrderLibrary.orderId(order)` for the AsyncOrder at calldata 0x04 (key already loaded):
 ///      keccak(abi.encode(chainid, poolId, owner, zeroForOne, salt)).
-#define macro CALLDATA_ORDER_ID() = takes (0) returns (1) {
+// Share the validated ABI hash across entry points; the matching loop never calls this helper.
+#define fn CALLDATA_ORDER_ID() = takes (0) returns (1) {
     chainid [CALL_0] mstore
     [E_PID] mload 0xc20 mstore
     LOAD_ADDRESS(0xa4) 0xc40 mstore
@@ -390,14 +393,11 @@
     // ceil(amount / 5000), without addition overflow.
     0x1388 dup2 mod iszero iszero swap1 0x1388 swap1 div add
 }
-#define fn TRANSFER_MATCHED() = takes (4) returns (0) {
-    // [id, currency, recipient, gross]
-    [E_ID] mstore
+#define fn CREDIT_NET() = takes (3) returns (1) {
+    // [currency, recipient, gross] -> [fee]. Credit both nets before either vault fee.
     dup3 TRADE_FEE() [E_W] mstore
     [E_W] mload dup4 sub dup3 dup3 TRANSFER_CLAIMS()
-    [E_W] mload FEE_VAULT() dup3 TRANSFER_CLAIMS()
-    [E_W] mload dup2 [E_ID] mload EMIT_FEE()
-    pop pop pop
+    pop pop pop [E_W] mload
 }
 
 /// @dev `_verify`: reject past `deadline`, burn the nonce (emitting `NonceInvalidated`), then check the
@@ -536,6 +536,10 @@
     [E_Y] mload [E_X] mload [E_P] mload EXECUTOR_SLOT() sload granted jumpi
     __FUNC_SIG("NotAuthorizedExecutor()") 0xe0 shl REVERT_0()
     granted:
+    // Uninitialized pool state cannot admit an order, even through a raw manager callback.
+    [E_P] mload 0x07 add sload initialized jumpi
+    0x00 0x00 revert
+    initialized:
     [E_W] mload iszero zero jumpi
     [E_V] mload no_zero jumpi
     zero:
@@ -597,12 +601,19 @@
 // Matching
 /// @notice `_crosses(buyKey, sellKey, buy, sell)`: strictly ordered keys decide; equal keys are decided by
 ///         the full-precision cross-multiply `floor(buyIn·sellIn / sellOut) ≥ buyOut`.
-#define fn CROSSES() = takes (4) returns (1) {
-    pop pop
+#define fn CROSSES() = takes (2) returns (1) {
     ORDER_AT() swap1 ORDER_AT() // sell,buy
+    // Tick keys decide unequal levels. Only equal levels need the full-width ratio comparison.
+    // This also preserves Solidity's directional rounding at a tick boundary.
+    dup1 0x01 add O_LOAD() O_PRICE()
+    dup3 0x01 add O_LOAD() O_PRICE() // buyKey,sellKey,sell,buy
+    dup2 dup2 eq exact jumpi
+    gt swap2 pop pop done jump
+    exact: pop pop
     dup1 0x02 add O_LOAD() swap1 0x03 add O_LOAD() // sellMin,sellIn,buy
     dup3 0x03 add O_LOAD() dup4 0x02 add O_LOAD() // buyIn,buyMin,sellMin,sellIn,buy
     swap2 swap1 swap3 swap1 RATIO_LE() swap1 pop
+    done:
 }
 
 /// @notice `matchIncoming`: match M_INC against the best opposite orders while they cross, at most 8 times.
@@ -616,7 +627,7 @@
     [M_MAX] mload [M_COUNT] mload lt iszero done jumpi
     0x01 BEST_UNION() dup1 [M_BUY] mstore iszero done jumpi
     0x00 BEST_UNION() dup1 [M_SELL] mstore iszero done jumpi
-    [M_SELL] mload [M_BUY] mload 0x00 0x00 CROSSES() iszero done jumpi
+    [M_SELL] mload [M_BUY] mload CROSSES() iszero done jumpi
     [M_SELL] mload [M_BUY] mload MATCH_PAIR() iszero done jumpi
     [M_COUNT] mload 0x01 add [M_COUNT] mstore loop jump
     done: FLUSH_CLAIMS() [M_COUNT] mload
@@ -660,10 +671,6 @@
     dup1 O_OWNER() [M_BUY_OWNER] mstore
     O_ZFO() CURRENCY_IN() [M_BUY_IN] mstore
 
-    // _settleTransfers: asset to the buyer, quote to the seller
-    [M_ASSET] mload [M_BUY_OWNER] mload [M_SELL_IN] mload [M_BUY] mload TRANSFER_MATCHED()
-    [M_QUOTE] mload [M_SELL_OWNER] mload [M_BUY_IN] mload [M_SELL] mload TRANSFER_MATCHED()
-
     // _reduceMatchedOrders: sell side, then buy side
     [M_SELL] mload [R_ID] mstore
     [M_ASSET] mload [R_USED] mstore
@@ -675,6 +682,17 @@
     [M_ASSET] mload [R_RECV] mstore
     [M_BUY_IN] mload [R_CUR] mstore
     REDUCE_AFTER_MATCH()
+
+    // Preserve Solidity first-credit order: bids, both net proceeds, both trade fees, then refunds.
+    // Refunds stay on the stack across both reductions, so no callback sees a premature dust payout.
+    [M_ASSET] mload [M_BUY_OWNER] mload [M_SELL_IN] mload CREDIT_NET()
+    [M_QUOTE] mload [M_SELL_OWNER] mload [M_BUY_IN] mload CREDIT_NET()
+    swap1 FEE_VAULT() [M_SELL_IN] mload TRANSFER_CLAIMS()
+    FEE_VAULT() [M_BUY_IN] mload TRANSFER_CLAIMS()
+    swap1 [M_SELL_OWNER] mload [M_SELL_IN] mload TRANSFER_CLAIMS()
+    [M_BUY_OWNER] mload [M_BUY_IN] mload TRANSFER_CLAIMS()
+    [M_ASSET] mload TRADE_FEE() [M_SELL_IN] mload [M_BUY] mload EMIT_FEE()
+    [M_QUOTE] mload TRADE_FEE() [M_BUY_IN] mload [M_SELL] mload EMIT_FEE()
 
     [M_ASSET] mload [MEM_LOG] mstore
     [M_QUOTE] mload 0xb20 mstore
@@ -691,9 +709,9 @@
 }
 
 /// @notice `_reduceAfterMatch(R_ID, R_USED, R_RECV, R_CUR)`: settle the pro-rata bid, then close (settling the
-///         rest of the bid and refunding unused input) or keep the order open, re-queuing it when its price key
+///         rest of the bid and returning unused input to the caller) or keep the order open, re-queuing it when its price key
 ///         changed (with a fresh sequence) or, in PriorityFee mode, when its bid changed.
-#define fn REDUCE_AFTER_MATCH() = takes (0) returns (0) {
+#define fn REDUCE_AFTER_MATCH() = takes (0) returns (1) {
     [R_ID] mload ORDER_AT() dup1 [R_O] mstore   // [O]
     dup1 O_LOAD()                                  // [w0, O]
     dup1 O_OWNER() [R_OWNER] mstore
@@ -750,8 +768,17 @@
     BOOK_REMOVE()
     DELETE_ORDER()
     [R_UNFILLED] mload [R_OWNER] mload [R_ID] mload SETTLE_PRIORITY_FEE()
-    [R_REMIN] mload iszero done jumpi
-    [R_REMIN] mload [R_OWNER] mload [R_CUR] mload TRANSFER_CLAIMS()
+    [R_REMIN] mload returned jump
+    done: 0x00
+    returned:
+}
+
+#define fn REDUCE_AND_REFUND() = takes (0) returns (0) {
+    // LP and final-dust callers have no second reduction to defer the refund past.
+    REDUCE_AFTER_MATCH()
+    dup1 iszero empty jumpi
+    [R_OWNER] mload [R_CUR] mload TRANSFER_CLAIMS() done jump
+    empty: pop
     done:
 }
 
@@ -776,6 +803,9 @@
     bad:
     __FUNC_SIG("NotAuthorizedExecutor()") 0xe0 shl REVERT_0()
     owned:
+    [M_INC] mload ORDER_AT() 0x02 add O_LOAD() live_incoming jumpi
+    __FUNC_SIG("OrderNotFound()") 0xe0 shl REVERT_0()
+    live_incoming:
     POOL_BEATS_BOOK() [E_Z] mstore [E_U] mstore
     0x00 [M_COUNT] mstore
     [E_Z] mload iszero book_first jumpi
@@ -786,7 +816,7 @@
     [M_INC] mload ORDER_AT() 0x02 add O_LOAD() iszero done jumpi
     [M_INC] mload [R_ID] mstore 0x00 [R_USED] mstore
     [M_INC] mload ORDER_AT() O_LOAD() O_ZFO() CURRENCY_IN() [R_CUR] mstore
-    REDUCE_AFTER_MATCH()
+    REDUCE_AND_REFUND()
     done jump
     book_first:
     MATCH_INCOMING() pop
@@ -1456,7 +1486,8 @@
     not_implemented:          NOT_IMPLEMENTED()
 }
 
-#define macro ONLY_ROUTER() = takes (0) returns (0) {
+// Shared guard: one revert body reduces runtime size across entry points.
+#define fn ONLY_ROUTER() = takes (0) returns (0) {
     TRUSTED_ROUTER() caller eq ok jumpi
     __FUNC_SIG("NotTrustedRouter()") 0xe0 shl REVERT_0()
     ok:

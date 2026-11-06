@@ -37,12 +37,15 @@
     [BM_T] mload dup1 sload 0x01 [BM_GROUP] mload shl not and swap1 sstore
     done:
 }
-#define macro BITMAP_BIT() = takes (2) returns (1) {
-    // [bits, highest]
+#define fn BITMAP_BIT() = takes (2) returns (1) {
+    // [bits, highest]. A nonempty parent must point to a nonempty child.
+    dup1 iszero corrupt jumpi
     swap1 high jumpi
     // x & -x isolates the least-significant set bit, then the same MSB scan locates it.
     dup1 0x00 sub and
-    high: MSB_256()
+    high: MSB_256() done jump
+    corrupt: 0x00 0x00 revert
+    done:
 }
 #define fn BITMAP_BEST() = takes (2) returns (2) {
     // [tree, highest]

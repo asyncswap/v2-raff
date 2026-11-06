@@ -1,0 +1,124 @@
+{
+  "solidityCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "previousHuffCommit": "6ca66bccf41750798a8f2f2239a467c4d165a212",
+  "sourceSha256": {
+    "src/AsyncSwap.huff": "a48240fc475dcca3711a9cfd1b0608e2c906d4a3a31cf8ee5b8259abf0519ce0",
+    "src/FeeVault.huff": "bad2513c3a1e17d7848bdfab00c9f795520ec0e83d143c4df32ea467ffb144fd",
+    "src/MatchingEngine.huff": "68a0ef00744044c9b0c29ad556d70027fc10bdfc67cb0f9dc8e7b5630d6d6226",
+    "src/NativeClaims.huff": "700758c8776587416e53c60c2b7e2db67cae5afc3c9620b83e06b87762b7ebba",
+    "src/Router.huff": "413f0fae19fdbc71f56ceeae4a516ae9461affb58942225af473e89c1599ff07",
+    "src/TokenClaims.huff": "631eb023a8f0abe253393927967ac9fe14f838739d88da3795270d319912c17e",
+    "src/current/AsyncSwap.huff": "92369910253521b3bad80e3449ca5bff8d0c17652749cb9898622f0e59d832cc",
+    "src/current/Router.huff": "dd66ad3ae7ef51b7316eecce5ca9bab3f281e59e01a7aa36e1b47f4476a89a9f",
+    "src/current/lib/Book.huff": "d2be459aaf469b80e3f06b34deead8213cd342706f42a8bf64e00a24f762b5d9",
+    "src/current/lib/ClaimTransfers.huff": "cc80e7042ae92a83814a0d394109b501b7e7e474db2edde6b3ec5c40ab6064b2",
+    "src/current/lib/ExactPrice.huff": "c31ed5aaa7f1ae9568e43413f6811bc9c9d911365a1f91acacfc87e73766551f",
+    "src/current/lib/Incoming.huff": "b36bd5611d70cb1d783f518fa0ac6c0c4190f5702599a9f910d8813be45ad96e",
+    "src/current/lib/Liquidity.huff": "a6b98f00eaa180a3d8650715fad2c27a196190511b08956a2850b5d96827c9dc",
+    "src/current/lib/MatchAmounts.huff": "73d400375b23418a335ed2bd47e497cb11e31491c3cab7ac6a58c74d98f40ae0",
+    "src/current/lib/TickBitmap.huff": "54fa53f2101be97ae7a91814a6cc1d7b11b21eeda176abfc2a40a4f9a215e884",
+    "src/current/lib/TickPrice.huff": "9e839310a4e9163524de48765804f0888cdb4943330f9c1ef7aa945ab472f967",
+    "src/experimental/ClaimTransfers.huff": "98dda3042cfbee0af939a57e72b86bd0045456232ba720d894e53d6be14e07e9",
+    "src/experimental/CurrentTick.huff": "204d37c07ed83195b9fba4c18f6397afa7a474ca7896b0965e3cf2cc3cfd75b4",
+    "src/experimental/IncomingMath.huff": "337ced5fa94fdb82e59bae5716678eacf26a77df61d87f2b28b64ed591029c0a",
+    "src/generated/FeeVaultCreation.huff": "c0ed7c6b93e6255cbba7d99aca7a10c9370b40343473d45a8a0c4266ff9c0153",
+    "src/lib/Book.huff": "b8ea53a4f7964ba8d411f8be2e534ffbd89658758f5bf5a11c394a898ac518cb",
+    "src/lib/Common.huff": "cfec0001a2432a12073d6ab6bcab86ceeef72e613e3cb378b404944a95e0b055",
+    "src/lib/Math.huff": "566b121336ceacae87f8d03cc7545e1790a9a6cd5ba2d68ac626a493fb4cf93e",
+    "src/lib/PoolManager.huff": "27308d1f125dcf83cbd60bee74d35484033fd26a3969ce23fd631a95cec9f8ad",
+    "src/lib/RadixPriceTree.huff": "2aaefdc5f8b5dbbcba03321ab12eff6f00bfba7ca251ce03122f81208312ee37",
+    "src/lib/Signatures.huff": "ba927e84c0012dde49037a7675238d99c8fa169294070f4396c16b26e2246278"
+  },
+  "rows": [
+    {
+      "workload": "buy_eight_distinct",
+      "solidityMeanGas": 1081974.16,
+      "previousHuffMeanGas": 1217904.01,
+      "expandedHuffMeanGas": 1206920.01,
+      "changeVsPreviousPct": -0.9018773162591032,
+      "changeVsSolidityPct": 11.54795138545639,
+      "firstBlockTransactions": 24
+    },
+    {
+      "workload": "buy_eight_levels",
+      "solidityMeanGas": 1304861.28,
+      "previousHuffMeanGas": 1087035.59,
+      "expandedHuffMeanGas": 1066022.75,
+      "changeVsPreviousPct": -1.9330406652095067,
+      "changeVsSolidityPct": -18.30374873258558,
+      "firstBlockTransactions": 27
+    },
+    {
+      "workload": "buy_eight_same",
+      "solidityMeanGas": 1157832.02,
+      "previousHuffMeanGas": 1307787.76,
+      "expandedHuffMeanGas": 1308184.91,
+      "changeVsPreviousPct": 0.030368077462350485,
+      "changeVsSolidityPct": 12.985725684110893,
+      "firstBlockTransactions": 22
+    },
+    {
+      "workload": "buy_one_distinct",
+      "solidityMeanGas": 385321.06,
+      "previousHuffMeanGas": 286378.9,
+      "expandedHuffMeanGas": 290870.1,
+      "changeVsPreviousPct": 1.5682719641705312,
+      "changeVsSolidityPct": -24.51227555535117,
+      "firstBlockTransactions": 100
+    },
+    {
+      "workload": "buy_one_same",
+      "solidityMeanGas": 399597.78,
+      "previousHuffMeanGas": 349720.82,
+      "expandedHuffMeanGas": 356074.73,
+      "changeVsPreviousPct": 1.8168520821837175,
+      "changeVsSolidityPct": -10.891714663680075,
+      "firstBlockTransactions": 83
+    },
+    {
+      "workload": "sell_eight_distinct",
+      "solidityMeanGas": 1108755.62,
+      "previousHuffMeanGas": 1243664.34,
+      "expandedHuffMeanGas": 1232182.05,
+      "changeVsPreviousPct": -0.9232627832683526,
+      "changeVsSolidityPct": 11.131977847381735,
+      "firstBlockTransactions": 23
+    },
+    {
+      "workload": "sell_eight_levels",
+      "solidityMeanGas": 1317668.1,
+      "previousHuffMeanGas": 1112470.69,
+      "expandedHuffMeanGas": 1090959.56,
+      "changeVsPreviousPct": -1.93363566279664,
+      "changeVsSolidityPct": -17.20528409240537,
+      "firstBlockTransactions": 26
+    },
+    {
+      "workload": "sell_eight_same",
+      "solidityMeanGas": 1171613.91,
+      "previousHuffMeanGas": 1333332.22,
+      "expandedHuffMeanGas": 1320065.69,
+      "changeVsPreviousPct": -0.9949905808171344,
+      "changeVsSolidityPct": 12.670708219911809,
+      "firstBlockTransactions": 21
+    },
+    {
+      "workload": "sell_one_distinct",
+      "solidityMeanGas": 397455.17,
+      "previousHuffMeanGas": 311383.34,
+      "expandedHuffMeanGas": 316056.96,
+      "changeVsPreviousPct": 1.5009216613836696,
+      "changeVsSolidityPct": -20.479846821466673,
+      "firstBlockTransactions": 94
+    },
+    {
+      "workload": "sell_one_same",
+      "solidityMeanGas": 411633.16,
+      "previousHuffMeanGas": 375185.96,
+      "expandedHuffMeanGas": 381720.78,
+      "changeVsPreviousPct": 1.741754942002638,
+      "changeVsSolidityPct": -7.266756643220862,
+      "firstBlockTransactions": 77
+    }
+  ]
+}
