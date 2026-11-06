@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: MIT
+// ABI adapters expose the production Router call/return checks and hook revert encoder.
+#include "../../src/lib/Common.huff"
+#include "../../src/lib/Math.huff"
+#include "../../src/current/lib/ShortStrings.huff"
+#include "../../src/lib/PoolManager.huff"
+#include "../../src/current/lib/ExternalCalls.huff"
+#include "../../src/current/lib/WrappedRevert.huff"
+#define macro MANAGER() = takes (0) returns (1) { 0x00 }
+#define macro BYTES_AT(offset) = takes (0) returns (2) {
+    <offset> calldataload 0x04 add dup1 calldataload swap1 0x20 add
+}
+#define macro REVERT_INPUT() = takes (2) returns (0) {
+    // [pointer,length]
+    dup2 iszero empty jumpi
+    dup2 swap1 0x00 calldatacopy 0x00 revert
+    empty: FAILED_INNER_CALL()
+}
+#define macro RETURN_INPUT() = takes (2) returns (0) {
+    dup2 0x20 mstore dup2 swap1 0x40 calldatacopy
+    0x20 0x00 mstore 0x1f add 0x1f not and 0x40 add 0x00 return
+}
+#define macro MAIN() = takes (0) returns (0) {
+    calldatasize iszero received jumpi
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("revert_(bytes)") eq revert_input jumpi
+    dup1 __FUNC_SIG("revertVia(bytes)") eq revert_input jumpi
+    dup1 __FUNC_SIG("verifyCallResultFromTarget(address,bool,bytes)") eq verify jumpi
+    dup1 __FUNC_SIG("verify(address,bool,bytes)") eq verify jumpi
+    dup1 __FUNC_SIG("functionCall(address,bytes)") eq call_zero jumpi
+    dup1 __FUNC_SIG("functionCallWithValue(address,bytes,uint256)") eq call_value jumpi
+    dup1 __FUNC_SIG("safeTransferFrom(address,address,address,uint256)") eq transfer_from jumpi
+    dup1 __FUNC_SIG("safeTransfer(address,address,uint256)") eq transfer jumpi
+    dup1 __FUNC_SIG("bubble(address,bytes,address,bytes4,bytes4)") eq bubble jumpi
+    dup1 __FUNC_SIG("bubble(address,bytes,bytes4,bytes4)") eq bubble_self jumpi
+    dup1 __FUNC_SIG("byteLength(bytes32)") eq byte_length jumpi
+    dup1 __FUNC_SIG("unsignedRoundsUp(uint8)") eq round_up jumpi
+    dup1 __FUNC_SIG("mulDiv(uint256,uint256,uint256,uint8)") eq mul_div jumpi
+    0x00 0x00 revert
+    byte_length: 0x04 calldataload SHORT_STRING_LENGTH() RETURN_1()
+    round_up: 0x04 calldataload 0x01 and RETURN_1()
+    mul_div:
+        0x44 calldataload 0x24 calldataload 0x04 calldataload
+        0x64 calldataload 0x01 and ceil jumpi
+        MUL_DIV() RETURN_1()
+        ceil: MUL_DIV_UP() RETURN_1()
+    received: RETURN_EMPTY()
+    revert_input: BYTES_AT(0x04) REVERT_INPUT()
+    verify:
+        BYTES_AT(0x44) 0x24 calldataload verified jumpi REVERT_INPUT()
+        verified: dup2 0x04 calldataload CHECK_CALL_TARGET() RETURN_INPUT()
+    call_zero: 0x00 call_common jump
+    call_value: 0x44 calldataload
+    call_common:
+        BYTES_AT(0x24) dup2 dup2 [CALL_0] calldatacopy pop
+        [CALL_0] swap1 swap2 0x04 calldataload CALL_WITH_VALUE()
+        dup1 0x00 0x40 returndatacopy dup1 0x20 mstore
+        0x20 0x00 mstore 0x1f add 0x1f not and 0x40 add 0x00 return
+    transfer_from:
+        0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload
+        SAFE_TRANSFER_FROM() RETURN_EMPTY()
+    transfer: 0x44 calldataload 0x24 calldataload 0x04 calldataload SAFE_TRANSFER() RETURN_EMPTY()
+    bubble_self: 0x64 calldataload 0x44 calldataload 0x04 calldataload bubble_call jump
+    bubble: 0x84 calldataload 0x64 calldataload 0x44 calldataload
+    bubble_call:
+        BYTES_AT(0x24) dup2 dup2 [CALL_0] calldatacopy pop
+        0x00 0x00 swap2 [CALL_0] 0x00 0x04 calldataload gas call pop
+        WRAPPED_REVERT()
+}

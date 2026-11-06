@@ -16,6 +16,9 @@
 #include "../lib/Common.huff"
 #include "../lib/PoolManager.huff"
 #include "../lib/Signatures.huff"
+#include "lib/OrderHashes.huff"
+#define macro LOAD_HASH_ORDER_ID() = takes (0) returns (1) { [R_ID] mload }
+#define macro LOAD_HASH_CREATED_SEQUENCE() = takes (0) returns (1) { [CALL_0] mload }
 
 //.sSSSSs.    .sSSSSs.    .sSSSSs.    .sSSSSs.                     SsSSs.
 //SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs. SSSSSSSSSs.      .sSSS s.      SSSSs
@@ -74,10 +77,7 @@
 #define constant ASYNC_FILLER_LOCATION = 0xd972a937b59dc5cb8c692dd9f211e85afa8def4caee6e05b31db0f53e16d02e0
 #define constant MAX_PRICE_LOCATION = 0x6b4f8e2c9d5a0b7e1f3c2a8d4e9f0b6c5a1d8e7f2b3c4d5e6a7f8b9c0d1e2f30
 
-#define constant EIP712_NAME_HASH = 0x08476627fc511b8f0bf0674a96c4492f05a5c5df2795822dac01ecd5bdbd9167    // "AsyncSwap Router"
-#define constant EIP712_VERSION_HASH = 0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 // "1"
-#define constant ASYNC_ORDER_TYPEHASH = 0x1a36c9d2e20588fe9287a14a2ae5b1920f088d96a5ed77ae55ed1363810cba57
-#define constant CANCEL_ORDER_TYPEHASH = 0xf2267dd33ce29f1edd601ed39e43668f840d1fb8e8b56d46d2d291daf9e16a60
+#include "lib/RouterDomain.huff"
 
 #define constant ACTION_SWAP = 0x00
 #define constant ACTION_FILL_ORDER = 0x01
@@ -168,16 +168,6 @@
     decodable:
 }
 
-/// @dev `zeroForOne ? currency0 : currency1` for the order at calldata `base` (key at `base`).
-#define macro ORDER_INPUT(base) = takes (0) returns (1) {
-    <base> 0xc0 add calldataload 0x05 shl <base> 0x20 add sub calldataload
-}
-
-/// @dev `zeroForOne ? currency1 : currency0`.
-#define macro ORDER_OUTPUT(base) = takes (0) returns (1) {
-    <base> 0xc0 add calldataload 0x05 shl <base> add calldataload
-}
-
 /// @dev `_orderId(order)` for the order at calldata `base`: keccak(chainid, poolId, owner, zeroForOne, salt).
 #define macro ORDER_ID(base) = takes (0) returns (1) {
     0xa0 <base> [E_KEY] calldatacopy
@@ -212,35 +202,7 @@
     [CALL_0] mload [R_X] mload CHECKED_ADD()
 }
 
-/// @dev OpenZeppelin 5.0.2 `SafeERC20.safeTransferFrom(token, from, to, amount)`.
-#define fn SAFE_TRANSFER_FROM() = takes (4) returns (0) {
-    // [token, from, to, amount]
-    __FUNC_SIG("transferFrom(address,address,uint256)") CALL_SELECTOR()
-    swap1 [CALL_4] mstore
-    swap1 [CALL_24] mstore
-    swap1 [CALL_44] mstore                      // [token]
-    0x20 [CALL_0] 0x64 [CALL_0] 0x00 dup6 gas call
-    called jumpi
-    returndatasize bubble jumpi
-    __FUNC_SIG("FailedInnerCall()") 0xe0 shl REVERT_0()
-    bubble:
-    BUBBLE()
-    called:                                     // [token]
-    returndatasize has_data jumpi
-    dup1 extcodesize done jumpi
-    __FUNC_SIG("AddressEmptyCode(address)") 0xe0 shl REVERT_1()
-    has_data:
-    0x20 returndatasize lt bad jumpi
-    [CALL_0] mload dup1 0x01 lt bad jumpi
-    done_true jumpi
-    __FUNC_SIG("SafeERC20FailedOperation(address)") 0xe0 shl REVERT_1()
-    done_true:
-    done:
-    pop done_all jump
-    bad:
-    0x00 0x00 revert
-    done_all:
-}
+#include "lib/ExternalCalls.huff"
 
 /// @dev The SwapCallback head of the unlock payload: action, the order (calldata 0x04), maxMatches.
 #define macro WRITE_CALLBACK(action) = takes (1) returns (0) {
@@ -550,15 +512,7 @@
     // [input]
     0xa0 0x64 [E_KEY] calldatacopy
     HASH_POOL_KEY()                             // [poolHash, input]
-    [ASYNC_ORDER_TYPEHASH] [S_STRUCT] mstore
-    0x104 calldataload 0x10e0 mstore
-    dup2 0x1100 mstore
-    ORDER_OUTPUT(0x64) 0x1120 mstore
-    0x144 calldataload 0x1140 mstore
-    0x164 calldataload 0x1160 mstore
-    0x184 calldataload 0x1180 mstore
-    0x11a0 mstore
-    0x100 [S_STRUCT] sha3                       // [witness, input]
+    HASH_ORDER_WITNESS(0x64, 0x104, 0x144, 0x164, 0x184)                       // [witness, input]
 
     __FUNC_SIG("permitWitnessTransferFrom(((address,uint256),uint256,uint256),(address,uint256),address,bytes32,string,bytes)")
     0xe0 shl [MEM_PERMIT] mstore
@@ -591,21 +545,7 @@
 }
 
 /// @notice ERC-5267 `eip712Domain()`: (0x0f, "AsyncSwap Router", "1", chainid, this, 0, []).
-#define macro EIP712_DOMAIN() = takes (0) returns (0) {
-    0x0f 0xf8 shl 0x00 mstore
-    0xe0 0x20 mstore
-    0x120 0x40 mstore
-    chainid 0x60 mstore
-    address 0x80 mstore
-    0x00 0xa0 mstore
-    0x160 0xc0 mstore
-    0x10 0xe0 mstore
-    __RIGHTPAD(0x4173796e635377617020526f75746572) 0x100 mstore   // "AsyncSwap Router"
-    0x01 0x120 mstore
-    __RIGHTPAD(0x31) 0x140 mstore
-    0x00 0x160 mstore
-    0x180 0x00 return
-}
+#include "lib/Domain.huff"
 
 // Main
 //'########:'##::: ##:'########:'########::'##:::'##:

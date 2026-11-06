@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: MIT
+// Shared authorization and default callback behavior.
+#define macro CHECK_POOL_MANAGER() = takes (0) returns (0) {
+    MANAGER() caller eq ok jumpi
+    __FUNC_SIG("NotPoolManager()") 0xe0 shl REVERT_0()
+    ok:
+}
+
+#define macro NOT_IMPLEMENTED() = takes (0) returns (0) {
+    ONLY_POOL_MANAGER()
+    __FUNC_SIG("HookNotImplemented()") 0xe0 shl REVERT_0()
+}

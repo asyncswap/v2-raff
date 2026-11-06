@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: MIT
+// Generic ShortStrings API fixture. The packed decoder is shared with production domains.
+#include "../../src/lib/Common.huff"
+#include "../../src/current/lib/ShortStrings.huff"
+
+// Input string is the only dynamic argument: length at 0x24, bytes at 0x44.
+#define macro STORE_STRING() = takes (0) returns (0) {
+    // Clear an old long value before overwriting it, including when the new value is short.
+    0x00 sload dup1 0x01 and old_long jumpi pop store_new jump
+    old_long:
+    0x01 shr 0x1f add 0x05 shr 0x500 mstore
+    0x00 0x00 mstore 0x20 0x00 sha3 0x520 mstore
+    0x00
+    clear_loop:
+    0x500 mload dup2 lt iszero clear_done jumpi
+    0x00 dup2 0x520 mload add sstore 0x01 add clear_loop jump
+    clear_done: pop
+    store_new:
+    0x24 calldataload dup1 0x540 mstore 0x20 gt short_value jumpi
+    0x540 mload 0x01 shl 0x01 or 0x00 sstore
+    0x00 0x00 mstore 0x20 0x00 sha3 0x520 mstore
+    0x00
+    write_loop:
+    0x540 mload dup2 lt iszero write_done jumpi
+    dup1 0x44 add calldataload dup2 0x05 shr 0x520 mload add sstore
+    0x20 add write_loop jump
+    write_done: pop end jump
+    short_value:
+    0x540 mload 0x08 mul 0x0100 sub
+    0x00 not swap1 shl 0x44 calldataload and
+    0x540 mload 0x01 shl or 0x00 sstore
+    end:
+}
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("byteLength(bytes32)") eq length jumpi
+    dup1 __FUNC_SIG("toString(bytes32)") eq decode jumpi
+    dup1 __FUNC_SIG("toStringWithFallback(bytes32)") eq fallback jumpi
+    dup1 __FUNC_SIG("setStore(string)") eq store jumpi
+    dup1 __FUNC_SIG("toShortString(string)") eq encode jumpi
+    dup1 __FUNC_SIG("toShortStringWithFallback(string)") eq encode_fallback jumpi
+    0x00 0x00 revert
+    length: 0x04 calldataload SHORT_STRING_LENGTH() RETURN_1()
+    decode: 0x04 calldataload RETURN_SHORT_STRING()
+    fallback:
+    0x04 calldataload 0xff eq stored jumpi
+    0x04 calldataload RETURN_SHORT_STRING()
+    stored: 0x00 RETURN_STORAGE_STRING()
+    store: STORE_STRING() stop
+    encode_fallback:
+    0x24 calldataload 0x20 gt encode jumpi
+    STORE_STRING() 0xff RETURN_1()
+    encode:
+    0x24 calldataload 0x1f lt too_long jumpi
+    0x24 calldataload 0x08 mul 0x0100 sub
+    0x00 not swap1 shl 0x44 calldataload and 0x24 calldataload or RETURN_1()
+    too_long:
+    __FUNC_SIG("StringTooLong(string)") 0xe0 shl 0x00 mstore
+    0x04 calldatasize sub 0x04 0x04 calldatacopy calldatasize 0x00 revert
+}

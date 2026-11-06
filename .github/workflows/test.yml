@@ -88,9 +88,18 @@ jobs:
           FOUNDRY_PROFILE: current
         run: >-
           forge test
-          --match-contract '.*(Reference|Funding|Transitions|TopUp|MatchAmountsFormal|MatchPairFormal|ReduceAfterMatchFormal|ReduceMatchedOrdersFormal|SettleMatchedPriorityFeeFormal|FreeNodeFormal|RemoveFormal|BestOrderFormal|CrossesFormal|PriorityKeyFormal|SpecSigFormal|TickBitmap|TickPricePoolBeatsLevel).*'
+          --match-contract '.*(Reference|Funding|Transitions|TopUp|MatchAmountsFormal|MatchPairFormal|ReduceAfterMatchFormal|ReduceMatchedOrdersFormal|SettleMatchedPriorityFeeFormal|FreeNodeFormal|RemoveFormal|BestOrderFormal|CrossesFormal|PriorityKeyFormal|SpecSigFormal|TickBitmap|TickPricePoolBeatsLevel|AddOrderFormal|EligiblePriceTest|SpecEip712|AssumptionsFormal|SpecCoreFormal|BeforeInitializeFormal|AsyncOrderFormal|RevertFormal|BubbleUpAndRevertWithFormal|CallOptionalReturnFormal|FunctionCallFormal|FunctionCallWithValueFormal|SafeTransferFromFormal|VerifyCallResultFromTargetFormal|SettleOrderPriorityFeeFormal).*'
           --fuzz-runs 2048
           --fuzz-seed 0x3fc1525e14690ecb57279377f4de44dc8ff0715e96573f69331aaab403047456
+          -vvv
+
+      - name: Run extended external-call helper tests
+        env:
+          FOUNDRY_PROFILE: current
+        run: >-
+          forge test
+          --match-contract 'AsyncSwapSafeTransferFromFormalTest|AsyncSwapHelpersFormalTest|RouterHelpersFormalTest'
+          --fuzz-runs 2048
           -vvv
 
       - name: Check current sizes, signature memory and pool-price parity

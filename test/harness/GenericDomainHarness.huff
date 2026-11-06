@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: MIT
+// The fixture constructor seeds arbitrary domain strings; getters execute the Huff storage decoder.
+#include "../../src/lib/Common.huff"
+#include "../../src/current/lib/ShortStrings.huff"
+#define macro MAIN() = takes (0) returns (0) {
+    0x00 calldataload 0xe0 shr
+    dup1 __FUNC_SIG("eip712Name()") eq name jumpi
+    dup1 __FUNC_SIG("eip712Version()") eq version jumpi
+    0x00 0x00 revert
+    name: 0x00 RETURN_STORAGE_STRING()
+    version: 0x01 RETURN_STORAGE_STRING()
+}

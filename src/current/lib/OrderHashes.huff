@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: MIT
+// Shared production EIP-712 preimages; fixtures supply storage reads through the named accessors.
+#define constant ASYNC_ORDER_TYPEHASH = 0x1a36c9d2e20588fe9287a14a2ae5b1920f088d96a5ed77ae55ed1363810cba57
+#define constant CANCEL_ORDER_TYPEHASH = 0xf2267dd33ce29f1edd601ed39e43668f840d1fb8e8b56d46d2d291daf9e16a60
+#define constant UPDATE_PRICE_TYPEHASH = 0xbf3e15ce0c174628742ea625534b25016ffbece7eb098e021d1a4f66af1a7c30
+
+/// @dev `zeroForOne ? currency0 : currency1` for the order at calldata `base` (key at `base`).
+#define macro ORDER_INPUT(base) = takes (0) returns (1) {
+    <base> 0xc0 add calldataload 0x05 shl <base> 0x20 add sub calldataload
+}
+
+/// @dev `zeroForOne ? currency1 : currency0`.
+#define macro ORDER_OUTPUT(base) = takes (0) returns (1) {
+    <base> 0xc0 add calldataload 0x05 shl <base> add calldataload
+}
+
+#define macro HASH_CANCEL_ORDER(nonce, deadline) = takes (0) returns (1) {
+    [CANCEL_ORDER_TYPEHASH] [S_STRUCT] mstore
+    0xa4 calldataload 0x10e0 mstore
+    ORDER_INPUT(0x04) 0x1100 mstore
+    ORDER_OUTPUT(0x04) 0x1120 mstore
+    LOAD_HASH_ORDER_ID() 0x1140 mstore
+    LOAD_HASH_CREATED_SEQUENCE() 0x1160 mstore
+    <nonce> calldataload 0x1180 mstore
+    <deadline> calldataload 0x11a0 mstore
+    0x100 [S_STRUCT] sha3
+}
+
+#define macro HASH_ORDER_WITNESS(base, maker, amount, minimum, bid) = takes (2) returns (2) {
+    [ASYNC_ORDER_TYPEHASH] [S_STRUCT] mstore
+    <maker> calldataload 0x10e0 mstore
+    dup2 0x1100 mstore
+    ORDER_OUTPUT(<base>) 0x1120 mstore
+    <amount> calldataload 0x1140 mstore
+    <minimum> calldataload 0x1160 mstore
+    <bid> calldataload 0x1180 mstore
+    0x11a0 mstore
+    0x100 [S_STRUCT] sha3
+}
+
+#define macro HASH_UPDATE_ORDER(amount, minimum, nonce, deadline) = takes (0) returns (1) {
+    [UPDATE_PRICE_TYPEHASH] [S_STRUCT] mstore
+    LOAD_ADDRESS(0xa4) 0x10e0 mstore
+    HASH_UPDATE_TOKENS()
+    <amount> calldataload 0x1140 mstore
+    <minimum> calldataload 0x1160 mstore
+    LOAD_HASH_ORDER_ID() 0x1180 mstore
+    HASH_UPDATE_SEQUENCE_REPRICES()
+    <nonce> calldataload 0x11e0 mstore <deadline> calldataload 0x1200 mstore
+    0x160 [S_STRUCT] sha3
+}

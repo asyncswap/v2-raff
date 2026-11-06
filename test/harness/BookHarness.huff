@@ -19,7 +19,9 @@
     dup1 __FUNC_SIG("orderSlot(bytes32)") eq slot jumpi
     dup1 __FUNC_SIG("append(bytes32)") eq append jumpi
     dup1 __FUNC_SIG("crosses(bytes32,bytes32)") eq crosses jumpi
+    dup1 __FUNC_SIG("le(uint256,uint256,uint256,uint256)") eq ratio jumpi
     0x00 0x00 revert
+    ratio: 0x64 calldataload 0x44 calldataload 0x24 calldataload 0x04 calldataload RATIO_LE() RETURN_1()
     slot: 0x04 calldataload ORDER_AT() RETURN_1()
     seed:
         0x04 calldataload ORDER_AT() // O

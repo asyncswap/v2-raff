@@ -8,6 +8,7 @@ import re
 import subprocess
 from pathlib import Path
 from current_adapters import supported, adapt_formal
+from current_reference_only import REFERENCE_ONLY_FILES, REFERENCE_ONLY_TESTS
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89"
@@ -134,6 +135,8 @@ def main():
         "sourceFiles": {},
         "huffAdapters": {},
         "referenceOnly": {},
+        "referenceOnlyArchitecture": REFERENCE_ONLY_FILES,
+        "referenceOnlyTests": REFERENCE_ONLY_TESTS,
     }
     for path in paths:
         data = subprocess.check_output(["git", "show", f"{COMMIT}:{path}"], cwd=repo)

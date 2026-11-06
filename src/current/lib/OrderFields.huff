@@ -1,0 +1,15 @@
+// SPDX-License-Identifier: MIT
+// Record fields
+#define macro O_OWNER() = takes (1) returns (1) { [ADDRESS_MASK] and }
+#define macro O_BUY() = takes (1) returns (1) { 0xa0 shr 0xff and }
+#define macro O_ZFO() = takes (1) returns (1) { 0xa8 shr 0xff and }
+#define macro O_ESCROWED() = takes (1) returns (1) { 0xb0 shr 0xff and }
+#define macro O_FEE() = takes (1) returns (1) { 0xb8 shr [UINT64_MASK] and }
+#define macro O_PRICE() = takes (1) returns (1) { [UINT128_MASK] and }
+#define macro O_PK() = takes (1) returns (1) { 0x80 shr }
+
+/// @dev `paidPriorityFee(info)`: the escrowed bid, 0 when the bid was never paid.
+#define macro O_PAID_FEE() = takes (1) returns (1) {
+    // [w0]
+    dup1 O_FEE() swap1 O_ESCROWED() mul
+}

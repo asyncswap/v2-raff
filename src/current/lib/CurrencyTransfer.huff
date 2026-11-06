@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: MIT
+/// @dev v4 `Currency.transfer(currency, to, amount)`.
+#define macro TRANSFER_CURRENCY() = takes (3) returns (0) {
+    // [currency, to, amount]
+    dup1 erc20 jumpi
+    pop
+    0x00 0x00 0x00 0x00 dup6 dup6 gas call
+    sent jumpi
+    __FUNC_SIG("NativeTransferFailed()") 0xe0 shl 0x00 dup3 WRAPPED_REVERT()
+    sent:
+    pop pop
+    done jump
+    erc20:
+    __FUNC_SIG("transfer(address,uint256)") CALL_SELECTOR()
+    swap1 [CALL_4] mstore
+    swap1 [CALL_24] mstore
+    0x20 0x00 0x44 [CALL_0] 0x00 dup6 gas call
+    0x1f returndatasize gt 0x00 mload 0x01 eq and
+    returndatasize iszero or and
+    transferred jumpi
+    __FUNC_SIG("ERC20TransferFailed()") 0xe0 shl __FUNC_SIG("transfer(address,uint256)") 0xe0 shl dup3 WRAPPED_REVERT()
+    transferred:
+    pop
+    done:
+}

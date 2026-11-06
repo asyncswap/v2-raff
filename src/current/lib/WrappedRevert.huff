@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: MIT
+/// @dev v4 `CustomRevert.bubbleUpAndRevertWith(target, fnSelector, context)`.
+#define macro WRAPPED_REVERT() = takes (3) returns (0) {
+    // [target, fnSelector, contextSelector]   (selectors left-aligned)
+    __FUNC_SIG("WrappedError(address,bytes4,bytes,bytes)") 0xe0 shl [CALL_0] mstore
+    [CALL_4] mstore
+    [CALL_24] mstore
+    0x80 [CALL_44] mstore
+    returndatasize 0x1f add 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 and   // [enc, ctx]
+    dup1 0xa0 add [CALL_64] mstore
+    returndatasize [CALL_84] mstore
+    returndatasize 0x00 [CALL_A4] returndatacopy
+    0x04 dup2 [CALL_A4] add mstore
+    swap1 dup2 [CALL_C4] add mstore
+    0xe4 add [CALL_0] revert
+}
