@@ -591,6 +591,22 @@ def adapt_formal(path, text):
             "bytes32(_orderSlot(poolId, id) + 2), bytes32(amountIn)",
         )
         changes += ["Seed the input amount at Huff order slot +2."]
+        payout = "        vm.expectCall(address(manager), abi.encodeCall(IPoolManager.take, (output, alice, out)));"
+        text = text.replace(
+            payout,
+            payout + """
+        // The mocked take must expose the same before/after balances as a real full payout.
+        bytes[] memory balances = new bytes[](2);
+        balances[0] = abi.encode(out);
+        balances[1] = abi.encode(uint256(0));
+        vm.mockCalls(Currency.unwrap(output), abi.encodeWithSignature("balanceOf(address)", address(manager)), balances);
+        balances[0] = abi.encode(uint256(0));
+        balances[1] = abi.encode(out);
+        vm.mockCalls(Currency.unwrap(output), abi.encodeWithSignature("balanceOf(address)", alice), balances);""",
+        )
+        changes += [
+            "Model the mocked PoolManager payout with sequential balanceOf responses; assertions unchanged."
+        ]
     if name == "AsyncSwapUpdatePrice.t.sol":
         text = text.replace(
             "uint256 st = _stateSlot(poolId);",

@@ -806,13 +806,22 @@
 }
 
 /// @dev `this.fillOrderFromPoolLiquidity(order, id)` (order at calldata 0x04) → success.
-#define macro SELF_FILL_FROM_POOL() = takes (2) returns (1) {
+// Share the guarded venue call instead of expanding its error handling at each caller.
+#define fn SELF_FILL_FROM_POOL() = takes (2) returns (1) {
     // [id]
     __FUNC_SIG("fillOrderFromPoolLiquidity(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),bytes32,uint160)")
     CALL_SELECTOR()
     0x180 0x04 [CALL_4] calldatacopy
     0xd84 mstore 0xda4 mstore
     0x00 0x00 0x1c4 [CALL_0] 0x00 address gas call
+    // Ordinary liquidity misses rest; balance-check failures must reach the user.
+    dup1 checked jumpi
+    0x04 returndatasize lt checked jumpi
+    0x04 0x00 0x00 returndatacopy
+    0x00 mload 0xe0 shr __FUNC_SIG("TokenNotSupported(address)") eq iszero checked jumpi
+    BUBBLE()
+    checked:
+
 }
 
 /// @notice `tryFillOrderFromPoolLiquidity(order)`: an executor of the maker retries the order against the pool.
@@ -1121,16 +1130,7 @@
     dup1 token jumpi
     selfbalance measured jump
     token:
-    __FUNC_SIG("balanceOf(address)") CALL_SELECTOR()
-    address [CALL_4] mstore
-    0x20 [CALL_0] 0x24 [CALL_0] dup5 gas staticcall
-    ok jumpi
-    BUBBLE()
-    ok:
-    0x20 returndatasize lt iszero word jumpi
-    0x00 0x00 revert
-    word:
-    [CALL_0] mload
+    address dup2 TOKEN_BALANCE()
     measured:                                   // [amount, currency, to]
     dup1 dup4 dup4 TRANSFER_CURRENCY()
     [MEM_LOG] mstore

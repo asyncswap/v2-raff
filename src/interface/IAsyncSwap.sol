@@ -46,6 +46,7 @@ interface IAsyncSwap is IHooks {
         PoolId indexed poolId, bytes32 indexed orderId, address indexed maker, uint256 amountIn, uint256 amountOut
     );
 
+    error TokenNotSupported(address token);
     error NotPoolManager();
     error HookNotImplemented();
     error ExactInputOnly();

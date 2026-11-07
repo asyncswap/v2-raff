@@ -192,8 +192,9 @@
     memory_order:
 }
 
-/// @dev `delete self.orders[id]` for the order at B_O.
-#define macro DELETE_ORDER() = takes (0) returns (0) {
+/// @dev Share the seven-word cleanup across fill/cancel paths to leave room for balance checks.
+///      `delete self.orders[id]` for the order at B_O.
+#define fn DELETE_ORDER() = takes (0) returns (0) {
     0x00 [B_O] mload O_STORE()
     0x00 [B_O] mload 0x01 add O_STORE()
     0x00 [B_O] mload 0x02 add O_STORE()

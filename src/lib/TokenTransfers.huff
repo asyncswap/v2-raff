@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: MIT
+// Balance snapshots stay on the stack, so external callbacks and dynamic Permit2 calldata cannot overwrite them.
+#define fn TOKEN_BALANCE() = takes (2) returns (1) {
+    // [token, owner] -> balance
+    __FUNC_SIG("balanceOf(address)") CALL_SELECTOR()
+    swap1 [CALL_4] mstore
+    0x20 [CALL_0] 0x24 [CALL_0] dup5 gas staticcall
+    ok jumpi BUBBLE()
+    ok:
+    pop
+    0x20 returndatasize lt bad jumpi
+    [CALL_0] mload done jump
+    bad: 0x00 0x00 revert
+    done:
+}
+#define macro SNAPSHOT_TRANSFER() = takes (4) returns (6) {
+    // [token, from, to, amount] -> [beforeTo, beforeFrom, token, from, to, amount]
+    dup2 dup2 TOKEN_BALANCE()
+    dup4 dup3 TOKEN_BALANCE()
+}
+#define fn VERIFY_TRANSFER() = takes (6) returns (0) {
+    // [beforeTo, beforeFrom, token, from, to, amount]
+    dup4 dup6 eq self_transfer jumpi
+    dup4 dup4 TOKEN_BALANCE() // [afterFrom, beforeTo, beforeFrom, token, from, to, amount]
+    dup3 dup2 gt from_increased jumpi
+    dup3 sub dup7 lt bad_six jumpi
+    to_check jump
+    from_increased: pop
+    to_check:
+    dup5 dup4 TOKEN_BALANCE() // [afterTo, beforeTo, beforeFrom, token, from, to, amount]
+    dup2 dup2 lt bad_seven jumpi
+    // Recipient may receive unrelated callback funding as well; reject only a shortfall.
+    dup2 swap1 sub dup7 gt bad_six jumpi
+    cleanup jump
+    self_transfer:
+    dup4 dup4 TOKEN_BALANCE()
+    dup3 eq iszero bad_six jumpi
+    cleanup:
+    pop pop pop pop pop pop done jump
+    bad_seven: pop
+    bad_six:
+    dup3 __FUNC_SIG("TokenNotSupported(address)") 0xe0 shl REVERT_1()
+    done:
+}
+
+// Incoming custody credit is checked by PoolManager settlement; only excess sender debit is new policy.
+#define macro SNAPSHOT_DEBIT() = takes (4) returns (5) {
+    // [token, from, to, amount] -> [beforeFrom, token, from, to, amount]
+    dup2 dup2 TOKEN_BALANCE()
+}
+#define fn VERIFY_DEBIT() = takes (5) returns (0) {
+    dup3 dup3 TOKEN_BALANCE() // [afterFrom, beforeFrom, token, from, to, amount]
+    dup2 dup2 gt increased jumpi
+    dup2 sub dup6 lt bad jumpi
+    cleanup jump
+    increased: pop
+    cleanup: pop pop pop pop pop done jump
+    bad: dup2 __FUNC_SIG("TokenNotSupported(address)") 0xe0 shl REVERT_1()
+    done:
+}
