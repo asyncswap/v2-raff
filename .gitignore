@@ -6,6 +6,8 @@ out/
 cache/
 out-current/
 cache-current/
+out-differential/
+cache-differential/
 
 # Local environment and deployment secrets
 .env

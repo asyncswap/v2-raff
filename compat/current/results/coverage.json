@@ -1,10 +1,10 @@
 {
-  "solidityCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
-  "sourceTestsIncludingFindings": 1088,
+  "solidityCommit": "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7",
+  "sourceTestsIncludingFindings": 1089,
   "upstreamFindingTests": 1,
-  "passedHuffTestsAndPredicates": 1016,
-  "forgeResultEntries": 1006,
-  "runnableSourceTestsExcludingFindings": 1075,
+  "passedHuffTestsAndPredicates": 1017,
+  "forgeResultEntries": 1007,
+  "runnableSourceTestsExcludingFindings": 1076,
   "abstractTestTemplates": 12,
   "referenceOnlyArchitectureTests": 59,
   "unportedBehavioralTests": 0,
@@ -4354,6 +4354,13 @@
       "file": "test/formal/AsyncSwapSetExecutorWithSig.t.sol",
       "contract": "AsyncSwapSetExecutorWithSigFormalTest",
       "test": "testFuzz_setExecutorWithSig_ok_state",
+      "status": "passed-huff",
+      "reason": null
+    },
+    {
+      "file": "test/formal/AsyncSwapSetExecutorWithSig.t.sol",
+      "contract": "AsyncSwapSetExecutorWithSigFormalTest",
+      "test": "test_setExecutorWithSig_nonce_used_trustedRouter",
       "status": "passed-huff",
       "reason": null
     },

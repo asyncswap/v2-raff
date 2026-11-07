@@ -11,7 +11,7 @@ from current_adapters import supported, adapt_formal
 from current_reference_only import REFERENCE_ONLY_FILES, REFERENCE_ONLY_TESTS
 
 ROOT = Path(__file__).resolve().parents[1]
-COMMIT = "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89"
+COMMIT = "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7"
 SNAPSHOT = ROOT / "reference/contracts"
 ADAPTED = ROOT / "compat/current/test"
 EXCLUDED = {

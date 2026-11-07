@@ -567,15 +567,6 @@ def adapt_formal(path, text):
         changes += [
             "Seed the Huff priority-key mapping relative to the normalized level-count slot."
         ]
-    if name == "AsyncSwapSetExecutorWithSig.t.sol":
-        # Same fixture fix already accepted in contracts c8d12dd; the replay assertion is untouched.
-        assert "_submit(e, !allow, nonce, deadline);" in text
-        text = text.replace(
-            "_submit(e, !allow, nonce, deadline);", "_submit(e, true, nonce, deadline);"
-        )
-        changes += [
-            "Consume nonce using a valid grant, including the trusted Router (contracts c8d12dd fixture fix)."
-        ]
     if name == "NativeClaimsRedeem.t.sol":
         text = text.replace(
             "import {FormalBase}",

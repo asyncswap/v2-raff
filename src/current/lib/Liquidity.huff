@@ -135,9 +135,12 @@
     paid jump
     whole:
     [LP_ID] mload BOOK_AT() BOOK_REMOVE()
-    [B_O] mload sload O_FEE() [LP_OWNER] mload [LP_ID] mload SETTLE_PRIORITY_FEE()
+    // Keep the bid on the stack while closing the order before the maker's external payout.
+    // Settle the bid afterward, matching Solidity's callback-visible state and event order.
+    [B_O] mload sload O_FEE()
     DELETE_ORDER()
     [LP_OUT] mload [LP_OWNER] mload [LP_ZFO] mload CURRENCY_OUT() dup1 iszero F_TAKE_ANY()
+    [LP_OWNER] mload [LP_ID] mload SETTLE_PRIORITY_FEE()
     paid:
     [LP_SWAPPED] mload [MEM_LOG] mstore [LP_OUT] mload 0xb20 mstore
     [LP_OWNER] mload [LP_ID] mload [E_PID] mload __EVENT_HASH(AsyncOrderLiquidityFilled) 0x40 [MEM_LOG] log4

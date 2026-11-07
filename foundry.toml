@@ -38,3 +38,22 @@ uniswap-v4-core = "4"
 solmate = "6.8.0"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+# Identical-address snapshot worlds compare Solidity and Huff after every action.
+[profile.differential]
+# Observer calls span a whole sequence; each protocol action has its own 30M gas cap.
+gas_limit = 1000000000000
+src = "compat/current/support"
+test = "compat/current/differential"
+out = "out-differential"
+cache_path = "cache-differential"
+optimizer_runs = 10_000
+remappings = ["@async-swap/=reference/contracts/src/", "reference/contracts/:src/=reference/contracts/src/"]
+
+[profile.differential.fuzz]
+runs = 64
+failure_persist_dir = "cache-differential/fuzz"
+
+[profile.differential.invariant]
+fail_on_revert = true
+failure_persist_dir = "cache-differential/invariant"
