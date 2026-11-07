@@ -156,6 +156,14 @@ contract AsyncSwapSwapAgainstPoolFormalTest is HookUnlockBase {
         // the returned out = uint128(outputDelta) is what fillFromPoolLiquidity pays the maker
         Currency output = zeroForOne ? currency1 : currency0;
         vm.expectCall(address(manager), abi.encodeCall(IPoolManager.take, (output, alice, out)));
+        // The mocked take must expose the same before/after balances as a real full payout.
+        bytes[] memory balances = new bytes[](2);
+        balances[0] = abi.encode(out);
+        balances[1] = abi.encode(uint256(0));
+        vm.mockCalls(Currency.unwrap(output), abi.encodeWithSignature("balanceOf(address)", address(manager)), balances);
+        balances[0] = abi.encode(uint256(0));
+        balances[1] = abi.encode(out);
+        vm.mockCalls(Currency.unwrap(output), abi.encodeWithSignature("balanceOf(address)", alice), balances);
     }
 
     /// @notice formal/Refinement/Swarm/AsyncSwapSwapAgainstPool.lean:92 — after the external calls succeed (amountIn < 2^127): PartialLiquidityFill unless inputDelta = -swapIn (swapIn = amountIn less the 0.01% protocol fee (semantics changed by the 0.02% trade fee; Lean statement needs updating)), then LimitPriceNotMet unless 0 < outputDelta and uint128(outputDelta) >= amountOutMin, else returns uint128(outputDelta). burn/swap/take are mocked; the swap returns a fuzzed delta.

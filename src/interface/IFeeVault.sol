@@ -6,6 +6,7 @@ import {Currency} from "v4-core/types/Currency.sol";
 
 /// @notice Holds and redeems protocol fee claims (`src/FeeVault.huff`); the hook deploys it.
 interface IFeeVault {
+    error TokenNotSupported(address token);
     error Unauthorized();
     error ZeroAddress();
 

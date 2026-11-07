@@ -8,6 +8,8 @@ out-current/
 cache-current/
 out-differential/
 cache-differential/
+out-adversarial/
+cache-adversarial/
 
 # Local environment and deployment secrets
 .env
@@ -33,3 +35,7 @@ node_modules/
 
 __pycache__/
 /benchmarks/optimizer-runs/results/*/benchmark.log
+
+# Isolated Solar adversarial validation artifacts
+out-solar-adversarial/
+cache-solar-adversarial/

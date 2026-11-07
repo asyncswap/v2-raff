@@ -22,6 +22,7 @@ interface IRouter {
         bytes signature;
     }
 
+    error TokenNotSupported(address token);
     error SignatureExpired();
     error InvalidSignature();
     error NonceAlreadyUsed();

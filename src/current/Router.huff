@@ -443,7 +443,7 @@
     REQUIRE_1(22, 0x50726963652065786365656473206d6178507269636500000000000000000000)
     ORDER_OUTPUT(0x64) dup1 iszero native jumpi // [output, live]
     dup1 PM_SYNC()
-    dup2 MANAGER() [USER_LOCATION] tload dup4 SAFE_TRANSFER_FROM()
+    dup2 MANAGER() [USER_LOCATION] tload dup4 EXACT_TRANSFER_FROM()
     HOOK() PM_SETTLE_FOR()
     [R_ID] mload ASYNC_ORDER_INFO()
     [CALL_0] mload 0x200 mload eq 0xc20 mload 0x220 mload eq and
@@ -484,11 +484,15 @@
     erc20:
     dup1 PM_SYNC()
     [ACTION_LOCATION] tload [ACTION_SWAP_WITH_SIG] eq permit jumpi
-    0x144 calldataload MANAGER() [USER_LOCATION] tload dup4 SAFE_TRANSFER_FROM()
+    0x144 calldataload MANAGER() [USER_LOCATION] tload dup4 EXACT_TRANSFER_FROM()
     pop 0x00 PM_SETTLE()
     settled jump
     permit:
-    PERMIT_TRANSFER()                           // consumes [input]
+    // Keep the maker's debit snapshot across Permit2; PoolManager checks custody credit.
+    0x144 calldataload MANAGER() 0x104 calldataload dup4 SNAPSHOT_DEBIT()
+    dup2 PERMIT_TRANSFER()
+    VERIFY_DEBIT()
+    pop
     0x00 PM_SETTLE()
     settled:
 
@@ -497,7 +501,7 @@
     __FUNC_SIG("numeraire()") CALL_SELECTOR()
     0x04 0x20 swap1 HOOK_STATICCALL()
     [CALL_0] mload dup1 PM_SYNC()               // [numeraire]
-    0x184 calldataload MANAGER() 0x104 calldataload dup4 SAFE_TRANSFER_FROM()
+    0x184 calldataload MANAGER() 0x104 calldataload dup4 EXACT_TRANSFER_FROM()
     pop
     HOOK() PM_SETTLE_FOR()
     no_bid:
@@ -656,7 +660,7 @@
 #define macro TOP_UP_BODY() = takes (0) returns (0) {
     __FUNC_SIG("numeraire()") CALL_SELECTOR() 0x20 0x04 HOOK_STATICCALL()
     [CALL_0] mload dup1 PM_SYNC()
-    0x1e4 calldataload MANAGER() LOAD_ADDRESS(0x104) dup4 SAFE_TRANSFER_FROM()
+    0x1e4 calldataload MANAGER() LOAD_ADDRESS(0x104) dup4 EXACT_TRANSFER_FROM()
     pop HOOK() PM_SETTLE_FOR()
     __FUNC_SIG("topUpPriorityFee(((address,address,uint24,int24,address),address,bool,uint256,uint256,uint256,uint160,bytes32),uint256)") CALL_SELECTOR()
     0x180 0x64 [CALL_4] calldatacopy 0x1e4 calldataload 0xd84 mstore

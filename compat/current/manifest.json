@@ -877,9 +877,10 @@
       "assertionsSha256": "77e2ba6536e9d3d207b07176a5a14dc7f71a8944cdf3b7b978fe121dc8d1fa79"
     },
     "test/formal/AsyncSwapSwapAgainstPool.t.sol": {
-      "sha256": "f40c512921a433e966f2a72301ba23fdeabad494a6d461e6d47d5c1a3da0e5c6",
+      "sha256": "c346564ba0445dff04b59cde3834bda059302c05d6fe273951946b4b0b861f19",
       "deploymentChanges": [
-        "Seed the input amount at Huff order slot +2."
+        "Seed the input amount at Huff order slot +2.",
+        "Model the mocked PoolManager payout with sequential balanceOf responses; assertions unchanged."
       ],
       "assertionsSha256": "cee1d51a14b7a20cfd6dfd8e70306f7b0e60422d97745634d16939a34c0b786d"
     },

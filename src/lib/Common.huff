@@ -152,7 +152,8 @@
 
 // Checked arithmetic
 /// @dev `a + b`, Panic(0x11) on overflow.
-#define macro CHECKED_ADD() = takes (2) returns (1) {
+// Share the overflow check and panic payload to reduce repeated runtime bytecode.
+#define fn CHECKED_ADD() = takes (2) returns (1) {
     // [a, b]
     dup2 add                 // [a + b, b]
     dup1 swap2               // [b, sum, sum]

@@ -75,3 +75,10 @@
     0x44 [CALL_0] 0x00 dup4 CALL_WITH_VALUE()
     CHECK_OPTIONAL_RETURN()
 }
+
+// PoolManager checks deposit credit; this wrapper rejects a net sender debit above the authorized amount.
+#define fn EXACT_TRANSFER_FROM() = takes (4) returns (0) {
+    SNAPSHOT_DEBIT()
+    dup5 dup5 dup5 dup5 SAFE_TRANSFER_FROM()
+    VERIFY_DEBIT()
+}

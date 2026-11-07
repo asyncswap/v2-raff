@@ -57,3 +57,12 @@ failure_persist_dir = "cache-differential/fuzz"
 [profile.differential.invariant]
 fail_on_revert = true
 failure_persist_dir = "cache-differential/invariant"
+
+# Supplemental shared-USDC accounting campaign; pinned acceptance manifest stays unchanged.
+[profile.adversarial]
+src = "compat/current/support"
+test = "compat/current/adversarial"
+out = "out-adversarial"
+cache_path = "cache-adversarial"
+optimizer_runs = 10_000
+remappings = ["@async-swap/=reference/contracts/src/", "reference/contracts/:src/=reference/contracts/src/"]

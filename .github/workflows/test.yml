@@ -83,6 +83,13 @@ jobs:
           UNICHAIN_FORK_BLOCK: "61709000"
         run: forge test -vvv
 
+      - name: Run shared-USDC adversarial accounting tests
+        env:
+          FOUNDRY_PROFILE: adversarial
+        run: >-
+          forge test --match-contract '^(AdversarialAssumptionsTest|MultiPoolLiquidityAccountingTest|TokenBalanceDeltaTest|ProtocolDeploymentSizeTest)$'
+          --fuzz-runs 128 --fuzz-seed 0xa55e72026 -vvv
+
       - name: Run extended matching and formal parity tests
         env:
           FOUNDRY_PROFILE: current
