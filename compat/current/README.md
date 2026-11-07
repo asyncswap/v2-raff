@@ -1,12 +1,12 @@
-# PR #81 acceptance tests for the Huff port
+# v1.3.1 acceptance tests for the Huff port
 
-The target is Solidity commit **3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89**, including incoming-memory matching, fee top-ups and LP routing. Huff passes **1,016 upstream behavioral tests and invariant predicates**, up from 804. Assertions, expected values and fuzz assumptions remain unchanged.
+The target is Solidity commit **34b05bdcfb642727d1d6856f1ba91957dcf5d3b7**, including incoming-memory matching, fee top-ups and LP routing. Huff passes **1,017 upstream behavioral tests and invariant predicates**, up from 804. Assertions, expected values and fuzz assumptions remain unchanged.
 
 | Coverage | Count |
 | --- | ---: |
-| Source-discovered tests and templates | 1,088 |
-| Passing Huff behavioral tests and invariant predicates | **1,016** |
-| Forge result entries (invariants grouped) | 1,006 |
+| Source-discovered tests and templates | 1,089 |
+| Passing Huff behavioral tests and invariant predicates | **1,017** |
+| Forge result entries (invariants grouped) | 1,007 |
 | Behavioral tests still unported | **0** |
 | Solidity architecture/diagnostic checks retained as reference-only | 59 |
 | Abstract test templates with no deployable bytecode | 12 |
@@ -51,15 +51,19 @@ The hook is **24,321 bytes**, including immutables, leaving **255 bytes** below 
 
 `reference/contracts/` is copied verbatim using `git show` at the pinned commit. `manifest.json` records source, adapter and assertion hashes. The generator rejects changes to `assert*`, `expectRevert`, `expectEmit`, `expectCall` and `assume` expressions.
 
-Protocol deployments compile `.huff` sources through `CurrentHuffDeploy`. Explicit fixture adapters translate order/bitmap/radix storage locations, read actual immutable bytes, and inspect actual transient reentrancy storage. They do not substitute expected results for observations. Math, radix and price-key harnesses execute the production Huff routines. Constructor fixtures bypass only hook-address mining, as their upstream subclasses did. The nonce replay fixture includes the previously accepted trusted-Router grant fix from contracts commit `c8d12dd`.
+Protocol deployments compile `.huff` sources through `CurrentHuffDeploy`. Explicit fixture adapters translate order/bitmap/radix storage locations, read actual immutable bytes, and inspect actual transient reentrancy storage. They do not substitute expected results for observations. Math, radix and price-key harnesses execute the production Huff routines. Constructor fixtures bypass only hook-address mining, as their upstream subclasses did. The nonce replay fixture and its trusted-Router regression are copied from the v1.3.1 source at `34b05bd`.
 
 Solidity imports remain for ABI types, mocks and independent reference calculations. Such helpers are not counted as Huff implementations. The adapted `fizz` handler fixtures use Foundry cheatcodes to deploy Huff; they are not a Medusa/Echidna deployment port. Generated files must be changed through `script/current_adapters.py` or the sync script, never by weakening a failing test.
+
+## Stateful differential follow-up
+
+The [differential profile](differential/README.md) compares state, ordered logs and return/revert bytes after each action in four fixtures. It caught and fixed an LP full-fill settlement-order difference without changing assertions. The v1.3.1 Solidity source `34b05bd` has the same production source tree as the pinned oracle. Final campaign results are recorded [separately](results/differential-validation.json).
 
 ## Validation
 
 | Campaign | Passing tests/predicates | Configuration |
 | --- | ---: | --- |
-| Current acceptance | 1,016 | 256 cases per fuzz test; invariants 64 × 64; three Unichain fork tests at block 61709000 |
+| Current acceptance | 1,017 | 256 cases per fuzz test; invariants 64 × 64; three Unichain fork tests at block 61709000 |
 | Extended matching/reference/formal | 206 | 2,048 cases per fuzz test; saved counterexample seed |
 | Extended external-call helpers | 42 | 2,048 cases per fuzz test; final direct transfer path |
 | Legacy and differential | 208 | 195 grouped entries; includes three pinned fork tests |
@@ -78,7 +82,7 @@ UNICHAIN_FORK_BLOCK=61709000 \
 forge test -j 4 -vvv
 ```
 
-The saved acceptance result combines 1,014 tests/predicates from the full run with two default-callback tests added and run afterward. The command above now includes all 1,016. Assertions are unchanged; the profile excludes the documented `_finding_` test, and reference-only checks are not counted as Huff passes.
+The v1.3.1 result combines the full 1,016-test/predicate run with the updated nine-test nonce-replay suite at 2,048 fuzz cases, including the added trusted-Router regression. The command above includes all 1,017. Assertions are unchanged; the profile excludes the documented `_finding_` test, and reference-only checks are not counted as Huff passes.
 
 Check the generated adapters and run the additional size/memory/parity checks separately:
 

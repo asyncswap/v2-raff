@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: asyncswap/contracts
-          ref: 3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89
+          ref: 34b05bdcfb642727d1d6856f1ba91957dcf5d3b7
           path: .local/contracts-reference
           persist-credentials: false
 
@@ -101,6 +101,12 @@ jobs:
           --match-contract 'AsyncSwapSafeTransferFromFormalTest|AsyncSwapHelpersFormalTest|RouterHelpersFormalTest'
           --fuzz-runs 2048
           -vvv
+
+      - name: Compare Huff and Solidity state after each action
+        env:
+          FOUNDRY_PROFILE: differential
+          DIFF_STEPS: "128"
+        run: forge test -j 4 --fuzz-runs 32 --fuzz-seed 0xd1ff2026 -vvv
 
       - name: Check current sizes, signature memory and pool-price parity
         env:

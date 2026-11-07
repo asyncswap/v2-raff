@@ -64,6 +64,8 @@ contract AsyncSwapSetExecutorWithSigFormalTest is HookUnlockBase {
     {
         deadline = bound(deadline, block.timestamp, type(uint256).max);
         if (viaSig) {
+            // Consume the nonce with a valid grant, including when e is the trusted Router.
+            // Revoking that Router would fail setup before the replay guard is exercised.
             _submit(e, true, nonce, deadline);
         } else {
             vm.prank(maker);
@@ -72,6 +74,14 @@ contract AsyncSwapSetExecutorWithSigFormalTest is HookUnlockBase {
         bytes memory sig = _sig(key, maker, e, allow, nonce, deadline, MAKER_PK);
         vm.expectRevert(AsyncSwap.NonceAlreadyUsed.selector);
         hook.setExecutorWithSig(key, maker, e, allow, nonce, deadline, sig);
+    }
+
+    function test_setExecutorWithSig_nonce_used_trustedRouter() public {
+        // The CI counterexample must reach NonceAlreadyUsed for either replay action.
+        testFuzz_setExecutorWithSig_nonce_used(address(router), true, 11150, 8676, true);
+        testFuzz_setExecutorWithSig_nonce_used(address(router), false, 11151, 8676, true);
+        testFuzz_setExecutorWithSig_nonce_used(address(router), true, 11152, 8676, false);
+        testFuzz_setExecutorWithSig_nonce_used(address(router), false, 11153, 8676, false);
     }
 
     /// @notice formal/Refinement/Swarm/AsyncSwapSetExecutorWithSig.lean:112 — deadline ok, fresh nonce, a signature rejected for maker reverts InvalidSignature (and nothing is written).

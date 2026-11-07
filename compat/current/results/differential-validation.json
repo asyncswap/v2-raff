@@ -1,0 +1,3848 @@
+{
+  "release": "v1.3.1",
+  "solidityOracleCommit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "acceptanceSourceCommit": "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7",
+  "solidityReleaseCommit": "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7",
+  "identicalSolidityProductionTree": "e4ffc367824e2d43caec43e00c1dc26a6ad67f6b",
+  "huffBaseCommit": "eedecfc2bf0af9a28bdab9a58f81d80c203d131d",
+  "sourceSha256": {
+    "src/AsyncSwap.huff": "a48240fc475dcca3711a9cfd1b0608e2c906d4a3a31cf8ee5b8259abf0519ce0",
+    "src/FeeVault.huff": "bad2513c3a1e17d7848bdfab00c9f795520ec0e83d143c4df32ea467ffb144fd",
+    "src/MatchingEngine.huff": "68a0ef00744044c9b0c29ad556d70027fc10bdfc67cb0f9dc8e7b5630d6d6226",
+    "src/NativeClaims.huff": "700758c8776587416e53c60c2b7e2db67cae5afc3c9620b83e06b87762b7ebba",
+    "src/Router.huff": "413f0fae19fdbc71f56ceeae4a516ae9461affb58942225af473e89c1599ff07",
+    "src/TokenClaims.huff": "631eb023a8f0abe253393927967ac9fe14f838739d88da3795270d319912c17e",
+    "src/current/AsyncSwap.huff": "4f2a66acf0faab57803b2e24ee552fb653b2d5075c1d0470f00407a39dbffcd5",
+    "src/current/Router.huff": "9afb44f13121571da6a8a0ce7601677079c74ac00fe3108e7c748e6298444ef7",
+    "src/current/lib/Book.huff": "44a3a2be0ddf8783e3a02bd8ebdd5f00fb9b544cb2b0b032d9f58efaff61ae18",
+    "src/current/lib/BookFunding.huff": "1ce0e0c9d433cc57e287d99cba338e3a9386dea7b5384b0ad3960b1a4482de35",
+    "src/current/lib/ClaimTransfers.huff": "cc80e7042ae92a83814a0d394109b501b7e7e474db2edde6b3ec5c40ab6064b2",
+    "src/current/lib/Crossing.huff": "ea24f89827ceff31289eca8d0cd8bdda5db8764750dec312dac35404d7f56341",
+    "src/current/lib/CurrencyTransfer.huff": "84a684845cfc78e682736bfd37875b8e726b81eba27e55791217baf09f6f436f",
+    "src/current/lib/Domain.huff": "d4e33a56f33db0c7064c17ee6c7eb275ecb1db6eefc79b62a1bbf6ace0069991",
+    "src/current/lib/ExactPrice.huff": "c31ed5aaa7f1ae9568e43413f6811bc9c9d911365a1f91acacfc87e73766551f",
+    "src/current/lib/ExternalCalls.huff": "7029b0e812d1dd2abbc1742d0632fd4afe9ba61bee6de42d513008daaab83020",
+    "src/current/lib/HookAccess.huff": "c63f8bb13cb23cc6a571aeab528b3d98d1b3d480dd37b6ba1962d9d21da0e7e9",
+    "src/current/lib/HookDomain.huff": "a2ea93ecda1e7b3f139f7654c9963e12a2605ffcf07742f557826c86786efcf3",
+    "src/current/lib/Incoming.huff": "257df336e1cd34519f8ef1875a1a47559589d34dfb96c00baba5804aeff9bd25",
+    "src/current/lib/Liquidity.huff": "0eeba8bea0c8f0df57fc48f48f21aa9cbda75b23fa20851bea817a2caa7dfddb",
+    "src/current/lib/MatchAmounts.huff": "73d400375b23418a335ed2bd47e497cb11e31491c3cab7ac6a58c74d98f40ae0",
+    "src/current/lib/OrderFields.huff": "48dff60af24166642ec579f186452daf3c280aa9b11e577f32396b4c95d2612c",
+    "src/current/lib/OrderHashes.huff": "77442cab83603a54ebb9c4f8906c66f2aae8a8df2f376753d1d3d03ec77dabc7",
+    "src/current/lib/OrderStorage.huff": "5ca94c1602752022d5ee60f86ab0a436149047cf047e86e50b6487a57217161f",
+    "src/current/lib/PoolPriority.huff": "019f6a3e7501d61b45ac8b624695ddfd8f57d4f03dfdcb8894ec77967047c31d",
+    "src/current/lib/PriorityFees.huff": "af55bd97f81d23862c4375178d44760cc731c940188050e61bf8873d19448ff0",
+    "src/current/lib/RouterDomain.huff": "0d60a57eeeb7ab40a54babe3780f6d1dc3cb530afcd9a8f6f6c68adb3cacbd29",
+    "src/current/lib/ShortStrings.huff": "4bd1c9c69f60b64b931427507804f37bc8ca6fc10e141b11a986ece2ad916a99",
+    "src/current/lib/TickBitmap.huff": "931a67c1749fc7f57873c8f2da6b08b17f2f5a7f461d7046a9a52af87695378e",
+    "src/current/lib/TickPrice.huff": "9e839310a4e9163524de48765804f0888cdb4943330f9c1ef7aa945ab472f967",
+    "src/current/lib/WrappedRevert.huff": "a3db78b5343f00f9a30d68c07ba9dedb0672d88a8ae395555da09458b0c61619",
+    "src/experimental/ClaimTransfers.huff": "98dda3042cfbee0af939a57e72b86bd0045456232ba720d894e53d6be14e07e9",
+    "src/experimental/CurrentTick.huff": "204d37c07ed83195b9fba4c18f6397afa7a474ca7896b0965e3cf2cc3cfd75b4",
+    "src/experimental/IncomingMath.huff": "337ced5fa94fdb82e59bae5716678eacf26a77df61d87f2b28b64ed591029c0a",
+    "src/generated/FeeVaultCreation.huff": "c0ed7c6b93e6255cbba7d99aca7a10c9370b40343473d45a8a0c4266ff9c0153",
+    "src/lib/Book.huff": "b8ea53a4f7964ba8d411f8be2e534ffbd89658758f5bf5a11c394a898ac518cb",
+    "src/lib/Common.huff": "cfec0001a2432a12073d6ab6bcab86ceeef72e613e3cb378b404944a95e0b055",
+    "src/lib/Math.huff": "566b121336ceacae87f8d03cc7545e1790a9a6cd5ba2d68ac626a493fb4cf93e",
+    "src/lib/PoolManager.huff": "27308d1f125dcf83cbd60bee74d35484033fd26a3969ce23fd631a95cec9f8ad",
+    "src/lib/RadixPriceTree.huff": "2aaefdc5f8b5dbbcba03321ab12eff6f00bfba7ca251ce03122f81208312ee37",
+    "src/lib/Signatures.huff": "8f1ea370f42000f2106be1ffc8f7fc9747ab9ae8740b25b142c1ce9f9fef7af7"
+  },
+  "differentialHarnessSha256": "527cdca8762d2e9384e12c945e6575496747f15449477523f4c6e722d12ce9b6",
+  "copiedTestManifestSha256": "1279d9b06a6237ab1c9b0202f8a1b51e83da573f51522cf242c3ba1f9e032769",
+  "toolchain": {
+    "forge": "1.8.6",
+    "hnc": "1.6.2",
+    "solc": "0.8.26",
+    "receiptBenchmarkFoundry": "1.9.0"
+  },
+  "runtimeBytes": {
+    "hook": 24321,
+    "router": 10952
+  },
+  "creationBytecode": {
+    "AsyncSwap": {
+      "creationBytes": 39213,
+      "constructorArgsBytes": 192,
+      "initcodeBytesWithArgs": 39405,
+      "creationSha256": "4ce09e3c17681f735fae87ab0a5449ce2999cec5caeca0853ce04c4440c82e31"
+    },
+    "Router": {
+      "creationBytes": 11868,
+      "constructorArgsBytes": 128,
+      "initcodeBytesWithArgs": 11996,
+      "creationSha256": "eccc25aba7b82115f56ef9932c9b94658cc1cd60f0b04c47b1ca60dbb6614681"
+    }
+  },
+  "campaigns": {
+    "longDifferential": {
+      "resultSha256": "82f5560fb5aa0a4bf8cdeda39c9f4017758986541a236acd1683015f4b8a0dc2",
+      "forgeEntries": 8,
+      "testsAndPredicates": 8,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/differential/StateDifferential.t.sol:NativeLPStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/differential/StateDifferential.t.sol:NativeStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/differential/StateDifferential.t.sol:TokenLPStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/differential/StateDifferential.t.sol:TokenStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        }
+      },
+      "fuzzSeed": "0xd1ff2026",
+      "stepsPerSequence": 256,
+      "sequences": 516,
+      "pairedActions": 132096,
+      "protocolCalls": 264192,
+      "command": "FOUNDRY_PROFILE=differential DIFF_STEPS=256 forge test -j 4 --fuzz-runs 128 --fuzz-seed 0xd1ff2026 -vvv"
+    },
+    "currentAcceptance": {
+      "resultSha256": "8efa2579dd958dcbfedda2ef8f5f56c075ed1320535988179761788fcda519f0",
+      "forgeEntries": 1007,
+      "testsAndPredicates": 1017,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest": {
+          "entries": 30,
+          "testsAndPredicates": 30
+        },
+        "compat/current/test/BackrunCapture.t.sol:BackrunCaptureTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/BaseHookDefaults.t.sol:BaseHookDefaultsTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/BestPriceRouting.t.sol:BestPriceRoutingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/EligiblePrice.t.sol:EligiblePriceTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/ExactPriorityInvariant.t.sol:ExactPriorityInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/FeeEvents.t.sol:FeeEventsTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "compat/current/test/MatchingInvariant.t.sol:LpMatchingInvariantTest": {
+          "entries": 2,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/MatchingInvariant.t.sol:MatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/NativeClaims.t.sol:NativeClaimsTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/Numeraire.t.sol:NumeraireTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/PriorityFeeTopUp.t.sol:NumeraireZeroTopUpTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest": {
+          "entries": 18,
+          "testsAndPredicates": 18
+        },
+        "compat/current/test/PriorityFeeTopUp.t.sol:TopUpNumeraireDecimalsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/ProtocolFee.t.sol:ProtocolFeeTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/RadixPriceTree.t.sol:RadixPriceTreeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/RouterClaims.t.sol:RouterClaimsTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/SignedOrders.t.sol:SignedOrdersTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest": {
+          "entries": 23,
+          "testsAndPredicates": 23
+        },
+        "compat/current/test/StressCompletion.t.sol:StressCompletionTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/TickBitmap.t.sol:TickBitmapTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/TickPriceKey.t.sol:TickPriceKeyTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/TickPricePoolBeatsLevel.t.sol:TickPricePoolBeatsLevelTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/TokenClaims.t.sol:TokenClaimsTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/TradeFees.t.sol:TradeFeesTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/UnichainFork.t.sol:UnichainForkTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/fizz/FoundryTester.sol:FoundryTester": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/formal/AsyncSwapAcceptOwnership.t.sol:AsyncSwapAcceptOwnershipFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapAddOrder.t.sol:AsyncSwapAddOrderFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapAfterAddLiquidity.t.sol:AsyncSwapAfterAddLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterDonate.t.sol:AsyncSwapAfterDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterInitialize.t.sol:AsyncSwapAfterInitializeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterRemoveLiquidity.t.sol:AsyncSwapAfterRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterSwap.t.sol:AsyncSwapAfterSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAsyncOrder.t.sol:AsyncSwapAsyncOrderFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapAsyncOrderInfo.t.sol:AsyncSwapAsyncOrderInfoFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAsyncOrderPriorityFee.t.sol:AsyncSwapAsyncOrderPriorityFeeFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapBeforeAddLiquidity.t.sol:AsyncSwapBeforeAddLiquidityFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapBeforeDonate.t.sol:AsyncSwapBeforeDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapBeforeInitialize.t.sol:AsyncSwapBeforeInitializeFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol:AsyncSwapBeforeRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapBeforeSwap.t.sol:AsyncSwapBeforeSwapFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/formal/AsyncSwapBestOrder.t.sol:AsyncSwapBestOrderFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapBitSet.t.sol:AsyncSwapBitSetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol:AsyncSwapBubbleUpAndRevertWithFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCalculateHookFee.t.sol:AsyncSwapCalculateHookFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCalculatePoolFee.t.sol:AsyncSwapCalculatePoolFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCallOptionalReturn.t.sol:AsyncSwapCallOptionalReturnFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCancelOrder.t.sol:AsyncSwapCancelOrderFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapConstructor.t.sol:AsyncSwapConstructorFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/AsyncSwapCrosses.t.sol:AsyncSwapCrossesFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol:AsyncSwapDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapExecuteOrder.t.sol:AsyncSwapExecuteOrderFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/formal/AsyncSwapFillOrderFromPoolLiquidity.t.sol:AsyncSwapFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapFreeNode.t.sol:AsyncSwapFreeNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapFunctionCall.t.sol:AsyncSwapFunctionCallFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapFunctionCallWithValue.t.sol:AsyncSwapFunctionCallWithValueFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapGetHookPermissions.t.sol:AsyncSwapGetHookPermissionsFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapHelpers.t.sol:AsyncSwapHelpersFormalTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "compat/current/test/formal/AsyncSwapInitAccess.t.sol:AsyncSwapInitAccessTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapInsert.t.sol:AsyncSwapInsertFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapInvalidateNonce.t.sol:AsyncSwapInvalidateNonceFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapLibHelpers.t.sol:AsyncSwapLibHelpersFormalTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "compat/current/test/formal/AsyncSwapMatchAmounts.t.sol:AsyncSwapMatchAmountsFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/formal/AsyncSwapMatchBook.t.sol:AsyncSwapMatchBookFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapMatchNewOrder.t.sol:AsyncSwapMatchNewOrderFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/AsyncSwapMatchPair.t.sol:AsyncSwapMatchPairFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapMostSignificantBit.t.sol:AsyncSwapMostSignificantBitFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapMulDiv.t.sol:AsyncSwapMulDivFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapNewNode.t.sol:AsyncSwapNewNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapOnlyOwner.t.sol:AsyncSwapOnlyOwnerFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapOrderBookLevel.t.sol:AsyncSwapOrderBookLevelFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapOrderBookOrder.t.sol:AsyncSwapOrderBookOrderFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapPriorityKey.t.sol:AsyncSwapPriorityKeyFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapReceive.t.sol:AsyncSwapReceiveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapReduceAfterMatch.t.sol:AsyncSwapReduceAfterMatchFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapReduceMatchedOrders.t.sol:AsyncSwapReduceMatchedOrdersFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapRemove.t.sol:AsyncSwapRemoveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapRevert.t.sol:AsyncSwapRevertFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapSafeTransferFrom.t.sol:AsyncSwapSafeTransferFromFormalTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/formal/AsyncSwapSetExecutorWithSig.t.sol:AsyncSwapSetExecutorWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol:AsyncSwapSettleMatchedPriorityFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapSettleOrderPriorityFee.t.sol:AsyncSwapSettleOrderPriorityFeeFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapSettleTransfers.t.sol:AsyncSwapSettleTransfersFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapSwapAgainstPool.t.sol:AsyncSwapSwapAgainstPoolFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapSweep.t.sol:AsyncSwapSweepFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapTransferEscrow.t.sol:AsyncSwapTransferEscrowFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapTransferOwnership.t.sol:AsyncSwapTransferOwnershipFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapTryFillOrderFromPoolLiquidity.t.sol:AsyncSwapTryFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/AsyncSwapUpdatePrice.t.sol:AsyncSwapUpdatePriceFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/formal/AsyncSwapUpdatePriceWithSig.t.sol:AsyncSwapUpdatePriceWithSigFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol:AsyncSwapVerifyCallResultFromTargetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/Eip712Domain.t.sol:AsyncSwapEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/Eip712Domain.t.sol:RouterEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/FeeVaultCollect.t.sol:FeeVaultCollectFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/FeeVaultUnlockCallback.t.sol:FeeVaultUnlockCallbackFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/formal/NativeClaimsRedeem.t.sol:NativeClaimsRedeemFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/NativeClaimsUnlockCallback.t.sol:NativeClaimsUnlockCallbackFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/RefinementAsyncSwap.t.sol:RefinementAsyncSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/RefinementRouter.t.sol:RefinementRouterFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/RouterCancelWithSig.t.sol:RouterCancelWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/RouterConstructor.t.sol:RouterConstructorFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/RouterDOMAIN_SEPARATOR.t.sol:RouterDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/RouterFillFromPoolLiquidity.t.sol:RouterFillFromPoolLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/RouterHelpers.t.sol:RouterHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/formal/RouterLibHelpers.t.sol:RouterLibHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/formal/RouterMatchBook.t.sol:RouterMatchBookFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/RouterSwapWithSig.t.sol:RouterSwapWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/RoutingPoolImpact.t.sol:RoutingPoolImpactTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/formal/SpecCore.t.sol:SpecCoreFormalTest": {
+          "entries": 17,
+          "testsAndPredicates": 17
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AssumptionsFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AsyncSwapCtorSpecFormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AsyncSwapSpecEip712FormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:RouterSpecEip712FormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:SpecEip712ShortStringsFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/SpecSig.t.sol:SpecSigFormalTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "compat/current/test/nethermind_auditagent/NethermindAuditAgent.t.sol:NethermindAuditAgentTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "compat/current/test/security/ClaimTransfers.t.sol:ClaimTransfersTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/security/EligibleGas.t.sol:EligibleGasTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython0Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython1Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython2Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython3Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython4Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython5Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython6Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython7Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligibleRemainder.t.sol:EligibleRemainderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/security/FeeClaims.t.sol:FeeClaimsTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/MakerIdentity.t.sol:MakerIdentityTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/MevTax.t.sol:MevTaxSignedTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/MevTax.t.sol:MevTaxTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderBidFloorTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/security/NoReturnToken.t.sol:NoReturnTokenTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/OrderSpoofing.t.sol:OrderSpoofingTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:DustDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:EmptyRangeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:ExtremeLevelTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/PashovFindings.t.sol:FeeBaseTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:GrantFrontRunTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:PoolFirstOvershootTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:RemainderRoundingKnownIssueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:VenueDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeCap18DecimalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/UseNonceScope.t.sol:UseNonceScopeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/poc/GrantReplay.t.sol:GrantReplayPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        }
+      },
+      "fuzzRuns": 256,
+      "invariantRuns": 64,
+      "invariantDepth": 64,
+      "forkBlock": 61709000,
+      "forkRPC": "https://mainnet.unichain.org",
+      "profile": "current"
+    },
+    "nonceReplayRegression": {
+      "resultSha256": "e3840423f6f8587cbb77faa5204f3049625b384027029833f058c419b64984de",
+      "forgeEntries": 9,
+      "testsAndPredicates": 9,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/test/formal/AsyncSwapSetExecutorWithSig.t.sol:AsyncSwapSetExecutorWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        }
+      },
+      "fuzzRuns": 2048,
+      "fuzzSeed": "0x38896dc368de93781038fd804998ab10ead3f7d3c5773e6faae6a3180031319d"
+    },
+    "solidityAcceptance": {
+      "resultSha256": "fe9b111be7887d3e91fb51c4b6349596c8610c0a18f7412563dd00cad93b1b09",
+      "forgeEntries": 1066,
+      "testsAndPredicates": 1076,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "test/AsyncSwap.t.sol:AsyncSwapTest": {
+          "entries": 30,
+          "testsAndPredicates": 30
+        },
+        "test/BackrunCapture.t.sol:BackrunCaptureTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/BaseHookDefaults.t.sol:BaseHookDefaultsTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/BestPriceRouting.t.sol:BestPriceRoutingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/EligiblePrice.t.sol:EligiblePriceTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/ExactPriorityInvariant.t.sol:ExactPriorityInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 4
+        },
+        "test/FeeEvents.t.sol:FeeEventsTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/IncomingLibraryDeployment.t.sol:IncomingLibraryDeploymentTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/IndexLibraryDeployment.t.sol:IndexLibraryDeploymentTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/MatchingAdversarial.t.sol:MatchingAdversarialTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/MatchingEngine.t.sol:MatchingEngineTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "test/MatchingInvariant.t.sol:LpMatchingInvariantTest": {
+          "entries": 2,
+          "testsAndPredicates": 5
+        },
+        "test/MatchingInvariant.t.sol:MatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "test/MatchingReference.t.sol:DustMatchingReferenceTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/MatchingReference.t.sol:MatchingReferenceTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/NativeClaims.t.sol:NativeClaimsTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/Numeraire.t.sol:NumeraireTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/PriorityFeeTopUp.t.sol:NumeraireZeroTopUpTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest": {
+          "entries": 18,
+          "testsAndPredicates": 18
+        },
+        "test/PriorityFeeTopUp.t.sol:TopUpNumeraireDecimalsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/ProtocolFee.t.sol:ProtocolFeeTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/RadixPriceTree.t.sol:RadixPriceTreeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/RouterClaims.t.sol:RouterClaimsTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "test/RouterMulticall.t.sol:RouterMulticallTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/SignedOrders.t.sol:SignedOrdersTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "test/StressCompletion.t.sol:NativeWithdrawalStressTest": {
+          "entries": 23,
+          "testsAndPredicates": 23
+        },
+        "test/StressCompletion.t.sol:StressCompletionTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/TickBitmap.t.sol:TickBitmapTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/TickPriceKey.t.sol:TickPriceKeyTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/TickPricePoolBeatsLevel.t.sol:TickPricePoolBeatsLevelTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/TokenClaims.t.sol:TokenClaimsTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/TradeFees.t.sol:TradeFeesTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/UnichainFork.t.sol:UnichainForkTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/fizz/FoundryTester.sol:FoundryTester": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/formal/AsyncSwapAcceptOwnership.t.sol:AsyncSwapAcceptOwnershipFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapAddOrder.t.sol:AsyncSwapAddOrderFormalTest": {
+          "entries": 19,
+          "testsAndPredicates": 19
+        },
+        "test/formal/AsyncSwapAfterAddLiquidity.t.sol:AsyncSwapAfterAddLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterDonate.t.sol:AsyncSwapAfterDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterInitialize.t.sol:AsyncSwapAfterInitializeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterRemoveLiquidity.t.sol:AsyncSwapAfterRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterSwap.t.sol:AsyncSwapAfterSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAsyncOrder.t.sol:AsyncSwapAsyncOrderFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAsyncOrderInfo.t.sol:AsyncSwapAsyncOrderInfoFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAsyncOrderPriorityFee.t.sol:AsyncSwapAsyncOrderPriorityFeeFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapBeforeAddLiquidity.t.sol:AsyncSwapBeforeAddLiquidityFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapBeforeDonate.t.sol:AsyncSwapBeforeDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapBeforeInitialize.t.sol:AsyncSwapBeforeInitializeFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol:AsyncSwapBeforeRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapBeforeSwap.t.sol:AsyncSwapBeforeSwapFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/formal/AsyncSwapBestOrder.t.sol:AsyncSwapBestOrderFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapBitSet.t.sol:AsyncSwapBitSetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol:AsyncSwapBubbleUpAndRevertWithFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCalculateHookFee.t.sol:AsyncSwapCalculateHookFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCalculatePoolFee.t.sol:AsyncSwapCalculatePoolFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCallOptionalReturn.t.sol:AsyncSwapCallOptionalReturnFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCancelOrder.t.sol:AsyncSwapCancelOrderFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapConstructor.t.sol:AsyncSwapConstructorFormalTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/formal/AsyncSwapCrosses.t.sol:AsyncSwapCrossesFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol:AsyncSwapDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapExecuteOrder.t.sol:AsyncSwapExecuteOrderFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/formal/AsyncSwapFillOrderFromPoolLiquidity.t.sol:AsyncSwapFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapFreeNode.t.sol:AsyncSwapFreeNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapFunctionCall.t.sol:AsyncSwapFunctionCallFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapFunctionCallWithValue.t.sol:AsyncSwapFunctionCallWithValueFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapGetHookPermissions.t.sol:AsyncSwapGetHookPermissionsFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapHelpers.t.sol:AsyncSwapHelpersFormalTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "test/formal/AsyncSwapInitAccess.t.sol:AsyncSwapInitAccessTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapInsert.t.sol:AsyncSwapInsertFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapInvalidateNonce.t.sol:AsyncSwapInvalidateNonceFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapLibHelpers.t.sol:AsyncSwapLibHelpersFormalTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "test/formal/AsyncSwapMatchAmounts.t.sol:AsyncSwapMatchAmountsFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/formal/AsyncSwapMatchBook.t.sol:AsyncSwapMatchBookFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapMatchNewOrder.t.sol:AsyncSwapMatchNewOrderFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/AsyncSwapMatchPair.t.sol:AsyncSwapMatchPairFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapMostSignificantBit.t.sol:AsyncSwapMostSignificantBitFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapMulDiv.t.sol:AsyncSwapMulDivFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapNewNode.t.sol:AsyncSwapNewNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapOnlyOwner.t.sol:AsyncSwapOnlyOwnerFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapOrderBookLevel.t.sol:AsyncSwapOrderBookLevelFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapOrderBookOrder.t.sol:AsyncSwapOrderBookOrderFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapPriorityKey.t.sol:AsyncSwapPriorityKeyFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapReceive.t.sol:AsyncSwapReceiveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapReduceAfterMatch.t.sol:AsyncSwapReduceAfterMatchFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapReduceMatchedOrders.t.sol:AsyncSwapReduceMatchedOrdersFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapRemove.t.sol:AsyncSwapRemoveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapRevert.t.sol:AsyncSwapRevertFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapSafeTransferFrom.t.sol:AsyncSwapSafeTransferFromFormalTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/formal/AsyncSwapSetExecutorWithSig.t.sol:AsyncSwapSetExecutorWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol:AsyncSwapSettleMatchedPriorityFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol:AsyncSwapSettleOrderPriorityFeeFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapSettleTransfers.t.sol:AsyncSwapSettleTransfersFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapSwapAgainstPool.t.sol:AsyncSwapSwapAgainstPoolFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapSweep.t.sol:AsyncSwapSweepFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapTransferEscrow.t.sol:AsyncSwapTransferEscrowFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapTransferOwnership.t.sol:AsyncSwapTransferOwnershipFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapTryFillOrderFromPoolLiquidity.t.sol:AsyncSwapTryFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/AsyncSwapUpdatePrice.t.sol:AsyncSwapUpdatePriceFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/formal/AsyncSwapUpdatePriceWithSig.t.sol:AsyncSwapUpdatePriceWithSigFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol:AsyncSwapVerifyCallResultFromTargetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/Eip712ConstantsLog.t.sol:Eip712ConstantsLog": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/formal/Eip712Domain.t.sol:AsyncSwapEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/Eip712Domain.t.sol:RouterEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/FeeVaultCollect.t.sol:FeeVaultCollectFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/FeeVaultUnlockCallback.t.sol:FeeVaultUnlockCallbackFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/formal/NativeClaimsRedeem.t.sol:NativeClaimsRedeemFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/NativeClaimsUnlockCallback.t.sol:NativeClaimsUnlockCallbackFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/RefinementAsyncSwap.t.sol:RefinementAsyncSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/RefinementRouter.t.sol:RefinementRouterFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/RouterCancelWithSig.t.sol:RouterCancelWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/RouterConstructor.t.sol:RouterConstructorFormalTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/formal/RouterDOMAIN_SEPARATOR.t.sol:RouterDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/RouterFillFromPoolLiquidity.t.sol:RouterFillFromPoolLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/RouterHelpers.t.sol:RouterHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/formal/RouterLibHelpers.t.sol:RouterLibHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/formal/RouterMatchBook.t.sol:RouterMatchBookFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/RouterSwapWithSig.t.sol:RouterSwapWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/RoutingPoolImpact.t.sol:RoutingPoolImpactTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/formal/SpecBook.t.sol:SpecBookFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/SpecCore.t.sol:SpecCoreFormalTest": {
+          "entries": 23,
+          "testsAndPredicates": 23
+        },
+        "test/formal/SpecEip712.t.sol:AssumptionsFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/SpecEip712.t.sol:AsyncSwapCtorSpecFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/SpecEip712.t.sol:AsyncSwapSpecEip712FormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/SpecEip712.t.sol:RouterSpecEip712FormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/SpecEip712.t.sol:SpecEip712ShortStringsFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/SpecSig.t.sol:SpecSigFormalTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "test/nethermind_auditagent/NethermindAuditAgent.t.sol:NethermindAuditAgentTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/security/AssetPrecision.t.sol:AssetPrecisionTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/security/ClaimTransfers.t.sol:ClaimTransfersTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/EligibleGas.t.sol:EligibleGasTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython0Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython1Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython2Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython3Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython4Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython5Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython6Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython7Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligibleRemainder.t.sol:EligibleRemainderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/security/FeeClaims.t.sol:FeeClaimsTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/security/FeeCollect.t.sol:FeeCollectTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MakerIdentity.t.sol:MakerIdentityTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/MevTax.t.sol:MevTaxSignedTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MevTax.t.sol:MevTaxTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/security/MinimumOrder.t.sol:MinimumOrderBidFloorTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MinimumOrder.t.sol:MinimumOrderTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/security/NoReturnToken.t.sol:NoReturnTokenTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/OrderSpoofing.t.sol:OrderSpoofingTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:DustDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:EmptyRangeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:ExtremeLevelTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/PashovFindings.t.sol:FeeBaseTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:GrantFrontRunTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:PoolFirstOvershootTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:RemainderRoundingKnownIssueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:VenueDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/PriorityFeeOnly.t.sol:PriorityFeeCap18DecimalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/UseNonceScope.t.sol:UseNonceScopeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/poc/GrantReplay.t.sol:GrantReplayPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        }
+      },
+      "fuzzRuns": 256,
+      "invariantRuns": 64,
+      "invariantDepth": 64,
+      "forkBlock": 61709000,
+      "forkRPC": "https://mainnet.unichain.org",
+      "profile": "default",
+      "sourceCommit": "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7"
+    },
+    "solarSolidityAcceptance": {
+      "resultSha256": "e92a1b4a86d2479af713c839bfd667d906942b77cfe9bb4c2a8aaee55425f0c5",
+      "forgeEntries": 1066,
+      "testsAndPredicates": 1076,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "test/AsyncSwap.t.sol:AsyncSwapTest": {
+          "entries": 30,
+          "testsAndPredicates": 30
+        },
+        "test/BackrunCapture.t.sol:BackrunCaptureTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/BaseHookDefaults.t.sol:BaseHookDefaultsTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/BestPriceRouting.t.sol:BestPriceRoutingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/EligiblePrice.t.sol:EligiblePriceTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/ExactPriorityInvariant.t.sol:ExactPriorityInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 4
+        },
+        "test/FeeEvents.t.sol:FeeEventsTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/IncomingLibraryDeployment.t.sol:IncomingLibraryDeploymentTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/IndexLibraryDeployment.t.sol:IndexLibraryDeploymentTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/MatchingAdversarial.t.sol:MatchingAdversarialTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/MatchingEngine.t.sol:MatchingEngineTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "test/MatchingInvariant.t.sol:LpMatchingInvariantTest": {
+          "entries": 2,
+          "testsAndPredicates": 5
+        },
+        "test/MatchingInvariant.t.sol:MatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "test/MatchingReference.t.sol:DustMatchingReferenceTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/MatchingReference.t.sol:MatchingReferenceTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/NativeClaims.t.sol:NativeClaimsTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/Numeraire.t.sol:NumeraireTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/PriorityFeeTopUp.t.sol:NumeraireZeroTopUpTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest": {
+          "entries": 18,
+          "testsAndPredicates": 18
+        },
+        "test/PriorityFeeTopUp.t.sol:TopUpNumeraireDecimalsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/ProtocolFee.t.sol:ProtocolFeeTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/RadixPriceTree.t.sol:RadixPriceTreeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/RouterClaims.t.sol:RouterClaimsTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "test/RouterMulticall.t.sol:RouterMulticallTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/SignedOrders.t.sol:SignedOrdersTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "test/StressCompletion.t.sol:NativeWithdrawalStressTest": {
+          "entries": 23,
+          "testsAndPredicates": 23
+        },
+        "test/StressCompletion.t.sol:StressCompletionTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/TickBitmap.t.sol:TickBitmapTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/TickPriceKey.t.sol:TickPriceKeyTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/TickPricePoolBeatsLevel.t.sol:TickPricePoolBeatsLevelTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/TokenClaims.t.sol:TokenClaimsTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/TradeFees.t.sol:TradeFeesTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/UnichainFork.t.sol:UnichainForkTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/fizz/FoundryTester.sol:FoundryTester": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/formal/AsyncSwapAcceptOwnership.t.sol:AsyncSwapAcceptOwnershipFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapAddOrder.t.sol:AsyncSwapAddOrderFormalTest": {
+          "entries": 19,
+          "testsAndPredicates": 19
+        },
+        "test/formal/AsyncSwapAfterAddLiquidity.t.sol:AsyncSwapAfterAddLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterDonate.t.sol:AsyncSwapAfterDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterInitialize.t.sol:AsyncSwapAfterInitializeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterRemoveLiquidity.t.sol:AsyncSwapAfterRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAfterSwap.t.sol:AsyncSwapAfterSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAsyncOrder.t.sol:AsyncSwapAsyncOrderFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAsyncOrderInfo.t.sol:AsyncSwapAsyncOrderInfoFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapAsyncOrderPriorityFee.t.sol:AsyncSwapAsyncOrderPriorityFeeFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapBeforeAddLiquidity.t.sol:AsyncSwapBeforeAddLiquidityFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapBeforeDonate.t.sol:AsyncSwapBeforeDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapBeforeInitialize.t.sol:AsyncSwapBeforeInitializeFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol:AsyncSwapBeforeRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapBeforeSwap.t.sol:AsyncSwapBeforeSwapFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/formal/AsyncSwapBestOrder.t.sol:AsyncSwapBestOrderFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapBitSet.t.sol:AsyncSwapBitSetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol:AsyncSwapBubbleUpAndRevertWithFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCalculateHookFee.t.sol:AsyncSwapCalculateHookFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCalculatePoolFee.t.sol:AsyncSwapCalculatePoolFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCallOptionalReturn.t.sol:AsyncSwapCallOptionalReturnFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapCancelOrder.t.sol:AsyncSwapCancelOrderFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapConstructor.t.sol:AsyncSwapConstructorFormalTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/formal/AsyncSwapCrosses.t.sol:AsyncSwapCrossesFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol:AsyncSwapDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapExecuteOrder.t.sol:AsyncSwapExecuteOrderFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/formal/AsyncSwapFillOrderFromPoolLiquidity.t.sol:AsyncSwapFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapFreeNode.t.sol:AsyncSwapFreeNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapFunctionCall.t.sol:AsyncSwapFunctionCallFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapFunctionCallWithValue.t.sol:AsyncSwapFunctionCallWithValueFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapGetHookPermissions.t.sol:AsyncSwapGetHookPermissionsFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapHelpers.t.sol:AsyncSwapHelpersFormalTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "test/formal/AsyncSwapInitAccess.t.sol:AsyncSwapInitAccessTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapInsert.t.sol:AsyncSwapInsertFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapInvalidateNonce.t.sol:AsyncSwapInvalidateNonceFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapLibHelpers.t.sol:AsyncSwapLibHelpersFormalTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "test/formal/AsyncSwapMatchAmounts.t.sol:AsyncSwapMatchAmountsFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/formal/AsyncSwapMatchBook.t.sol:AsyncSwapMatchBookFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapMatchNewOrder.t.sol:AsyncSwapMatchNewOrderFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/AsyncSwapMatchPair.t.sol:AsyncSwapMatchPairFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/AsyncSwapMostSignificantBit.t.sol:AsyncSwapMostSignificantBitFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapMulDiv.t.sol:AsyncSwapMulDivFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapNewNode.t.sol:AsyncSwapNewNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapOnlyOwner.t.sol:AsyncSwapOnlyOwnerFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapOrderBookLevel.t.sol:AsyncSwapOrderBookLevelFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapOrderBookOrder.t.sol:AsyncSwapOrderBookOrderFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapPriorityKey.t.sol:AsyncSwapPriorityKeyFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapReceive.t.sol:AsyncSwapReceiveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapReduceAfterMatch.t.sol:AsyncSwapReduceAfterMatchFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapReduceMatchedOrders.t.sol:AsyncSwapReduceMatchedOrdersFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapRemove.t.sol:AsyncSwapRemoveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapRevert.t.sol:AsyncSwapRevertFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapSafeTransferFrom.t.sol:AsyncSwapSafeTransferFromFormalTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/formal/AsyncSwapSetExecutorWithSig.t.sol:AsyncSwapSetExecutorWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol:AsyncSwapSettleMatchedPriorityFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol:AsyncSwapSettleOrderPriorityFeeFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/AsyncSwapSettleTransfers.t.sol:AsyncSwapSettleTransfersFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/AsyncSwapSwapAgainstPool.t.sol:AsyncSwapSwapAgainstPoolFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/AsyncSwapSweep.t.sol:AsyncSwapSweepFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapTransferEscrow.t.sol:AsyncSwapTransferEscrowFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapTransferOwnership.t.sol:AsyncSwapTransferOwnershipFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/AsyncSwapTryFillOrderFromPoolLiquidity.t.sol:AsyncSwapTryFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/AsyncSwapUpdatePrice.t.sol:AsyncSwapUpdatePriceFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/formal/AsyncSwapUpdatePriceWithSig.t.sol:AsyncSwapUpdatePriceWithSigFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol:AsyncSwapVerifyCallResultFromTargetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/Eip712ConstantsLog.t.sol:Eip712ConstantsLog": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/formal/Eip712Domain.t.sol:AsyncSwapEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/Eip712Domain.t.sol:RouterEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/FeeVaultCollect.t.sol:FeeVaultCollectFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/FeeVaultUnlockCallback.t.sol:FeeVaultUnlockCallbackFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "test/formal/NativeClaimsRedeem.t.sol:NativeClaimsRedeemFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/formal/NativeClaimsUnlockCallback.t.sol:NativeClaimsUnlockCallbackFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/RefinementAsyncSwap.t.sol:RefinementAsyncSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/RefinementRouter.t.sol:RefinementRouterFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/RouterCancelWithSig.t.sol:RouterCancelWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/RouterConstructor.t.sol:RouterConstructorFormalTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/formal/RouterDOMAIN_SEPARATOR.t.sol:RouterDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/RouterFillFromPoolLiquidity.t.sol:RouterFillFromPoolLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/RouterHelpers.t.sol:RouterHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/formal/RouterLibHelpers.t.sol:RouterLibHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/formal/RouterMatchBook.t.sol:RouterMatchBookFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/formal/RouterSwapWithSig.t.sol:RouterSwapWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/RoutingPoolImpact.t.sol:RoutingPoolImpactTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/formal/SpecBook.t.sol:SpecBookFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/formal/SpecCore.t.sol:SpecCoreFormalTest": {
+          "entries": 23,
+          "testsAndPredicates": 23
+        },
+        "test/formal/SpecEip712.t.sol:AssumptionsFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/formal/SpecEip712.t.sol:AsyncSwapCtorSpecFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/formal/SpecEip712.t.sol:AsyncSwapSpecEip712FormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/SpecEip712.t.sol:RouterSpecEip712FormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/formal/SpecEip712.t.sol:SpecEip712ShortStringsFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/formal/SpecSig.t.sol:SpecSigFormalTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "test/nethermind_auditagent/NethermindAuditAgent.t.sol:NethermindAuditAgentTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/security/AssetPrecision.t.sol:AssetPrecisionTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/security/ClaimTransfers.t.sol:ClaimTransfersTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/EligibleGas.t.sol:EligibleGasTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython0Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython1Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython2Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython3Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython4Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython5Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython6Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligiblePythonVectors.t.sol:EligiblePython7Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/EligibleRemainder.t.sol:EligibleRemainderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/security/FeeClaims.t.sol:FeeClaimsTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/security/FeeCollect.t.sol:FeeCollectTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MakerIdentity.t.sol:MakerIdentityTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/MevTax.t.sol:MevTaxSignedTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MevTax.t.sol:MevTaxTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "test/security/MinimumOrder.t.sol:MinimumOrderBidFloorTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MinimumOrder.t.sol:MinimumOrderTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/security/NoReturnToken.t.sol:NoReturnTokenTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/OrderSpoofing.t.sol:OrderSpoofingTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:DustDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:EmptyRangeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:ExtremeLevelTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/PashovFindings.t.sol:FeeBaseTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:GrantFrontRunTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:PoolFirstOvershootTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:RemainderRoundingKnownIssueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PashovFindings.t.sol:VenueDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/PriorityFeeOnly.t.sol:PriorityFeeCap18DecimalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/UseNonceScope.t.sol:UseNonceScopeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/poc/GrantReplay.t.sol:GrantReplayPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        }
+      },
+      "forge": "1.9.0",
+      "solar": "0.3.0-dev+commit.a2b44354",
+      "solidityCompatibilityVersion": "0.8.38",
+      "releaseCompilerChanged": false,
+      "sourceCommit": "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7"
+    },
+    "solarHuffAcceptance": {
+      "resultSha256": "4a9139df8959e9a59813b61c875e05801343d8a920a4af24a29d37e4a9cc1ca0",
+      "forgeEntries": 1007,
+      "testsAndPredicates": 1017,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/test/AsyncSwap.t.sol:AsyncSwapTest": {
+          "entries": 30,
+          "testsAndPredicates": 30
+        },
+        "compat/current/test/BackrunCapture.t.sol:BackrunCaptureTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/BaseHookDefaults.t.sol:BaseHookDefaultsTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/BestPriceRouting.t.sol:BestPriceRoutingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/EligiblePrice.t.sol:EligiblePriceTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/ExactPriorityInvariant.t.sol:ExactPriorityInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/FeeEvents.t.sol:FeeEventsTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/IncomingMemoryFunding.t.sol:IncomingMemoryFundingTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/IncomingMemoryReference.t.sol:IncomingMemoryReferenceTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryQuoteZeroTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/IncomingMemoryTransitions.t.sol:IncomingMemoryTransitionsTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/MatchingAdversarial.t.sol:MatchingAdversarialTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/MatchingEngine.t.sol:MatchingEngineTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "compat/current/test/MatchingInvariant.t.sol:LpMatchingInvariantTest": {
+          "entries": 2,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/MatchingInvariant.t.sol:MatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/MatchingReference.t.sol:DustMatchingReferenceTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/MatchingReference.t.sol:MatchingReferenceTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/NativeClaims.t.sol:NativeClaimsTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/Numeraire.t.sol:NumeraireTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/PriorityFeeTopUp.t.sol:NumeraireZeroTopUpTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/PriorityFeeTopUp.t.sol:PriorityFeeTopUpTest": {
+          "entries": 18,
+          "testsAndPredicates": 18
+        },
+        "compat/current/test/PriorityFeeTopUp.t.sol:TopUpNumeraireDecimalsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/ProtocolFee.t.sol:ProtocolFeeTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/RadixPriceTree.t.sol:RadixPriceTreeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/RouterClaims.t.sol:RouterClaimsTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "compat/current/test/RouterMulticall.t.sol:RouterMulticallTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/SignedOrders.t.sol:SignedOrdersTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "compat/current/test/StressCompletion.t.sol:NativeWithdrawalStressTest": {
+          "entries": 23,
+          "testsAndPredicates": 23
+        },
+        "compat/current/test/StressCompletion.t.sol:StressCompletionTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/TickBitmap.t.sol:TickBitmapTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/TickPriceKey.t.sol:TickPriceKeyTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/TickPricePoolBeatsLevel.t.sol:TickPricePoolBeatsLevelTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/TokenClaims.t.sol:TokenClaimsTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/TradeFees.t.sol:TradeFeesTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/UnichainFork.t.sol:UnichainForkTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/fizz/FoundryTester.sol:FoundryTester": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/formal/AsyncSwapAcceptOwnership.t.sol:AsyncSwapAcceptOwnershipFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapAddOrder.t.sol:AsyncSwapAddOrderFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapAfterAddLiquidity.t.sol:AsyncSwapAfterAddLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterDonate.t.sol:AsyncSwapAfterDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterInitialize.t.sol:AsyncSwapAfterInitializeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterRemoveLiquidity.t.sol:AsyncSwapAfterRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAfterSwap.t.sol:AsyncSwapAfterSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAsyncOrder.t.sol:AsyncSwapAsyncOrderFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapAsyncOrderInfo.t.sol:AsyncSwapAsyncOrderInfoFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapAsyncOrderPriorityFee.t.sol:AsyncSwapAsyncOrderPriorityFeeFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapBeforeAddLiquidity.t.sol:AsyncSwapBeforeAddLiquidityFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapBeforeDonate.t.sol:AsyncSwapBeforeDonateFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapBeforeInitialize.t.sol:AsyncSwapBeforeInitializeFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapBeforeRemoveLiquidity.t.sol:AsyncSwapBeforeRemoveLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapBeforeSwap.t.sol:AsyncSwapBeforeSwapFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/formal/AsyncSwapBestOrder.t.sol:AsyncSwapBestOrderFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapBitSet.t.sol:AsyncSwapBitSetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapBubbleUpAndRevertWith.t.sol:AsyncSwapBubbleUpAndRevertWithFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCalculateHookFee.t.sol:AsyncSwapCalculateHookFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCalculatePoolFee.t.sol:AsyncSwapCalculatePoolFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCallOptionalReturn.t.sol:AsyncSwapCallOptionalReturnFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapCancelOrder.t.sol:AsyncSwapCancelOrderFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapConstructor.t.sol:AsyncSwapConstructorFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/AsyncSwapCrosses.t.sol:AsyncSwapCrossesFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapDOMAIN_SEPARATOR.t.sol:AsyncSwapDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapExecuteOrder.t.sol:AsyncSwapExecuteOrderFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/formal/AsyncSwapFillOrderFromPoolLiquidity.t.sol:AsyncSwapFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapFreeNode.t.sol:AsyncSwapFreeNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapFunctionCall.t.sol:AsyncSwapFunctionCallFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapFunctionCallWithValue.t.sol:AsyncSwapFunctionCallWithValueFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapGetHookPermissions.t.sol:AsyncSwapGetHookPermissionsFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapHelpers.t.sol:AsyncSwapHelpersFormalTest": {
+          "entries": 26,
+          "testsAndPredicates": 26
+        },
+        "compat/current/test/formal/AsyncSwapInitAccess.t.sol:AsyncSwapInitAccessTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapInsert.t.sol:AsyncSwapInsertFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapInvalidateNonce.t.sol:AsyncSwapInvalidateNonceFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapLibHelpers.t.sol:AsyncSwapLibHelpersFormalTest": {
+          "entries": 15,
+          "testsAndPredicates": 15
+        },
+        "compat/current/test/formal/AsyncSwapMatchAmounts.t.sol:AsyncSwapMatchAmountsFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/formal/AsyncSwapMatchBook.t.sol:AsyncSwapMatchBookFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapMatchNewOrder.t.sol:AsyncSwapMatchNewOrderFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/AsyncSwapMatchPair.t.sol:AsyncSwapMatchPairFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/AsyncSwapMostSignificantBit.t.sol:AsyncSwapMostSignificantBitFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapMulDiv.t.sol:AsyncSwapMulDivFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapNewNode.t.sol:AsyncSwapNewNodeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapOnlyOwner.t.sol:AsyncSwapOnlyOwnerFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapOrderBookLevel.t.sol:AsyncSwapOrderBookLevelFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapOrderBookOrder.t.sol:AsyncSwapOrderBookOrderFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapPriorityKey.t.sol:AsyncSwapPriorityKeyFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapReceive.t.sol:AsyncSwapReceiveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapReduceAfterMatch.t.sol:AsyncSwapReduceAfterMatchFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapReduceMatchedOrders.t.sol:AsyncSwapReduceMatchedOrdersFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapRemove.t.sol:AsyncSwapRemoveFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapRevert.t.sol:AsyncSwapRevertFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapSafeTransferFrom.t.sol:AsyncSwapSafeTransferFromFormalTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/formal/AsyncSwapSetExecutorWithSig.t.sol:AsyncSwapSetExecutorWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol:AsyncSwapSettleMatchedPriorityFeeFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapSettleOrderPriorityFee.t.sol:AsyncSwapSettleOrderPriorityFeeFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/AsyncSwapSettleTransfers.t.sol:AsyncSwapSettleTransfersFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/AsyncSwapSwapAgainstPool.t.sol:AsyncSwapSwapAgainstPoolFormalTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/formal/AsyncSwapSweep.t.sol:AsyncSwapSweepFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapTransferEscrow.t.sol:AsyncSwapTransferEscrowFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapTransferOwnership.t.sol:AsyncSwapTransferOwnershipFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/AsyncSwapTryFillOrderFromPoolLiquidity.t.sol:AsyncSwapTryFillOrderFromPoolLiquidityFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/AsyncSwapUpdatePrice.t.sol:AsyncSwapUpdatePriceFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/formal/AsyncSwapUpdatePriceWithSig.t.sol:AsyncSwapUpdatePriceWithSigFormalTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/formal/AsyncSwapVerifyCallResultFromTarget.t.sol:AsyncSwapVerifyCallResultFromTargetFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/Eip712Domain.t.sol:AsyncSwapEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/Eip712Domain.t.sol:RouterEip712DomainFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/FeeVaultCollect.t.sol:FeeVaultCollectFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/FeeVaultUnlockCallback.t.sol:FeeVaultUnlockCallbackFormalTest": {
+          "entries": 11,
+          "testsAndPredicates": 11
+        },
+        "compat/current/test/formal/NativeClaimsRedeem.t.sol:NativeClaimsRedeemFormalTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/formal/NativeClaimsUnlockCallback.t.sol:NativeClaimsUnlockCallbackFormalTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/formal/RefinementAsyncSwap.t.sol:RefinementAsyncSwapFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/RefinementRouter.t.sol:RefinementRouterFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/RouterCancelWithSig.t.sol:RouterCancelWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/RouterConstructor.t.sol:RouterConstructorFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/RouterDOMAIN_SEPARATOR.t.sol:RouterDOMAIN_SEPARATORFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/RouterFillFromPoolLiquidity.t.sol:RouterFillFromPoolLiquidityFormalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/formal/RouterHelpers.t.sol:RouterHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/formal/RouterLibHelpers.t.sol:RouterLibHelpersFormalTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "compat/current/test/formal/RouterMatchBook.t.sol:RouterMatchBookFormalTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/formal/RouterSwapWithSig.t.sol:RouterSwapWithSigFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/RoutingPoolImpact.t.sol:RoutingPoolImpactTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/formal/SpecCore.t.sol:SpecCoreFormalTest": {
+          "entries": 17,
+          "testsAndPredicates": 17
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AssumptionsFormalTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AsyncSwapCtorSpecFormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AsyncSwapSpecEip712FormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:RouterSpecEip712FormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:SpecEip712ShortStringsFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/SpecSig.t.sol:SpecSigFormalTest": {
+          "entries": 22,
+          "testsAndPredicates": 22
+        },
+        "compat/current/test/nethermind_auditagent/NethermindAuditAgent.t.sol:NethermindAuditAgentTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/security/AssetPrecision.t.sol:AssetPrecisionTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "compat/current/test/security/ClaimTransfers.t.sol:ClaimTransfersTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/CoarsePriceBlocking.t.sol:CoarsePriceBlockingTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/security/EligibleGas.t.sol:EligibleGasTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython0Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython1Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython2Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython3Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython4Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython5Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython6Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligiblePythonVectors.t.sol:EligiblePython7Test": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/EligibleRemainder.t.sol:EligibleRemainderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/ExecutorRevocation.t.sol:ExecutorRevocationTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "compat/current/test/security/FeeClaims.t.sol:FeeClaimsTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "compat/current/test/security/FeeCollect.t.sol:FeeCollectTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/MakerIdentity.t.sol:MakerIdentityTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/MevTax.t.sol:MevTaxSignedTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/MevTax.t.sol:MevTaxTest": {
+          "entries": 7,
+          "testsAndPredicates": 7
+        },
+        "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderBidFloorTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTest": {
+          "entries": 13,
+          "testsAndPredicates": 13
+        },
+        "compat/current/test/security/MinimumOrder.t.sol:MinimumOrderTieredBidTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "compat/current/test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/NoDollarMinimum.t.sol:NoDollarMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/security/NoReturnToken.t.sol:NoReturnTokenTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/OrderSpoofing.t.sol:OrderSpoofingTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:DustDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:EmptyRangeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:ExtremeLevelTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/PashovFindings.t.sol:FeeBaseTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:GrantFrontRunTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:PoolFirstOvershootTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:RemainderRoundingKnownIssueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PashovFindings.t.sol:VenueDynamicFeeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillMinimumTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "compat/current/test/security/PoolFirstPartialFill.t.sol:PoolFirstPartialFillTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeCap18DecimalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PriorityFeeOnly.t.sol:PriorityFeeOnlyTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "compat/current/test/security/PriorityPythonHashes.t.sol:PriorityPythonHashesTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/PriorityPythonVectors.t.sol:PriorityPythonVectorsTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/RouterOrderWindow.t.sol:RouterOrderWindowTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/UseNonceScope.t.sol:UseNonceScopeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeNoMinimumPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/poc/DustTradeFee.t.sol:DustTradeFeeProductionPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/poc/GrantReplay.t.sol:GrantReplayPoc": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "compat/current/test/security/poc/PoolFirstFrontRun.t.sol:PoolFirstFrontRunPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/poc/PoolSquatAssetFloor.t.sol:PoolSquatAssetFloorPoc": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/test/security/poc/SignedCancelGrief.t.sol:SignedCancelGriefPoc": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        }
+      },
+      "forge": "1.9.0",
+      "solar": "0.3.0-dev+commit.a2b44354",
+      "solidityCompatibilityVersion": "0.8.38",
+      "releaseCompilerChanged": false,
+      "referenceCommit": "c8d12dd0830e3b3cfa7de2bf526b8ade270ec384"
+    },
+    "solarDifferential": {
+      "resultSha256": "11ad8f1e423d374d7e8e8adab00c67596b5eeea6a60cb50fc3187568ee739e49",
+      "forgeEntries": 8,
+      "testsAndPredicates": 8,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/differential/StateDifferential.t.sol:NativeLPStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/differential/StateDifferential.t.sol:NativeStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/differential/StateDifferential.t.sol:TokenLPStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/differential/StateDifferential.t.sol:TokenStateDifferentialTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        }
+      },
+      "fuzzSeed": "0xd1ff2026",
+      "fuzzRuns": 32,
+      "stepsPerSequence": 128,
+      "sequences": 132,
+      "pairedActions": 16896,
+      "protocolCalls": 33792,
+      "forge": "1.9.0",
+      "solar": "0.3.0-dev+commit.a2b44354",
+      "solidityCompatibilityVersion": "0.8.38",
+      "releaseCompilerChanged": false,
+      "referenceCommit": "c8d12dd0830e3b3cfa7de2bf526b8ade270ec384"
+    },
+    "sizeMemoryPoolChecks": {
+      "resultSha256": "c64c28961f383baaaa353a074a32ca4840181bf49d6f867a58b291cd624f277e",
+      "forgeEntries": 5,
+      "testsAndPredicates": 5,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/checks/PoolPriorityParity.t.sol:PoolPriorityParityTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/checks/PortSize.t.sol:CurrentPortSizeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "compat/current/checks/SignatureMemory.t.sol:CurrentSignatureMemoryTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        }
+      }
+    },
+    "legacyAcceptance": {
+      "resultSha256": "1fb4c195cdc9a2b9005c790bf737cd3d87c4dcdf464c0a4b24038655e87a8c1d",
+      "forgeEntries": 195,
+      "testsAndPredicates": 208,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "test/AsyncSwap.t.sol:AsyncSwapTest": {
+          "entries": 28,
+          "testsAndPredicates": 28
+        },
+        "test/MatchingAdversarial.t.sol:MatchingAdversarialTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/MatchingEngine.t.sol:MatchingEngineTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/MatchingInvariant.t.sol:LpMatchingInvariantTest": {
+          "entries": 2,
+          "testsAndPredicates": 5
+        },
+        "test/MatchingInvariant.t.sol:MatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "test/MatchingInvariant.t.sol:PriorityMatchingInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 3
+        },
+        "test/NativeAsyncSwap.t.sol:NativeAsyncSwapTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/NativeClaims.t.sol:NativeClaimsTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/Numeraire.t.sol:NumeraireTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/PoolLiquidityFill.t.sol:PoolLiquidityFillSixDecimalTest": {
+          "entries": 4,
+          "testsAndPredicates": 4
+        },
+        "test/PoolLiquidityFill.t.sol:PoolLiquidityFillTest": {
+          "entries": 14,
+          "testsAndPredicates": 14
+        },
+        "test/ProtocolFee.t.sol:ProtocolFeeTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/RadixPriceTree.t.sol:RadixPriceTreeTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/SignedOrders.t.sol:SignedOrdersTest": {
+          "entries": 18,
+          "testsAndPredicates": 18
+        },
+        "test/UnichainFork.t.sol:UnichainForkTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/UnpaidBidInvariant.t.sol:UnpaidBidInvariantTest": {
+          "entries": 1,
+          "testsAndPredicates": 7
+        },
+        "test/huff/ClaimTransfersParity.t.sol:ClaimTransfersParityTest": {
+          "entries": 5,
+          "testsAndPredicates": 5
+        },
+        "test/huff/CodeSize.t.sol:CodeSizeTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/huff/CurrentTickParity.t.sol:CurrentTickParityTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/huff/IncomingMath.t.sol:IncomingMathTest": {
+          "entries": 10,
+          "testsAndPredicates": 10
+        },
+        "test/huff/TokenClaimsParity.t.sol:TokenClaimsParityTest": {
+          "entries": 8,
+          "testsAndPredicates": 8
+        },
+        "test/security/ExecutorAuthorization.t.sol:ExecutorAuthorizationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/FeeClaims.t.sol:FeeClaimsTest": {
+          "entries": 12,
+          "testsAndPredicates": 12
+        },
+        "test/security/FeeCollect.t.sol:FeeCollectTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "test/security/FifoRepriceLinks.t.sol:FifoRepriceLinksTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/FillerMaxPrice.t.sol:FillerMaxPriceTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/HookBalanceIsolation.t.sol:HookBalanceIsolationTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/MakerIdentity.t.sol:MakerIdentityTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/NativeFillExactPayment.t.sol:NativeFillExactPaymentTest": {
+          "entries": 9,
+          "testsAndPredicates": 9
+        },
+        "test/security/NativeInputMsgValue.t.sol:NativeInputMsgValueTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/NativeOutputEscrow.t.sol:NativeOutputEscrowTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/NativeSettlementReentrancy.t.sol:NativeSettlementReentrancyTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/NoReturnToken.t.sol:NoReturnTokenTest": {
+          "entries": 2,
+          "testsAndPredicates": 2
+        },
+        "test/security/OrderSpoofing.t.sol:OrderSpoofingTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/OwnerDirectCancel.t.sol:OwnerDirectCancelTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/PriceKeyCrossing.t.sol:PriceKeyCrossingTest": {
+          "entries": 3,
+          "testsAndPredicates": 3
+        },
+        "test/security/UnpaidPriorityBid.t.sol:UnpaidPriorityBidTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "test/security/UserDataMatchesOrder.t.sol:UserDataMatchesOrderTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        }
+      }
+    },
+    "finalPinAcceptanceSubset": {
+      "resultSha256": "b838a79476830ec954ca1ae45a94e4b541570fd64f802a14651a0ecdedb666ee",
+      "forgeEntries": 9,
+      "testsAndPredicates": 9,
+      "failed": 0,
+      "skipped": 0,
+      "suites": {
+        "compat/current/test/formal/RouterConstructor.t.sol:RouterConstructorFormalTest": {
+          "entries": 6,
+          "testsAndPredicates": 6
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AsyncSwapCtorSpecFormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:AsyncSwapSpecEip712FormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        },
+        "compat/current/test/formal/SpecEip712.t.sol:RouterSpecEip712FormalTest": {
+          "entries": 1,
+          "testsAndPredicates": 1
+        }
+      }
+    }
+  },
+  "deterministicActionCoverage": {
+    "compat/current/differential/StateDifferential.t.sol:NativeLPStateDifferentialTest": [
+      {
+        "action": 0,
+        "attempts": 80,
+        "successes": 80
+      },
+      {
+        "action": 1,
+        "attempts": 11,
+        "successes": 5
+      },
+      {
+        "action": 2,
+        "attempts": 15,
+        "successes": 3
+      },
+      {
+        "action": 3,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 4,
+        "attempts": 13,
+        "successes": 12
+      },
+      {
+        "action": 5,
+        "attempts": 12,
+        "successes": 8
+      },
+      {
+        "action": 6,
+        "attempts": 9,
+        "successes": 9
+      },
+      {
+        "action": 7,
+        "attempts": 8,
+        "successes": 3
+      },
+      {
+        "action": 8,
+        "attempts": 8,
+        "successes": 7
+      },
+      {
+        "action": 9,
+        "attempts": 14,
+        "successes": 9
+      },
+      {
+        "action": 10,
+        "attempts": 14,
+        "successes": 9
+      },
+      {
+        "action": 11,
+        "attempts": 10,
+        "successes": 7
+      },
+      {
+        "action": 12,
+        "attempts": 6,
+        "successes": 3
+      },
+      {
+        "action": 13,
+        "attempts": 6,
+        "successes": 3
+      },
+      {
+        "action": 14,
+        "attempts": 10,
+        "successes": 2
+      },
+      {
+        "action": 15,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 16,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 17,
+        "attempts": 7,
+        "successes": 1
+      }
+    ],
+    "compat/current/differential/StateDifferential.t.sol:TokenLPStateDifferentialTest": [
+      {
+        "action": 0,
+        "attempts": 80,
+        "successes": 80
+      },
+      {
+        "action": 1,
+        "attempts": 11,
+        "successes": 3
+      },
+      {
+        "action": 2,
+        "attempts": 15,
+        "successes": 3
+      },
+      {
+        "action": 3,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 4,
+        "attempts": 13,
+        "successes": 12
+      },
+      {
+        "action": 5,
+        "attempts": 12,
+        "successes": 8
+      },
+      {
+        "action": 6,
+        "attempts": 9,
+        "successes": 6
+      },
+      {
+        "action": 7,
+        "attempts": 8,
+        "successes": 3
+      },
+      {
+        "action": 8,
+        "attempts": 8,
+        "successes": 7
+      },
+      {
+        "action": 9,
+        "attempts": 14,
+        "successes": 9
+      },
+      {
+        "action": 10,
+        "attempts": 14,
+        "successes": 9
+      },
+      {
+        "action": 11,
+        "attempts": 10,
+        "successes": 7
+      },
+      {
+        "action": 12,
+        "attempts": 6,
+        "successes": 3
+      },
+      {
+        "action": 13,
+        "attempts": 6,
+        "successes": 2
+      },
+      {
+        "action": 14,
+        "attempts": 10,
+        "successes": 2
+      },
+      {
+        "action": 15,
+        "attempts": 11,
+        "successes": 3
+      },
+      {
+        "action": 16,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 17,
+        "attempts": 7,
+        "successes": 1
+      }
+    ],
+    "compat/current/differential/StateDifferential.t.sol:NativeStateDifferentialTest": [
+      {
+        "action": 0,
+        "attempts": 80,
+        "successes": 80
+      },
+      {
+        "action": 1,
+        "attempts": 11,
+        "successes": 2
+      },
+      {
+        "action": 2,
+        "attempts": 15,
+        "successes": 1
+      },
+      {
+        "action": 3,
+        "attempts": 11,
+        "successes": 2
+      },
+      {
+        "action": 4,
+        "attempts": 13,
+        "successes": 12
+      },
+      {
+        "action": 5,
+        "attempts": 12,
+        "successes": 12
+      },
+      {
+        "action": 6,
+        "attempts": 9,
+        "successes": 9
+      },
+      {
+        "action": 7,
+        "attempts": 8,
+        "successes": 3
+      },
+      {
+        "action": 8,
+        "attempts": 8,
+        "successes": 8
+      },
+      {
+        "action": 9,
+        "attempts": 14,
+        "successes": 5
+      },
+      {
+        "action": 10,
+        "attempts": 14,
+        "successes": 10
+      },
+      {
+        "action": 11,
+        "attempts": 10,
+        "successes": 7
+      },
+      {
+        "action": 12,
+        "attempts": 6,
+        "successes": 3
+      },
+      {
+        "action": 13,
+        "attempts": 6,
+        "successes": 1
+      },
+      {
+        "action": 14,
+        "attempts": 10,
+        "successes": 4
+      },
+      {
+        "action": 15,
+        "attempts": 11,
+        "successes": 3
+      },
+      {
+        "action": 16,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 17,
+        "attempts": 7,
+        "successes": 1
+      }
+    ],
+    "compat/current/differential/StateDifferential.t.sol:TokenStateDifferentialTest": [
+      {
+        "action": 0,
+        "attempts": 80,
+        "successes": 80
+      },
+      {
+        "action": 1,
+        "attempts": 11,
+        "successes": 2
+      },
+      {
+        "action": 2,
+        "attempts": 15,
+        "successes": 1
+      },
+      {
+        "action": 3,
+        "attempts": 11,
+        "successes": 2
+      },
+      {
+        "action": 4,
+        "attempts": 13,
+        "successes": 12
+      },
+      {
+        "action": 5,
+        "attempts": 12,
+        "successes": 12
+      },
+      {
+        "action": 6,
+        "attempts": 9,
+        "successes": 9
+      },
+      {
+        "action": 7,
+        "attempts": 8,
+        "successes": 3
+      },
+      {
+        "action": 8,
+        "attempts": 8,
+        "successes": 8
+      },
+      {
+        "action": 9,
+        "attempts": 14,
+        "successes": 5
+      },
+      {
+        "action": 10,
+        "attempts": 14,
+        "successes": 10
+      },
+      {
+        "action": 11,
+        "attempts": 10,
+        "successes": 7
+      },
+      {
+        "action": 12,
+        "attempts": 6,
+        "successes": 3
+      },
+      {
+        "action": 13,
+        "attempts": 6,
+        "successes": 1
+      },
+      {
+        "action": 14,
+        "attempts": 10,
+        "successes": 4
+      },
+      {
+        "action": 15,
+        "attempts": 11,
+        "successes": 3
+      },
+      {
+        "action": 16,
+        "attempts": 11,
+        "successes": 1
+      },
+      {
+        "action": 17,
+        "attempts": 7,
+        "successes": 1
+      }
+    ]
+  },
+  "testHelperUpdate": "Final source pin includes metadata-based immutable reading; only reference-only Huff checks use that helper. Behavioral assertions remain unchanged.",
+  "acceptanceCombination": "Full 1,006-entry run plus the updated 9-test nonce-replay suite at 2,048 fuzz cases and rerun of the affected active suites after the final reference-helper pin. Includes the added v1.3.1 trusted-Router regression. No existing assertion changed.",
+  "coverageNote": "Coverage is call success, including permitted no-ops. Campaigns overlap; do not add test counts. The long campaign includes its deterministic sequence.",
+  "regression": {
+    "seed": "0xD1FF2026",
+    "stepIndex": 8,
+    "fixtures": [
+      "NativeLPStateDifferentialTest",
+      "TokenLPStateDifferentialTest"
+    ],
+    "assertion": "ordered logs",
+    "fix": "Close the fully LP-filled order, pay its maker, then settle its priority bid, matching Solidity.",
+    "existingAssertionsChanged": false
+  },
+  "benchmark": {
+    "summary": "benchmarks/crossing/differential-results/summary.json",
+    "summarySha256": "087392bb23ef5d6cd6d1cee13abd8530d15eb9de515e3ce7318dcb748b8d1edd",
+    "incomingTransactions": 1000,
+    "matchedPairs": 5200,
+    "unchangedReceiptGasAndFirstBlockPackingWorkloads": 10
+  },
+  "limits": [
+    "Controlled ERC20 fixtures, one pool per scenario, zero MEV surcharge, bounded nonces.",
+    "Permit2 and adversarial callbacks use separate acceptance tests.",
+    "59 Solidity architecture/diagnostic checks remain reference-only; 12 abstract templates and one finding are excluded.",
+    "Passing these campaigns is not a proof of complete equivalence or an independent audit."
+  ]
+}

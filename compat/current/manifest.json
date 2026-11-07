@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/asyncswap/contracts",
-  "commit": "3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89",
+  "commit": "34b05bdcfb642727d1d6856f1ba91957dcf5d3b7",
   "sourceFiles": {
     "src/AsyncSwap.sol": "2464f21c378835d92920ea0a460ec3f54a7649e8343fd8ad5e98c616f9e8fa9e",
     "src/BaseHook.sol": "e910e8e809f50335b1bd0da2109e417ae87213b517c0d1d8720e3bf0a1259ab9",
@@ -135,7 +135,7 @@
     "test/formal/AsyncSwapRemove.t.sol": "ba7eaec34f55f965891421f394a206b5cf146c23c15af55767e7d501897a39c7",
     "test/formal/AsyncSwapRevert.t.sol": "78508a6ea9f30452427d1af82b01b82097094354879226c8221be35bc38c0851",
     "test/formal/AsyncSwapSafeTransferFrom.t.sol": "1aff112163039545703791e4422dc7d06fa8168afc6818b3c8c2d9e03a3ffd3c",
-    "test/formal/AsyncSwapSetExecutorWithSig.t.sol": "415c6de4ed4d7a1d7f9661390df0d2dea7b364a9b7788659dba108886ab6e119",
+    "test/formal/AsyncSwapSetExecutorWithSig.t.sol": "02fe6035651b6f6e05336c52cd9aa2785b701f9cecb32a0bcf665db218bcc1c6",
     "test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol": "e60838ae31b83cfbd4ec28e656d275c521be2cd58f8075542c0f9bab335cc5c5",
     "test/formal/AsyncSwapSettleOrderPriorityFee.t.sol": "4f89436c0ab4b1f4e58377c1022350b47bdf646806b5277d71aedd8cdcf00c37",
     "test/formal/AsyncSwapSettleTransfers.t.sol": "13e19ca0d914867293fbf5c9c89ace3b9dd50ac50ffbf766e9314a80605d4dba",
@@ -153,7 +153,7 @@
     "test/formal/FeeVaultUnlockCallback.t.sol": "a458d7fc4072ba26741e1a6a4e04702617c2c004cb9699c734a43931d762befc",
     "test/formal/FormalBase.sol": "03dadebd98d501971929cbc98b8774b8b4c6dbd0b474a54a7244b4efe6d1a7bd",
     "test/formal/FormalHarnessesA.sol": "3acc30aa06da22ec229b7661643f1080bfc006c3b7fe3994e9a5f31d6c3cb2ae",
-    "test/formal/FormalImmutablesC.sol": "2fc0b87d264208eb7a5f26d2a7c39a403c0e9f74426c7972d7f8771a5ef251e0",
+    "test/formal/FormalImmutablesC.sol": "a268805767dc97a51a8344cc7f710a114cc9d26710672ba77ae795f8594b0cbd",
     "test/formal/FormalMatchD.sol": "ebb19dae230f42642d0b352b7054277ebefa92c977505d30faa2e137d025ad0b",
     "test/formal/FormalOzE.sol": "b64ff87e8cabbeb6a93651f40d101bb48bcc13ce3c1306ee0578cdbfeb8168cf",
     "test/formal/FormalProbesA.sol": "26aac3045f098a2fe0a62d611e24e47c1cd33cdeaab673524393de3121c38b0a",
@@ -855,10 +855,8 @@
       "assertionsSha256": "ba86dd38778c3614a0afad9307466d957a17250cdf13f9c0bbd4387a9fa82c22"
     },
     "test/formal/AsyncSwapSetExecutorWithSig.t.sol": {
-      "sha256": "42ac4fd1c63fee2dd814aada9d6cdc8383527c2606d720bd65d0f22b43f49f82",
-      "deploymentChanges": [
-        "Consume nonce using a valid grant, including the trusted Router (contracts c8d12dd fixture fix)."
-      ],
+      "sha256": "02fe6035651b6f6e05336c52cd9aa2785b701f9cecb32a0bcf665db218bcc1c6",
+      "deploymentChanges": [],
       "assertionsSha256": "850f08a6c591c39c7d3aeb0416ba3183ccfd46ee74cbca702cded08bccb7476b"
     },
     "test/formal/AsyncSwapSettleMatchedPriorityFee.t.sol": {
@@ -954,7 +952,7 @@
       "assertionsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "test/formal/FormalImmutablesC.sol": {
-      "sha256": "2fc0b87d264208eb7a5f26d2a7c39a403c0e9f74426c7972d7f8771a5ef251e0",
+      "sha256": "a268805767dc97a51a8344cc7f710a114cc9d26710672ba77ae795f8594b0cbd",
       "deploymentChanges": [],
       "assertionsSha256": "a7594a68bf5aedf358ae6701834ddfbe0700eda402afe0c00254c9865af01691"
     },

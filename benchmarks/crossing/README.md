@@ -2,7 +2,7 @@
 
 The expanded Huff port uses **7.3–24.5% less gas on single fills** and **17.2–18.3% less on eight-level sweeps** than pinned Solidity PR #81. Other eight-fill workloads remain **11.1–12.9% more expensive**. These results include the correctness fixes exposed by the expanded acceptance suite.
 
-The final behavioral port reproduces the previous port’s gas and first-block transaction counts exactly across all ten workloads. Compared with merged Huff PR #6, receipt gas changes by **−0.072% to +0.047%**. Eight-level sweeps increase slightly; the other workloads decrease. The additional tests preserve the existing gas savings.
+The v1.3.1 differential follow-up reproduces the previous port’s gas and first-block transaction counts exactly across all ten workloads. Compared with merged Huff PR #6, receipt gas changes by **−0.072% to +0.047%**. Eight-level sweeps increase slightly; the other workloads decrease. The additional tests preserve the existing gas savings.
 
 | Workload | Solidity mean gas | Merged Huff | Current Huff | Change vs merged | Change vs Solidity | First-block transactions |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -23,7 +23,7 @@ Each row contains 100 incoming Router transactions. Positive changes mean more g
 
 The port batches ERC-6909 claim credits by currency and recipient. Reductions now precede proceeds; refunds follow fees, preserving Solidity first-credit order. Zero credits are skipped, self-transfers remain immediate, additions are checked, and failed flushes revert atomically. Tick-key crossing decisions, malformed ABI handling, bitmap validation and radix recycling follow the expanded tests. Shared guards, order-ID hashing and bitmap scans reduce duplicated runtime code.
 
-**1,016 acceptance tests/predicates**, **206 extended tests** at 2,048 fuzz cases, **208 legacy/parity tests/predicates**, and **five size/memory/pool-parity checks** pass. Campaigns overlap. Assertions remain unchanged. Pool-price differential checks use 4,096 fuzz cases. All behavioral tests are ported; **59 Solidity architecture/diagnostic checks remain reference-only**, with 12 abstract templates and one excluded finding; see the [coverage guide](../../compat/current/README.md).
+**1,017 acceptance tests/predicates**, **206 extended tests** at 2,048 fuzz cases, **208 legacy/parity tests/predicates**, and **five size/memory/pool-parity checks** pass. Campaigns overlap. Assertions remain unchanged. Pool-price differential checks use 4,096 fuzz cases. All behavioral tests are ported; **59 Solidity architecture/diagnostic checks remain reference-only**, with 12 abstract templates and one excluded finding; see the [coverage guide](../../compat/current/README.md).
 
 The deployed hook is **24,321 bytes**, including immutables: 255 bytes below EIP-170. The Router is **10,952 bytes**. Validation uses Foundry 1.8.6; receipt benchmarks use Foundry/Anvil 1.9.0.
 
@@ -35,10 +35,10 @@ Solidity is pinned to `3f4a5f106f55cc4b90b11d0ce0f0143f5e64ed89`, solc 0.8.26 wi
 
 The transaction gas limit is 120% of the first estimate, rounded up to 1,000; block admission requires room for that declared limit. First-block packing is specific to this workload and policy, not public-chain TPS or a universal capacity limit.
 
-[Current receipts](behavioral-results/summary.json) · [Merged Huff receipts](expanded-results/summary.json) · [Solidity receipts](solidity-results/summary.json) · [Comparison data](behavioral-comparison.json) · [Validation/source hashes](../../compat/current/results/behavioral-validation.json). Historical unbatched receipts and the original batching comparison remain in `results/` and `batching-comparison.json`.
+[Current receipts](differential-results/summary.json) · [Merged Huff receipts](expanded-results/summary.json) · [Solidity receipts](solidity-results/summary.json) · [Comparison data](behavioral-comparison.json) · [Validation/source hashes](../../compat/current/results/behavioral-validation.json). Historical unbatched receipts and the original batching comparison remain in `results/` and `batching-comparison.json`.
 
 ```sh
-python3 benchmarks/crossing/run.py --output-dir benchmarks/crossing/behavioral-results
+python3 benchmarks/crossing/run.py --output-dir benchmarks/crossing/differential-results
 ```
 
-The residual repeated-fill gap still needs profiling. These results alone do not attribute it to a particular storage operation or prove a Solidity optimization ceiling.
+The residual repeated-fill gap still needs profiling. The LP settlement-order fix is outside these no-liquidity workloads. These results alone do not attribute it to a particular storage operation or prove a Solidity optimization ceiling.

@@ -3,12 +3,15 @@ pragma solidity 0.8.26;
 
 import {Test} from "forge-std/Test.sol";
 
-/// @notice Reads a deployed contract's immutables back from its runtime code. solc compiles each read of
-///         an immutable to a `PUSH32` whose operand is zero in the artifact's `deployedBytecode` and is
-///         filled in at deployment. Walking the artifact's opcodes and comparing each `PUSH32` operand with
-///         the deployed code gives the set of distinct nonzero immutable values; the scan also checks that
-///         the two codes agree everywhere else, so nothing outside an immutable slot differs.
+/// @notice Read immutable values from the compiler's declared runtime ranges, including narrow Solar
+///         operands. Mask only those ranges, then check that every other byte matches the artifact.
 abstract contract FormalImmutablesC is Test {
+    // parseJson encodes object fields alphabetically: length precedes start.
+    struct ImmutableRange {
+        uint256 length;
+        uint256 start;
+    }
+
     /// @dev Distinct nonzero immutable values of the contract at `deployed`, built from `artifact`
     ///      (`"File.sol:Contract"`).
     function _immutables(string memory artifact, address deployed) internal view returns (bytes32[] memory vals) {
@@ -18,31 +21,32 @@ abstract contract FormalImmutablesC is Test {
         bytes32[] memory tmp = new bytes32[](64);
         uint256 n;
         bytes memory masked = bytes.concat(act); // a copy, with the immutable operands zeroed below
-        uint256 i;
-        while (i < art.length) {
-            uint8 op = uint8(art[i]);
-            if (op == 0x7f && i + 32 < art.length) {
-                bytes32 a;
+        string memory json = vm.readFile(vm.getArtifactPathByDeployedCode(art));
+        string memory base = ".deployedBytecode.immutableReferences";
+        string[] memory keys = vm.parseJsonKeys(json, base);
+        for (uint256 i; i < keys.length; i++) {
+            ImmutableRange[] memory ranges =
+                abi.decode(vm.parseJson(json, string.concat(base, ".", keys[i])), (ImmutableRange[]));
+            for (uint256 j; j < ranges.length; j++) {
+                ImmutableRange memory r = ranges[j];
+                require(
+                    r.length > 0 && r.length <= 32 && r.length <= art.length && r.start <= art.length - r.length,
+                    "invalid immutable range"
+                );
                 bytes32 b;
-                assembly ("memory-safe") {
-                    a := mload(add(add(art, 0x21), i))
-                    b := mload(add(add(act, 0x21), i))
+                for (uint256 k; k < r.length; k++) {
+                    require(art[r.start + k] == 0, "immutable placeholder is not zero");
+                    // PUSHn operands are big-endian. Normalize short integers/addresses to bytes32.
+                    b = bytes32((uint256(b) << 8) | uint8(act[r.start + k]));
+                    masked[r.start + k] = 0;
                 }
-                if (a == 0 && b != 0) {
+                if (b != 0) {
                     bool seen;
                     for (uint256 k; k < n; k++) {
                         if (tmp[k] == b) seen = true;
                     }
                     if (!seen) tmp[n++] = b;
-                    assembly ("memory-safe") {
-                        mstore(add(add(masked, 0x21), i), 0)
-                    }
                 }
-                i += 33;
-            } else if (op >= 0x60 && op < 0x7f) {
-                i += uint256(op) - 0x5f + 1;
-            } else {
-                i++;
             }
         }
         assertEq(keccak256(masked), keccak256(art), "code differs only in immutable slots");
